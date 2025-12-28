@@ -1,0 +1,80 @@
+# ==========================================
+# GCP 서비스 계정 일괄 생성 명령어
+# 프로젝트: carivdealer
+# 작성일: 2025-12-28
+# ==========================================
+# 
+# 사용 방법: 아래 명령어를 순서대로 복사하여 Cloud Shell에 붙여넣기
+# 
+
+# 프로젝트 설정 확인
+gcloud config set project carivdealer
+
+# ==========================================
+# 1. Firebase Hosting Deploy
+# ==========================================
+gcloud iam service-accounts create firebase-hosting-deploy --description="Firebase Hosting 배포용 서비스 계정" --display-name="Firebase Hosting Deploy" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:firebase-hosting-deploy@carivdealer.iam.gserviceaccount.com" --role="roles/firebasehosting.admin" --condition=None
+
+# ==========================================
+# 2. Cloud Functions Executor
+# ==========================================
+gcloud iam service-accounts create cloud-functions-executor --description="Cloud Functions 실행용 서비스 계정" --display-name="Cloud Functions Executor" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:cloud-functions-executor@carivdealer.iam.gserviceaccount.com" --role="roles/cloudfunctions.invoker" --condition=None
+
+# ==========================================
+# 3. Cloud Run Executor
+# ==========================================
+gcloud iam service-accounts create cloud-run-executor --description="Cloud Run 실행용 서비스 계정" --display-name="Cloud Run Executor" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:cloud-run-executor@carivdealer.iam.gserviceaccount.com" --role="roles/run.invoker" --condition=None
+
+# ==========================================
+# 4. Firestore Admin
+# ==========================================
+gcloud iam service-accounts create firestore-admin --description="Firestore 데이터베이스 관리용 서비스 계정" --display-name="Firestore Admin" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:firestore-admin@carivdealer.iam.gserviceaccount.com" --role="roles/datastore.user" --condition=None
+
+# ==========================================
+# 5. Storage Admin
+# ==========================================
+gcloud iam service-accounts create storage-admin --description="Cloud Storage 관리용 서비스 계정" --display-name="Storage Admin" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:storage-admin@carivdealer.iam.gserviceaccount.com" --role="roles/storage.admin" --condition=None
+
+# ==========================================
+# 6. Secret Manager Accessor
+# ==========================================
+gcloud iam service-accounts create secret-manager-accessor --description="Secret Manager 시크릿 접근용 서비스 계정" --display-name="Secret Manager Accessor" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:secret-manager-accessor@carivdealer.iam.gserviceaccount.com" --role="roles/secretmanager.secretAccessor" --condition=None
+
+# ==========================================
+# 7. Gemini API User
+# ==========================================
+gcloud iam service-accounts create gemini-api-user --description="Gemini API 호출용 서비스 계정" --display-name="Gemini API User" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:gemini-api-user@carivdealer.iam.gserviceaccount.com" --role="roles/aiplatform.user" --condition=None
+
+# ==========================================
+# 8. Cloud Build Executor
+# ==========================================
+gcloud iam service-accounts create cloud-build-executor --description="Cloud Build 빌드 및 배포용 서비스 계정" --display-name="Cloud Build Executor" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:cloud-build-executor@carivdealer.iam.gserviceaccount.com" --role="roles/cloudbuild.builds.builder" --condition=None
+
+# ==========================================
+# 9. Logging Writer
+# ==========================================
+gcloud iam service-accounts create logging-writer --description="Cloud Logging 로그 쓰기용 서비스 계정" --display-name="Logging Writer" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:logging-writer@carivdealer.iam.gserviceaccount.com" --role="roles/logging.logWriter" --condition=None
+
+# ==========================================
+# 10. Monitoring Writer
+# ==========================================
+gcloud iam service-accounts create monitoring-writer --description="Cloud Monitoring 메트릭 쓰기용 서비스 계정" --display-name="Monitoring Writer" --project=carivdealer
+gcloud projects add-iam-policy-binding carivdealer --member="serviceAccount:monitoring-writer@carivdealer.iam.gserviceaccount.com" --role="roles/monitoring.metricWriter" --condition=None
+
+# ==========================================
+# 생성 완료 확인
+# ==========================================
+echo "=========================================="
+echo "서비스 계정 생성 완료!"
+echo "=========================================="
+gcloud iam service-accounts list --project=carivdealer --filter="email:firebase-hosting-deploy@ OR email:cloud-functions-executor@ OR email:cloud-run-executor@ OR email:firestore-admin@ OR email:storage-admin@ OR email:secret-manager-accessor@ OR email:gemini-api-user@ OR email:cloud-build-executor@ OR email:logging-writer@ OR email:monitoring-writer@" --format="table(email,displayName)"
+

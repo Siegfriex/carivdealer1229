@@ -1,0 +1,63 @@
+# Firebase 프로덕션 모드 설정 명령어
+# 프로젝트: carivdealer
+# 실행일: 2025-12-28
+# 
+# 사용 방법: 아래 명령어를 순서대로 복사하여 GCP 콘솔 터미널에 붙여넣기
+
+# ==========================================
+# 1. 프로젝트 설정 확인
+# ==========================================
+gcloud config set project carivdealer
+
+# ==========================================
+# 2. Firestore 데이터베이스 확인 및 생성
+# ==========================================
+echo "=== Firestore 데이터베이스 확인 ==="
+gcloud firestore databases list --project=carivdealer
+
+# 데이터베이스가 없으면 생성 (Native 모드)
+gcloud firestore databases create --location=asia-northeast3 --type=firestore-native --project=carivdealer
+
+# 데이터베이스 상세 정보 확인
+gcloud firestore databases describe --database="(default)" --project=carivdealer
+
+# ==========================================
+# 3. Firebase Storage 버킷 확인
+# ==========================================
+echo "=== Firebase Storage 버킷 확인 ==="
+gsutil ls -p carivdealer
+
+# 기본 버킷 상세 정보 확인
+gsutil ls -L -b gs://carivdealer.firebasestorage.app
+
+# 버킷 IAM 정책 확인
+gsutil iam get gs://carivdealer.firebasestorage.app
+
+# ==========================================
+# 4. Firebase CLI 설정 확인 (선택사항)
+# ==========================================
+echo "=== Firebase CLI 설정 확인 ==="
+firebase --version || echo "Firebase CLI가 설치되지 않았습니다. 설치: npm install -g firebase-tools"
+
+firebase login:list || echo "Firebase 로그인이 필요합니다. 실행: firebase login"
+
+firebase use carivdealer || echo "Firebase 프로젝트 연결이 필요합니다."
+
+# ==========================================
+# 5. 최종 상태 확인
+# ==========================================
+echo "=== 최종 상태 확인 ==="
+echo "Firestore 데이터베이스:"
+gcloud firestore databases list --project=carivdealer --format="table(name,locationId,type,state)"
+
+echo ""
+echo "Storage 버킷:"
+gsutil ls -p carivdealer
+
+echo ""
+echo "Firebase 프로젝트 정보:"
+echo "Project ID: carivdealer"
+echo "Project Number: 850300267700"
+echo "Storage Bucket: carivdealer.firebasestorage.app"
+echo "Auth Domain: carivdealer.firebaseapp.com"
+
