@@ -14,9 +14,9 @@ export const GeminiService = {
   fileToBase64,
 
   extractBusinessInfo: async (file: File) => {
-    const apiKey = import.meta.env.GEMINI_API_KEY || process.env.API_KEY;
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || process.env.API_KEY;
     if (!apiKey) {
-      throw new Error('Gemini API key is not configured');
+      throw new Error('Gemini API key is not configured. Please set VITE_GEMINI_API_KEY in .env file.');
     }
     
     const ai = new GoogleGenAI({ apiKey });
@@ -46,9 +46,9 @@ export const GeminiService = {
   },
 
   extractVehicleRegistration: async (file: File) => {
-    const apiKey = import.meta.env.GEMINI_API_KEY || process.env.API_KEY;
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || process.env.API_KEY;
     if (!apiKey) {
-      throw new Error('Gemini API key is not configured');
+      throw new Error('Gemini API key is not configured. Please set VITE_GEMINI_API_KEY in .env file.');
     }
     
     const ai = new GoogleGenAI({ apiKey });
@@ -83,9 +83,9 @@ export const GeminiService = {
   },
 
   estimateMarketPrice: async (model: string, year: string) => {
-    const apiKey = import.meta.env.GEMINI_API_KEY || process.env.API_KEY;
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || process.env.API_KEY;
     if (!apiKey) {
-      throw new Error('Gemini API key is not configured');
+      throw new Error('Gemini API key is not configured. Please set VITE_GEMINI_API_KEY in .env file.');
     }
     
     const ai = new GoogleGenAI({ apiKey });

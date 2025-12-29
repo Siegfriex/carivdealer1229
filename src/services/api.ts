@@ -2,6 +2,14 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
   'https://asia-northeast3-carivdealer.cloudfunctions.net';
 
+// 개발 환경에서만 로그 출력
+const isDev = import.meta.env.DEV;
+const logMockCall = (message: string, ...args: any[]) => {
+  if (isDev) {
+    console.warn(`[프로토타입] ${message}`, ...args);
+  }
+};
+
 // Helper function for API calls
 async function apiCall<T>(
   endpoint: string,
@@ -157,7 +165,7 @@ export const apiClient = {
     acceptProposal: async (proposalId: string, action: 'accept' | 'reject') => {
       // TODO: Firebase Functions v2 엔드포인트 구현 후 연결
       // 현재는 Mock 응답 반환 (프로토타입 단계)
-      console.warn(`[프로토타입] acceptProposal 호출: proposalId=${proposalId}, action=${action}`);
+      logMockCall(`acceptProposal 호출: proposalId=${proposalId}, action=${action}`);
       return Promise.resolve({
         success: true,
         message: action === 'accept' ? '제안이 수락되었습니다.' : '제안이 거절되었습니다.',
@@ -178,7 +186,7 @@ export const apiClient = {
 
     confirmProposal: async (proposalId: string, confirmed: boolean) => {
       // TODO: Firebase Functions v2 엔드포인트 구현 후 연결
-      console.warn(`[프로토타입] confirmProposal 호출: proposalId=${proposalId}, confirmed=${confirmed}`);
+      logMockCall(`confirmProposal 호출: proposalId=${proposalId}, confirmed=${confirmed}`);
       return Promise.resolve({
         success: true,
         message: confirmed ? '구매 의사가 확인되었습니다.' : '구매 의사 확인이 취소되었습니다.',
@@ -194,7 +202,7 @@ export const apiClient = {
       address: string;
     }) => {
       // TODO: Firebase Functions v2 엔드포인트 구현 후 연결
-      console.warn(`[프로토타입] scheduleLogistics 호출:`, data);
+      logMockCall(`scheduleLogistics 호출:`, data);
       return Promise.resolve({
         success: true,
         schedule_id: `schedule-${Date.now()}`,
@@ -204,7 +212,7 @@ export const apiClient = {
     dispatch: {
       request: async (scheduleId: string) => {
         // TODO: Firebase Functions v2 엔드포인트 구현 후 연결
-        console.warn(`[프로토타입] dispatchLogistics 호출: scheduleId=${scheduleId}`);
+        logMockCall(`dispatchLogistics 호출: scheduleId=${scheduleId}`);
         return Promise.resolve({
           success: true,
           dispatch_id: `dispatch-${Date.now()}`,
@@ -213,7 +221,7 @@ export const apiClient = {
 
       confirm: async (dispatchId: string) => {
         // TODO: Firebase Functions v2 엔드포인트 구현 후 연결
-        console.warn(`[프로토타입] confirmDispatch 호출: dispatchId=${dispatchId}`);
+        logMockCall(`confirmDispatch 호출: dispatchId=${dispatchId}`);
         return Promise.resolve({
           success: true,
           driver_info: {
@@ -227,7 +235,7 @@ export const apiClient = {
     approveHandover: async (logisticsId: string, pin: string) => {
       // TODO: Firebase Functions v2 엔드포인트 구현 후 연결
       // 현재는 Mock 응답 반환 (프로토타입 단계)
-      console.warn(`[프로토타입] approveHandover 호출: logisticsId=${logisticsId}, pin=${pin}`);
+      logMockCall(`approveHandover 호출: logisticsId=${logisticsId}, pin=${pin.substring(0, 1)}***`);
       return Promise.resolve({
         success: true,
         handover_timestamp: new Date().toISOString(),
@@ -251,7 +259,7 @@ export const apiClient = {
   settlement: {
     notify: async (settlementId: string) => {
       // TODO: Firebase Functions v2 엔드포인트 구현 후 연결
-      console.warn(`[프로토타입] notifySettlement 호출: settlementId=${settlementId}`);
+      logMockCall(`notifySettlement 호출: settlementId=${settlementId}`);
       return Promise.resolve({
         success: true,
         notification_id: `notif-${Date.now()}`,

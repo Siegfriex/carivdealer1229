@@ -64,12 +64,10 @@ import {
   Gauge,
   Armchair,
   Filter,
-  Timer,
-  ShoppingBag,
-  Megaphone,
-  CreditCard,
   XCircle,
-  CalendarDays
+  CalendarDays,
+  Plus,
+  Timer
 } from "lucide-react";
 import { GoogleGenAI, Type } from "@google/genai";
 import { GeminiService } from './src/services/gemini';
@@ -234,6 +232,30 @@ const MOCK_VEHICLES: Vehicle[] = [
 const MockDataService = {
   getMockVehicles: (): Vehicle[] => [...MOCK_VEHICLES],
   getVehicleById: (id: string): Vehicle | undefined => MOCK_VEHICLES.find(v => v.id === id),
+  // ✅ formData를 기반으로 차량 생성 (프로토타입용)
+  createVehicle: (formData: any, vehicleId?: string): Vehicle => {
+    const newId = vehicleId || `v-${Date.now()}`;
+    const newVehicle: Vehicle = {
+      id: newId,
+      status: 'draft',
+      plateNumber: formData.plateNumber || '미입력',
+      manufacturer: formData.manufacturer || '미입력',
+      modelName: formData.modelName || '미입력',
+      modelYear: formData.modelYear || '미입력',
+      mileage: formData.mileage || '0',
+      price: formData.price || '-',
+      location: 'Seoul',
+      updatedAt: new Date().toISOString().split('T')[0],
+      fuelType: formData.fuelType,
+      registrationDate: formData.registrationDate,
+      color: formData.color,
+      vin: formData.vin,
+      offers: []
+    };
+    // Mock 데이터에 추가
+    MOCK_VEHICLES.push(newVehicle);
+    return newVehicle;
+  },
   deleteVehicle: (id: string) => {
     const idx = MOCK_VEHICLES.findIndex(v => v.id === id);
     if (idx > -1) MOCK_VEHICLES.splice(idx, 1);
@@ -1011,8 +1033,7 @@ const AuctionSalePageComplete = ({ onNavigate, vehicleId }: any) => {
 };
 
 
-// --- Plus Icon for convenience ---
-const Plus = (props: any) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>;
+// Plus 아이콘은 lucide-react에서 import됨
 
 // --- SCR-0001: Login Screen ---
 const LoginPage = ({ onNavigate, onLogin }: any) => {
@@ -1209,9 +1230,31 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
              <Button variant="outline" onClick={() => onNavigate('SCR-0200-Draft')}>임시 저장</Button>
              <Button 
                onClick={async () => {
-                 // 차량 정보 저장 후 검차 신청 화면으로 이동
-                 // TODO: 실제 차량 저장 API 호출
-                 const savedVehicleId = editingVehicleId || `v-${Date.now()}`;
+                 // ✅ formData를 기반으로 Mock 차량 생성 (프로토타입용)
+                 let savedVehicleId = editingVehicleId;
+                 
+                 if (!savedVehicleId) {
+                   // 새 차량인 경우 formData로 Mock 차량 생성
+                   const newVehicle = MockDataService.createVehicle(formData);
+                   savedVehicleId = newVehicle.id;
+                 } else {
+                   // 기존 차량 수정인 경우 정보 업데이트
+                   const existingVehicle = MockDataService.getVehicleById(savedVehicleId);
+                   if (existingVehicle) {
+                     existingVehicle.plateNumber = formData.plateNumber || existingVehicle.plateNumber;
+                     existingVehicle.manufacturer = formData.manufacturer || existingVehicle.manufacturer;
+                     existingVehicle.modelName = formData.modelName || existingVehicle.modelName;
+                     existingVehicle.modelYear = formData.modelYear || existingVehicle.modelYear;
+                     existingVehicle.mileage = formData.mileage || existingVehicle.mileage;
+                     existingVehicle.price = formData.price || existingVehicle.price;
+                     existingVehicle.fuelType = formData.fuelType || existingVehicle.fuelType;
+                     existingVehicle.registrationDate = formData.registrationDate || existingVehicle.registrationDate;
+                     existingVehicle.color = formData.color || existingVehicle.color;
+                     existingVehicle.vin = formData.vin || existingVehicle.vin;
+                   }
+                 }
+                 
+                 // 검차 신청 화면으로 이동
                  onNavigate('SCR-0201', savedVehicleId);
                }} 
                icon={ChevronRight}
@@ -1549,8 +1592,8 @@ const LandingPage = ({ onNavigate }: any) => {
   );
 };
 
-// --- SCR-0200-Draft: Vehicle List Page ---
-const VehicleListPage = ({ onNavigate, onEdit }: any) => {
+// --- SCR-0200-Draft: Vehicle Draft List Page (임시저장 목록) ---
+const VehicleDraftListPage = ({ onNavigate, onEdit }: any) => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
   useEffect(() => {
@@ -1631,7 +1674,14 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
       setLoading(true);
       if (vehicleId) {
         const v = MockDataService.getVehicleById(vehicleId);
-        setVehicle(v || null);
+        if (v) {
+          setVehicle(v);
+        } else {
+          // ✅ vehicleId가 있지만 Mock 데이터에 없는 경우 (새로 생성된 차량)
+          // 첫 번째 Mock 차량을 사용하거나 기본 차량 생성
+          const vehicles = MockDataService.getMockVehicles();
+          setVehicle(vehicles[0] || null);
+        }
       } else {
         // vehicleId가 없으면 첫 번째 차량 사용 (임시)
         const vehicles = MockDataService.getMockVehicles();
@@ -2336,7 +2386,7 @@ const App = () => {
       case 'SCR-0104': return <SettlementListPage onNavigate={handleNavigate} />;
       case 'SCR-0105': return <SettlementDetailPage onNavigate={handleNavigate} settlementId={currentVehicleId || undefined} />;
       case 'SCR-0200': return <RegisterVehiclePage onNavigate={handleNavigate} editingVehicleId={editingVehicleId} />;
-      case 'SCR-0200-Draft': return <VehicleListPage onNavigate={handleNavigate} onEdit={(id: any) => { setEditingVehicleId(id); handleNavigate('SCR-0200'); }} />;
+      case 'SCR-0200-Draft': return <VehicleDraftListPage onNavigate={handleNavigate} onEdit={(id: any) => { setEditingVehicleId(id); handleNavigate('SCR-0200'); }} />;
       case 'SCR-0201': return <InspectionRequestPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
       case 'SCR-0201-Progress': return <InspectionStatusPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
       case 'SCR-0202': return <InspectionReportPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;

@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git remote add:*)"
+      "Bash(git remote add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: ForwardMax 중고차 딜러 플랫폼 프로젝트\n\n- Firebase Functions 백엔드 (경매, 회원인증, 차량관리)\n- React/Vite 프론트엔드 컴포넌트\n- Firestore 규칙 및 인덱스 설정\n- PRD 문서 및 탁송 플로우 개선 플랜\n- GCP 서비스 계정 설정 가이드\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(git add:*)"
     ]
   }
 }
