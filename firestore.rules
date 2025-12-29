@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Vehicles collection
+    match /vehicles/{vehicleId} {
+      // 딜러는 자신의 차량만 읽고 쓸 수 있음
+      allow read, write: if request.auth != null && 
+        request.auth.token.dealer_id == resource.data.ownerId;
+      allow create: if request.auth != null;
+    }
+
+    // Auctions collection
+    match /auctions/{auctionId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        request.auth.token.dealer_id == resource.data.vehicleOwnerId;
+    }
+
+    // Inspections collection
+    match /inspections/{inspectionId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && 
+        request.auth.token.role == 'evaluator';
+    }
+
+    // Trades collection
+    match /trades/{tradeId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Logistics collection
+    match /logistics/{logisticsId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Settlements collection
+    match /settlements/{settlementId} {
+      allow read, write: if request.auth != null && 
+        request.auth.token.dealer_id == resource.data.dealerId;
+    }
+  }
+}
+
