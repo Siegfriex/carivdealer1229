@@ -6,7 +6,8 @@
       "Bash(git push:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nchore: 설정 파일 및 서비스 업데이트\n\n- Gemini 서비스 설정 수정\n- Vite 설정 최적화\n- API 서비스 업데이트\n- 로거 유틸리티 추가\n- 배포 가이드 및 최적화 리포트 추가\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: 1230 브랜치 - 전체 기능 업데이트\n\n## 주요 변경사항\n- API 명세서 및 FRD 문서 추가\n- Firestore 스키마 및 규칙 업데이트\n- 검수/탁송/정산 Functions 구현\n- 프론트엔드 서비스 및 컴포넌트 개선\n- 갭 분석 및 수정 완료 보고서 추가\n\n## Functions 추가\n- inspection: assign, getResult, uploadResult\n- logistics: dispatch, handover, schedule\n- settlement: notify\n- trade: acceptProposal, manageProposalTTL\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
     ]
   }
 }

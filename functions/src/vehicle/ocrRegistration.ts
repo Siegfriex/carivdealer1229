@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { getSecret } from '../config/secrets';
 import { GoogleGenAI, Type } from '@google/genai';
-import * as busboy from 'busboy';
+import Busboy from 'busboy';
+import { Readable } from 'stream';
+import type { FileInfo } from 'busboy';
 
 // Helper to convert buffer to base64
 const bufferToBase64 = (buffer: Buffer): string => {
@@ -11,11 +13,11 @@ const bufferToBase64 = (buffer: Buffer): string => {
 // Helper to parse multipart/form-data
 const parseMultipartForm = (req: Request): Promise<{ file: { buffer: Buffer; mimetype: string; size: number } | null }> => {
   return new Promise((resolve, reject) => {
-    const bb = busboy({ headers: req.headers });
+    const bb = Busboy({ headers: req.headers });
     let fileData: { buffer: Buffer; mimetype: string; size: number } | null = null;
 
-    bb.on('file', (name, file, info) => {
-      const { filename, encoding, mimeType } = info;
+    bb.on('file', (name: string, file: Readable, info: FileInfo) => {
+      const { mimeType } = info;
       if (name === 'registration_image') {
         const chunks: Buffer[] = [];
         
@@ -40,7 +42,7 @@ const parseMultipartForm = (req: Request): Promise<{ file: { buffer: Buffer; mim
       resolve({ file: fileData });
     });
 
-    bb.on('error', (err) => {
+    bb.on('error', (err: Error) => {
       reject(err);
     });
 
@@ -87,9 +89,20 @@ export const ocrRegistration = async (req: Request, res: Response) => {
     }
 
     // Secret Manager에서 Gemini API 키 로드
-    const apiKey = await getSecret('gemini-api-key');
-    if (!apiKey) {
-      throw new Error('Gemini API key is not configured');
+    let apiKey: string;
+    try {
+      apiKey = await getSecret('gemini-api-key');
+      if (!apiKey || apiKey.trim() === '') {
+        throw new Error('Gemini API key is empty or not configured');
+      }
+      console.log('[OCR] Gemini API key retrieved successfully');
+    } catch (error: any) {
+      console.error('[OCR] Failed to get Gemini API key:', {
+        message: error.message,
+        code: error.code,
+        details: error
+      });
+      throw new Error(`Gemini API key configuration error: ${error.message}`);
     }
 
     const ai = new GoogleGenAI({ apiKey });
@@ -150,16 +163,74 @@ export const ocrRegistration = async (req: Request, res: Response) => {
 
     res.status(200).json(result);
   } catch (error: any) {
-    console.error('OCR Registration Error:', error);
+    // 상세한 에러 로깅
+    const errorDetails = {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+      code: error.code,
+      details: error.details || error.response || error
+    };
+    
+    console.error('[ERROR] OCR Registration Error:', errorDetails);
+    
+    // 에러 메시지 파싱 (JSON 형식인 경우)
+    let errorMessage = error.message || '';
+    let errorCode = error.code;
+    
+    try {
+      // JSON 형식의 에러 메시지 파싱 시도
+      if (errorMessage.includes('{')) {
+        const jsonMatch = errorMessage.match(/\{.*\}/);
+        if (jsonMatch) {
+          const parsedError = JSON.parse(jsonMatch[0]);
+          if (parsedError.error) {
+            errorCode = parsedError.error.code || errorCode;
+            errorMessage = parsedError.error.message || errorMessage;
+          }
+        }
+      }
+    } catch (parseError) {
+      // 파싱 실패 시 원본 메시지 사용
+    }
     
     // 에러 타입별 처리
-    if (error.message?.includes('API key')) {
-      res.status(500).json({ error: 'Gemini API key configuration error' });
-    } else if (error.message?.includes('file') || error.message?.includes('required')) {
-      res.status(400).json({ error: error.message });
+    if (errorMessage?.includes('API key') || errorMessage?.includes('Secret') || errorMessage?.includes('configuration')) {
+      res.status(500).json({ 
+        error: 'Gemini API key configuration error',
+        details: 'Secret Manager 설정을 확인해주세요. Functions 로그를 확인하세요.',
+        message: errorMessage
+      });
+    } else if (errorCode === 403 && (errorMessage?.includes('leaked') || errorMessage?.includes('reported'))) {
+      // API 키 유출로 인한 차단
+      res.status(403).json({ 
+        error: 'API key has been revoked',
+        details: 'API 키가 유출로 보고되어 차단되었습니다. 새로운 API 키를 생성하고 Secret Manager에 업데이트해주세요.',
+        message: errorMessage,
+        action: 'REGENERATE_API_KEY'
+      });
+    } else if (errorCode === 403 || errorCode === 'PERMISSION_DENIED') {
+      res.status(403).json({ 
+        error: 'API access denied',
+        details: 'Gemini API 접근이 거부되었습니다. API 키 권한을 확인해주세요.',
+        message: errorMessage
+      });
+    } else if (errorMessage?.includes('file') || errorMessage?.includes('required')) {
+      res.status(400).json({ error: errorMessage });
+    } else if (errorMessage?.includes('timeout') || errorMessage?.includes('TIMEOUT')) {
+      res.status(504).json({ 
+        error: 'OCR processing timeout',
+        details: '이미지 처리가 시간 초과되었습니다. 더 작은 이미지로 시도해주세요.'
+      });
+    } else if (errorMessage?.includes('quota') || errorMessage?.includes('QUOTA')) {
+      res.status(429).json({ 
+        error: 'API quota exceeded',
+        details: 'Gemini API 할당량을 초과했습니다. 잠시 후 다시 시도해주세요.'
+      });
     } else {
       res.status(500).json({ 
-        error: error.message || 'OCR processing failed. Please try again.' 
+        error: errorMessage || 'OCR processing failed. Please try again.',
+        details: '서버 오류가 발생했습니다. Functions 로그를 확인하세요.'
       });
     }
   }

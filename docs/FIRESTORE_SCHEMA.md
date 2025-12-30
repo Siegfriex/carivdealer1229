@@ -1,8 +1,8 @@
 # Firestore 컬렉션 구조 정의서
 
-**버전**: 1.0  
+**버전**: 2.0  
 **최종 업데이트**: 2025-01-XX  
-**상태**: 프로토타입 단계
+**상태**: 테스트 모드 (2026-01-29까지)
 
 ---
 
@@ -53,6 +53,34 @@
 | `auctionId` | string | ❌ | 경매 ID 참조 | `"auction-001"` |
 | `ownerId` | string | ❌ | 소유자 ID (딜러 ID) | `"dealer-001"` |
 | `offers` | array | ❌ | 일반 판매 제안 목록 (서브컬렉션 대신 배열) | `[{ id, bidderName, amount, date }]` |
+| `createdAt` | Timestamp | ✅ | 생성 일시 | `Timestamp` |
+| `ocrMetadata` | object | ❌ | OCR 메타데이터 | 아래 참조 |
+| `publicDataMetadata` | object | ❌ | 공공데이터 조회 메타데이터 | 아래 참조 |
+
+### OCR 메타데이터 (ocrMetadata) 구조
+
+```typescript
+{
+  extractedAt: Timestamp;      // OCR 추출 일시
+  ocrVersion?: string;          // OCR 모델 버전 (예: "gemini-3-pro-preview")
+  confidence?: number;          // OCR 신뢰도 (0-100, 선택)
+}
+```
+
+### 공공데이터 메타데이터 (publicDataMetadata) 구조
+
+```typescript
+{
+  lastQueriedAt?: Timestamp;    // 마지막 공공데이터 조회 일시
+  queryParams?: {              // 조회 파라미터 (디버깅용)
+    registYy?: string;          // 등록년
+    registMt?: string;          // 등록월
+    useFuelCode?: string;       // 사용연료코드
+  };
+}
+```
+
+**참고**: 공공데이터 통계 정보는 저장하지 않으며, 항상 실시간으로 조회합니다. 메타데이터는 조회 이력 추적 및 디버깅 목적으로만 사용됩니다.
 
 ### 상태 값 상세
 
@@ -65,8 +93,16 @@
 
 ### 인덱스
 
-- 복합 인덱스: `status` + `ownerId`
-- 단일 인덱스: `inspectionId`, `auctionId`
+- 복합 인덱스: `ownerId` + `status` + `updatedAt` (DESC)
+- 복합 인덱스: `status` + `createdAt` (DESC)
+
+**참고**: 단일 필드 인덱스(`plateNumber`, `vin`, `inspectionId`, `auctionId` 등)는 Firestore가 자동으로 생성하므로 명시적으로 정의할 필요가 없습니다.
+
+**인덱스 사용 목적**:
+- `ownerId` + `status` + `updatedAt`: 딜러별 차량 목록 조회 (최신순)
+- `status` + `createdAt`: 전체 차량 목록 조회 (최신순)
+- `plateNumber`: 차량번호로 검색 (자동 생성된 단일 필드 인덱스 사용)
+- `vin`: 차대번호로 검색 (자동 생성된 단일 필드 인덱스 사용)
 
 ---
 
@@ -82,11 +118,16 @@
 | `vehicleId` | string | ✅ | 차량 ID 참조 | `"v-106"` |
 | `preferredDate` | string | ✅ | 희망 날짜 (YYYY-MM-DD) | `"2025-01-20"` |
 | `preferredTime` | string | ✅ | 희망 시간 (HH:mm) | `"14:00"` |
+| `location` | object | ❌ | 검차 장소 정보 (Google Maps에서 선택) | 아래 참조 |
 | `status` | string | ✅ | 검차 상태 | `"pending"`, `"assigned"`, `"in_progress"`, `"completed"` |
 | `createdAt` | Timestamp | ✅ | 생성 일시 | `Timestamp` |
+| `updatedAt` | Timestamp | ✅ | 최종 업데이트 일시 | `Timestamp` |
 | `evaluatorId` | string | ❌ | 평가사 ID 참조 | `"eval-001"` |
+| `evaluatorName` | string | ❌ | 평가사 이름 | `"홍길동"` |
 | `assignedAt` | Timestamp | ❌ | 배정 일시 | `Timestamp` |
+| `completedAt` | Timestamp | ❌ | 검차 완료 일시 | `Timestamp` |
 | `result` | object | ❌ | 검차 결과 (InspectionReport 객체) | 아래 참조 |
+| `mediaMetadata` | object | ❌ | 미디어 파일 메타데이터 | 아래 참조 |
 
 ### 검차 결과 (result) 구조
 
@@ -130,10 +171,42 @@
 - `in_progress`: 검차 진행 중
 - `completed`: 검차 완료
 
+### 검차 장소 정보 (location) 구조
+
+```typescript
+{
+  address: string;              // 주소 (예: "서울특별시 강남구 테헤란로 123")
+  coordinates: {                // 좌표 (Google Maps에서 선택한 위치)
+    lat: number;                 // 위도
+    lng: number;                 // 경도
+  } | null;                      // 좌표가 없는 경우 null
+}
+```
+
+**참고**: `coordinates`가 `null`인 경우, 나중에 Geocoding API를 사용하여 주소를 좌표로 변환할 수 있습니다.
+
+### 미디어 메타데이터 (mediaMetadata) 구조
+
+```typescript
+{
+  totalFiles: number;           // 총 파일 수
+  totalSize: number;             // 총 크기 (bytes)
+  lastUploadedAt?: Timestamp;   // 마지막 업로드 일시
+}
+```
+
 ### 인덱스
 
-- 복합 인덱스: `vehicleId` + `status`
-- 단일 인덱스: `evaluatorId`
+- 복합 인덱스: `vehicleId` + `status` + `createdAt` (DESC)
+- 복합 인덱스: `evaluatorId` + `status` + `assignedAt` (DESC)
+- 복합 인덱스: `status` + `preferredDate`
+
+**참고**: 단일 필드 인덱스(`evaluatorId` 등)는 Firestore가 자동으로 생성하므로 명시적으로 정의할 필요가 없습니다.
+
+**인덱스 사용 목적**:
+- `vehicleId` + `status` + `createdAt`: 차량별 검차 목록 조회 (최신순)
+- `evaluatorId` + `status` + `assignedAt`: 평가사별 검차 목록 조회 (배정일순)
+- `status` + `preferredDate`: 날짜별 검차 일정 조회
 
 ---
 
@@ -164,8 +237,16 @@
 
 ### 인덱스
 
-- 복합 인덱스: `vehicleId` + `status`
-- 단일 인덱스: `status`
+- 복합 인덱스: `vehicleId` + `status` + `createdAt` (DESC)
+- 복합 인덱스: `status` + `createdAt` (DESC)
+- 복합 인덱스: `status` + `endTime`
+
+**참고**: 단일 필드 인덱스(`status` 등)는 Firestore가 자동으로 생성하므로 명시적으로 정의할 필요가 없습니다.
+
+**인덱스 사용 목적**:
+- `vehicleId` + `status` + `createdAt`: 차량별 경매 목록 조회 (최신순)
+- `status` + `createdAt`: 전체 경매 목록 조회 (최신순)
+- `status` + `endTime`: 종료 예정 경매 조회
 
 ---
 
@@ -197,8 +278,16 @@
 
 ### 인덱스
 
-- 복합 인덱스: `vehicleId` + `status`
-- 단일 인덱스: `buyerId`, `sellerId`, `expiresAt`
+- 복합 인덱스: `vehicleId` + `status` + `createdAt` (DESC)
+- 복합 인덱스: `sellerId` + `status` + `createdAt` (DESC)
+- 복합 인덱스: `status` + `expiresAt`
+
+**참고**: 단일 필드 인덱스(`buyerId`, `sellerId`, `expiresAt` 등)는 Firestore가 자동으로 생성하므로 명시적으로 정의할 필요가 없습니다.
+
+**인덱스 사용 목적**:
+- `vehicleId` + `status` + `createdAt`: 차량별 거래 목록 조회 (최신순)
+- `sellerId` + `status` + `createdAt`: 딜러별 거래 목록 조회 (최신순)
+- `status` + `expiresAt`: 만료 예정 제안 조회
 
 ---
 
@@ -234,8 +323,14 @@
 
 ### 인덱스
 
-- 복합 인덱스: `vehicleId` + `status`
-- 단일 인덱스: `scheduleDate`, `status`
+- 복합 인덱스: `vehicleId` + `status` + `createdAt` (DESC)
+- 복합 인덱스: `status` + `scheduleDate`
+
+**참고**: 단일 필드 인덱스(`scheduleDate`, `status` 등)는 Firestore가 자동으로 생성하므로 명시적으로 정의할 필요가 없습니다.
+
+**인덱스 사용 목적**:
+- `vehicleId` + `status` + `createdAt`: 차량별 탁송 목록 조회 (최신순)
+- `status` + `scheduleDate`: 날짜별 탁송 일정 조회
 
 ---
 
@@ -276,8 +371,14 @@
 
 ### 인덱스
 
-- 복합 인덱스: `vehicleId` + `settlementStatus`
-- 단일 인덱스: `dealerId`, `settlementDate`
+- 복합 인덱스: `vehicleId` + `settlementStatus` + `createdAt` (DESC)
+- 복합 인덱스: `dealerId` + `settlementStatus` + `settlementDate` (DESC)
+
+**참고**: 단일 필드 인덱스(`dealerId`, `settlementDate` 등)는 Firestore가 자동으로 생성하므로 명시적으로 정의할 필요가 없습니다.
+
+**인덱스 사용 목적**:
+- `vehicleId` + `settlementStatus` + `createdAt`: 차량별 정산 목록 조회 (최신순)
+- `dealerId` + `settlementStatus` + `settlementDate`: 딜러별 정산 목록 조회 (정산일순)
 
 ---
 
@@ -312,7 +413,13 @@
 
 ### 인덱스
 
-- 단일 인덱스: `email`, `role`
+- 복합 인덱스: `role` + `createdAt` (DESC)
+
+**참고**: 단일 필드 인덱스(`email` 등)는 Firestore가 자동으로 생성하므로 명시적으로 정의할 필요가 없습니다.
+
+**인덱스 사용 목적**:
+- `email`: 이메일로 회원 검색 (자동 생성된 단일 필드 인덱스 사용)
+- `role` + `createdAt`: 역할별 회원 목록 조회 (최신순)
 
 ---
 
@@ -341,9 +448,17 @@
 
 ---
 
-## 보안 규칙 (프로토타입 단계)
+## 리전 설정
 
-프로토타입 단계에서는 인증 없이도 읽기/쓰기가 가능하도록 설정합니다. 프로덕션 전환 시 보안 규칙을 강화해야 합니다.
+- **Firestore**: `asia-northeast3` (서울)
+- **Storage**: `asia-northeast3` (서울)
+- **Realtime Database**: `us-central1` (아이오와, 예외)
+
+자세한 리전 설정 정보는 `docs/DATABASE_CONFIG.md`를 참조하세요.
+
+## 보안 규칙 (테스트 모드)
+
+테스트 모드에서는 2026-01-29까지 모든 읽기/쓰기가 가능하도록 설정합니다. 프로덕션 전환 시 보안 규칙을 강화해야 합니다.
 
 자세한 보안 규칙은 `firestore.rules` 파일을 참조하세요.
 
@@ -353,12 +468,18 @@
 
 모든 인덱스는 `firestore.indexes.json` 파일에 정의되어 있습니다.
 
-주요 인덱스:
-- `vehicles`: `status` + `ownerId` 복합 인덱스
-- `inspections`: `vehicleId` + `status` 복합 인덱스
-- `auctions`: `vehicleId` + `status` 복합 인덱스
-- `logistics`: `vehicleId` + `status` 복합 인덱스
-- `settlements`: `vehicleId` + `settlementStatus` 복합 인덱스
+주요 인덱스 (총 16개 복합 인덱스):
+- `vehicles`: 2개 복합 인덱스
+- `inspections`: 3개 복합 인덱스
+- `auctions`: 3개 복합 인덱스
+- `trades`: 3개 복합 인덱스
+- `logistics`: 2개 복합 인덱스
+- `settlements`: 2개 복합 인덱스
+- `members`: 1개 복합 인덱스
+
+**참고**: 단일 필드 인덱스는 Firestore가 자동으로 생성하므로 명시적으로 정의하지 않습니다.
+
+각 컬렉션별 상세 인덱스는 위의 컬렉션 섹션을 참조하세요.
 
 ---
 
@@ -379,6 +500,7 @@
 | 버전 | 날짜 | 변경 내용 |
 |------|------|-----------|
 | 1.0 | 2025-01-XX | 초기 버전 작성 |
+| 2.0 | 2025-01-XX | 한국교통안전공단 API 통합 반영, 엔터티 스키마 확장, 인덱스 최적화, 리전 설정 정보 추가 |
 
 ---
 

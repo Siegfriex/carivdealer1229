@@ -47,9 +47,8 @@ export const notifySettlement = async (req: Request, res: Response) => {
       return;
     }
 
-    const dealerData = dealerDoc.data()!;
-
     // TODO: Firebase Cloud Messaging 또는 이메일로 알림 발송
+    // dealerData는 향후 알림 발송 시 사용 예정
     // 현재는 Mock 알림 처리
     const notificationId = `notif-${Date.now()}`;
 

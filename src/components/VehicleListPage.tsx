@@ -14,6 +14,20 @@ interface Vehicle {
   price?: string;
   thumbnailUrl?: string;
   updatedAt: string;
+  createdAt?: string; // 생성 일시
+  ocrMetadata?: { // OCR 메타데이터
+    extractedAt?: string;
+    ocrVersion?: string;
+    confidence?: number;
+  };
+  publicDataMetadata?: { // 공공데이터 메타데이터
+    lastQueriedAt?: string;
+    queryParams?: {
+      registYy?: string;
+      registMt?: string;
+      useFuelCode?: string;
+    };
+  };
 }
 
 const VehicleListPage = ({ onNavigate }: { onNavigate: (screen: string, vehicleId?: string) => void }) => {

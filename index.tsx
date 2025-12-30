@@ -132,6 +132,7 @@ interface Vehicle {
   highestBid?: string; // Market High Bid
   thumbnailUrl?: string;
   updatedAt: string;
+  createdAt?: string; // 생성 일시
   fuelType?: string;
   registrationDate?: string;
   color?: string;
@@ -140,6 +141,19 @@ interface Vehicle {
   location?: string;
   endTime?: string; // For countdown
   offers?: Offer[]; // Added offers
+  ocrMetadata?: { // OCR 메타데이터
+    extractedAt?: string;
+    ocrVersion?: string;
+    confidence?: number;
+  };
+  publicDataMetadata?: { // 공공데이터 메타데이터
+    lastQueriedAt?: string;
+    queryParams?: {
+      registYy?: string;
+      registMt?: string;
+      useFuelCode?: string;
+    };
+  };
 }
 
 interface InspectionReport {
@@ -1704,10 +1718,240 @@ const VehicleDraftListPage = ({ onNavigate, onEdit }: any) => {
   );
 };
 
+// Google Maps Component (Google Maps JavaScript API 사용)
+const GoogleMapsPicker = ({ 
+  onPlaceSelect, 
+  initialAddress = '' 
+}: { 
+  onPlaceSelect: (place: { address: string; location: { lat: number; lng: number } | null }) => void;
+  initialAddress?: string;
+}) => {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [searchValue, setSearchValue] = useState(initialAddress);
+  // Gemini API 키를 Google Maps API 키로도 사용
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 
+                 import.meta.env.VITE_GEMINI_API_KEY || 
+                 'AIzaSyC0H1moukd9KnWlCqrTaBxYj1WE3Y16QpY';
+  
+  // @ts-ignore
+  const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  // @ts-ignore
+  const markerRef = useRef<google.maps.Marker | null>(null);
+  // @ts-ignore
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  // @ts-ignore
+  const infowindowRef = useRef<google.maps.InfoWindow | null>(null);
+
+  // Google Maps JavaScript API 로드
+  useEffect(() => {
+    // 이미 로드되어 있는지 확인
+    // @ts-ignore
+    if (window.google && window.google.maps) {
+      setMapLoaded(true);
+      return;
+    }
+
+    // 스크립트가 이미 추가되어 있는지 확인
+    const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
+    if (existingScript) {
+      existingScript.addEventListener('load', () => setMapLoaded(true));
+      return;
+    }
+
+    // Google Maps JavaScript API 스크립트 동적 로드
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initGoogleMapsPicker`;
+    script.async = true;
+    script.defer = true;
+    
+    // @ts-ignore
+    window.initGoogleMapsPicker = () => {
+      setMapLoaded(true);
+    };
+
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup
+      // @ts-ignore
+      if (window.initGoogleMapsPicker) {
+        // @ts-ignore
+        delete window.initGoogleMapsPicker;
+      }
+    };
+  }, [apiKey]);
+
+  // 지도 초기화 및 Places Autocomplete 설정
+  useEffect(() => {
+    if (!mapLoaded || !mapRef.current || !inputRef.current) return;
+
+    try {
+      // @ts-ignore
+      const { google } = window;
+      if (!google || !google.maps) return;
+
+      // 지도 초기화 (서울 중심)
+      const mapOptions = {
+        center: { lat: 37.5665, lng: 126.9780 },
+        zoom: 13,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true,
+        zoomControl: true,
+      };
+
+      const map = new google.maps.Map(mapRef.current, mapOptions);
+      mapInstanceRef.current = map;
+
+      // InfoWindow 초기화
+      const infowindow = new google.maps.InfoWindow();
+      infowindowRef.current = infowindow;
+
+      // Places Autocomplete 초기화
+      const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+        fields: ['place_id', 'name', 'formatted_address', 'geometry', 'types'],
+        componentRestrictions: { country: 'kr' }, // 한국만 검색
+      });
+
+      autocompleteRef.current = autocomplete;
+
+      // 마커 초기화
+      const marker = new google.maps.Marker({
+        map: map,
+        animation: google.maps.Animation.DROP,
+      });
+      markerRef.current = marker;
+
+      // Autocomplete 이벤트 리스너
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+
+        if (!place.geometry || !place.geometry.location) {
+          console.warn('No details available for input:', place.name);
+          return;
+        }
+
+        const location = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        };
+
+        // 마커 위치 설정
+        marker.setPosition(location);
+        marker.setVisible(true);
+
+        // 지도 중심 이동
+        if (place.geometry.viewport) {
+          map.fitBounds(place.geometry.viewport);
+        } else {
+          map.setCenter(location);
+          map.setZoom(17);
+        }
+
+        // InfoWindow 표시
+        const address = place.formatted_address || place.name;
+        infowindow.setContent(
+          `<div style="padding: 8px;">
+            <strong>${place.name || '선택한 위치'}</strong><br>
+            <span style="font-size: 12px; color: #666;">${address}</span>
+          </div>`
+        );
+        infowindow.open(map, marker);
+
+        // 부모 컴포넌트에 선택된 위치 전달
+        onPlaceSelect({
+          address: address,
+          location: location
+        });
+
+        // 입력 필드 업데이트
+        setSearchValue(address);
+      });
+
+      // 지도 클릭 이벤트 (선택사항)
+      map.addListener('click', (e: any) => {
+        const location = {
+          lat: e.latLng.lat(),
+          lng: e.latLng.lng()
+        };
+
+        marker.setPosition(location);
+        marker.setVisible(true);
+        map.setCenter(location);
+
+        // 역지오코딩으로 주소 가져오기
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ location: location }, (results, status) => {
+          if (status === 'OK' && results && results[0]) {
+            const address = results[0].formatted_address;
+            infowindow.setContent(
+              `<div style="padding: 8px;">
+                <strong>선택한 위치</strong><br>
+                <span style="font-size: 12px; color: #666;">${address}</span>
+              </div>`
+            );
+            infowindow.open(map, marker);
+
+            onPlaceSelect({
+              address: address,
+              location: location
+            });
+
+            setSearchValue(address);
+          }
+        });
+      });
+
+    } catch (error) {
+      console.error('Error initializing Google Maps:', error);
+    }
+  }, [mapLoaded, onPlaceSelect]);
+
+  return (
+    <div className="mt-2 space-y-2">
+      {/* 주소 검색 입력 필드 */}
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-fmax-text-sub">
+          <MapPin className="h-4 w-4" />
+        </div>
+        <input
+          ref={inputRef}
+          type="text"
+          className="block w-full rounded-lg border-fmax-border bg-white text-fmax-text-main shadow-sm focus:border-fmax-primary focus:ring-2 focus:ring-fmax-primary/20 transition-all text-sm py-2.5 px-3 pl-10"
+          placeholder="주소를 검색하세요"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+      </div>
+      
+      {/* 지도 컨테이너 */}
+      <div 
+        ref={mapRef} 
+        className="w-full rounded-lg overflow-hidden border border-fmax-border"
+        style={{ height: '160px', minHeight: '160px' }}
+      >
+        {!mapLoaded && (
+          <div className="h-full bg-gray-100 flex items-center justify-center text-gray-400">
+            <Map className="w-6 h-6 mr-2" /> 지도를 불러오는 중...
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // --- SCR-0201: Inspection Request Page ---
 const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedLocation, setSelectedLocation] = useState<{
+    address: string;
+    location: { lat: number; lng: number } | null;
+  }>({ address: '', location: null });
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
   
   useEffect(() => {
     const loadVehicle = async () => {
@@ -1732,9 +1976,25 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
     loadVehicle();
   }, [vehicleId]);
 
+  const handlePlaceSelect = (place: { address: string; location: { lat: number; lng: number } | null }) => {
+    setSelectedLocation(place);
+  };
+
   const handleRequest = async () => {
+    if (!selectedLocation.address) {
+      alert('검차 장소를 선택해주세요.');
+      return;
+    }
+    if (!selectedDate || !selectedTime) {
+      alert('방문 희망 일시를 선택해주세요.');
+      return;
+    }
     if (vehicle) {
-       await MockDataService.scheduleInspection(vehicle.id, {});
+       await MockDataService.scheduleInspection(vehicle.id, {
+         location: selectedLocation,
+         date: selectedDate,
+         time: selectedTime
+       });
        onNavigate('SCR-0201-Progress', vehicle.id);
     }
   };
@@ -1776,16 +2036,31 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
             <div className="space-y-5">
                <div className="space-y-1.5">
                   <label className="text-sm font-semibold text-fmax-text-main block">검차 장소</label>
-                  <Input placeholder="주소를 입력하세요" icon={MapPin} />
-                  <div className="mt-2 h-40 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
-                     <Map className="w-6 h-6 mr-2" /> Map API Placeholder
-                  </div>
+                  {selectedLocation.address && (
+                    <div className="text-sm text-fmax-text-sub bg-blue-50 p-3 rounded-lg border border-blue-100">
+                      선택된 주소: {selectedLocation.address}
+                    </div>
+                  )}
+                  <GoogleMapsPicker 
+                    onPlaceSelect={handlePlaceSelect}
+                    initialAddress={selectedLocation.address}
+                  />
                </div>
                <div className="space-y-1.5">
                   <label className="text-sm font-semibold text-fmax-text-main block">방문 희망 일시</label>
                   <div className="grid grid-cols-2 gap-4">
-                     <Input type="date" icon={Calendar} />
-                     <Input type="time" icon={Clock} />
+                     <Input 
+                       type="date" 
+                       icon={Calendar}
+                       value={selectedDate}
+                       onChange={(e) => setSelectedDate(e.target.value)}
+                     />
+                     <Input 
+                       type="time" 
+                       icon={Clock}
+                       value={selectedTime}
+                       onChange={(e) => setSelectedTime(e.target.value)}
+                     />
                   </div>
                </div>
                <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 flex gap-3">

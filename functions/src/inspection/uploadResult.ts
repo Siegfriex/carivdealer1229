@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
 import Busboy from 'busboy';
 import { Readable } from 'stream';
+import type { FileInfo } from 'busboy';
 
 if (!admin.apps.length) {
   admin.initializeApp();
@@ -56,10 +57,24 @@ async function uploadToStorage(
   buffer: Buffer,
   fileName: string,
   contentType: string,
-  inspectionId: string
+  inspectionId: string,
+  category?: string // 카테고리: 'exterior', 'interior', 'mechanic', 'frame', 'video'
 ): Promise<string> {
   const bucket = storage.bucket();
-  const filePath = `inspections/${inspectionId}/${fileName}`;
+  
+  // 카테고리별 디렉토리 구조 적용
+  let filePath: string;
+  if (contentType.startsWith('video/')) {
+    // 영상 파일은 videos/ 디렉토리에 저장
+    filePath = `inspections/${inspectionId}/videos/${fileName}`;
+  } else if (category) {
+    // 카테고리가 지정된 경우 photos/{category}/ 디렉토리에 저장
+    filePath = `inspections/${inspectionId}/photos/${category}/${fileName}`;
+  } else {
+    // 카테고리가 없는 경우 기본 photos/ 디렉토리에 저장 (하위 호환성)
+    filePath = `inspections/${inspectionId}/photos/${fileName}`;
+  }
+  
   const file = bucket.file(filePath);
 
   await file.save(buffer, {
@@ -86,7 +101,7 @@ export const uploadResult = async (req: Request, res: Response) => {
   let inspectionResultJson: string | null = null;
   const uploadedFiles: Array<{ buffer: Buffer; filename: string; mimetype: string }> = [];
 
-  bb.on('field', (name, value) => {
+  bb.on('field', (name: string, value: string) => {
     if (name === 'inspection_id') {
       inspectionId = value;
     } else if (name === 'inspection_result') {
@@ -94,8 +109,8 @@ export const uploadResult = async (req: Request, res: Response) => {
     }
   });
 
-  bb.on('file', (name, file, info) => {
-    const { filename, encoding, mimeType } = info;
+  bb.on('file', (name: string, file: Readable, info: FileInfo) => {
+    const { filename, mimeType } = info;
     if (name.startsWith('images')) {
       // images[0], images[1] 등의 필드 처리
       streamToBuffer(file).then(buffer => {
@@ -178,11 +193,21 @@ export const uploadResult = async (req: Request, res: Response) => {
         });
       }
 
-      // 검차 결과 저장
+      // 미디어 메타데이터 계산
+      const totalFiles = mediaUrls.length;
+      const totalSize = uploadedFiles.reduce((sum, file) => sum + file.buffer.length, 0);
+      
+      // 검차 결과 저장 (메타데이터 포함)
       await inspectionRef.update({
         result,
         status: 'completed',
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        completedAt: admin.firestore.FieldValue.serverTimestamp(),
+        mediaMetadata: {
+          totalFiles,
+          totalSize,
+          lastUploadedAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
       });
 
       // 차량 상태를 active_sale로 변경
@@ -203,7 +228,7 @@ export const uploadResult = async (req: Request, res: Response) => {
     }
   });
 
-  bb.on('error', (error) => {
+  bb.on('error', (error: Error) => {
     console.error('Busboy error:', error);
     res.status(400).json({ error: 'Failed to parse multipart form data' });
   });

@@ -1,0 +1,134 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // ============================================
+    // 프로덕션용 Storage Rules
+    // ============================================
+    
+    // 파일 크기 제한 헬퍼 함수
+    function isFileSizeValid(size, maxSize) {
+      return size <= maxSize;
+    }
+    
+    // 파일 형식 검증 헬퍼 함수
+    function isValidImageType(contentType) {
+      return contentType.matches('image/(jpeg|jpg|png|gif|webp)');
+    }
+    
+    function isValidVideoType(contentType) {
+      return contentType.matches('video/(mp4|webm|ogg)');
+    }
+    
+    function isValidPdfType(contentType) {
+      return contentType == 'application/pdf';
+    }
+    
+    // ============================================
+    // vehicles/{vehicleId}/
+    // ============================================
+    match /vehicles/{vehicleId}/{allPaths=**} {
+      // 읽기: 인증된 사용자만
+      allow read: if request.auth != null;
+      
+      // 쓰기: 차량 소유자만
+      allow write: if request.auth != null && 
+        request.auth.token.dealer_id == resource.metadata.ownerId;
+      
+      // registration/ 디렉토리: 이미지/PDF만, 최대 10MB
+      match /registration/{fileName} {
+        allow write: if request.auth != null && 
+          request.auth.token.dealer_id == resource.metadata.ownerId &&
+          (isValidImageType(request.resource.contentType) || 
+           isValidPdfType(request.resource.contentType)) &&
+          isFileSizeValid(request.resource.size, 10 * 1024 * 1024);
+      }
+      
+      // thumbnails/ 디렉토리: 이미지만, 최대 2MB
+      match /thumbnails/{fileName} {
+        allow write: if request.auth != null && 
+          request.auth.token.dealer_id == resource.metadata.ownerId &&
+          isValidImageType(request.resource.contentType) &&
+          isFileSizeValid(request.resource.size, 2 * 1024 * 1024);
+      }
+      
+      // documents/ 디렉토리: 이미지/PDF만, 최대 10MB
+      match /documents/{fileName} {
+        allow write: if request.auth != null && 
+          request.auth.token.dealer_id == resource.metadata.ownerId &&
+          (isValidImageType(request.resource.contentType) || 
+           isValidPdfType(request.resource.contentType)) &&
+          isFileSizeValid(request.resource.size, 10 * 1024 * 1024);
+      }
+    }
+    
+    // ============================================
+    // inspections/{inspectionId}/
+    // ============================================
+    match /inspections/{inspectionId}/{allPaths=**} {
+      // 읽기: 인증된 사용자만
+      allow read: if request.auth != null;
+      
+      // 쓰기: 평가사 또는 차량 소유자만
+      allow write: if request.auth != null && 
+        (request.auth.token.role == 'evaluator' || 
+         request.auth.token.dealer_id == resource.metadata.vehicleOwnerId);
+      
+      // photos/ 디렉토리: 이미지만, 최대 5MB
+      match /photos/{category}/{fileName} {
+        allow write: if request.auth != null && 
+          (request.auth.token.role == 'evaluator' || 
+           request.auth.token.dealer_id == resource.metadata.vehicleOwnerId) &&
+          isValidImageType(request.resource.contentType) &&
+          isFileSizeValid(request.resource.size, 5 * 1024 * 1024);
+      }
+      
+      // videos/ 디렉토리: 영상만, 최대 100MB
+      match /videos/{fileName} {
+        allow write: if request.auth != null && 
+          (request.auth.token.role == 'evaluator' || 
+           request.auth.token.dealer_id == resource.metadata.vehicleOwnerId) &&
+          isValidVideoType(request.resource.contentType) &&
+          isFileSizeValid(request.resource.size, 100 * 1024 * 1024);
+      }
+    }
+    
+    // ============================================
+    // members/{memberId}/
+    // ============================================
+    match /members/{memberId}/{allPaths=**} {
+      // 읽기/쓰기: 본인만
+      allow read, write: if request.auth != null && request.auth.uid == memberId;
+      
+      // business-registration/ 디렉토리: 이미지/PDF만, 최대 5MB
+      match /business-registration/{fileName} {
+        allow write: if request.auth != null && 
+          request.auth.uid == memberId &&
+          (isValidImageType(request.resource.contentType) || 
+           isValidPdfType(request.resource.contentType)) &&
+          isFileSizeValid(request.resource.size, 5 * 1024 * 1024);
+      }
+      
+      // profile/ 디렉토리: 이미지만, 최대 2MB
+      match /profile/{fileName} {
+        allow write: if request.auth != null && 
+          request.auth.uid == memberId &&
+          isValidImageType(request.resource.contentType) &&
+          isFileSizeValid(request.resource.size, 2 * 1024 * 1024);
+      }
+    }
+    
+    // ============================================
+    // public/assets/
+    // ============================================
+    match /public/{allPaths=**} {
+      // 읽기: 모든 사용자
+      allow read: if true;
+      
+      // 쓰기: 관리자만
+      allow write: if request.auth != null && 
+        request.auth.token.role == 'admin' &&
+        isValidImageType(request.resource.contentType) &&
+        isFileSizeValid(request.resource.size, 1 * 1024 * 1024);
+    }
+}
+

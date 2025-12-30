@@ -26,7 +26,7 @@ export const ocrRegistrationAPI = onRequest({
   region: 'asia-northeast3',
   cors: true,
   maxInstances: 10,
-  memory: '512MiB',
+  memory: '1GiB', // OCR 이미지 처리용 메모리 증가 (512MiB → 1GiB)
   timeoutSeconds: 60,
 }, ocrRegistration);
 

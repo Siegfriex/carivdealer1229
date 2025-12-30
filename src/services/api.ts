@@ -6,7 +6,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
   'https://asia-northeast3-carivdealer.cloudfunctions.net';
 
 // API 타임아웃 (밀리초)
-const API_TIMEOUT = 5000; // 5초
+const API_TIMEOUT = 30000; // 30초 (OCR 처리는 시간이 오래 걸릴 수 있음)
 
 // 개발 환경에서만 로그 출력
 const isDev = import.meta.env.DEV;
