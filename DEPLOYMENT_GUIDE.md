@@ -56,6 +56,33 @@ npm run build
 
 ## 🚀 배포 프로세스
 
+### 배포 전 필수 체크리스트
+
+#### Firestore Rules 검증
+프로덕션 배포 전에 Firestore Rules에 오픈 룰(`allow read, write: if true`)이 포함되어 있지 않은지 확인:
+
+```powershell
+# Windows PowerShell
+.\scripts\check-firestore-rules.ps1 -RulesFile firestore.rules
+
+# 프로토타입용 rules 사용 시
+.\scripts\check-firestore-rules.ps1 -RulesFile firestore.rules.prototype
+
+# 프로덕션용 rules 사용 시
+.\scripts\check-firestore-rules.ps1 -RulesFile firestore.rules.prod
+```
+
+**중요**: 프로덕션 배포 시에는 반드시 `firestore.rules.prod`를 사용하거나, `firestore.rules`에서 오픈 룰을 제거해야 합니다.
+
+#### Rules 파일 전환 방법
+```powershell
+# 프로덕션 배포 전
+Copy-Item firestore.rules.prod firestore.rules -Force
+
+# 프로토타입 개발 시
+Copy-Item firestore.rules.prototype firestore.rules -Force
+```
+
 ### 배포 전 확인 사항
 
 #### 1. Firebase CLI 로그인 확인

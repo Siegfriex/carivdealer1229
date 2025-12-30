@@ -43,7 +43,9 @@ const LogisticsSchedulePage = ({ onNavigate, vehicleId }: { onNavigate: (screen:
       await apiClient.logistics.schedule({
         schedule_date: selectedDate,
         schedule_time: selectedTime,
-        address: departureAddress // 출발지 주소
+        address: departureAddress, // 출발지 주소
+        vehicle_id: vehicleId || '', // 필수: 차량 ID
+        special_notes: specialNotes, // 선택: 특이사항
       });
       setIsConfirmed(true);
     } catch (error) {

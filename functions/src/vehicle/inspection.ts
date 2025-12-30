@@ -16,7 +16,8 @@ export const inspectionRequest = async (req: Request, res: Response) => {
   }
 
   try {
-    const vehicleId = req.params.vehicle_id || req.body.vehicle_id;
+    // Body only: Firebase Functions v2 onRequest는 경로 파라미터를 자동 파싱하지 않음
+    const vehicleId = req.body.vehicle_id;
     const { preferred_date, preferred_time } = req.body;
 
     if (!vehicleId || !preferred_date || !preferred_time) {
@@ -27,11 +28,20 @@ export const inspectionRequest = async (req: Request, res: Response) => {
     // Firestore에 검차 신청 데이터 저장
     const inspectionRef = db.collection('inspections').doc();
     await inspectionRef.set({
+      id: inspectionRef.id,
       vehicleId,
       preferredDate: preferred_date,
       preferredTime: preferred_time,
       status: 'pending',
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    // 차량의 inspectionId 업데이트
+    const vehicleRef = db.collection('vehicles').doc(vehicleId);
+    await vehicleRef.update({
+      inspectionId: inspectionRef.id,
+      status: 'inspection',
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
     res.status(200).json({

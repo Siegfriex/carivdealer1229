@@ -69,7 +69,7 @@ import {
   Plus,
   Timer
 } from "lucide-react";
-import { GoogleGenAI, Type } from "@google/genai";
+import { apiClient } from './src/services/api';
 import { GeminiService } from './src/services/gemini';
 import VehicleListPage from './src/components/VehicleListPage';
 import GeneralSaleOffersPage from './src/components/GeneralSaleOffersPage';
@@ -1196,13 +1196,44 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
   const handleFileChange = async (e: any) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    // 파일 형식 검증
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/pdf'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('지원하지 않는 파일 형식입니다. JPG, PNG, WEBP, PDF 파일만 업로드 가능합니다.');
+      return;
+    }
+    
+    // 파일 크기 검증 (10MB)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert('파일 크기는 10MB를 초과할 수 없습니다.');
+      return;
+    }
+    
     setPreviewUrl(URL.createObjectURL(file));
     setIsOCRLoading(true);
     try {
-      const result = await GeminiService.extractVehicleRegistration(file);
-      setFormData(prev => ({ ...prev, ...result }));
-    } catch (err) {
-      alert("인식 오류가 발생했습니다.");
+      // 백엔드 API 호출로 변경
+      const result = await apiClient.vehicle.ocrRegistration(file);
+      
+      // 응답 데이터를 폼에 매핑
+      setFormData(prev => ({
+        ...prev,
+        plateNumber: result.plateNumber || prev.plateNumber,
+        vin: result.vin || prev.vin,
+        manufacturer: result.manufacturer || prev.manufacturer,
+        modelName: result.model || prev.modelName,
+        modelYear: result.year || prev.modelYear,
+        mileage: result.mileage || prev.mileage,
+        fuelType: result.fuelType || prev.fuelType,
+        registrationDate: result.registrationDate || prev.registrationDate,
+        color: result.color || prev.color,
+      }));
+    } catch (err: any) {
+      console.error('OCR Error:', err);
+      const errorMessage = err.message || '등록원부 인식 중 오류가 발생했습니다.';
+      alert(errorMessage);
     } finally {
       setIsOCRLoading(false);
       e.target.value = '';
@@ -1212,9 +1243,18 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
   const handleEstimate = async () => {
     if (!formData.modelName) return;
     setIsOCRLoading(true);
-    const result = await GeminiService.estimateMarketPrice(formData.modelName, formData.modelYear);
-    setPriceEstimate(result);
-    setIsOCRLoading(false);
+    try {
+      // TODO: 시세 추정 기능은 향후 백엔드 API로 이동 예정
+      // 현재는 프론트엔드에서 직접 호출 (임시)
+      const { GeminiService } = await import('./src/services/gemini');
+      const result = await GeminiService.estimateMarketPrice(formData.modelName, formData.modelYear);
+      setPriceEstimate(result);
+    } catch (err: any) {
+      console.error('Price Estimate Error:', err);
+      alert('시세 추정 중 오류가 발생했습니다.');
+    } finally {
+      setIsOCRLoading(false);
+    }
   };
 
   return (
@@ -1766,6 +1806,8 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
 const InspectionStatusPage = ({ onNavigate, vehicleId }: any) => {
   const [progress, setProgress] = useState(0);
   const [currentVehicleId, setCurrentVehicleId] = useState<string | undefined>(vehicleId);
+  const [inspectionId, setInspectionId] = useState<string | null>(null);
+  const [inspectionStatus, setInspectionStatus] = useState<string>('pending');
 
   useEffect(() => {
     // vehicleId가 없으면 첫 번째 차량 사용 (임시)
@@ -1777,18 +1819,75 @@ const InspectionStatusPage = ({ onNavigate, vehicleId }: any) => {
     }
   }, [vehicleId]);
 
+  // Firestore 실시간 리스너로 검차 진행률 업데이트
   useEffect(() => {
+    if (!currentVehicleId) return;
+
+    // vehicleId로 inspectionId 찾기 (임시: Mock 데이터에서)
+    const vehicle = MockDataService.getVehicleById(currentVehicleId);
+    if (vehicle?.inspectionId) {
+      setInspectionId(vehicle.inspectionId);
+    } else {
+      // Mock: inspectionId가 없으면 임시로 생성
+      const mockInspectionId = `insp-${currentVehicleId}`;
+      setInspectionId(mockInspectionId);
+    }
+  }, [currentVehicleId]);
+
+  useEffect(() => {
+    if (!inspectionId) return;
+
+    // TODO: Firestore 실시간 리스너 구현
+    // 현재는 Mock 데이터로 진행률 시뮬레이션
+    // 실제 구현 시:
+    // import { doc, onSnapshot } from 'firebase/firestore';
+    // import { db } from './src/config/firebase';
+    // 
+    // const unsubscribe = onSnapshot(
+    //   doc(db, 'inspections', inspectionId),
+    //   (snapshot) => {
+    //     if (snapshot.exists()) {
+    //       const data = snapshot.data();
+    //       const status = data.status;
+    //       setInspectionStatus(status);
+    //       
+    //       // 상태에 따른 진행률 계산
+    //       let calculatedProgress = 0;
+    //       if (status === 'pending') calculatedProgress = 0;
+    //       else if (status === 'assigned') calculatedProgress = 25;
+    //       else if (status === 'in_progress') calculatedProgress = 50;
+    //       else if (status === 'completed') calculatedProgress = 100;
+    //       
+    //       setProgress(calculatedProgress);
+    //       
+    //       // 완료 시 검차 결과 화면으로 이동
+    //       if (status === 'completed' && calculatedProgress === 100) {
+    //         setTimeout(() => {
+    //           onNavigate('SCR-0202', currentVehicleId);
+    //         }, 2000);
+    //       }
+    //     }
+    //   }
+    // );
+    // 
+    // return () => unsubscribe();
+
+    // Mock: 진행률 시뮬레이션
     const timer = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(timer);
+          // 완료 시 검차 결과 화면으로 이동
+          setTimeout(() => {
+            onNavigate('SCR-0202', currentVehicleId);
+          }, 2000);
           return 100;
         }
         return prev + 1;
       });
     }, 50);
     return () => clearInterval(timer);
-  }, []);
+  }, [inspectionId, currentVehicleId, onNavigate]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">

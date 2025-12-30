@@ -16,7 +16,8 @@ export const changeSaleMethod = async (req: Request, res: Response) => {
   }
 
   try {
-    const vehicleId = req.params.vehicle_id || req.body.vehicle_id;
+    // Body only: Firebase Functions v2 onRequest는 경로 파라미터를 자동 파싱하지 않음
+    const vehicleId = req.body.vehicle_id;
     const { auction_settings } = req.body;
 
     if (!vehicleId || !auction_settings) {
@@ -49,6 +50,7 @@ export const changeSaleMethod = async (req: Request, res: Response) => {
       currentHighestBid: null,
       status: 'Active',
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      vehicleOwnerId: vehicleDoc.data()?.ownerId || null, // 차량 소유자 ID 추가
     });
 
     // 차량 상태 업데이트

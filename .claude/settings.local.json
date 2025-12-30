@@ -4,7 +4,9 @@
       "Bash(git remote add:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: ForwardMax 중고차 딜러 플랫폼 프로젝트\n\n- Firebase Functions 백엔드 (경매, 회원인증, 차량관리)\n- React/Vite 프론트엔드 컴포넌트\n- Firestore 규칙 및 인덱스 설정\n- PRD 문서 및 탁송 플로우 개선 플랜\n- GCP 서비스 계정 설정 가이드\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git push:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nchore: 설정 파일 및 서비스 업데이트\n\n- Gemini 서비스 설정 수정\n- Vite 설정 최적화\n- API 서비스 업데이트\n- 로거 유틸리티 추가\n- 배포 가이드 및 최적화 리포트 추가\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git checkout:*)"
     ]
   }
 }

@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ============================================
+    // 프로토타입 단계: 인증 없이도 읽기/쓰기 허용
+    // ============================================
+    
+    // 임시 규칙: 모든 컬렉션에 대해 읽기/쓰기 허용 (프로토타입용)
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+

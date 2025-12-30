@@ -16,7 +16,8 @@ export const bid = async (req: Request, res: Response) => {
   }
 
   try {
-    const auctionId = req.params.auction_id || req.body.auction_id;
+    // Body only: Firebase Functions v2 onRequest는 경로 파라미터를 자동 파싱하지 않음
+    const auctionId = req.body.auction_id;
     const { bid_amount } = req.body;
 
     if (!auctionId || !bid_amount) {
