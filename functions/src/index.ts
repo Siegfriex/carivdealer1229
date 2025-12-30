@@ -15,6 +15,7 @@ import { approveHandover } from './logistics/handover';
 import { notifySettlement } from './settlement/notify';
 import { bid } from './auction/bid';
 import { buyNow } from './auction/buyNow';
+import { saveReport } from './report/saveReport';
 
 // 전역 옵션 설정: 리전을 asia-northeast3로 설정
 setGlobalOptions({
@@ -116,4 +117,10 @@ export const buyNowAPI = onRequest({
   region: 'asia-northeast3',
   cors: true,
 }, buyNow);
+
+// API-0205: 리포트 저장
+export const saveReportAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, saveReport);
 

@@ -4,6 +4,7 @@ import { GoogleGenAI, Type } from '@google/genai';
 import Busboy from 'busboy';
 import { Readable } from 'stream';
 import type { FileInfo } from 'busboy';
+import { getVehicleStatistics, extractVehicleInfoFromKOTSAResponse } from './getVehicleStatistics';
 
 // Helper to convert buffer to base64
 const bufferToBase64 = (buffer: Buffer): string => {
@@ -110,7 +111,7 @@ export const ocrRegistration = async (req: Request, res: Response) => {
     // 파일을 base64로 변환
     const base64Data = bufferToBase64(file.buffer);
 
-    // Gemini API 호출 - 등록원부 OCR
+    // Gemini API 호출 - 차량번호만 추출
     const response = await ai.models.generateContent({
       model: 'gemini-3-pro-preview',
       contents: {
@@ -122,7 +123,7 @@ export const ocrRegistration = async (req: Request, res: Response) => {
             } 
           },
           { 
-            text: "Extract Korean Vehicle Registration details from this document as JSON. Include all fields: vin, manufacturer, model, year, mileage, fuelType, registrationDate, color, plateNumber." 
+            text: "이 이미지는 한국 자동차등록증입니다. 차량번호(차량등록번호, 번호판 번호)만 추출하세요. 예: '12가 3456', '33바 1234' 형식입니다. 차량번호만 JSON으로 반환하세요." 
           }
         ]
       },
@@ -132,34 +133,74 @@ export const ocrRegistration = async (req: Request, res: Response) => {
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            vin: { type: Type.STRING, description: "차대번호(VIN)" },
-            manufacturer: { type: Type.STRING, description: "제조사" },
-            model: { type: Type.STRING, description: "모델명" },
-            year: { type: Type.STRING, description: "연식" },
-            mileage: { type: Type.STRING, description: "주행거리" },
-            fuelType: { type: Type.STRING, description: "연료 종류" },
-            registrationDate: { type: Type.STRING, description: "등록일자" },
-            color: { type: Type.STRING, description: "색상" },
-            plateNumber: { type: Type.STRING, description: "차량번호" },
+            plateNumber: { type: Type.STRING, description: "차량번호 (예: 12가 3456)" },
           }
         }
       }
     });
 
     const extractedData = JSON.parse(response.text || '{}');
+    const plateNumber = extractedData.plateNumber || '';
 
-    // 응답 데이터 검증 및 정리
-    const result = {
-      vin: extractedData.vin || '',
-      manufacturer: extractedData.manufacturer || '',
-      model: extractedData.model || '',
-      year: extractedData.year || '',
-      mileage: extractedData.mileage || '',
-      fuelType: extractedData.fuelType || '',
-      registrationDate: extractedData.registrationDate || '',
-      color: extractedData.color || '',
-      plateNumber: extractedData.plateNumber || '',
+    if (!plateNumber || plateNumber.trim() === '') {
+      res.status(400).json({ error: '차량번호를 추출할 수 없습니다. 이미지를 확인해주세요.' });
+      return;
+    }
+
+    console.log('[OCR] Extracted plate number:', plateNumber);
+
+    // 초기 결과 (차량번호만)
+    const result: any = {
+      plateNumber: plateNumber,
+      vin: '',
+      manufacturer: '',
+      model: '',
+      year: '',
+      mileage: '',
+      fuelType: '',
+      registrationDate: '',
+      color: '',
     };
+
+    // 차량번호로 공공데이터 API 호출하여 차량 정보 가져오기
+    try {
+      console.log('[OCR] Fetching vehicle information from KOTSA API for plate number:', plateNumber);
+      
+      const vehicleInfoResult = await getVehicleStatistics(plateNumber);
+
+      if (vehicleInfoResult.success && vehicleInfoResult.data) {
+        // 공공데이터 API 응답에서 차량 정보 추출
+        const vehicleInfo = extractVehicleInfoFromKOTSAResponse(vehicleInfoResult.data, plateNumber);
+        
+        // 추출된 정보로 결과 업데이트
+        result.vin = vehicleInfo.vin || '';
+        result.manufacturer = vehicleInfo.manufacturer || '';
+        result.model = vehicleInfo.model || '';
+        result.year = vehicleInfo.year || '';
+        result.mileage = vehicleInfo.mileage || '';
+        result.fuelType = vehicleInfo.fuelType || '';
+        result.registrationDate = vehicleInfo.registrationDate || '';
+        result.color = vehicleInfo.color || '';
+        
+        console.log('[OCR] Vehicle information retrieved successfully:', {
+          vin: result.vin,
+          manufacturer: result.manufacturer,
+          model: result.model,
+          year: result.year
+        });
+      } else {
+        console.warn('[OCR] Failed to retrieve vehicle information:', vehicleInfoResult.error);
+        // 공공데이터 실패 시 차량번호만 반환
+      }
+    } catch (error: any) {
+      // 공공데이터 API 실패는 차량번호 추출에는 영향을 주지 않음
+      console.error('[OCR] Error fetching vehicle information:', {
+        message: error.message,
+        plateNumber: plateNumber,
+        details: error
+      });
+      // 에러 발생 시에도 차량번호는 반환
+    }
 
     res.status(200).json(result);
   } catch (error: any) {

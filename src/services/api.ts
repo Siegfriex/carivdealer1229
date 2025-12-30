@@ -450,5 +450,41 @@ export const apiClient = {
       () => mockResponses.notifySettlement(settlementId)
     ),
   },
+
+  // Report APIs
+  report: {
+    saveReport: async (data: {
+      vehicleId: string;
+      report: {
+        condition: {
+          exterior: string;
+          interior: string;
+          mechanic: string;
+          frame: string;
+        };
+        summary?: string;
+        score?: string;
+        aiAnalysis?: {
+          pros: string[];
+          cons: string[];
+          marketVerdict: string;
+        };
+      };
+      vehicleInfo: {
+        plateNumber?: string;
+        vin?: string;
+        manufacturer?: string;
+        model?: string;
+        year?: string;
+        mileage?: string;
+        fuelType?: string;
+        registrationDate?: string;
+        color?: string;
+      };
+    }) => apiCall<{ success: boolean; reportId: string; message: string }>(
+      'saveReportAPI',
+      { method: 'POST', body: JSON.stringify(data) }
+    ),
+  },
 };
 

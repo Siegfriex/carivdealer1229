@@ -1185,6 +1185,14 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
   const [isOCRLoading, setIsOCRLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [priceEstimate, setPriceEstimate] = useState<any>(null);
+  const [vehicleStatistics, setVehicleStatistics] = useState<any>(null);  // 공공데이터 통계 정보
+  const [publicDataMetadata, setPublicDataMetadata] = useState<any>(null);  // 공공데이터 메타데이터
+  const [generatedReport, setGeneratedReport] = useState<{ condition: any; vehicleInfo: any; generatedAt: string } | null>(null);  // OCR 완료 후 생성된 리포트
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const [reportGenerationProgress, setReportGenerationProgress] = useState(0);  // 리포트 생성 진행률 (0-100)
+  const [reportGenerationError, setReportGenerationError] = useState<string | null>(null);  // 리포트 생성 에러
+  const [savedReportId, setSavedReportId] = useState<string | null>(null);  // 저장된 리포트 ID
+  const [isSavingReport, setIsSavingReport] = useState(false);  // 리포트 저장 중
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -1206,15 +1214,34 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
       }
     }
   }, [editingVehicleId]);
+  
+  // 컴포넌트 언마운트 시 미리보기 URL 정리 (메모리 누수 방지)
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
-  const handleFileChange = async (e: any) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      // 파일이 선택되지 않았을 경우 input 초기화
+      if (e.target) {
+        e.target.value = '';
+      }
+      return;
+    }
     
     // 파일 형식 검증
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/pdf'];
     if (!allowedTypes.includes(file.type)) {
       alert('지원하지 않는 파일 형식입니다. JPG, PNG, WEBP, PDF 파일만 업로드 가능합니다.');
+      // input 초기화
+      if (e.target) {
+        e.target.value = '';
+      }
       return;
     }
     
@@ -1222,35 +1249,140 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
     const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
       alert('파일 크기는 10MB를 초과할 수 없습니다.');
+      // input 초기화
+      if (e.target) {
+        e.target.value = '';
+      }
       return;
     }
     
-    setPreviewUrl(URL.createObjectURL(file));
+    // 이전 미리보기 URL 정리 (메모리 누수 방지)
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    
+    const newPreviewUrl = URL.createObjectURL(file);
+    setPreviewUrl(newPreviewUrl);
     setIsOCRLoading(true);
     try {
       // 백엔드 API 호출로 변경
       const result = await apiClient.vehicle.ocrRegistration(file);
       
       // 응답 데이터를 폼에 매핑
+      const updatedFormData = {
+        plateNumber: result.plateNumber || formData.plateNumber,
+        vin: result.vin || formData.vin,
+        manufacturer: result.manufacturer || formData.manufacturer,
+        modelName: result.model || formData.modelName,
+        modelYear: result.year || formData.modelYear,
+        mileage: result.mileage || formData.mileage,
+        fuelType: result.fuelType || formData.fuelType,
+        registrationDate: result.registrationDate || formData.registrationDate,
+        color: result.color || formData.color,
+        price: formData.price,
+      };
+      
       setFormData(prev => ({
         ...prev,
-        plateNumber: result.plateNumber || prev.plateNumber,
-        vin: result.vin || prev.vin,
-        manufacturer: result.manufacturer || prev.manufacturer,
-        modelName: result.model || prev.modelName,
-        modelYear: result.year || prev.modelYear,
-        mileage: result.mileage || prev.mileage,
-        fuelType: result.fuelType || prev.fuelType,
-        registrationDate: result.registrationDate || prev.registrationDate,
-        color: result.color || prev.color,
+        ...updatedFormData,
       }));
+
+      // 공공데이터 통계 정보는 현재 백엔드에서 직접 차량 정보로 변환되어 반환됨
+      // 별도의 vehicleStatistics, publicDataMetadata 필드는 사용하지 않음
+
+      // ✅ OCR 완료 후 즉시 Gemini로 성능 평가 리포트 생성
+      if (result.plateNumber) {
+        // 이미 리포트 생성 중이면 중복 실행 방지
+        if (isGeneratingReport) {
+          console.warn('리포트 생성이 이미 진행 중입니다.');
+          return;
+        }
+        
+        setIsGeneratingReport(true);
+        setReportGenerationError(null);
+        setReportGenerationProgress(0);
+        
+        let progressInterval: NodeJS.Timeout | null = null;
+        
+        try {
+          // 진행률 시뮬레이션 (실제로는 Gemini API 호출 중간에 업데이트)
+          progressInterval = setInterval(() => {
+            setReportGenerationProgress(prev => {
+              if (prev >= 90) {
+                if (progressInterval) clearInterval(progressInterval);
+                return 90;
+              }
+              return prev + 10;
+            });
+          }, 300);
+
+          const { GeminiService } = await import('./src/services/gemini');
+          const generatedCondition = await GeminiService.generateVehicleCondition({
+            plateNumber: result.plateNumber,
+            vin: result.vin,
+            manufacturer: result.manufacturer,
+            modelName: result.model,
+            modelYear: result.year,
+            mileage: result.mileage,
+            fuelType: result.fuelType,
+            registrationDate: result.registrationDate,
+            color: result.color,
+          });
+          
+          // 진행률 인터벌 정리
+          if (progressInterval) {
+            clearInterval(progressInterval);
+            progressInterval = null;
+          }
+          
+          // 생성된 리포트 유효성 검증
+          if (!generatedCondition || typeof generatedCondition !== 'object' || Object.keys(generatedCondition).length === 0) {
+            throw new Error('리포트 생성 결과가 유효하지 않습니다.');
+          }
+          
+          // 필수 필드 확인
+          const requiredFields = ['exterior', 'interior', 'mechanic', 'frame'];
+          const missingFields = requiredFields.filter(field => !generatedCondition[field]);
+          if (missingFields.length > 0) {
+            throw new Error(`리포트 필수 필드가 누락되었습니다: ${missingFields.join(', ')}`);
+          }
+          
+          setReportGenerationProgress(100);
+          
+          // 생성된 리포트를 상태에 저장
+          setGeneratedReport({
+            condition: generatedCondition,
+            vehicleInfo: result,
+            generatedAt: new Date().toISOString(),
+          });
+        } catch (reportError: any) {
+          console.error('리포트 생성 실패:', reportError);
+          // 진행률 인터벌 정리 (에러 발생 시에도)
+          if (progressInterval) {
+            clearInterval(progressInterval);
+            progressInterval = null;
+          }
+          setReportGenerationError(reportError.message || '리포트 생성 중 오류가 발생했습니다.');
+          setReportGenerationProgress(0);
+        } finally {
+          setIsGeneratingReport(false);
+        }
+      }
     } catch (err: any) {
       console.error('OCR Error:', err);
       const errorMessage = err.message || '등록원부 인식 중 오류가 발생했습니다.';
       alert(errorMessage);
+      // 에러 발생 시 미리보기 제거
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+      }
     } finally {
       setIsOCRLoading(false);
-      e.target.value = '';
+      // input 초기화 (같은 파일 재선택 가능하도록)
+      if (e.target) {
+        e.target.value = '';
+      }
     }
   };
 
@@ -1272,6 +1404,198 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
   };
 
   return (
+    <>
+    {/* 리포트 미리보기 모달 */}
+    {generatedReport && !isGeneratingReport && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-fmax-text-main">성능 평가 리포트 미리보기</h2>
+              <p className="text-xs text-gray-500 mt-1">차량 정보를 기반으로 생성된 리포트입니다.</p>
+            </div>
+            <button 
+              onClick={() => setGeneratedReport(null)}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-400" />
+            </button>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto p-6">
+            {/* 차량 정보 요약 */}
+            <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+              <h3 className="text-sm font-bold text-blue-800 mb-3">차량 정보</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                {generatedReport.vehicleInfo.plateNumber && (
+                  <div>
+                    <p className="text-xs text-blue-600 mb-0.5">차량번호</p>
+                    <p className="font-semibold text-blue-900">{generatedReport.vehicleInfo.plateNumber}</p>
+                  </div>
+                )}
+                {generatedReport.vehicleInfo.manufacturer && (
+                  <div>
+                    <p className="text-xs text-blue-600 mb-0.5">제조사</p>
+                    <p className="font-semibold text-blue-900">{generatedReport.vehicleInfo.manufacturer}</p>
+                  </div>
+                )}
+                {generatedReport.vehicleInfo.model && (
+                  <div>
+                    <p className="text-xs text-blue-600 mb-0.5">모델명</p>
+                    <p className="font-semibold text-blue-900">{generatedReport.vehicleInfo.model}</p>
+                  </div>
+                )}
+                {generatedReport.vehicleInfo.year && (
+                  <div>
+                    <p className="text-xs text-blue-600 mb-0.5">연식</p>
+                    <p className="font-semibold text-blue-900">{generatedReport.vehicleInfo.year}년식</p>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {/* 상세 상태 */}
+            <div className="space-y-4">
+              <h3 className="text-base font-bold text-fmax-text-main border-b pb-2">상세 상태</h3>
+              {generatedReport.condition && typeof generatedReport.condition === 'object' ? (
+                Object.entries(generatedReport.condition).map(([key, value]: any) => {
+                  const labelMap: Record<string, string> = {
+                    exterior: '외관',
+                    interior: '내부',
+                    mechanic: '기계적 상태',
+                    frame: '차대/프레임',
+                  };
+                  const koreanLabel = labelMap[key] || key;
+                  
+                  return (
+                    <div key={key} className="bg-white border border-gray-200 rounded-lg p-4">
+                      <p className="text-xs font-bold text-gray-500 uppercase mb-2">{koreanLabel}</p>
+                      <div className="bg-gray-50 rounded-lg p-3 border border-gray-200 min-h-[60px] max-h-[200px] overflow-y-auto">
+                        <p className="text-sm text-fmax-text-main leading-relaxed whitespace-pre-wrap break-words">
+                          {value || '정보 없음'}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <p className="text-sm text-yellow-800">상세 상태 정보를 불러올 수 없습니다.</p>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div className="p-6 border-t border-gray-200 flex gap-3 justify-between items-center">
+            <div className="flex gap-2">
+              {savedReportId && (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={async () => {
+                    // 리포트 공유 링크 생성 및 복사
+                    if (!savedReportId) {
+                      alert('리포트가 저장되지 않았습니다. 먼저 리포트를 저장해주세요.');
+                      return;
+                    }
+                    
+                    const shareUrl = `${window.location.origin}/report/${savedReportId}`;
+                    try {
+                      // Clipboard API 사용 시도
+                      if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(shareUrl);
+                        alert('공유 링크가 클립보드에 복사되었습니다.\n\n' + shareUrl);
+                      } else {
+                        // 클립보드 API 실패 시 fallback
+                        const textArea = document.createElement('textarea');
+                        textArea.value = shareUrl;
+                        textArea.style.position = 'fixed';
+                        textArea.style.opacity = '0';
+                        textArea.style.left = '-999999px';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        try {
+                          const successful = document.execCommand('copy');
+                          if (successful) {
+                            alert('공유 링크가 클립보드에 복사되었습니다.\n\n' + shareUrl);
+                          } else {
+                            throw new Error('복사 실패');
+                          }
+                        } catch (err) {
+                          // 복사 실패 시 링크만 표시
+                          prompt('공유 링크를 복사하세요:', shareUrl);
+                        } finally {
+                          document.body.removeChild(textArea);
+                        }
+                      }
+                    } catch (err) {
+                      // 모든 복사 방법 실패 시 prompt로 링크 표시
+                      prompt('공유 링크를 복사하세요:', shareUrl);
+                    }
+                  }}
+                  icon={Share2}
+                >
+                  공유
+                </Button>
+              )}
+            </div>
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={() => setGeneratedReport(null)}>닫기</Button>
+            <Button onClick={async () => {
+              // 리포트 저장 후 리포트 페이지로 이동
+              let vehicleId = editingVehicleId;
+              if (!vehicleId) {
+                const savedVehicle = MockDataService.createVehicle(formData);
+                vehicleId = savedVehicle.id;
+              }
+              
+              // 리포트 저장 시도 (중복 저장 방지)
+              if (generatedReport && !savedReportId && !isSavingReport) {
+                setIsSavingReport(true);
+                try {
+                  // 리포트 유효성 검증
+                  if (!generatedReport.condition || typeof generatedReport.condition !== 'object') {
+                    throw new Error('저장할 리포트 데이터가 유효하지 않습니다.');
+                  }
+                  
+                  const saveResult = await apiClient.report.saveReport({
+                    vehicleId: vehicleId,
+                    report: {
+                      condition: generatedReport.condition,
+                      summary: '',
+                      score: 'A',
+                    },
+                    vehicleInfo: generatedReport.vehicleInfo || {},
+                  });
+                  
+                  if (saveResult && saveResult.reportId) {
+                    setSavedReportId(saveResult.reportId);
+                  } else {
+                    throw new Error('리포트 저장 응답이 유효하지 않습니다.');
+                  }
+                } catch (saveError: any) {
+                  console.error('리포트 저장 실패:', saveError);
+                  alert('리포트 저장 중 오류가 발생했습니다: ' + (saveError.message || '알 수 없는 오류'));
+                  // 저장 실패해도 리포트 페이지로 이동
+                } finally {
+                  setIsSavingReport(false);
+                }
+              }
+              
+              setGeneratedReport(null);
+              onNavigate('SCR-0202', vehicleId);
+            }}
+            loading={isSavingReport}
+            >
+              전체 리포트 보기
+            </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+    
     <div className="min-h-screen bg-fmax-surface flex flex-col">
        <header className="bg-white border-b border-fmax-border sticky top-0 z-30 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-4">
@@ -1331,23 +1655,63 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                     className={`aspect-[3/4] rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-6 transition-all cursor-pointer bg-white relative overflow-hidden
                        ${previewUrl ? 'border-fmax-primary/30' : 'border-gray-200 hover:border-fmax-primary hover:bg-blue-50/10'}
                     `}
-                    onClick={() => !isOCRLoading && fileInputRef.current?.click()}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (!isOCRLoading && fileInputRef.current) {
+                        fileInputRef.current.click();
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        if (!isOCRLoading && fileInputRef.current) {
+                          fileInputRef.current.click();
+                        }
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="등록증 사진 업로드"
                  >
-                    <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+                    <input 
+                      type="file" 
+                      ref={fileInputRef} 
+                      className="hidden" 
+                      accept="image/*,.pdf" 
+                      onChange={handleFileChange}
+                      disabled={isOCRLoading}
+                    />
                     {previewUrl ? (
-                      <div className="w-full h-full">
-                         <img src={previewUrl} className="w-full h-full object-contain" alt="Preview" />
+                      <div className="w-full h-full relative">
+                         <img src={previewUrl} className="w-full h-full object-contain rounded" alt="등록증 미리보기" />
                          {isOCRLoading && (
-                           <div className="absolute inset-0 bg-white/80 flex flex-col items-center justify-center">
+                           <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center rounded">
                               <Loader2 className="w-8 h-8 text-fmax-primary animate-spin mb-2" />
                               <span className="font-semibold text-fmax-primary text-xs">분석 중...</span>
                            </div>
+                         )}
+                         {!isOCRLoading && (
+                           <button
+                             onClick={(e) => {
+                               e.stopPropagation();
+                               setPreviewUrl(null);
+                               if (fileInputRef.current) {
+                                 fileInputRef.current.value = '';
+                               }
+                             }}
+                             className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                             aria-label="이미지 제거"
+                           >
+                             <X className="w-4 h-4" />
+                           </button>
                          )}
                       </div>
                     ) : (
                       <div className="text-center">
                          <Upload className="w-10 h-10 text-gray-300 mx-auto mb-3" />
                          <p className="font-medium text-fmax-text-main text-sm">등록증 사진 업로드</p>
+                         <p className="text-xs text-gray-400 mt-1">JPG, PNG, WEBP, PDF</p>
                       </div>
                     )}
                  </div>
@@ -1399,10 +1763,217 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                      )}
                   </div>
                </div>
+
+               {/* 공공데이터 통계 정보는 백엔드에서 차량 정보로 변환되어 반환됨 */}
+               {formData.plateNumber && (
+                  <div className="space-y-5">
+                     <div className="bg-green-50 rounded-lg p-4 border border-green-100">
+                        <div className="flex items-start gap-3">
+                           <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                           <div className="flex-1">
+                              <p className="text-sm font-bold text-green-800 mb-1">차량 정보 조회 완료</p>
+                              <p className="text-xs text-green-700">
+                                 차량번호 {formData.plateNumber}에 대한 정보를 공공데이터에서 조회하여 자동 입력되었습니다.
+                              </p>
+                              {isGeneratingReport && (
+                                 <div className="mt-3 pt-3 border-t border-green-200">
+                                    <div className="flex items-center gap-2 mb-2">
+                                       <Loader2 className="w-3 h-3 animate-spin text-green-600" />
+                                       <p className="text-xs text-green-600">성능 평가 리포트 생성 중...</p>
+                                    </div>
+                                    {/* 진행률 바 */}
+                                    <div className="w-full bg-gray-200 rounded-full h-1.5 mb-2">
+                                       <div 
+                                          className="bg-green-600 h-1.5 rounded-full transition-all duration-300"
+                                          style={{ width: `${reportGenerationProgress}%` }}
+                                       />
+                                    </div>
+                                    <p className="text-xs text-gray-500">{reportGenerationProgress}%</p>
+                                 </div>
+                              )}
+                              {reportGenerationError && !isGeneratingReport && (
+                                 <div className="mt-3 pt-3 border-t border-red-200">
+                                    <div className="flex items-start gap-2 mb-2">
+                                       <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
+                                       <div className="flex-1">
+                                          <p className="text-xs text-red-600 font-semibold mb-1">리포트 생성 실패</p>
+                                          <p className="text-xs text-red-500">{reportGenerationError}</p>
+                                       </div>
+                                    </div>
+                                    <Button 
+                                       size="sm" 
+                                       variant="outline" 
+                                       disabled={isGeneratingReport}
+                                       onClick={async () => {
+                                          // 재시도 로직 (중복 실행 방지)
+                                          if (isGeneratingReport) return;
+                                          
+                                          setReportGenerationError(null);
+                                          setIsGeneratingReport(true);
+                                          setReportGenerationProgress(0);
+                                          
+                                          let progressInterval: NodeJS.Timeout | null = null;
+                                          
+                                          try {
+                                             progressInterval = setInterval(() => {
+                                                setReportGenerationProgress(prev => {
+                                                   if (prev >= 90) {
+                                                      if (progressInterval) clearInterval(progressInterval);
+                                                      return 90;
+                                                   }
+                                                   return prev + 10;
+                                                });
+                                             }, 300);
+
+                                             const { GeminiService } = await import('./src/services/gemini');
+                                             const generatedCondition = await GeminiService.generateVehicleCondition({
+                                                plateNumber: formData.plateNumber,
+                                                vin: formData.vin,
+                                                manufacturer: formData.manufacturer,
+                                                modelName: formData.modelName,
+                                                modelYear: formData.modelYear,
+                                                mileage: formData.mileage,
+                                                fuelType: formData.fuelType,
+                                                registrationDate: formData.registrationDate,
+                                                color: formData.color,
+                                             });
+                                             
+                                             // 진행률 인터벌 정리
+                                             if (progressInterval) {
+                                                clearInterval(progressInterval);
+                                                progressInterval = null;
+                                             }
+                                             
+                                             // 생성된 리포트 유효성 검증
+                                             if (!generatedCondition || typeof generatedCondition !== 'object' || Object.keys(generatedCondition).length === 0) {
+                                                throw new Error('리포트 생성 결과가 유효하지 않습니다.');
+                                             }
+                                             
+                                             // 필수 필드 확인
+                                             const requiredFields = ['exterior', 'interior', 'mechanic', 'frame'];
+                                             const missingFields = requiredFields.filter(field => !generatedCondition[field]);
+                                             if (missingFields.length > 0) {
+                                                throw new Error(`리포트 필수 필드가 누락되었습니다: ${missingFields.join(', ')}`);
+                                             }
+                                             
+                                             setReportGenerationProgress(100);
+                                             
+                                             setGeneratedReport({
+                                                condition: generatedCondition,
+                                                vehicleInfo: {
+                                                   plateNumber: formData.plateNumber,
+                                                   vin: formData.vin,
+                                                   manufacturer: formData.manufacturer,
+                                                   model: formData.modelName,
+                                                   year: formData.modelYear,
+                                                   mileage: formData.mileage,
+                                                   fuelType: formData.fuelType,
+                                                   registrationDate: formData.registrationDate,
+                                                   color: formData.color,
+                                                },
+                                                generatedAt: new Date().toISOString(),
+                                             });
+                                          } catch (retryError: any) {
+                                             // 진행률 인터벌 정리 (에러 발생 시에도)
+                                             if (progressInterval) {
+                                                clearInterval(progressInterval);
+                                                progressInterval = null;
+                                             }
+                                             setReportGenerationError(retryError.message || '리포트 생성 중 오류가 발생했습니다.');
+                                             setReportGenerationProgress(0);
+                                          } finally {
+                                             setIsGeneratingReport(false);
+                                          }
+                                       }}
+                                       className="text-xs mt-2"
+                                    >
+                                       재시도
+                                    </Button>
+                                 </div>
+                              )}
+                              {generatedReport && !isGeneratingReport && !reportGenerationError && (
+                                 <div className="mt-3 pt-3 border-t border-green-200">
+                                    <p className="text-xs text-green-600 mb-2">성능 평가 리포트가 생성되었습니다.</p>
+                                    <div className="flex gap-2 flex-wrap">
+                                       <Button 
+                                          size="sm" 
+                                          variant="outline" 
+                                          onClick={() => {
+                                             // 차량 저장 후 리포트 페이지로 이동
+                                             const savedVehicle = MockDataService.createVehicle(formData);
+                                             onNavigate('SCR-0202', savedVehicle.id);
+                                          }}
+                                          className="text-xs"
+                                       >
+                                          리포트 보기
+                                       </Button>
+                                       <Button 
+                                          size="sm" 
+                                          variant="outline" 
+                                          disabled={isSavingReport || !!savedReportId}
+                                          onClick={async () => {
+                                             // 리포트 저장 (중복 저장 방지)
+                                             if (!generatedReport || savedReportId || isSavingReport) return;
+                                             
+                                             setIsSavingReport(true);
+                                             try {
+                                                // 리포트 유효성 검증
+                                                if (!generatedReport.condition || typeof generatedReport.condition !== 'object') {
+                                                   throw new Error('저장할 리포트 데이터가 유효하지 않습니다.');
+                                                }
+                                                
+                                                // 차량 저장 또는 기존 차량 ID 가져오기
+                                                let vehicleId = editingVehicleId;
+                                                if (!vehicleId) {
+                                                   const savedVehicle = MockDataService.createVehicle(formData);
+                                                   vehicleId = savedVehicle.id;
+                                                }
+                                                
+                                                if (!vehicleId) {
+                                                   throw new Error('차량 ID를 가져올 수 없습니다.');
+                                                }
+                                                
+                                                const saveResult = await apiClient.report.saveReport({
+                                                   vehicleId: vehicleId,
+                                                   report: {
+                                                      condition: generatedReport.condition,
+                                                      summary: '',
+                                                      score: 'A',
+                                                   },
+                                                   vehicleInfo: generatedReport.vehicleInfo || {},
+                                                });
+                                                
+                                                if (saveResult && saveResult.reportId) {
+                                                   setSavedReportId(saveResult.reportId);
+                                                   alert('리포트가 저장되었습니다.');
+                                                } else {
+                                                   throw new Error('리포트 저장 응답이 유효하지 않습니다.');
+                                                }
+                                             } catch (saveError: any) {
+                                                console.error('리포트 저장 실패:', saveError);
+                                                alert('리포트 저장 중 오류가 발생했습니다: ' + (saveError.message || '알 수 없는 오류'));
+                                             } finally {
+                                                setIsSavingReport(false);
+                                             }
+                                          }}
+                                          loading={isSavingReport}
+                                          className="text-xs"
+                                       >
+                                          {savedReportId ? '저장됨' : '저장'}
+                                       </Button>
+                                    </div>
+                                 </div>
+                              )}
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               )}
             </div>
          </div>
        </main>
     </div>
+    </>
   );
 };
 
@@ -2201,22 +2772,70 @@ const InspectionStatusPage = ({ onNavigate, vehicleId }: any) => {
 // --- SCR-0202: Inspection Report Page ---
 const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
   const [report, setReport] = useState<InspectionReport | null>(null);
+  const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadReport = async () => {
       setLoading(true);
+      
+      // 차량 정보 가져오기
+      let targetVehicle: Vehicle | null = null;
       if (vehicleId) {
-        const r = MockDataService.getInspectionReport(vehicleId);
+        targetVehicle = MockDataService.getVehicleById(vehicleId) || null;
+      } else {
+        // vehicleId가 없으면 첫 번째 차량 사용 (임시)
+        const vehicles = MockDataService.getMockVehicles();
+        if (vehicles.length > 0) {
+          targetVehicle = vehicles[0];
+        }
+      }
+      
+      setVehicle(targetVehicle);
+      
+      if (targetVehicle) {
+        // 리포트 가져오기
+        const r = MockDataService.getInspectionReport(targetVehicle.id);
+        
+        // 차량 정보를 바탕으로 Gemini AI로 상세 상태 생성
+        try {
+          const { GeminiService } = await import('./src/services/gemini');
+          const generatedCondition = await GeminiService.generateVehicleCondition({
+            plateNumber: targetVehicle.plateNumber,
+            vin: targetVehicle.vin,
+            manufacturer: targetVehicle.manufacturer,
+            modelName: targetVehicle.modelName,
+            modelYear: targetVehicle.modelYear,
+            mileage: targetVehicle.mileage,
+            fuelType: targetVehicle.fuelType,
+            registrationDate: targetVehicle.registrationDate,
+            color: targetVehicle.color,
+          });
+          
+          // 생성된 상세 상태로 리포트 업데이트
+          if (generatedCondition && Object.keys(generatedCondition).length > 0) {
+            r.condition = {
+              exterior: generatedCondition.exterior || r.condition.exterior,
+              interior: generatedCondition.interior || r.condition.interior,
+              mechanic: generatedCondition.mechanic || r.condition.mechanic,
+              frame: generatedCondition.frame || r.condition.frame,
+            };
+          }
+        } catch (error: any) {
+          console.error('Failed to generate vehicle condition:', error);
+          // 에러 발생 시 기존 리포트 사용
+        }
+        
         setReport(r || null);
       } else {
-        // vehicleId가 없으면 첫 번째 차량 리포트 사용 (임시)
+        // 차량이 없으면 기본 리포트 사용
         const vehicles = MockDataService.getMockVehicles();
         if (vehicles.length > 0) {
           const r = MockDataService.getInspectionReport(vehicles[0].id);
           setReport(r || null);
         }
       }
+      
       setLoading(false);
     };
     loadReport();
@@ -2249,8 +2868,63 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
            </div>
          </div>
          <div className="flex gap-2">
-            <Button variant="outline" size="sm" icon={Printer}>인쇄</Button>
-            <Button variant="outline" size="sm" icon={Share2}>공유</Button>
+            <Button 
+               variant="outline" 
+               size="sm" 
+               icon={Printer}
+               onClick={() => window.print()}
+            >
+               인쇄
+            </Button>
+            <Button 
+               variant="outline" 
+               size="sm" 
+               icon={Share2}
+               onClick={async () => {
+                  // 리포트 공유 링크 생성 및 복사
+                  if (!report || !report.id) {
+                     alert('리포트 정보가 없습니다.');
+                     return;
+                  }
+                  
+                  const shareUrl = `${window.location.origin}/report/${report.id}`;
+                  try {
+                     // Clipboard API 사용 시도
+                     if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(shareUrl);
+                        alert('공유 링크가 클립보드에 복사되었습니다.\n\n' + shareUrl);
+                     } else {
+                        // 클립보드 API 실패 시 fallback
+                        const textArea = document.createElement('textarea');
+                        textArea.value = shareUrl;
+                        textArea.style.position = 'fixed';
+                        textArea.style.opacity = '0';
+                        textArea.style.left = '-999999px';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        try {
+                           const successful = document.execCommand('copy');
+                           if (successful) {
+                              alert('공유 링크가 클립보드에 복사되었습니다.\n\n' + shareUrl);
+                           } else {
+                              throw new Error('복사 실패');
+                           }
+                        } catch (err) {
+                           // 복사 실패 시 링크만 표시
+                           prompt('공유 링크를 복사하세요:', shareUrl);
+                        } finally {
+                           document.body.removeChild(textArea);
+                        }
+                     }
+                  } catch (err) {
+                     // 모든 복사 방법 실패 시 prompt로 링크 표시
+                     prompt('공유 링크를 복사하세요:', shareUrl);
+                  }
+               }}
+            >
+               공유
+            </Button>
          </div>
        </header>
 
@@ -2266,27 +2940,93 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
                 </div>
                 <div className="flex-1">
                    <h2 className="text-lg font-bold text-fmax-text-main mb-2">Gemini AI 종합 진단</h2>
-                   <p className="text-fmax-text-main text-sm leading-relaxed mb-4">{report.summary}</p>
+                   
+                   {/* 차량 정보 제시 섹션 */}
+                   {vehicle && (
+                      <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                         <h3 className="text-xs font-bold text-gray-600 uppercase mb-3">차량 정보</h3>
+                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                            {vehicle.plateNumber && (
+                               <div>
+                                  <p className="text-xs text-gray-500 mb-0.5">차량번호</p>
+                                  <p className="font-semibold text-fmax-text-main">{vehicle.plateNumber}</p>
+                               </div>
+                            )}
+                            {vehicle.vin && (
+                               <div>
+                                  <p className="text-xs text-gray-500 mb-0.5">차대번호</p>
+                                  <p className="font-semibold text-fmax-text-main font-mono text-xs">{vehicle.vin}</p>
+                               </div>
+                            )}
+                            {(vehicle.manufacturer || vehicle.modelName) && (
+                               <div>
+                                  <p className="text-xs text-gray-500 mb-0.5">차량명</p>
+                                  <p className="font-semibold text-fmax-text-main">{vehicle.manufacturer} {vehicle.modelName}</p>
+                               </div>
+                            )}
+                            {vehicle.modelYear && (
+                               <div>
+                                  <p className="text-xs text-gray-500 mb-0.5">연식</p>
+                                  <p className="font-semibold text-fmax-text-main">{vehicle.modelYear}년식</p>
+                               </div>
+                            )}
+                            {vehicle.mileage && (
+                               <div>
+                                  <p className="text-xs text-gray-500 mb-0.5">주행거리</p>
+                                  <p className="font-semibold text-fmax-text-main">
+                                    {isNaN(parseInt(vehicle.mileage)) ? vehicle.mileage : parseInt(vehicle.mileage).toLocaleString()} km
+                                  </p>
+                               </div>
+                            )}
+                            {vehicle.fuelType && (
+                               <div>
+                                  <p className="text-xs text-gray-500 mb-0.5">연료</p>
+                                  <p className="font-semibold text-fmax-text-main">{vehicle.fuelType}</p>
+                               </div>
+                            )}
+                            {vehicle.registrationDate && (
+                               <div>
+                                  <p className="text-xs text-gray-500 mb-0.5">등록일자</p>
+                                  <p className="font-semibold text-fmax-text-main">{vehicle.registrationDate}</p>
+                               </div>
+                            )}
+                            {vehicle.color && (
+                               <div>
+                                  <p className="text-xs text-gray-500 mb-0.5">색상</p>
+                                  <p className="font-semibold text-fmax-text-main">{vehicle.color}</p>
+                               </div>
+                            )}
+                         </div>
+                      </div>
+                   )}
+                   
+                   <p className="text-fmax-text-main text-sm leading-relaxed mb-4 whitespace-pre-wrap break-words">{report.summary}</p>
                    <div className="grid md:grid-cols-3 gap-4">
                       <div className="bg-green-50 rounded-lg p-3 border border-green-100">
-                         <h4 className="text-xs font-bold text-green-800 uppercase mb-2">Pros</h4>
+                         <h4 className="text-xs font-bold text-green-800 uppercase mb-2">장점</h4>
                          <ul className="space-y-1">
                             {report.aiAnalysis.pros.map((p, i) => (
-                               <li key={i} className="text-xs text-green-700 flex items-center gap-2"><Check className="w-3 h-3" /> {p}</li>
+                               <li key={i} className="text-xs text-green-700 flex items-start gap-2">
+                                  <Check className="w-3 h-3 mt-0.5 shrink-0" /> 
+                                  <span className="break-words">{p}</span>
+                               </li>
                             ))}
                          </ul>
                       </div>
                       <div className="bg-red-50 rounded-lg p-3 border border-red-100">
-                         <h4 className="text-xs font-bold text-red-800 uppercase mb-2">Cons</h4>
+                         <h4 className="text-xs font-bold text-red-800 uppercase mb-2">단점</h4>
                          <ul className="space-y-1">
                             {report.aiAnalysis.cons.map((c, i) => (
-                               <li key={i} className="text-xs text-red-700 flex items-center gap-2"><AlertTriangle className="w-3 h-3" /> {c}</li>
+                               <li key={i} className="text-xs text-red-700 flex items-start gap-2">
+                                  <AlertTriangle className="w-3 h-3 mt-0.5 shrink-0" /> 
+                                  <span className="break-words">{c}</span>
+                               </li>
                             ))}
                          </ul>
                       </div>
                       <div className="bg-blue-50 rounded-lg p-3 border border-blue-100 flex flex-col justify-center text-center">
-                         <h4 className="text-xs font-bold text-blue-800 uppercase mb-1">Market Verdict</h4>
-                         <p className="text-xl font-black text-blue-600">{report.aiAnalysis.marketVerdict}</p>
+                         <h4 className="text-xs font-bold text-blue-800 uppercase mb-1">시장 판단</h4>
+                         <p className="text-xl font-black text-blue-600 break-words">{report.aiAnalysis.marketVerdict}</p>
                       </div>
                    </div>
                 </div>
@@ -2297,14 +3037,14 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
              {/* Left: Score & Details */}
              <div className="space-y-6">
                 <Card className="text-center py-8">
-                   <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">Overall Condition Score</p>
+                   <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">전체 상태 점수</p>
                    <div className="w-32 h-32 rounded-full border-[6px] border-fmax-primary flex items-center justify-center mx-auto mb-4 relative">
                       <span className="text-5xl font-black text-fmax-text-main">{report.score}</span>
                       <div className="absolute bottom-2 bg-white px-2">
                          <StarRating rating={4.5} />
                       </div>
                    </div>
-                   <p className="text-sm font-medium text-fmax-text-sub">Based on 142 inspection points</p>
+                   <p className="text-sm font-medium text-fmax-text-sub">142개 검사 항목 기준</p>
                 </Card>
 
                 <Card>
@@ -2324,12 +3064,33 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
                 <Card>
                    <h3 className="text-sm font-bold text-fmax-text-main mb-4 border-b pb-2">상세 상태</h3>
                    <div className="space-y-4">
-                      {Object.entries(report.condition).map(([key, value]: any) => (
-                         <div key={key}>
-                            <p className="text-xs font-bold text-gray-500 uppercase mb-1">{key}</p>
-                            <p className="text-sm text-fmax-text-main leading-snug">{value}</p>
+                      {report.condition && typeof report.condition === 'object' ? (
+                         Object.entries(report.condition).map(([key, value]: any) => {
+                            // 한글 라벨 매핑
+                            const labelMap: Record<string, string> = {
+                              exterior: '외관',
+                              interior: '내부',
+                              mechanic: '기계적 상태',
+                              frame: '차대/프레임',
+                            };
+                            const koreanLabel = labelMap[key] || key;
+                            
+                            return (
+                               <div key={key} className="group">
+                                  <p className="text-xs font-bold text-gray-500 uppercase mb-2">{koreanLabel}</p>
+                                  <div className="bg-gray-50 rounded-lg p-3 border border-gray-200 min-h-[60px] max-h-[200px] overflow-y-auto transition-all hover:border-gray-300">
+                                     <p className="text-sm text-fmax-text-main leading-relaxed whitespace-pre-wrap break-words">
+                                       {value || '정보 없음'}
+                                     </p>
+                                  </div>
+                               </div>
+                            );
+                         })
+                      ) : (
+                         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <p className="text-sm text-yellow-800">상세 상태 정보를 불러올 수 없습니다.</p>
                          </div>
-                      ))}
+                      )}
                    </div>
                 </Card>
              </div>
