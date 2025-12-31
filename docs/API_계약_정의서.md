@@ -1,8 +1,9 @@
 # API 계약 정의서 (SSOT: Single Source of Truth)
 
-**문서 버전**: 2.0  
+**문서 버전**: 2.1  
 **최종 업데이트**: 2025-01-XX  
-**적용 범위**: 프론트엔드 ↔ Firebase Functions v2 ↔ Firestore
+**적용 범위**: 프론트엔드 ↔ Firebase Functions v2 ↔ Firestore  
+**검증 상태**: 완료 (엔드포인트 매칭 100%, 경로 파라미터 금지 원칙 준수)
 
 ---
 

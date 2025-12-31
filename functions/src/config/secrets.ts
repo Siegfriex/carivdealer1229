@@ -6,6 +6,7 @@ const client = new SecretManagerServiceClient();
 const SECRET_TO_ENV_MAP: Record<string, string> = {
   'gemini-api-key': 'GEMINI_API_KEY',
   'kotsa-public-data-api-key': 'KOTSA_PUBLIC_DATA_API_KEY',
+  'google-maps-api-key': 'GOOGLE_MAPS_API_KEY',
 };
 
 export async function getSecret(secretName: string): Promise<string> {

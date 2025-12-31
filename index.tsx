@@ -78,6 +78,7 @@ import SettlementListPage from './src/components/SettlementListPage';
 import SettlementDetailPage from './src/components/SettlementDetailPage';
 import LogisticsSchedulePage from './src/components/LogisticsSchedulePage';
 import LogisticsHistoryPage from './src/components/LogisticsHistoryPage';
+import { ToastProvider, useToast } from './src/components/ui/Toast';
 
 // --- Types & Constants ---
 
@@ -1181,6 +1182,7 @@ const SignupInfoPage = ({ onNavigate, onSkip }: any) => {
 
 // --- SCR-0200: Register Vehicle Page ---
 const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({ plateNumber: '', vin: '', manufacturer: '', modelName: '', modelYear: '', fuelType: '', registrationDate: '', mileage: '', color: '', price: '' });
   const [isOCRLoading, setIsOCRLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -1193,6 +1195,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
   const [reportGenerationError, setReportGenerationError] = useState<string | null>(null);  // 리포트 생성 에러
   const [savedReportId, setSavedReportId] = useState<string | null>(null);  // 저장된 리포트 ID
   const [isSavingReport, setIsSavingReport] = useState(false);  // 리포트 저장 중
+  const [autoFilledFields, setAutoFilledFields] = useState<Set<string>>(new Set());  // 자동 입력된 필드 추적
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -1237,7 +1240,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
     // 파일 형식 검증
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/pdf'];
     if (!allowedTypes.includes(file.type)) {
-      alert('지원하지 않는 파일 형식입니다. JPG, PNG, WEBP, PDF 파일만 업로드 가능합니다.');
+      showToast('지원하지 않는 파일 형식입니다. JPG, PNG, WEBP, PDF 파일만 업로드 가능합니다.', 'error');
       // input 초기화
       if (e.target) {
         e.target.value = '';
@@ -1248,7 +1251,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
     // 파일 크기 검증 (10MB)
     const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
-      alert('파일 크기는 10MB를 초과할 수 없습니다.');
+      showToast('파일 크기는 10MB를 초과할 수 없습니다.', 'error');
       // input 초기화
       if (e.target) {
         e.target.value = '';
@@ -1282,15 +1285,70 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
         price: formData.price,
       };
       
+      // 자동 입력된 필드 추적
+      const newAutoFilledFields = new Set<string>();
+      if (result.plateNumber) newAutoFilledFields.add('plateNumber');
+      if (result.vin) newAutoFilledFields.add('vin');
+      if (result.manufacturer) newAutoFilledFields.add('manufacturer');
+      if (result.model) newAutoFilledFields.add('modelName');
+      if (result.year) newAutoFilledFields.add('modelYear');
+      if (result.mileage) newAutoFilledFields.add('mileage');
+      if (result.fuelType) newAutoFilledFields.add('fuelType');
+      if (result.registrationDate) newAutoFilledFields.add('registrationDate');
+      if (result.color) newAutoFilledFields.add('color');
+      
+      setAutoFilledFields(newAutoFilledFields);
+      
       setFormData(prev => ({
         ...prev,
         ...updatedFormData,
       }));
 
+      // 공공데이터 API 호출 성공/실패 알림
+      if (result.publicDataSuccess) {
+        // 공공데이터에서 정보를 성공적으로 가져온 경우
+        const publicDataFields = [];
+        if (result.vin) publicDataFields.push('차대번호');
+        if (result.manufacturer) publicDataFields.push('제조사');
+        if (result.model) publicDataFields.push('모델명');
+        if (result.year) publicDataFields.push('연식');
+        if (result.mileage) publicDataFields.push('주행거리');
+        if (result.fuelType) publicDataFields.push('연료');
+        if (result.registrationDate) publicDataFields.push('등록일자');
+        if (result.color) publicDataFields.push('색상');
+        
+        if (publicDataFields.length > 0) {
+          showToast(`✅ 공공데이터에서 ${publicDataFields.length}개 항목을 가져왔습니다: ${publicDataFields.join(', ')}`, 'success');
+        } else {
+          showToast('✅ 공공데이터 조회 성공 (추가 정보 없음)', 'success');
+        }
+      } else {
+        // 공공데이터 조회 실패 시
+        const errorMsg = result.publicDataError || '알 수 없는 오류';
+        showToast(`⚠️ 공공데이터 조회 실패: ${errorMsg}. 차량번호만 입력되었습니다.`, 'warning');
+      }
+      
+      // 자동 입력 완료 알림 (전체 필드)
+      const extractedFields = [];
+      if (result.plateNumber) extractedFields.push('차량번호');
+      if (result.vin) extractedFields.push('차대번호');
+      if (result.manufacturer) extractedFields.push('제조사');
+      if (result.model) extractedFields.push('모델명');
+      if (result.year) extractedFields.push('연식');
+      if (result.mileage) extractedFields.push('주행거리');
+      if (result.fuelType) extractedFields.push('연료');
+      if (result.registrationDate) extractedFields.push('등록일자');
+      if (result.color) extractedFields.push('색상');
+      
+      // 3초 후 자동 입력 표시 제거
+      setTimeout(() => {
+        setAutoFilledFields(new Set());
+      }, 3000);
+
       // 공공데이터 통계 정보는 현재 백엔드에서 직접 차량 정보로 변환되어 반환됨
       // 별도의 vehicleStatistics, publicDataMetadata 필드는 사용하지 않음
 
-      // ✅ OCR 완료 후 즉시 Gemini로 성능 평가 리포트 생성
+      // ✅ OCR 완료 후 즉시 백엔드 API로 성능 평가 리포트 생성
       if (result.plateNumber) {
         // 이미 리포트 생성 중이면 중복 실행 방지
         if (isGeneratingReport) {
@@ -1305,7 +1363,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
         let progressInterval: NodeJS.Timeout | null = null;
         
         try {
-          // 진행률 시뮬레이션 (실제로는 Gemini API 호출 중간에 업데이트)
+          // 진행률 시뮬레이션 (백엔드 API 호출 중간에 업데이트)
           progressInterval = setInterval(() => {
             setReportGenerationProgress(prev => {
               if (prev >= 90) {
@@ -1316,8 +1374,8 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
             });
           }, 300);
 
-          const { GeminiService } = await import('./src/services/gemini');
-          const generatedCondition = await GeminiService.generateVehicleCondition({
+          // 백엔드 리포트 생성 API 호출
+          const reportResult = await apiClient.report.generateReport({
             plateNumber: result.plateNumber,
             vin: result.vin,
             manufacturer: result.manufacturer,
@@ -1336,13 +1394,13 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
           }
           
           // 생성된 리포트 유효성 검증
-          if (!generatedCondition || typeof generatedCondition !== 'object' || Object.keys(generatedCondition).length === 0) {
+          if (!reportResult || !reportResult.success || !reportResult.condition) {
             throw new Error('리포트 생성 결과가 유효하지 않습니다.');
           }
           
           // 필수 필드 확인
           const requiredFields = ['exterior', 'interior', 'mechanic', 'frame'];
-          const missingFields = requiredFields.filter(field => !generatedCondition[field]);
+          const missingFields = requiredFields.filter(field => !reportResult.condition[field]);
           if (missingFields.length > 0) {
             throw new Error(`리포트 필수 필드가 누락되었습니다: ${missingFields.join(', ')}`);
           }
@@ -1351,9 +1409,9 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
           
           // 생성된 리포트를 상태에 저장
           setGeneratedReport({
-            condition: generatedCondition,
-            vehicleInfo: result,
-            generatedAt: new Date().toISOString(),
+            condition: reportResult.condition,
+            vehicleInfo: reportResult.vehicleInfo || result,
+            generatedAt: reportResult.generatedAt || new Date().toISOString(),
           });
         } catch (reportError: any) {
           console.error('리포트 생성 실패:', reportError);
@@ -1371,7 +1429,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
     } catch (err: any) {
       console.error('OCR Error:', err);
       const errorMessage = err.message || '등록원부 인식 중 오류가 발생했습니다.';
-      alert(errorMessage);
+      showToast(errorMessage, 'error');
       // 에러 발생 시 미리보기 제거
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
@@ -1397,7 +1455,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
       setPriceEstimate(result);
     } catch (err: any) {
       console.error('Price Estimate Error:', err);
-      alert('시세 추정 중 오류가 발생했습니다.');
+      showToast('시세 추정 중 오류가 발생했습니다.', 'error');
     } finally {
       setIsOCRLoading(false);
     }
@@ -1495,7 +1553,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                   onClick={async () => {
                     // 리포트 공유 링크 생성 및 복사
                     if (!savedReportId) {
-                      alert('리포트가 저장되지 않았습니다. 먼저 리포트를 저장해주세요.');
+                      showToast('리포트가 저장되지 않았습니다. 먼저 리포트를 저장해주세요.', 'warning');
                       return;
                     }
                     
@@ -1504,7 +1562,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                       // Clipboard API 사용 시도
                       if (navigator.clipboard && navigator.clipboard.writeText) {
                         await navigator.clipboard.writeText(shareUrl);
-                        alert('공유 링크가 클립보드에 복사되었습니다.\n\n' + shareUrl);
+                        showToast('공유 링크가 클립보드에 복사되었습니다.', 'success');
                       } else {
                         // 클립보드 API 실패 시 fallback
                         const textArea = document.createElement('textarea');
@@ -1518,20 +1576,20 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                         try {
                           const successful = document.execCommand('copy');
                           if (successful) {
-                            alert('공유 링크가 클립보드에 복사되었습니다.\n\n' + shareUrl);
+                            showToast('공유 링크가 클립보드에 복사되었습니다.', 'success');
                           } else {
                             throw new Error('복사 실패');
                           }
                         } catch (err) {
-                          // 복사 실패 시 링크만 표시
-                          prompt('공유 링크를 복사하세요:', shareUrl);
+                          // 복사 실패 시 링크만 표시 (브라우저 권한 이슈로 alert 유지)
+                          alert('공유 링크를 복사하세요:\n\n' + shareUrl);
                         } finally {
                           document.body.removeChild(textArea);
                         }
                       }
                     } catch (err) {
-                      // 모든 복사 방법 실패 시 prompt로 링크 표시
-                      prompt('공유 링크를 복사하세요:', shareUrl);
+                      // 모든 복사 방법 실패 시 alert로 링크 표시 (브라우저 권한 이슈)
+                      alert('공유 링크를 복사하세요:\n\n' + shareUrl);
                     }
                   }}
                   icon={Share2}
@@ -1576,7 +1634,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                   }
                 } catch (saveError: any) {
                   console.error('리포트 저장 실패:', saveError);
-                  alert('리포트 저장 중 오류가 발생했습니다: ' + (saveError.message || '알 수 없는 오류'));
+                  showToast('리포트 저장 중 오류가 발생했습니다: ' + (saveError.message || '알 수 없는 오류'), 'error');
                   // 저장 실패해도 리포트 페이지로 이동
                 } finally {
                   setIsSavingReport(false);
@@ -1654,12 +1712,16 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                  <div 
                     className={`aspect-[3/4] rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-6 transition-all cursor-pointer bg-white relative overflow-hidden
                        ${previewUrl ? 'border-fmax-primary/30' : 'border-gray-200 hover:border-fmax-primary hover:bg-blue-50/10'}
+                       ${isOCRLoading ? 'pointer-events-none opacity-75' : ''}
                     `}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       if (!isOCRLoading && fileInputRef.current) {
+                        console.log('이미지 업로드 버튼 클릭됨');
                         fileInputRef.current.click();
+                      } else {
+                        console.log('OCR 처리 중이므로 클릭 무시');
                       }
                     }}
                     onKeyDown={(e) => {
@@ -1673,6 +1735,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                     role="button"
                     tabIndex={0}
                     aria-label="등록증 사진 업로드"
+                    title={isOCRLoading ? '분석 중입니다...' : '클릭하여 등록증 사진 업로드'}
                  >
                     <input 
                       type="file" 
@@ -1681,6 +1744,10 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                       accept="image/*,.pdf" 
                       onChange={handleFileChange}
                       disabled={isOCRLoading}
+                      onClick={(e) => {
+                        // input 클릭 이벤트가 부모로 전파되지 않도록
+                        e.stopPropagation();
+                      }}
                     />
                     {previewUrl ? (
                       <div className="w-full h-full relative">
@@ -1728,12 +1795,89 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                      차량 기본 정보
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                     <Input label="차량 번호" value={formData.plateNumber} onChange={(e:any) => setFormData({...formData, plateNumber: e.target.value})} placeholder="예: 12가 3456" highlight={!!formData.plateNumber} />
-                     <Input label="차대번호 (VIN)" value={formData.vin} readOnly icon={Lock} placeholder="자동 인식" highlight={!!formData.vin} />
-                     <Input label="제조사" value={formData.manufacturer} onChange={(e:any) => setFormData({...formData, manufacturer: e.target.value})} highlight={!!formData.manufacturer} />
-                     <Input label="모델명" value={formData.modelName} onChange={(e:any) => setFormData({...formData, modelName: e.target.value})} highlight={!!formData.modelName} />
-                     <Input label="연식" value={formData.modelYear} onChange={(e:any) => setFormData({...formData, modelYear: e.target.value})} highlight={!!formData.modelYear} />
-                     <Input label="연료" value={formData.fuelType} onChange={(e:any) => setFormData({...formData, fuelType: e.target.value})} highlight={!!formData.fuelType} />
+                     <div className={autoFilledFields.has('plateNumber') ? 'animate-pulse' : ''}>
+                        <Input label="차량 번호" value={formData.plateNumber} onChange={(e:any) => {
+                          setFormData({...formData, plateNumber: e.target.value});
+                          setAutoFilledFields(prev => {
+                            const next = new Set(prev);
+                            next.delete('plateNumber');
+                            return next;
+                          });
+                        }} placeholder="예: 12가 3456" highlight={!!formData.plateNumber} />
+                        {autoFilledFields.has('plateNumber') && (
+                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                            <Check className="w-3 h-3" /> 자동 입력됨
+                          </p>
+                        )}
+                     </div>
+                     <div className={autoFilledFields.has('vin') ? 'animate-pulse' : ''}>
+                        <Input label="차대번호 (VIN)" value={formData.vin} readOnly icon={Lock} placeholder="자동 인식" highlight={!!formData.vin} />
+                        {autoFilledFields.has('vin') && (
+                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                            <Check className="w-3 h-3" /> 자동 인식됨
+                          </p>
+                        )}
+                     </div>
+                     <div className={autoFilledFields.has('manufacturer') ? 'animate-pulse' : ''}>
+                        <Input label="제조사" value={formData.manufacturer} onChange={(e:any) => {
+                          setFormData({...formData, manufacturer: e.target.value});
+                          setAutoFilledFields(prev => {
+                            const next = new Set(prev);
+                            next.delete('manufacturer');
+                            return next;
+                          });
+                        }} highlight={!!formData.manufacturer} />
+                        {autoFilledFields.has('manufacturer') && (
+                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                            <Check className="w-3 h-3" /> 자동 입력됨
+                          </p>
+                        )}
+                     </div>
+                     <div className={autoFilledFields.has('modelName') ? 'animate-pulse' : ''}>
+                        <Input label="모델명" value={formData.modelName} onChange={(e:any) => {
+                          setFormData({...formData, modelName: e.target.value});
+                          setAutoFilledFields(prev => {
+                            const next = new Set(prev);
+                            next.delete('modelName');
+                            return next;
+                          });
+                        }} highlight={!!formData.modelName} />
+                        {autoFilledFields.has('modelName') && (
+                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                            <Check className="w-3 h-3" /> 자동 입력됨
+                          </p>
+                        )}
+                     </div>
+                     <div className={autoFilledFields.has('modelYear') ? 'animate-pulse' : ''}>
+                        <Input label="연식" value={formData.modelYear} onChange={(e:any) => {
+                          setFormData({...formData, modelYear: e.target.value});
+                          setAutoFilledFields(prev => {
+                            const next = new Set(prev);
+                            next.delete('modelYear');
+                            return next;
+                          });
+                        }} highlight={!!formData.modelYear} />
+                        {autoFilledFields.has('modelYear') && (
+                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                            <Check className="w-3 h-3" /> 자동 입력됨
+                          </p>
+                        )}
+                     </div>
+                     <div className={autoFilledFields.has('fuelType') ? 'animate-pulse' : ''}>
+                        <Input label="연료" value={formData.fuelType} onChange={(e:any) => {
+                          setFormData({...formData, fuelType: e.target.value});
+                          setAutoFilledFields(prev => {
+                            const next = new Set(prev);
+                            next.delete('fuelType');
+                            return next;
+                          });
+                        }} highlight={!!formData.fuelType} />
+                        {autoFilledFields.has('fuelType') && (
+                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                            <Check className="w-3 h-3" /> 자동 입력됨
+                          </p>
+                        )}
+                     </div>
                   </div>
                </div>
 
@@ -1825,8 +1969,8 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                                                 });
                                              }, 300);
 
-                                             const { GeminiService } = await import('./src/services/gemini');
-                                             const generatedCondition = await GeminiService.generateVehicleCondition({
+                                             // 백엔드 리포트 생성 API 호출
+                                             const reportResult = await apiClient.report.generateReport({
                                                 plateNumber: formData.plateNumber,
                                                 vin: formData.vin,
                                                 manufacturer: formData.manufacturer,
@@ -1845,13 +1989,13 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                                              }
                                              
                                              // 생성된 리포트 유효성 검증
-                                             if (!generatedCondition || typeof generatedCondition !== 'object' || Object.keys(generatedCondition).length === 0) {
+                                             if (!reportResult || !reportResult.success || !reportResult.condition) {
                                                 throw new Error('리포트 생성 결과가 유효하지 않습니다.');
                                              }
                                              
                                              // 필수 필드 확인
                                              const requiredFields = ['exterior', 'interior', 'mechanic', 'frame'];
-                                             const missingFields = requiredFields.filter(field => !generatedCondition[field]);
+                                             const missingFields = requiredFields.filter(field => !reportResult.condition[field]);
                                              if (missingFields.length > 0) {
                                                 throw new Error(`리포트 필수 필드가 누락되었습니다: ${missingFields.join(', ')}`);
                                              }
@@ -1859,8 +2003,8 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                                              setReportGenerationProgress(100);
                                              
                                              setGeneratedReport({
-                                                condition: generatedCondition,
-                                                vehicleInfo: {
+                                                condition: reportResult.condition,
+                                                vehicleInfo: reportResult.vehicleInfo || {
                                                    plateNumber: formData.plateNumber,
                                                    vin: formData.vin,
                                                    manufacturer: formData.manufacturer,
@@ -1871,7 +2015,7 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                                                    registrationDate: formData.registrationDate,
                                                    color: formData.color,
                                                 },
-                                                generatedAt: new Date().toISOString(),
+                                                generatedAt: reportResult.generatedAt || new Date().toISOString(),
                                              });
                                           } catch (retryError: any) {
                                              // 진행률 인터벌 정리 (에러 발생 시에도)
@@ -1945,13 +2089,13 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
                                                 
                                                 if (saveResult && saveResult.reportId) {
                                                    setSavedReportId(saveResult.reportId);
-                                                   alert('리포트가 저장되었습니다.');
+                                                   showToast('리포트가 저장되었습니다.', 'success');
                                                 } else {
                                                    throw new Error('리포트 저장 응답이 유효하지 않습니다.');
                                                 }
                                              } catch (saveError: any) {
                                                 console.error('리포트 저장 실패:', saveError);
-                                                alert('리포트 저장 중 오류가 발생했습니다: ' + (saveError.message || '알 수 없는 오류'));
+                                                showToast('리포트 저장 중 오류가 발생했습니다: ' + (saveError.message || '알 수 없는 오류'), 'error');
                                              } finally {
                                                 setIsSavingReport(false);
                                              }
@@ -2301,10 +2445,39 @@ const GoogleMapsPicker = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [searchValue, setSearchValue] = useState(initialAddress);
-  // Gemini API 키를 Google Maps API 키로도 사용
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 
-                 import.meta.env.VITE_GEMINI_API_KEY || 
-                 'AIzaSyC0H1moukd9KnWlCqrTaBxYj1WE3Y16QpY';
+  const [apiKey, setApiKey] = useState<string | null>(null);
+  
+  // 백엔드에서 Google Maps API 키 가져오기
+  useEffect(() => {
+    const fetchApiKey = async () => {
+      try {
+        // 먼저 환경 변수 확인 (개발 환경용)
+        const envKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+        if (envKey) {
+          setApiKey(envKey);
+          return;
+        }
+        
+        // 환경 변수가 없으면 백엔드에서 가져오기
+        const result = await apiClient.config.getGoogleMapsApiKey();
+        if (result && result.success && result.apiKey) {
+          setApiKey(result.apiKey);
+        } else {
+          console.error('Failed to get Google Maps API key from backend');
+        }
+      } catch (error) {
+        console.error('Error fetching Google Maps API key:', error);
+        // 에러 발생 시 환경 변수 fallback
+        const fallbackKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 
+                           import.meta.env.VITE_GEMINI_API_KEY;
+        if (fallbackKey) {
+          setApiKey(fallbackKey);
+        }
+      }
+    };
+    
+    fetchApiKey();
+  }, []);
   
   // @ts-ignore
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
@@ -2317,6 +2490,8 @@ const GoogleMapsPicker = ({
 
   // Google Maps JavaScript API 로드
   useEffect(() => {
+    if (!apiKey) return; // API 키가 없으면 로드하지 않음
+    
     // 이미 로드되어 있는지 확인
     // @ts-ignore
     if (window.google && window.google.maps) {
@@ -2515,6 +2690,7 @@ const GoogleMapsPicker = ({
 
 // --- SCR-0201: Inspection Request Page ---
 const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
+  const { showToast } = useToast();
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedLocation, setSelectedLocation] = useState<{
@@ -2553,11 +2729,11 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
 
   const handleRequest = async () => {
     if (!selectedLocation.address) {
-      alert('검차 장소를 선택해주세요.');
+      showToast('검차 장소를 선택해주세요.', 'warning');
       return;
     }
     if (!selectedDate || !selectedTime) {
-      alert('방문 희망 일시를 선택해주세요.');
+      showToast('방문 희망 일시를 선택해주세요.', 'warning');
       return;
     }
     if (vehicle) {
@@ -2771,6 +2947,7 @@ const InspectionStatusPage = ({ onNavigate, vehicleId }: any) => {
 
 // --- SCR-0202: Inspection Report Page ---
 const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
+  const { showToast } = useToast();
   const [report, setReport] = useState<InspectionReport | null>(null);
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
@@ -2797,10 +2974,9 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
         // 리포트 가져오기
         const r = MockDataService.getInspectionReport(targetVehicle.id);
         
-        // 차량 정보를 바탕으로 Gemini AI로 상세 상태 생성
+        // 차량 정보를 바탕으로 백엔드 API로 상세 상태 생성
         try {
-          const { GeminiService } = await import('./src/services/gemini');
-          const generatedCondition = await GeminiService.generateVehicleCondition({
+          const reportResult = await apiClient.report.generateReport({
             plateNumber: targetVehicle.plateNumber,
             vin: targetVehicle.vin,
             manufacturer: targetVehicle.manufacturer,
@@ -2813,12 +2989,12 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
           });
           
           // 생성된 상세 상태로 리포트 업데이트
-          if (generatedCondition && Object.keys(generatedCondition).length > 0) {
+          if (reportResult && reportResult.success && reportResult.condition) {
             r.condition = {
-              exterior: generatedCondition.exterior || r.condition.exterior,
-              interior: generatedCondition.interior || r.condition.interior,
-              mechanic: generatedCondition.mechanic || r.condition.mechanic,
-              frame: generatedCondition.frame || r.condition.frame,
+              exterior: reportResult.condition.exterior || r.condition.exterior,
+              interior: reportResult.condition.interior || r.condition.interior,
+              mechanic: reportResult.condition.mechanic || r.condition.mechanic,
+              frame: reportResult.condition.frame || r.condition.frame,
             };
           }
         } catch (error: any) {
@@ -2883,7 +3059,7 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
                onClick={async () => {
                   // 리포트 공유 링크 생성 및 복사
                   if (!report || !report.id) {
-                     alert('리포트 정보가 없습니다.');
+                     showToast('리포트 정보가 없습니다.', 'warning');
                      return;
                   }
                   
@@ -2892,7 +3068,7 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
                      // Clipboard API 사용 시도
                      if (navigator.clipboard && navigator.clipboard.writeText) {
                         await navigator.clipboard.writeText(shareUrl);
-                        alert('공유 링크가 클립보드에 복사되었습니다.\n\n' + shareUrl);
+                        showToast('공유 링크가 클립보드에 복사되었습니다.', 'success');
                      } else {
                         // 클립보드 API 실패 시 fallback
                         const textArea = document.createElement('textarea');
@@ -2906,20 +3082,20 @@ const InspectionReportPage = ({ onNavigate, vehicleId }: any) => {
                         try {
                            const successful = document.execCommand('copy');
                            if (successful) {
-                              alert('공유 링크가 클립보드에 복사되었습니다.\n\n' + shareUrl);
+                              showToast('공유 링크가 클립보드에 복사되었습니다.', 'success');
                            } else {
                               throw new Error('복사 실패');
                            }
                         } catch (err) {
-                           // 복사 실패 시 링크만 표시
-                           prompt('공유 링크를 복사하세요:', shareUrl);
+                           // 복사 실패 시 링크만 표시 (브라우저 권한 이슈로 alert 유지)
+                           alert('공유 링크를 복사하세요:\n\n' + shareUrl);
                         } finally {
                            document.body.removeChild(textArea);
                         }
                      }
                   } catch (err) {
-                     // 모든 복사 방법 실패 시 prompt로 링크 표시
-                     prompt('공유 링크를 복사하세요:', shareUrl);
+                     // 모든 복사 방법 실패 시 alert로 링크 표시 (브라우저 권한 이슈)
+                     alert('공유 링크를 복사하세요:\n\n' + shareUrl);
                   }
                }}
             >
@@ -3558,4 +3734,8 @@ const App = () => {
 };
 
 const root = createRoot(document.getElementById("root")!);
-root.render(<App />);
+root.render(
+  <ToastProvider>
+    <App />
+  </ToastProvider>
+);

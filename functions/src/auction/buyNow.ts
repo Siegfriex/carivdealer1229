@@ -1,11 +1,8 @@
 import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
+import { getFirestore } from '../utils/firebaseAdmin';
 
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
-
-const db = admin.firestore();
+const db = getFirestore();
 
 export const buyNow = async (req: Request, res: Response) => {
   // CORS는 v2에서 자동 처리됨 (index.ts에서 cors: true 설정)

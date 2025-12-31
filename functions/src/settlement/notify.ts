@@ -1,11 +1,7 @@
 import { Request, Response } from 'express';
-import * as admin from 'firebase-admin';
+import { getFirestore } from '../utils/firebaseAdmin';
 
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
-
-const db = admin.firestore();
+const db = getFirestore();
 
 /**
  * API-0604: 정산 완료 알림 발송

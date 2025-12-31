@@ -160,6 +160,8 @@ export const ocrRegistration = async (req: Request, res: Response) => {
       fuelType: '',
       registrationDate: '',
       color: '',
+      publicDataSuccess: false, // 공공데이터 API 호출 성공 여부
+      publicDataError: null as string | null, // 공공데이터 API 에러 메시지
     };
 
     // 차량번호로 공공데이터 API 호출하여 차량 정보 가져오기
@@ -181,8 +183,9 @@ export const ocrRegistration = async (req: Request, res: Response) => {
         result.fuelType = vehicleInfo.fuelType || '';
         result.registrationDate = vehicleInfo.registrationDate || '';
         result.color = vehicleInfo.color || '';
+        result.publicDataSuccess = true; // 공공데이터 API 호출 성공
         
-        console.log('[OCR] Vehicle information retrieved successfully:', {
+        console.log('[OCR] Vehicle information retrieved successfully from public data:', {
           vin: result.vin,
           manufacturer: result.manufacturer,
           model: result.model,
@@ -190,6 +193,8 @@ export const ocrRegistration = async (req: Request, res: Response) => {
         });
       } else {
         console.warn('[OCR] Failed to retrieve vehicle information:', vehicleInfoResult.error);
+        result.publicDataSuccess = false;
+        result.publicDataError = vehicleInfoResult.error || '공공데이터 조회 실패';
         // 공공데이터 실패 시 차량번호만 반환
       }
     } catch (error: any) {
@@ -199,6 +204,8 @@ export const ocrRegistration = async (req: Request, res: Response) => {
         plateNumber: plateNumber,
         details: error
       });
+      result.publicDataSuccess = false;
+      result.publicDataError = error.message || '공공데이터 API 호출 중 오류 발생';
       // 에러 발생 시에도 차량번호는 반환
     }
 

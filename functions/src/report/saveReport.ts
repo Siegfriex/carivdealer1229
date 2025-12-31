@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
+import { getFirestore } from '../utils/firebaseAdmin';
+import { asyncHandler, createError } from '../middlewares/errorHandler';
 
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
-
-const db = admin.firestore();
+const db = getFirestore();
 
 interface SaveReportRequest {
   vehicleId: string;
@@ -37,12 +35,11 @@ interface SaveReportRequest {
   };
 }
 
-export const saveReport = async (req: Request, res: Response) => {
+export const saveReport = asyncHandler(async (req: Request, res: Response) => {
   // CORS는 v2에서 자동 처리됨 (index.ts에서 cors: true 설정)
 
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
+    throw createError('Method not allowed', 405, 'METHOD_NOT_ALLOWED');
   }
 
   try {
@@ -50,18 +47,15 @@ export const saveReport = async (req: Request, res: Response) => {
 
     // 입력값 유효성 검증
     if (!vehicleId || typeof vehicleId !== 'string' || vehicleId.trim() === '') {
-      res.status(400).json({ error: 'vehicleId is required and must be a non-empty string' });
-      return;
+      throw createError('vehicleId is required and must be a non-empty string', 400, 'VALIDATION_ERROR', { vehicleId });
     }
 
     if (!report || typeof report !== 'object') {
-      res.status(400).json({ error: 'report is required and must be an object' });
-      return;
+      throw createError('report is required and must be an object', 400, 'VALIDATION_ERROR');
     }
 
     if (!report.condition || typeof report.condition !== 'object') {
-      res.status(400).json({ error: 'report.condition is required and must be an object' });
-      return;
+      throw createError('report.condition is required and must be an object', 400, 'VALIDATION_ERROR');
     }
 
     // 필수 필드 확인
@@ -69,8 +63,7 @@ export const saveReport = async (req: Request, res: Response) => {
     const condition = report.condition as Record<string, any>;
     const missingFields = requiredFields.filter(field => !condition[field] || typeof condition[field] !== 'string');
     if (missingFields.length > 0) {
-      res.status(400).json({ error: `Missing required fields in condition: ${missingFields.join(', ')}` });
-      return;
+      throw createError(`Missing required fields in condition: ${missingFields.join(', ')}`, 400, 'VALIDATION_ERROR', { missingFields });
     }
 
     // 리포트 컬렉션에 저장
@@ -114,8 +107,8 @@ export const saveReport = async (req: Request, res: Response) => {
       message: '리포트가 저장되었습니다.',
     });
   } catch (error: any) {
-    console.error('Save Report Error:', error);
-    res.status(500).json({ error: error.message || 'Internal server error' });
+    // asyncHandler가 에러를 처리하므로 여기서는 throw만 하면 됨
+    throw error;
   }
-};
+});
 

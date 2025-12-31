@@ -3,13 +3,10 @@ import * as admin from 'firebase-admin';
 import Busboy from 'busboy';
 import { Readable } from 'stream';
 import type { FileInfo } from 'busboy';
+import { getFirestore, getStorage } from '../utils/firebaseAdmin';
 
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
-
-const db = admin.firestore();
-const storage = admin.storage();
+const db = getFirestore();
+const storage = getStorage();
 
 interface InspectionResult {
   evaluator: {

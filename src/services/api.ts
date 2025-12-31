@@ -1,12 +1,14 @@
 import { mockResponses } from './apiMockData';
 import { analyzeError } from '../utils/errorHandler';
+import { API_ENDPOINTS } from '../config/apiEndpoints';
 
 // API Base URL - Firebase Functions v2 endpoint
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
   'https://asia-northeast3-carivdealer.cloudfunctions.net';
 
 // API 타임아웃 (밀리초)
-const API_TIMEOUT = 30000; // 30초 (OCR 처리는 시간이 오래 걸릴 수 있음)
+const API_TIMEOUT = 30000; // 일반 API: 30초
+const OCR_TIMEOUT = 90000; // OCR 전용: 90초 (이미지 처리 시간이 오래 걸릴 수 있음)
 
 // 개발 환경에서만 로그 출력
 const isDev = import.meta.env.DEV;
@@ -130,7 +132,7 @@ export const apiClient = {
       phone: string;
       terms_agreed: boolean;
     }) => apiCall<{ success: boolean; member_id: string; message: string }>(
-      'member/dealer/register',
+      API_ENDPOINTS.MEMBER.REGISTER,
       { method: 'POST', body: JSON.stringify(data) }
     ),
 
@@ -140,7 +142,7 @@ export const apiClient = {
       
       try {
         const response = await fetchWithTimeout(
-          `${API_BASE_URL}/verifyBusinessAPI`,
+          `${API_BASE_URL}/${API_ENDPOINTS.MEMBER.VERIFY_BUSINESS}`,
           {
             method: 'POST',
             body: formData,
@@ -167,12 +169,12 @@ export const apiClient = {
       
       try {
         const response = await fetchWithTimeout(
-          `${API_BASE_URL}/ocrRegistrationAPI`,
+          `${API_BASE_URL}/${API_ENDPOINTS.VEHICLE.OCR_REGISTRATION}`,
           {
             method: 'POST',
             body: formData,
           },
-          API_TIMEOUT
+          OCR_TIMEOUT
         );
 
         if (!response.ok) {
@@ -203,6 +205,8 @@ export const apiClient = {
           registrationDate?: string;
           color?: string;
           plateNumber?: string;
+          publicDataSuccess?: boolean;
+          publicDataError?: string | null;
         }>;
       } catch (error: any) {
         // OCR은 폴백 없음: 타임아웃/네트워크 에러도 그대로 throw
@@ -219,7 +223,7 @@ export const apiClient = {
         preferred_date: string;
         preferred_time: string;
       }) => apiCall<{ success: boolean; inspection_id: string; message: string }>(
-        'inspectionRequestAPI',
+        API_ENDPOINTS.VEHICLE.INSPECTION_REQUEST,
         {
           method: 'POST',
           body: JSON.stringify({ vehicle_id: vehicleId, ...data }),
@@ -241,7 +245,7 @@ export const apiClient = {
       evaluator_id: string;
       message: string;
     }>(
-      'inspectionAssignAPI',
+      API_ENDPOINTS.INSPECTION.ASSIGN,
       {
         method: 'POST',
         body: JSON.stringify({ inspection_id: inspectionId }),
@@ -263,7 +267,7 @@ export const apiClient = {
       
       try {
         const response = await fetchWithTimeout(
-          `${API_BASE_URL}/inspectionUploadResultAPI`,
+          `${API_BASE_URL}/${API_ENDPOINTS.INSPECTION.UPLOAD_RESULT}`,
           {
             method: 'POST',
             body: formData,
@@ -288,7 +292,7 @@ export const apiClient = {
       result: any;
       inspection: any;
     }>(
-      'inspectionGetResultAPI',
+      API_ENDPOINTS.INSPECTION.GET_RESULT,
       { method: 'GET' },
       `?inspection_id=${encodeURIComponent(inspectionId)}`,
       () => mockResponses.getInspectionResult(inspectionId)
@@ -301,7 +305,7 @@ export const apiClient = {
       success: boolean;
       message: string;
     }>(
-      'bidAPI',
+      API_ENDPOINTS.AUCTION.BID,
       {
         method: 'POST',
         body: JSON.stringify({ auction_id: auctionId, bid_amount: bidAmount }),
@@ -313,7 +317,7 @@ export const apiClient = {
       contract_id: string;
       message: string;
     }>(
-      'buyNowAPI',
+      API_ENDPOINTS.AUCTION.BUY_NOW,
       { 
         method: 'POST',
         body: JSON.stringify({ auction_id: auctionId }),
@@ -330,7 +334,7 @@ export const apiClient = {
       success: boolean;
       auction_id: string;
     }>(
-      'changeSaleMethodAPI',
+      API_ENDPOINTS.TRADE.CHANGE_SALE_METHOD,
       {
         method: 'POST',
         body: JSON.stringify({ vehicle_id: vehicleId, auction_settings: auctionSettings }),
@@ -341,7 +345,7 @@ export const apiClient = {
       success: boolean;
       message: string;
     }>(
-      'acceptProposalAPI',
+      API_ENDPOINTS.TRADE.ACCEPT_PROPOSAL,
       {
         method: 'POST',
         body: JSON.stringify({ proposal_id: proposalId, action }),
@@ -371,7 +375,7 @@ export const apiClient = {
       logistics_id: string;
       message: string;
     }>(
-      'logisticsScheduleAPI',
+      API_ENDPOINTS.LOGISTICS.SCHEDULE,
       {
         method: 'POST',
         body: JSON.stringify(data),
@@ -386,7 +390,7 @@ export const apiClient = {
         dispatch_id: string;
         message: string;
       }>(
-        'logisticsDispatchRequestAPI',
+        API_ENDPOINTS.LOGISTICS.DISPATCH_REQUEST,
         {
           method: 'POST',
           body: JSON.stringify({ logistics_id: logisticsId }),
@@ -406,7 +410,7 @@ export const apiClient = {
           phone: string;
         };
       }>(
-        'logisticsDispatchConfirmAPI',
+        API_ENDPOINTS.LOGISTICS.DISPATCH_CONFIRM,
         {
           method: 'POST',
           body: JSON.stringify({
@@ -424,7 +428,7 @@ export const apiClient = {
       handover_timestamp: string;
       message: string;
     }>(
-      'handoverApproveAPI',
+      API_ENDPOINTS.LOGISTICS.HANDOVER_APPROVE,
       {
         method: 'POST',
         body: JSON.stringify({ logistics_id: logisticsId, pin }),
@@ -441,7 +445,7 @@ export const apiClient = {
       notification_id: string;
       message: string;
     }>(
-      'settlementNotifyAPI',
+      API_ENDPOINTS.SETTLEMENT.NOTIFY,
       {
         method: 'POST',
         body: JSON.stringify({ settlement_id: settlementId }),
@@ -453,6 +457,44 @@ export const apiClient = {
 
   // Report APIs
   report: {
+    generateReport: async (vehicleInfo: {
+      plateNumber?: string;
+      vin?: string;
+      manufacturer?: string;
+      model?: string;
+      modelName?: string;
+      modelYear?: string;
+      year?: string;
+      mileage?: string;
+      fuelType?: string;
+      registrationDate?: string;
+      color?: string;
+    }) => apiCall<{
+      success: boolean;
+      condition: {
+        exterior: string;
+        interior: string;
+        mechanic: string;
+        frame: string;
+      };
+      vehicleInfo: typeof vehicleInfo;
+      generatedAt: string;
+    }>(
+      API_ENDPOINTS.REPORT.GENERATE,
+      { method: 'POST', body: JSON.stringify({ vehicleInfo }) },
+      undefined,
+      () => ({
+        success: true,
+        condition: {
+          exterior: '외관 상태 평가 중...',
+          interior: '내부 상태 평가 중...',
+          mechanic: '기계적 상태 평가 중...',
+          frame: '차대/프레임 상태 평가 중...',
+        },
+        vehicleInfo,
+        generatedAt: new Date().toISOString(),
+      })
+    ),
     saveReport: async (data: {
       vehicleId: string;
       report: {
@@ -482,8 +524,16 @@ export const apiClient = {
         color?: string;
       };
     }) => apiCall<{ success: boolean; reportId: string; message: string }>(
-      'saveReportAPI',
+      API_ENDPOINTS.REPORT.SAVE,
       { method: 'POST', body: JSON.stringify(data) }
+    ),
+  },
+
+  // Config APIs
+  config: {
+    getGoogleMapsApiKey: () => apiCall<{ success: boolean; apiKey: string }>(
+      API_ENDPOINTS.CONFIG.GOOGLE_MAPS_API_KEY,
+      { method: 'GET' }
     ),
   },
 };

@@ -1,18 +1,15 @@
 import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
+import { getFirestore } from '../utils/firebaseAdmin';
+import { asyncHandler, createError } from '../middlewares/errorHandler';
 
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
+const db = getFirestore();
 
-const db = admin.firestore();
-
-export const assignEvaluator = async (req: Request, res: Response) => {
+export const assignEvaluator = asyncHandler(async (req: Request, res: Response) => {
   // CORS는 v2에서 자동 처리됨 (index.ts에서 cors: true 설정)
 
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
+    throw createError('Method not allowed', 405, 'METHOD_NOT_ALLOWED');
   }
 
   try {
@@ -20,8 +17,7 @@ export const assignEvaluator = async (req: Request, res: Response) => {
     const inspectionId = req.body.inspection_id;
 
     if (!inspectionId) {
-      res.status(400).json({ error: 'inspection_id is required in request body' });
-      return;
+      throw createError('inspection_id is required in request body', 400, 'VALIDATION_ERROR', { inspectionId });
     }
 
     // 검차 정보 조회
@@ -29,15 +25,13 @@ export const assignEvaluator = async (req: Request, res: Response) => {
     const inspectionDoc = await inspectionRef.get();
 
     if (!inspectionDoc.exists) {
-      res.status(404).json({ error: 'Inspection not found' });
-      return;
+      throw createError('Inspection not found', 404, 'NOT_FOUND', { inspectionId });
     }
 
     const inspectionData = inspectionDoc.data()!;
 
     if (inspectionData.status !== 'pending') {
-      res.status(400).json({ error: 'Inspection is not in pending status' });
-      return;
+      throw createError('Inspection is not in pending status', 400, 'INVALID_STATUS', { inspectionId, status: inspectionData.status });
     }
 
     // TODO: 실제 평가사 배정 로직 구현
@@ -58,8 +52,8 @@ export const assignEvaluator = async (req: Request, res: Response) => {
       message: '평가사가 배정되었습니다.',
     });
   } catch (error: any) {
-    console.error('Assign Evaluator Error:', error);
-    res.status(500).json({ error: error.message || 'Internal server error' });
+    // asyncHandler가 에러를 처리하므로 여기서는 throw만 하면 됨
+    throw error;
   }
-};
+});
 

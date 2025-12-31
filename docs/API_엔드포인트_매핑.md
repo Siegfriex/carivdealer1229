@@ -38,8 +38,9 @@ https://asia-northeast3-carivdealer.cloudfunctions.net
 
 ### 프론트엔드 API 클라이언트
 - 파일: `src/services/api.ts`
+- 엔드포인트 상수: `src/config/apiEndpoints.ts` (SSOT)
 - 함수: `apiCall<T>(endpoint: string, options: RequestInit, queryString?: string, mockFallback?: () => T)`
-- URL 생성: `${API_BASE_URL}/${endpoint}`
+- URL 생성: `${API_BASE_URL}/${endpoint}` (endpoint는 `API_ENDPOINTS` 상수 사용)
 
 ### 백엔드 Firebase Functions
 - 파일: `functions/src/index.ts`
@@ -48,12 +49,13 @@ https://asia-northeast3-carivdealer.cloudfunctions.net
 ## 타임아웃 및 폴백 로직
 
 ### 타임아웃 설정
-- **타임아웃 시간**: 5초 (5000ms)
-- **설정 위치**: `src/services/api.ts`의 `API_TIMEOUT` 상수
+- **일반 API 타임아웃**: 30초 (30000ms)
+- **OCR 전용 타임아웃**: 90초 (90000ms)
+- **설정 위치**: `src/services/api.ts`의 `API_TIMEOUT` 및 `OCR_TIMEOUT` 상수
 
 ### 폴백 동작
 1. 실제 API 호출 시도
-2. 5초 내 응답 없음 → 타임아웃 발생
+2. 타임아웃 내 응답 없음 → 타임아웃 발생 (일반 30초, OCR 90초)
 3. 타임아웃 또는 네트워크 에러 발생 시 → Mock 데이터로 자동 폴백
 4. Mock 데이터는 `src/services/apiMockData.ts`에 정의됨
 
@@ -103,5 +105,5 @@ export const acceptProposalAPI = onRequest({
 ### 실제 API 호출 확인
 브라우저 개발자 도구의 Network 탭에서 다음을 확인할 수 있습니다:
 - 요청 URL: `https://asia-northeast3-carivdealer.cloudfunctions.net/{endpointName}`
-- 응답 시간: 5초 이내면 성공, 초과 시 타임아웃
+- 응답 시간: 일반 API는 30초 이내, OCR은 90초 이내면 성공, 초과 시 타임아웃
 

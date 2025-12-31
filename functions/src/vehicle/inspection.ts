@@ -1,18 +1,15 @@
 import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
+import { getFirestore } from '../utils/firebaseAdmin';
+import { asyncHandler, createError } from '../middlewares/errorHandler';
 
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
+const db = getFirestore();
 
-const db = admin.firestore();
-
-export const inspectionRequest = async (req: Request, res: Response) => {
+export const inspectionRequest = asyncHandler(async (req: Request, res: Response) => {
   // CORS는 v2에서 자동 처리됨 (index.ts에서 cors: true 설정)
 
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
+    throw createError('Method not allowed', 405, 'METHOD_NOT_ALLOWED');
   }
 
   try {
@@ -21,8 +18,7 @@ export const inspectionRequest = async (req: Request, res: Response) => {
     const { preferred_date, preferred_time, location } = req.body;
 
     if (!vehicleId || !preferred_date || !preferred_time) {
-      res.status(400).json({ error: 'vehicle_id, preferred_date, and preferred_time are required' });
-      return;
+      throw createError('vehicle_id, preferred_date, and preferred_time are required', 400, 'VALIDATION_ERROR', { vehicleId, preferred_date, preferred_time });
     }
 
     // 위치 정보 검증 및 정리
@@ -78,8 +74,8 @@ export const inspectionRequest = async (req: Request, res: Response) => {
       message: '검차 신청이 완료되었습니다.',
     });
   } catch (error: any) {
-    console.error('Inspection Request Error:', error);
-    res.status(500).json({ error: error.message || 'Internal server error' });
+    // asyncHandler가 에러를 처리하므로 여기서는 throw만 하면 됨
+    throw error;
   }
-};
+});
 

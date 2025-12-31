@@ -1,11 +1,8 @@
 import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
+import { getFirestore } from '../utils/firebaseAdmin';
 
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
-
-const db = admin.firestore();
+const db = getFirestore();
 
 /**
  * API-0603: 인계 승인 (PIN 검증 포함)

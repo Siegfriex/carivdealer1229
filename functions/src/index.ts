@@ -16,6 +16,8 @@ import { notifySettlement } from './settlement/notify';
 import { bid } from './auction/bid';
 import { buyNow } from './auction/buyNow';
 import { saveReport } from './report/saveReport';
+import { generateReport } from './report/generateReport';
+import { getGoogleMapsApiKey } from './config/getGoogleMapsApiKey';
 
 // 전역 옵션 설정: 리전을 asia-northeast3로 설정
 setGlobalOptions({
@@ -123,4 +125,17 @@ export const saveReportAPI = onRequest({
   region: 'asia-northeast3',
   cors: true,
 }, saveReport);
+
+// API-0206: 리포트 생성 (Gemini AI)
+export const generateReportAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+  timeoutSeconds: 60, // Gemini API 호출 시간 고려
+}, generateReport);
+
+// API-0207: Google Maps API 키 조회
+export const getGoogleMapsApiKeyAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, getGoogleMapsApiKey);
 

@@ -1,11 +1,8 @@
 import * as admin from 'firebase-admin';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
+import { getFirestore } from '../utils/firebaseAdmin';
 
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
-
-const db = admin.firestore();
+const db = getFirestore();
 
 /**
  * 제안 유효기간 관리 및 만료 처리
