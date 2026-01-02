@@ -20,8 +20,10 @@ import { generateReport } from './report/generateReport';
 import { getGoogleMapsApiKey } from './config/getGoogleMapsApiKey';
 
 // 전역 옵션 설정: 리전을 asia-northeast3로 설정
+// 통합 런타임 서비스 계정 사용 (Secret Manager 접근 권한 포함)
 setGlobalOptions({
   region: 'asia-northeast3',
+  serviceAccount: 'cloud-runtime-unified@carivdealer.iam.gserviceaccount.com',
 });
 
 // API-0100: 등록원부 OCR

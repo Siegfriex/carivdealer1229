@@ -42,3 +42,4 @@ export function getAuth(): admin.auth.Auth {
   return admin.auth();
 }
 
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { createRoot } from "react-dom/client";
 import { 
   ArrowRight, 
@@ -67,7 +67,10 @@ import {
   XCircle,
   CalendarDays,
   Plus,
-  Timer
+  Timer,
+  Phone,
+  FileCheck,
+  Signature
 } from "lucide-react";
 import { apiClient } from './src/services/api';
 import { GeminiService } from './src/services/gemini';
@@ -101,6 +104,9 @@ type Screen =
   | 'SCR-0201' // Inspection Request
   | 'SCR-0201-Progress' // Inspection Status
   | 'SCR-0202' // Inspection Report
+  | 'SCR-0300-REQ' // Inspection Request (C-1)
+  | 'SCR-0300-PROG' // Inspection Progress (C-2)
+  | 'SCR-0300-RES' // Inspection Result (C-3)
   | 'SCR-0300' // Sales Method Selection
   | 'SCR-0301-N' // General Sale - Analyzing
   | 'SCR-0302-N' // General Sale - Price Setting
@@ -374,9 +380,14 @@ const Badge = ({ children, variant = "default", className="" }: any) => {
   );
 };
 
-const Input = ({ label, type = "text", placeholder, value, onChange, icon: Icon, readOnly = false, helperText, highlight = false, className="" }: any) => (
+const Input = ({ label, type = "text", placeholder, value, onChange, icon: Icon, readOnly = false, helperText, highlight = false, error, success, required = false, className="" }: any) => (
   <div className={`space-y-1.5 w-full ${className}`}>
-    {label && <label className="block text-sm font-semibold text-fmax-text-secondary">{label}</label>}
+    {label && (
+      <label className="block text-sm font-semibold text-fmax-text-secondary">
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+    )}
     <div className="relative group">
       {Icon && (
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-fmax-text-sub">
@@ -385,14 +396,37 @@ const Input = ({ label, type = "text", placeholder, value, onChange, icon: Icon,
       )}
       <input
         type={type}
-        className={`block w-full rounded-lg border-fmax-border bg-white text-fmax-text-main shadow-sm focus:border-fmax-primary focus:ring-2 focus:ring-fmax-primary/20 transition-all text-sm py-2.5 px-3 ${Icon ? 'pl-10' : ''} ${readOnly ? 'bg-gray-50 text-fmax-text-sub cursor-not-allowed' : ''} ${highlight ? 'ring-2 ring-fmax-primary/20 bg-blue-50/30' : ''}`}
+        className={`
+          block w-full rounded-lg border transition-all text-sm py-2.5 px-3
+          ${Icon ? 'pl-10' : ''}
+          ${error 
+            ? 'border-red-300 bg-red-50/50 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' 
+            : success
+              ? 'border-green-300 bg-green-50/50 focus:border-green-500 focus:ring-2 focus:ring-green-500/20'
+              : 'border-fmax-border bg-white focus:border-fmax-primary focus:ring-2 focus:ring-fmax-primary/20'
+          }
+          ${readOnly ? 'bg-gray-50 text-fmax-text-sub cursor-not-allowed' : ''}
+          ${highlight ? 'ring-2 ring-fmax-primary/20 bg-blue-50/30' : ''}
+        `}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         readOnly={readOnly}
       />
+      {success && (
+        <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
+      )}
+      {error && (
+        <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-red-500" />
+      )}
     </div>
-    {helperText && <p className="text-xs text-fmax-text-sub">{helperText}</p>}
+    {error && (
+      <p className="text-xs text-red-500 flex items-center gap-1">
+        <AlertCircle className="w-3 h-3" />
+        {error}
+      </p>
+    )}
+    {helperText && !error && <p className="text-xs text-fmax-text-sub">{helperText}</p>}
   </div>
 );
 
@@ -1099,82 +1133,1401 @@ const LoginPage = ({ onNavigate, onLogin }: any) => {
   );
 };
 
-// --- SCR-0002-2: Signup Info Page ---
-const SignupInfoPage = ({ onNavigate, onSkip }: any) => {
-  const [formData, setFormData] = useState({ companyName: '', businessRegNo: '', representative: '', email: '', phone: '', location: '' });
-  const [isOCRLoading, setIsOCRLoading] = useState(false);
-  const [ocrError, setOCRError] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+// --- SCR-0002-Wizard: Dealer Signup Wizard (4-Step Flow) ---
+const SignupWizard = ({ onNavigate }: any) => {
+  const [currentStep, setCurrentStep] = useState(1);
+  
+  // Step 1: Identity Verification
+  const [step1Data, setStep1Data] = useState({
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    name: '',
+    phone: '',
+    authCode: '',
+    socialAuth: null as string | null
+  });
 
-  const handleFileChange = async (e: any) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setIsOCRLoading(true);
-    setOCRError(null);
+  // Step 2: Dealer Authentication
+  const [step2Data, setStep2Data] = useState({
+    // Business Info
+    businessRegNo: '',
+    businessRegImage: null as File | null,
+    representativeName: '',
+    businessAddress: '',
+    businessCategory: '',
+    businessType: '',
+    vatTaxType: '',
+    businessPhone: '',
+    // Dealership Info
+    dealershipRegCert: null as File | null,
+    dealershipName: '',
+    employeeCardNo: '',
+    employeeCardPhoto: null as File | null,
+    dealershipRegImage: null as File | null,
+    falseSalePledgeSignature: null as string | null,
+    associationMember: false,
+    // KYC/AML
+    phoneAuthVerified: false,
+    idCardImage: null as File | null,
+    vatInvoiceEmail: ''
+  });
+
+  // Step 3: Terms Agreement
+  const [step3Data, setStep3Data] = useState({
+    allAgreed: false,
+    terms: false,
+    privacy: false,
+    marketing: false,
+    thirdParty: false,
+    electronicSignature: false,
+    sensitiveInfoAgreed: null as boolean | null
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // File upload handlers
+  const handleFileUpload = (field: string, file: File | null) => {
+    setStep2Data(prev => ({ ...prev, [field]: file }));
+  };
+
+  // Step validation
+  const canProceedStep1 = step1Data.email && step1Data.password && step1Data.passwordConfirm && 
+                          step1Data.password === step1Data.passwordConfirm && 
+                          step1Data.name && step1Data.phone;
+  const canProceedStep2 = step2Data.businessRegNo && step2Data.representativeName && 
+                          step2Data.businessAddress && step2Data.dealershipName;
+  const canProceedStep3 = step3Data.terms && step3Data.privacy;
+
+  const handleNext = () => {
+    if (currentStep < 4) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
     try {
-      const result = await GeminiService.extractBusinessInfo(file);
-      setFormData(prev => ({ ...prev, companyName: result.companyName || '', businessRegNo: result.businessRegNo || '', representative: result.representativeName || '' }));
-    } catch (err: any) {
-      setOCRError("문서 분석에 실패했습니다. 직접 입력해 주세요.");
+      // Prepare form data for submission
+      const formDataToSubmit = new FormData();
+      
+      // Step 1 data
+      formDataToSubmit.append('email', step1Data.email);
+      formDataToSubmit.append('password', step1Data.password);
+      formDataToSubmit.append('name', step1Data.name);
+      formDataToSubmit.append('phone', step1Data.phone);
+      if (step1Data.socialAuth) {
+        formDataToSubmit.append('socialAuth', step1Data.socialAuth);
+      }
+      
+      // Step 2 data - Business Info
+      formDataToSubmit.append('businessRegNo', step2Data.businessRegNo);
+      formDataToSubmit.append('representativeName', step2Data.representativeName);
+      formDataToSubmit.append('businessAddress', step2Data.businessAddress);
+      formDataToSubmit.append('businessCategory', step2Data.businessCategory);
+      formDataToSubmit.append('businessType', step2Data.businessType);
+      formDataToSubmit.append('businessPhone', step2Data.businessPhone);
+      formDataToSubmit.append('vatTaxType', step2Data.vatTaxType);
+      
+      // Step 2 data - Dealership Info
+      formDataToSubmit.append('dealershipName', step2Data.dealershipName);
+      formDataToSubmit.append('employeeCardNo', step2Data.employeeCardNo);
+      formDataToSubmit.append('associationMember', String(step2Data.associationMember));
+      if (step2Data.falseSalePledgeSignature) {
+        formDataToSubmit.append('falseSalePledgeSignature', step2Data.falseSalePledgeSignature);
+      }
+      
+      // Step 2 data - KYC
+      formDataToSubmit.append('vatInvoiceEmail', step2Data.vatInvoiceEmail);
+      formDataToSubmit.append('phoneAuthVerified', String(step2Data.phoneAuthVerified));
+      
+      // Step 2 files
+      if (step2Data.businessRegImage) {
+        formDataToSubmit.append('businessRegImage', step2Data.businessRegImage);
+      }
+      if (step2Data.dealershipRegCert) {
+        formDataToSubmit.append('dealershipRegCert', step2Data.dealershipRegCert);
+      }
+      if (step2Data.employeeCardPhoto) {
+        formDataToSubmit.append('employeeCardPhoto', step2Data.employeeCardPhoto);
+      }
+      if (step2Data.dealershipRegImage) {
+        formDataToSubmit.append('dealershipRegImage', step2Data.dealershipRegImage);
+      }
+      if (step2Data.idCardImage) {
+        formDataToSubmit.append('idCardImage', step2Data.idCardImage);
+      }
+      
+      // Step 3 data - Terms
+      formDataToSubmit.append('termsAgreed', String(step3Data.terms));
+      formDataToSubmit.append('privacyAgreed', String(step3Data.privacy));
+      formDataToSubmit.append('marketingAgreed', String(step3Data.marketing));
+      formDataToSubmit.append('thirdPartyAgreed', String(step3Data.thirdParty));
+      formDataToSubmit.append('electronicSignatureAgreed', String(step3Data.electronicSignature));
+      formDataToSubmit.append('sensitiveInfoAgreed', String(step3Data.sensitiveInfoAgreed || false));
+      
+      // Submit to backend API
+      // Note: This will need a backend endpoint that accepts FormData
+      // For now, we'll navigate to pending approval
+      // await apiClient.member.register(formDataToSubmit);
+      
+      // Navigate to pending approval
+      onNavigate('SCR-0003-1');
+    } catch (error) {
+      console.error('Signup submission failed:', error);
+      // TODO: Show error toast to user
     } finally {
-      setIsOCRLoading(false);
-      e.target.value = '';
+      setIsSubmitting(false);
+    }
+  };
+
+  // Common GNB Component
+  const CommonGNB = () => (
+    <header className="bg-white border-b border-fmax-border sticky top-0 z-30 h-16 flex items-center justify-between px-6 shadow-sm">
+      <div className="flex items-center gap-6">
+        <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onNavigate('SCR-0000')}>
+          <div className="w-8 h-8 bg-fmax-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">F</div>
+          <h1 className="text-xl font-bold text-fmax-text-main tracking-tight">ForwardMax <span className="text-xs font-normal text-fmax-text-sub ml-1">Partner</span></h1>
+        </div>
+      </div>
+      <div className="flex items-center gap-4">
+        <Button icon={Plus} size="sm" className="h-9 text-xs" onClick={() => onNavigate('SCR-0200')}>매물 등록</Button>
+        <div className="w-px h-5 bg-fmax-border"></div>
+        <div className="flex items-center gap-3">
+          <div className="text-right hidden sm:block">
+            <p className="text-sm font-bold text-fmax-text-main">회원가입</p>
+            <p className="text-xs text-fmax-text-sub">Sign Up</p>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+
+  return (
+    <div className="min-h-screen bg-white">
+      <CommonGNB />
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        <h1 className="text-h1 text-fmax-text-main mb-8 text-center">회원가입</h1>
+        
+        {/* Step Indicator */}
+        <div 
+          className="flex items-center justify-center mb-8 md:mb-12 gap-1 md:gap-2"
+          role="progressbar" 
+          aria-valuenow={currentStep} 
+          aria-valuemin={1} 
+          aria-valuemax={4}
+          aria-label={`회원가입 진행 단계: ${currentStep}단계 중 ${currentStep}단계`}
+        >
+          {[1, 2, 3, 4].map((step) => (
+            <React.Fragment key={step}>
+              <div 
+                className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-all duration-300 ${
+                  step === currentStep 
+                    ? 'bg-fmax-primary text-white scale-110 shadow-lg ring-2 ring-fmax-primary/20' 
+                    : step < currentStep 
+                      ? 'bg-green-500 text-white' 
+                      : 'bg-gray-200 text-gray-500'
+                }`}
+                aria-label={`${step}단계`}
+              >
+                {step < currentStep ? <Check className="w-4 h-4 md:w-5 md:h-5" /> : step}
+              </div>
+              {step < 4 && (
+                <div className={`w-8 md:w-16 h-1 transition-all duration-300 ${step < currentStep ? 'bg-green-500' : 'bg-gray-200'}`} />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* Step Content */}
+        <div className="max-w-4xl mx-auto">
+          <div key={currentStep} className="animate-fade-in">
+            {currentStep === 1 && (
+              <SignupStep1 
+                data={step1Data} 
+                setData={setStep1Data}
+                canProceed={canProceedStep1}
+              />
+            )}
+            {currentStep === 2 && (
+              <SignupStep2 
+                data={step2Data} 
+                setData={setStep2Data}
+                canProceed={canProceedStep2}
+                onFileUpload={handleFileUpload}
+              />
+            )}
+            {currentStep === 3 && (
+              <SignupStep3 
+                data={step3Data} 
+                setData={setStep3Data}
+                canProceed={canProceedStep3}
+              />
+            )}
+            {currentStep === 4 && (
+              <SignupStep4 onNavigate={onNavigate} />
+            )}
+          </div>
+        </div>
+
+        {/* Navigation Footer */}
+        {currentStep < 4 && (
+          <div className="max-w-4xl mx-auto mt-8">
+            {/* Dev Skip Button */}
+            <div className="mb-3 flex justify-end">
+              <button
+                onClick={() => {
+                  if (currentStep < 4) setCurrentStep(currentStep + 1);
+                }}
+                className="px-3 py-1.5 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded hover:bg-orange-100 transition-colors"
+                title="개발용: 검증 없이 다음 단계로 이동"
+              >
+                [DEV] 스킵 →
+              </button>
+            </div>
+            
+            <div className="flex items-center justify-between bg-gray-100 px-8 py-4 rounded-lg">
+              <button
+                onClick={handlePrev}
+                disabled={currentStep === 1}
+                onKeyDown={(e) => {
+                  if ((e.key === 'Enter' || e.key === ' ') && currentStep > 1) {
+                    e.preventDefault();
+                    handlePrev();
+                  }
+                }}
+                className={`px-6 py-2.5 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-fmax-primary focus:ring-offset-2 ${
+                  currentStep === 1 
+                    ? 'text-gray-400 cursor-not-allowed' 
+                    : 'text-fmax-text-main hover:bg-gray-200 bg-white active:scale-[0.98]'
+                }`}
+                aria-label="이전 단계로 이동"
+              >
+                이전페이지
+              </button>
+              <button
+                onClick={currentStep === 3 ? handleSubmit : handleNext}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    const canProceed = 
+                      (currentStep === 1 && canProceedStep1) ||
+                      (currentStep === 2 && canProceedStep2) ||
+                      (currentStep === 3 && canProceedStep3);
+                    if (canProceed && !isSubmitting) {
+                      e.preventDefault();
+                      if (currentStep === 3) handleSubmit();
+                      else handleNext();
+                    }
+                  }
+                }}
+                disabled={
+                  (currentStep === 1 && !canProceedStep1) ||
+                  (currentStep === 2 && !canProceedStep2) ||
+                  (currentStep === 3 && !canProceedStep3) ||
+                  isSubmitting
+                }
+                className={`px-8 py-2.5 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-fmax-primary focus:ring-offset-2 ${
+                  (currentStep === 1 && !canProceedStep1) ||
+                  (currentStep === 2 && !canProceedStep2) ||
+                  (currentStep === 3 && !canProceedStep3)
+                    ? 'text-gray-400 cursor-not-allowed bg-gray-200'
+                    : 'bg-fmax-primary text-white hover:bg-fmax-primary-hover shadow-md hover:shadow-lg active:scale-[0.98] transform hover:-translate-y-0.5'
+                }`}
+                aria-label={currentStep === 3 ? '회원가입 제출' : '다음 단계로 진행'}
+              >
+                {isSubmitting ? '제출 중...' : currentStep === 3 ? '제출하기' : '다음페이지'}
+              </button>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+};
+
+// Step 1: Identity Verification Component
+const SignupStep1 = ({ data, setData, canProceed }: any) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [authCodeSent, setAuthCodeSent] = useState(false);
+
+  return (
+    <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-6 md:p-8">
+      <div className="flex flex-col md:flex-row md:items-start gap-8 md:gap-16">
+        {/* Left: Step Info */}
+        <div className="w-full md:w-56 flex-shrink-0">
+          {/* Step Number Badge */}
+          <div className="w-12 h-12 bg-fmax-primary/10 rounded-xl flex items-center justify-center mb-4">
+            <span className="text-2xl font-bold text-fmax-primary">1</span>
+          </div>
+          <div className="text-xs text-fmax-text-sub mb-3 font-medium uppercase tracking-wider">Step 1 of 4</div>
+          <h2 className="text-h2 text-fmax-text-main mb-4">개인인증</h2>
+          {/* Progress Bar */}
+          <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden mb-4">
+            <div className="h-full bg-fmax-primary transition-all duration-500" style={{ width: '25%' }} />
+          </div>
+          {/* Guide Text */}
+          <p className="text-xs text-fmax-text-sub leading-relaxed">
+            다음 단계로 진행하려면<br/>
+            모든 필수 항목을 입력해주세요.
+          </p>
+        </div>
+
+        {/* Right: Form */}
+        <div className="flex-1 space-y-6">
+          {/* Account Info Section */}
+          <div className="space-y-4">
+            <Input
+              label="이메일"
+              type="email"
+              placeholder="email@example.com"
+              value={data.email}
+              onChange={(e: any) => setData({ ...data, email: e.target.value })}
+              icon={Mail}
+            />
+            <div className="relative">
+              <Input
+                label="비밀번호"
+                type={showPassword ? "text" : "password"}
+                placeholder="비밀번호를 입력하세요"
+                value={data.password}
+                onChange={(e: any) => setData({ ...data, password: e.target.value })}
+                icon={Lock}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-9 text-fmax-text-sub hover:text-fmax-text-main"
+              >
+                {showPassword ? <Eye className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            <Input
+              label="비밀번호 재입력"
+              type={showPassword ? "text" : "password"}
+              placeholder="비밀번호를 다시 입력하세요"
+              value={data.passwordConfirm}
+              onChange={(e: any) => setData({ ...data, passwordConfirm: e.target.value })}
+              icon={Lock}
+            />
+            {data.password && data.passwordConfirm && data.password !== data.passwordConfirm && (
+              <p className="text-xs text-red-500">비밀번호가 일치하지 않습니다</p>
+            )}
+          </div>
+
+          {/* Personal Auth Section */}
+          <div className="space-y-4 pt-4 border-t border-fmax-border">
+            <Input
+              label="이름"
+              placeholder="이름을 입력하세요"
+              value={data.name}
+              onChange={(e: any) => setData({ ...data, name: e.target.value })}
+              icon={User}
+            />
+            <div className="flex gap-3">
+              <Input
+                label="휴대전화"
+                placeholder="010-0000-0000"
+                value={data.phone}
+                onChange={(e: any) => setData({ ...data, phone: e.target.value })}
+                icon={Phone}
+                className="flex-1"
+              />
+              <button
+                onClick={() => {
+                  // Mock: Send auth code
+                  setAuthCodeSent(true);
+                  setTimeout(() => setAuthCodeSent(false), 3000);
+                }}
+                disabled={!data.phone || authCodeSent}
+                className={`mt-7 px-5 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                  authCodeSent
+                    ? 'bg-green-50 text-green-700 border border-green-200'
+                    : data.phone
+                      ? 'bg-fmax-primary text-white hover:bg-fmax-primary-hover shadow-sm'
+                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                }`}
+              >
+                {authCodeSent ? '✓ 전송완료' : '인증번호 전송'}
+              </button>
+            </div>
+            {authCodeSent && (
+              <Input
+                label="인증번호"
+                placeholder="인증번호를 입력하세요"
+                value={data.authCode}
+                onChange={(e: any) => setData({ ...data, authCode: e.target.value })}
+              />
+            )}
+            
+            {/* Social Auth */}
+            <div className="pt-6">
+              <label className="block text-sm font-semibold text-fmax-text-secondary mb-4">
+                소셜 인증(Pass등)
+              </label>
+              <div className="flex gap-4">
+                {['Pass', 'Kakao', 'Naver', 'Google'].map((provider) => (
+                  <button
+                    key={provider}
+                    onClick={() => setData({ ...data, socialAuth: provider })}
+                    className={`w-14 h-14 rounded-full border-2 flex items-center justify-center text-xs font-semibold transition-all ${
+                      data.socialAuth === provider
+                        ? 'border-fmax-primary bg-fmax-primary text-white shadow-md scale-105'
+                        : 'border-gray-300 bg-white text-gray-500 hover:border-fmax-primary/50 hover:scale-105'
+                    }`}
+                  >
+                    {provider.charAt(0)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Step 2: Dealer Authentication Component
+const SignupStep2 = ({ data, setData, canProceed, onFileUpload }: any) => {
+  const fileInputRefs = {
+    businessReg: useRef<HTMLInputElement>(null),
+    dealershipReg: useRef<HTMLInputElement>(null),
+    employeeCard: useRef<HTMLInputElement>(null),
+    dealershipRegImage: useRef<HTMLInputElement>(null),
+    idCard: useRef<HTMLInputElement>(null)
+  };
+  const signatureCanvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [isVerifyingBusiness, setIsVerifyingBusiness] = useState(false);
+
+  useEffect(() => {
+    // Initialize canvas context
+    const canvas = signatureCanvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.strokeStyle = '#373EEF';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+      }
+    }
+  }, []);
+
+  const handleFileSelect = (field: string, ref: React.RefObject<HTMLInputElement>) => {
+    ref.current?.click();
+  };
+
+  const handleFileChange = (field: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onFileUpload(field, file);
+    }
+  };
+
+  const handleSignatureStart = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    setIsDrawing(true);
+    const canvas = signatureCanvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.strokeStyle = '#373EEF';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+  };
+
+  const handleSignatureMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = signatureCanvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      ctx.stroke();
+    }
+  };
+
+  const handleSignatureEnd = () => {
+    setIsDrawing(false);
+    const canvas = signatureCanvasRef.current;
+    if (canvas) {
+      const signatureData = canvas.toDataURL();
+      setData({ ...data, falseSalePledgeSignature: signatureData });
+    }
+  };
+
+  const handleVerifyBusiness = async () => {
+    if (!data.businessRegNo) return;
+    setIsVerifyingBusiness(true);
+    try {
+      // TODO: Call verifyBusinessAPI when businessRegImage is uploaded
+      // For now, mock verification
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setIsVerifyingBusiness(false);
+      // In real implementation:
+      // if (data.businessRegImage) {
+      //   const result = await apiClient.member.verifyBusiness(data.businessRegImage);
+      //   // Auto-fill business info if available
+      // }
+    } catch (error) {
+      console.error('Business verification failed:', error);
+      setIsVerifyingBusiness(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-        <div className="p-6 border-b border-gray-100">
-          <div className="flex justify-between items-center">
-             <h2 className="text-xl font-bold text-fmax-text-main">사업자 정보 입력</h2>
-             <span className="text-xs font-semibold text-fmax-primary bg-blue-50 px-2 py-1 rounded">Step 2/4</span>
+    <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-6 md:p-8">
+      <div className="flex flex-col md:flex-row md:items-start gap-8 md:gap-16">
+        <div className="w-full md:w-56 flex-shrink-0">
+          {/* Step Number Badge */}
+          <div className="w-12 h-12 bg-fmax-primary/10 rounded-xl flex items-center justify-center mb-4">
+            <span className="text-2xl font-bold text-fmax-primary">2</span>
           </div>
+          <div className="text-xs text-fmax-text-sub mb-3 font-medium uppercase tracking-wider">Step 2 of 4</div>
+          <h2 className="text-h2 text-fmax-text-main mb-4">딜러 인증</h2>
+          {/* Progress Bar */}
+          <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden mb-4">
+            <div className="h-full bg-fmax-primary transition-all duration-500" style={{ width: '50%' }} />
+          </div>
+          {/* Guide Text */}
+          <p className="text-xs text-fmax-text-sub leading-relaxed">
+            사업자 정보와 딜러 인증 서류를<br/>
+            준비하여 업로드해주세요.
+          </p>
         </div>
 
-        <div className="p-6 sm:p-8 space-y-8">
-          {/* OCR Section - Single Column Flow */}
-          <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100/50">
-            <h3 className="text-sm font-bold text-fmax-text-main flex items-center gap-2 mb-2">
-              <ScanEye className="w-4 h-4 text-fmax-primary" />
-              자동 입력 (OCR)
-            </h3>
-            <p className="text-xs text-fmax-text-sub mb-4">사업자등록증 이미지를 업로드하면 정보가 자동으로 입력됩니다.</p>
-            
-            <div 
-              className="border-2 border-dashed border-blue-200 rounded-lg p-6 flex flex-col items-center justify-center text-center bg-white cursor-pointer hover:bg-blue-50 transition-colors"
-              onClick={() => !isOCRLoading && fileInputRef.current?.click()}
-            >
-              <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
-              {isOCRLoading ? (
-                <div className="flex flex-col items-center py-2">
-                  <Loader2 className="w-6 h-6 text-fmax-primary animate-spin mb-2" />
-                  <span className="text-xs font-semibold text-fmax-primary">분석 중...</span>
+        <div className="flex-1 space-y-10">
+          {/* Section 1: Business Info */}
+          <div>
+            <h3 className="text-lg font-bold text-fmax-text-main mb-4">1. 사업자 필수 정보 입력</h3>
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <Input
+                  label="사업자 등록번호"
+                  placeholder="000-00-00000"
+                  value={data.businessRegNo}
+                  onChange={(e: any) => setData({ ...data, businessRegNo: e.target.value })}
+                  icon={FileText}
+                  className="flex-1"
+                />
+                <button
+                  onClick={handleVerifyBusiness}
+                  disabled={!data.businessRegNo || isVerifyingBusiness}
+                  className={`mt-7 px-5 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors shadow-sm ${
+                    isVerifyingBusiness
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : data.businessRegNo
+                        ? 'bg-fmax-primary text-white hover:bg-fmax-primary-hover'
+                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  {isVerifyingBusiness ? '확인 중...' : '확인'}
+                </button>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-semibold text-fmax-text-secondary mb-2">
+                  사업자등록증 이미지 <span className="text-red-500">*</span>
+                </label>
+                <div
+                  onClick={() => handleFileSelect('businessRegImage', fileInputRefs.businessReg)}
+                  className={`
+                    border-2 border-dashed rounded-lg p-8 md:p-10 text-center cursor-pointer
+                    transition-all duration-200 group relative overflow-hidden
+                    ${data.businessRegImage 
+                      ? 'border-green-300 bg-green-50/30' 
+                      : 'border-gray-300 hover:border-fmax-primary/50 hover:bg-blue-50/30'
+                    }
+                  `}
+                >
+                  {/* 배경 그라데이션 효과 */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-fmax-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <input
+                    type="file"
+                    ref={fileInputRefs.businessReg}
+                    className="hidden"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileChange('businessRegImage', e)}
+                  />
+                  {data.businessRegImage ? (
+                    <div className="flex flex-col items-center justify-center gap-3 relative z-10">
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-8 h-8 text-green-600" />
+                      </div>
+                      <div className="text-sm text-fmax-text-main font-medium">
+                        {data.businessRegImage.name}
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onFileUpload('businessRegImage', null);
+                        }}
+                        className="text-xs text-red-500 hover:text-red-700 underline"
+                      >
+                        파일 제거
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-10 h-10 text-gray-400 mx-auto mb-4 group-hover:text-fmax-primary transition-colors relative z-10" />
+                      <span className="text-sm text-gray-500 group-hover:text-fmax-text-main font-medium relative z-10">
+                        클릭하여 파일 업로드
+                      </span>
+                      <span className="text-xs text-gray-400 mt-2 relative z-10">
+                        JPG, PNG, PDF (최대 10MB)
+                      </span>
+                    </>
+                  )}
                 </div>
-              ) : (
-                <>
-                  <Upload className="w-6 h-6 text-blue-400 mb-2" />
-                  <span className="text-sm font-medium text-blue-600">이미지 업로드</span>
-                </>
-              )}
+              </div>
+
+              <Input
+                label="대표자명"
+                placeholder="대표자 이름"
+                value={data.representativeName}
+                onChange={(e: any) => setData({ ...data, representativeName: e.target.value })}
+                icon={User}
+              />
+
+              <div className="flex gap-3">
+                <Input
+                  label="사업장 주소"
+                  placeholder="주소를 검색하세요"
+                  value={data.businessAddress}
+                  onChange={(e: any) => setData({ ...data, businessAddress: e.target.value })}
+                  icon={MapPin}
+                  className="flex-1"
+                />
+                <button className="mt-7 px-5 py-2.5 bg-gray-100 text-fmax-text-main rounded-lg hover:bg-gray-200 text-sm font-medium whitespace-nowrap transition-colors border border-gray-200">
+                  주소등록
+                </button>
+              </div>
+
+              <Input
+                label="업태/종목"
+                placeholder="업태/종목을 입력하세요"
+                value={data.businessCategory}
+                onChange={(e: any) => setData({ ...data, businessCategory: e.target.value })}
+              />
+
+              <Input
+                label="사업자 정보 선택"
+                placeholder="선택하세요"
+                value={data.businessType}
+                onChange={(e: any) => setData({ ...data, businessType: e.target.value })}
+              />
             </div>
-            {ocrError && <p className="text-xs text-red-500 mt-2 text-center">{ocrError}</p>}
+
+            <div className="mt-6 pt-6 border-t border-fmax-border">
+              <h4 className="text-sm font-semibold text-fmax-text-secondary mb-4">선택정보 입력</h4>
+              <div className="space-y-4">
+                <Input
+                  label="부가가치세 과세 유형"
+                  placeholder="선택하세요"
+                  value={data.vatTaxType}
+                  onChange={(e: any) => setData({ ...data, vatTaxType: e.target.value })}
+                />
+                <Input
+                  label="사업장 전화번호"
+                  placeholder="02-0000-0000"
+                  value={data.businessPhone}
+                  onChange={(e: any) => setData({ ...data, businessPhone: e.target.value })}
+                  icon={Phone}
+                />
+              </div>
+            </div>
           </div>
 
-          {/* Form Section */}
-          <div className="space-y-5">
-            <Input label="상호명" placeholder="(주) 포워드맥스" value={formData.companyName} onChange={(e: any) => setFormData({...formData, companyName: e.target.value})} icon={Building} highlight={!!formData.companyName} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <Input label="사업자번호" placeholder="000-00-00000" value={formData.businessRegNo} onChange={(e: any) => setFormData({...formData, businessRegNo: e.target.value})} icon={FileText} highlight={!!formData.businessRegNo} />
-              <Input label="대표자명" placeholder="성함" value={formData.representative} onChange={(e: any) => setFormData({...formData, representative: e.target.value})} icon={User} highlight={!!formData.representative} />
+          {/* Section 2: Dealership Info */}
+          <div className="pt-8 border-t border-fmax-border">
+            <h3 className="text-lg font-bold text-fmax-text-main mb-4">2. 중고차 매매업 관련 인증</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-fmax-text-secondary mb-2">
+                  중고차 매매업 등록증 <span className="text-red-500">*</span>
+                </label>
+                <div
+                  onClick={() => handleFileSelect('dealershipRegCert', fileInputRefs.dealershipReg)}
+                  className={`
+                    border-2 border-dashed rounded-lg p-8 md:p-10 text-center cursor-pointer
+                    transition-all duration-200 group relative overflow-hidden
+                    ${data.dealershipRegCert 
+                      ? 'border-green-300 bg-green-50/30' 
+                      : 'border-gray-300 hover:border-fmax-primary/50 hover:bg-blue-50/30'
+                    }
+                  `}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-fmax-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <input
+                    type="file"
+                    ref={fileInputRefs.dealershipReg}
+                    className="hidden"
+                    accept="image/*,.pdf"
+                    onChange={(e) => handleFileChange('dealershipRegCert', e)}
+                  />
+                  {data.dealershipRegCert ? (
+                    <div className="flex flex-col items-center justify-center gap-3 relative z-10">
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-8 h-8 text-green-600" />
+                      </div>
+                      <div className="text-sm text-fmax-text-main font-medium">
+                        {data.dealershipRegCert.name}
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onFileUpload('dealershipRegCert', null);
+                        }}
+                        className="text-xs text-red-500 hover:text-red-700 underline"
+                      >
+                        파일 제거
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-10 h-10 text-gray-400 mx-auto mb-4 group-hover:text-fmax-primary transition-colors relative z-10" />
+                      <span className="text-sm text-gray-500 group-hover:text-fmax-text-main font-medium relative z-10">
+                        클릭하여 파일 업로드
+                      </span>
+                      <span className="text-xs text-gray-400 mt-2 relative z-10">
+                        JPG, PNG, PDF (최대 10MB)
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <Input
+                label="매매 상사명"
+                placeholder="매매 상사명을 입력하세요"
+                value={data.dealershipName}
+                onChange={(e: any) => setData({ ...data, dealershipName: e.target.value })}
+                icon={Building}
+              />
+
+              <div>
+                <label className="block text-sm font-semibold text-fmax-text-secondary mb-2">
+                  매매 사원증 번호 / 사진
+                </label>
+                <Input
+                  placeholder="사원증 번호를 입력하세요"
+                  value={data.employeeCardNo}
+                  onChange={(e: any) => setData({ ...data, employeeCardNo: e.target.value })}
+                  className="mb-2"
+                />
+                <div
+                  onClick={() => handleFileSelect('employeeCardPhoto', fileInputRefs.employeeCard)}
+                  className={`
+                    border-2 border-dashed rounded-lg p-8 md:p-10 text-center cursor-pointer
+                    transition-all duration-200 group relative overflow-hidden
+                    ${data.employeeCardPhoto 
+                      ? 'border-green-300 bg-green-50/30' 
+                      : 'border-gray-300 hover:border-fmax-primary/50 hover:bg-blue-50/30'
+                    }
+                  `}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-fmax-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <input
+                    type="file"
+                    ref={fileInputRefs.employeeCard}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange('employeeCardPhoto', e)}
+                  />
+                  {data.employeeCardPhoto ? (
+                    <div className="flex flex-col items-center justify-center gap-3 relative z-10">
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-8 h-8 text-green-600" />
+                      </div>
+                      <div className="text-sm text-fmax-text-main font-medium">
+                        {data.employeeCardPhoto.name}
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onFileUpload('employeeCardPhoto', null);
+                        }}
+                        className="text-xs text-red-500 hover:text-red-700 underline"
+                      >
+                        파일 제거
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-10 h-10 text-gray-400 mx-auto mb-4 group-hover:text-fmax-primary transition-colors relative z-10" />
+                      <span className="text-sm text-gray-500 group-hover:text-fmax-text-main font-medium relative z-10">
+                        클릭하여 파일 업로드
+                      </span>
+                      <span className="text-xs text-gray-400 mt-2 relative z-10">
+                        JPG, PNG (최대 10MB)
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-fmax-text-secondary mb-2">
+                  매매업 등록증 이미지 <span className="text-red-500">*</span>
+                </label>
+                <div
+                  onClick={() => handleFileSelect('dealershipRegImage', fileInputRefs.dealershipRegImage)}
+                  className={`
+                    border-2 border-dashed rounded-lg p-8 md:p-10 text-center cursor-pointer
+                    transition-all duration-200 group relative overflow-hidden
+                    ${data.dealershipRegImage 
+                      ? 'border-green-300 bg-green-50/30' 
+                      : 'border-gray-300 hover:border-fmax-primary/50 hover:bg-blue-50/30'
+                    }
+                  `}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-fmax-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <input
+                    type="file"
+                    ref={fileInputRefs.dealershipRegImage}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange('dealershipRegImage', e)}
+                  />
+                  {data.dealershipRegImage ? (
+                    <div className="flex flex-col items-center justify-center gap-3 relative z-10">
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-8 h-8 text-green-600" />
+                      </div>
+                      <div className="text-sm text-fmax-text-main font-medium">
+                        {data.dealershipRegImage.name}
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onFileUpload('dealershipRegImage', null);
+                        }}
+                        className="text-xs text-red-500 hover:text-red-700 underline"
+                      >
+                        파일 제거
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-10 h-10 text-gray-400 mx-auto mb-4 group-hover:text-fmax-primary transition-colors relative z-10" />
+                      <span className="text-sm text-gray-500 group-hover:text-fmax-text-main font-medium relative z-10">
+                        클릭하여 파일 업로드
+                      </span>
+                      <span className="text-xs text-gray-400 mt-2 relative z-10">
+                        JPG, PNG (최대 10MB)
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-fmax-text-secondary mb-3">
+                  허위매물 근절 서약서(전자서명)
+                </label>
+                <div className="border-2 border-gray-300 rounded-lg p-6 bg-gray-50/50">
+                  <canvas
+                    ref={signatureCanvasRef}
+                    width={600}
+                    height={200}
+                    className="border-2 border-gray-200 rounded-lg cursor-crosshair w-full bg-white shadow-inner"
+                    onMouseDown={handleSignatureStart}
+                    onMouseMove={handleSignatureMove}
+                    onMouseUp={handleSignatureEnd}
+                    onMouseLeave={handleSignatureEnd}
+                  />
+                  <div className="mt-3 flex items-center justify-between">
+                    <p className="text-xs text-fmax-text-sub">위 영역에 서명해주세요</p>
+                    {data.falseSalePledgeSignature && (
+                      <button
+                        onClick={() => {
+                          const canvas = signatureCanvasRef.current;
+                          if (canvas) {
+                            const ctx = canvas.getContext('2d');
+                            if (ctx) {
+                              ctx.clearRect(0, 0, canvas.width, canvas.height);
+                              setData({ ...data, falseSalePledgeSignature: null });
+                            }
+                          }
+                        }}
+                        className="text-xs text-red-600 hover:text-red-700 font-medium px-3 py-1.5 bg-red-50 rounded hover:bg-red-100 transition-colors"
+                      >
+                        서명 지우기
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-fmax-text-secondary mb-2">
+                  협회/조합 회원 여부
+                </label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="associationMember"
+                      checked={data.associationMember === true}
+                      onChange={() => setData({ ...data, associationMember: true })}
+                      className="w-4 h-4"
+                    />
+                    <span className="text-sm text-fmax-text-main">예</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="associationMember"
+                      checked={data.associationMember === false}
+                      onChange={() => setData({ ...data, associationMember: false })}
+                      className="w-4 h-4"
+                    />
+                    <span className="text-sm text-fmax-text-main">아니오</span>
+                  </label>
+                </div>
+              </div>
             </div>
-            <Input label="이메일 (ID)" type="email" placeholder="email@company.com" value={formData.email} onChange={(e: any) => setFormData({...formData, email: e.target.value})} icon={Mail} />
-            
-            <div className="pt-6">
-               <Button className="w-full h-12 text-base" onClick={() => onNavigate('SCR-0003-1')}>신청하기</Button>
+          </div>
+
+          {/* Section 3: KYC/AML */}
+          <div className="pt-8 border-t border-fmax-border">
+            <h3 className="text-lg font-bold text-fmax-text-main mb-4">4. 위험 관리(KYC/AML) 정보</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-fmax-text-secondary mb-2">
+                  휴대폰 본인 인증
+                </label>
+                <button className="w-full px-4 py-3 bg-gray-100 text-fmax-text-main rounded-lg hover:bg-gray-200 text-sm font-medium">
+                  본인 인증하기
+                </button>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-fmax-text-secondary mb-2">
+                  신분증(면허증/주민증) <span className="text-red-500">*</span>
+                </label>
+                <div
+                  onClick={() => handleFileSelect('idCardImage', fileInputRefs.idCard)}
+                  className={`
+                    border-2 border-dashed rounded-lg p-8 md:p-10 text-center cursor-pointer
+                    transition-all duration-200 group relative overflow-hidden
+                    ${data.idCardImage 
+                      ? 'border-green-300 bg-green-50/30' 
+                      : 'border-gray-300 hover:border-fmax-primary/50 hover:bg-blue-50/30'
+                    }
+                  `}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-fmax-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <input
+                    type="file"
+                    ref={fileInputRefs.idCard}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange('idCardImage', e)}
+                  />
+                  {data.idCardImage ? (
+                    <div className="flex flex-col items-center justify-center gap-3 relative z-10">
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-8 h-8 text-green-600" />
+                      </div>
+                      <div className="text-sm text-fmax-text-main font-medium">
+                        {data.idCardImage.name}
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onFileUpload('idCardImage', null);
+                        }}
+                        className="text-xs text-red-500 hover:text-red-700 underline"
+                      >
+                        파일 제거
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-10 h-10 text-gray-400 mx-auto mb-4 group-hover:text-fmax-primary transition-colors relative z-10" />
+                      <span className="text-sm text-gray-500 group-hover:text-fmax-text-main font-medium relative z-10">
+                        클릭하여 파일 업로드
+                      </span>
+                      <span className="text-xs text-gray-400 mt-2 relative z-10">
+                        JPG, PNG (최대 10MB)
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <Input
+                label="부가세계산서 이메일 주소"
+                type="email"
+                placeholder="vat@example.com"
+                value={data.vatInvoiceEmail}
+                onChange={(e: any) => setData({ ...data, vatInvoiceEmail: e.target.value })}
+                icon={Mail}
+              />
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+// Step 3: Terms of Service Component
+const SignupStep3 = ({ data, setData, canProceed }: any) => {
+  const handleSelectAll = () => {
+    const newAllAgreed = !data.allAgreed;
+    setData({
+      ...data,
+      allAgreed: newAllAgreed,
+      terms: newAllAgreed,
+      privacy: newAllAgreed,
+      marketing: newAllAgreed,
+      thirdParty: newAllAgreed,
+      electronicSignature: newAllAgreed,
+      sensitiveInfoAgreed: newAllAgreed ? true : null
+    });
+  };
+
+  const handleCheckboxChange = (field: string, value: boolean) => {
+    setData({ ...data, [field]: value });
+    // Update allAgreed based on required fields
+    if (field === 'terms' || field === 'privacy') {
+      const newAllAgreed = (field === 'terms' ? value : data.terms) && 
+                           (field === 'privacy' ? value : data.privacy);
+      setData({ ...data, [field]: value, allAgreed: newAllAgreed });
+    } else {
+      setData({ ...data, [field]: value });
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-6 md:p-8">
+      <div className="flex flex-col md:flex-row md:items-start gap-8 md:gap-16">
+        <div className="w-full md:w-56 flex-shrink-0">
+          {/* Step Number Badge */}
+          <div className="w-12 h-12 bg-fmax-primary/10 rounded-xl flex items-center justify-center mb-4">
+            <span className="text-2xl font-bold text-fmax-primary">3</span>
+          </div>
+          <div className="text-xs text-fmax-text-sub mb-3 font-medium uppercase tracking-wider">Step 3 of 4</div>
+          <h2 className="text-h2 text-fmax-text-main mb-4">이용약관 동의</h2>
+          {/* Progress Bar */}
+          <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden mb-4">
+            <div className="h-full bg-fmax-primary transition-all duration-500" style={{ width: '75%' }} />
+          </div>
+          {/* Guide Text */}
+          <p className="text-xs text-fmax-text-sub leading-relaxed">
+            서비스 이용을 위한<br/>
+            필수 약관에 동의해주세요.
+          </p>
+        </div>
+
+        <div className="flex-1 space-y-6">
+          {/* Select All */}
+          <div className="p-5 bg-gray-50 rounded-lg border-2 border-gray-200 flex items-center gap-4 cursor-pointer hover:bg-gray-100 transition-colors" onClick={handleSelectAll}>
+            <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${
+              data.allAgreed ? 'bg-fmax-primary border-fmax-primary shadow-sm' : 'border-gray-300 bg-white'
+            }`}>
+              {data.allAgreed && <Check className="w-4 h-4 text-white" />}
+            </div>
+            <span className="font-bold text-fmax-text-main text-base">전체동의</span>
+          </div>
+
+          <div className="p-5 bg-blue-50/50 rounded-lg border border-blue-100 text-sm text-fmax-text-sub leading-relaxed">
+            민간정보 수집이용, 개인정보의 수집 및 이용, 온라인신청 서비스 정책, 고유식별정보 수집 및 이용 항목에 대해 모두 동의합니다. 각 사항에 대한 동의 여부를 개별적으로 선택하실 수 있으며, 선택 동의 사항에 대한 동의를 거부하여도 서비스를 이용하실 수 있습니다.
+          </div>
+
+          {/* Required Terms */}
+          <div>
+            <h4 className="text-base font-bold text-fmax-text-main mb-4 flex items-center gap-2">
+              <span className="text-red-500">[필수]</span>
+              <span>약관</span>
+            </h4>
+            <div className="border-2 border-gray-200 rounded-lg p-6 mb-5 min-h-[200px] max-h-[300px] overflow-y-auto bg-gray-50 shadow-inner">
+              <p className="text-sm text-fmax-text-sub leading-relaxed">
+                서비스 이용약관 내용이 여기에 표시됩니다. 실제 약관 텍스트는 백엔드에서 가져와야 합니다.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.terms}
+                  onChange={(e) => handleCheckboxChange('terms', e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-fmax-primary focus:ring-fmax-primary"
+                />
+                <span className="text-sm text-fmax-text-main">만 14세 이상 동의</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.terms}
+                  onChange={(e) => handleCheckboxChange('terms', e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-fmax-primary focus:ring-fmax-primary"
+                />
+                <span className="text-sm text-fmax-text-main">서비스 이용약관 동의</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.privacy}
+                  onChange={(e) => handleCheckboxChange('privacy', e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-fmax-primary focus:ring-fmax-primary"
+                />
+                <span className="text-sm text-fmax-text-main">개인정보 처리방침 동의</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.marketing}
+                  onChange={(e) => handleCheckboxChange('marketing', e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-fmax-primary focus:ring-fmax-primary"
+                />
+                <span className="text-sm text-fmax-text-main">마케팅 정보 수신 동의</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Optional Terms */}
+          <div>
+            <h4 className="text-base font-bold text-fmax-text-main mb-4 flex items-center gap-2">
+              <span className="text-blue-500">[선택]</span>
+              <span>약관</span>
+            </h4>
+            <div className="border-2 border-gray-200 rounded-lg p-6 mb-5 min-h-[200px] max-h-[300px] overflow-y-auto bg-gray-50 shadow-inner">
+              <p className="text-sm text-fmax-text-sub leading-relaxed">
+                선택 약관 내용이 여기에 표시됩니다.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.thirdParty}
+                  onChange={(e) => handleCheckboxChange('thirdParty', e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-fmax-primary focus:ring-fmax-primary"
+                />
+                <span className="text-sm text-fmax-text-main">제3자 제공 동의(관세사·결제사 등)</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.electronicSignature}
+                  onChange={(e) => handleCheckboxChange('electronicSignature', e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-fmax-primary focus:ring-fmax-primary"
+                />
+                <span className="text-sm text-fmax-text-main">전자서명 동의(계약서 발행용)</span>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.marketing}
+                  onChange={(e) => handleCheckboxChange('marketing', e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-fmax-primary focus:ring-fmax-primary"
+                />
+                <span className="text-sm text-fmax-text-main">마케팅 알림 수신 동의(선택)</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Sensitive Info Terms */}
+          <div>
+            <h4 className="text-base font-bold text-fmax-text-main mb-4">민감정보 관련 약관</h4>
+            <div className="border-2 border-gray-200 rounded-lg p-6 mb-5 min-h-[100px] max-h-[150px] overflow-y-auto bg-gray-50 shadow-inner">
+              <p className="text-sm text-fmax-text-sub leading-relaxed">
+                민감정보 관련 약관 내용이 여기에 표시됩니다.
+              </p>
+            </div>
+            <div className="flex gap-6">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="sensitiveInfo"
+                  checked={data.sensitiveInfoAgreed === false}
+                  onChange={() => setData({ ...data, sensitiveInfoAgreed: false })}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm text-fmax-text-main">동의안함</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="sensitiveInfo"
+                  checked={data.sensitiveInfoAgreed === true}
+                  onChange={() => setData({ ...data, sensitiveInfoAgreed: true })}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm text-fmax-text-main">동의함</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Step 4: Approval Status Component
+const SignupStep4 = ({ onNavigate }: any) => {
+  const [status, setStatus] = useState<'pending' | 'complete'>('pending');
+
+  useEffect(() => {
+    // Mock: Simulate approval after 3 seconds for demo
+    const timer = setTimeout(() => {
+      setStatus('complete');
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (status === 'pending') {
+    return (
+      <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-12 min-h-[500px] flex items-center justify-center">
+        <div className="flex flex-col items-center text-center max-w-md mx-auto">
+          <div className="relative mb-8">
+            <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center animate-pulse">
+              <Loader2 className="w-10 h-10 text-fmax-primary animate-spin" />
+            </div>
+            <div className="absolute -bottom-2 -right-2 bg-white rounded-full p-1.5 shadow-md border border-fmax-border">
+              <Clock className="w-5 h-5 text-fmax-text-sub" />
+            </div>
+          </div>
+          
+          <h2 className="text-2xl font-bold text-fmax-text-main mb-3">심사가 진행 중입니다</h2>
+          <p className="text-fmax-text-sub text-base leading-relaxed mb-8">
+            제출해주신 서류를 꼼꼼히 검토하고 있습니다.<br/>
+            평균 24시간 이내에 결과가 문자로 안내됩니다.
+          </p>
+          
+          <div className="bg-gray-50 rounded-lg p-4 w-full mb-8 text-left border border-gray-100">
+            <h4 className="text-xs font-bold text-fmax-text-secondary uppercase mb-2">체크 포인트</h4>
+            <ul className="space-y-2">
+              <li className="flex items-center text-sm text-fmax-text-sub">
+                <CheckCircle2 className="w-4 h-4 text-fmax-primary mr-2" />
+                사업자 등록증 진위 여부
+              </li>
+              <li className="flex items-center text-sm text-fmax-text-sub">
+                <CheckCircle2 className="w-4 h-4 text-fmax-primary mr-2" />
+                매매업 등록증 유효성
+              </li>
+              <li className="flex items-center text-sm text-fmax-text-sub">
+                <div className="w-4 h-4 rounded-full border-2 border-gray-300 mr-2 flex-shrink-0 animate-pulse" />
+                서류 일치 여부 확인 중...
+              </li>
+            </ul>
+          </div>
+
+          <button
+            onClick={() => onNavigate('SCR-0000')}
+            className="text-fmax-text-sub hover:text-fmax-text-main text-sm font-medium underline decoration-gray-300 hover:decoration-fmax-text-main underline-offset-4 transition-all"
+          >
+            홈 화면으로 돌아가기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-8 md:p-12 min-h-[500px] flex items-center justify-center overflow-hidden relative">
+      {/* 배경 패턴 */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(55,62,239,0.1)_0%,_transparent_50%)]" />
+      </div>
+      
+      {/* 상단 그라데이션 바 */}
+      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-fmax-primary via-fmax-accent to-fmax-primary" />
+      
+      {/* 배경 데코레이션 */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-blue-50 rounded-full opacity-50 blur-3xl animate-pulse-slow" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-green-50 rounded-full opacity-50 blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
+      
+      <div className="flex flex-col items-center text-center max-w-lg mx-auto relative z-10 animate-fade-in">
+        {/* 성공 아이콘 개선 */}
+        <div className="mb-8 relative">
+          <div className="w-28 h-28 bg-gradient-to-br from-green-50 to-green-100 rounded-full flex items-center justify-center shadow-inner relative">
+            <CheckCircle2 className="w-14 h-14 text-green-500" strokeWidth={2.5} />
+            {/* 성공 애니메이션 링 */}
+            <div className="absolute inset-0 rounded-full border-4 border-green-200 animate-ping opacity-20" />
+          </div>
+          <div className="absolute -bottom-3 -right-3 bg-white px-4 py-1.5 rounded-full shadow-lg border border-green-100 flex items-center gap-1.5 animate-bounce">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-xs font-bold text-green-700">승인 완료</span>
+          </div>
+        </div>
+        
+        {/* 제목 및 설명 */}
+        <h2 className="text-3xl md:text-4xl font-bold text-fmax-text-main mb-4 tracking-tight">
+          환영합니다!
+        </h2>
+        <h3 className="text-xl md:text-2xl font-semibold text-fmax-text-main mb-3">
+          가입이 승인되었습니다
+        </h3>
+        <p className="text-fmax-text-sub text-base md:text-lg mb-10 max-w-sm leading-relaxed">
+          이제 포워드맥스의 <span className="font-semibold text-fmax-primary">모든 프리미엄 서비스</span>를<br/>
+          제한 없이 이용하실 수 있습니다.
+        </p>
+        
+        {/* 바로가기 카드 개선 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-8">
+          <div 
+            className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-xl p-6 hover:border-fmax-primary/30 hover:shadow-lg transition-all cursor-pointer group text-left relative overflow-hidden"
+            onClick={() => onNavigate('SCR-0200')}
+          >
+            <div className="absolute top-0 right-0 w-20 h-20 bg-fmax-primary/5 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform relative z-10">
+              <Car className="w-6 h-6 text-fmax-primary" />
+            </div>
+            <h4 className="font-bold text-fmax-text-main mb-2 text-lg">매물 등록하기</h4>
+            <p className="text-xs text-fmax-text-sub leading-relaxed">
+              보유하신 차량을 등록하고<br/>수출 견적을 받아보세요.
+            </p>
+            <div className="mt-4 flex items-center text-xs text-fmax-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+              시작하기 <ArrowRight className="w-3 h-3 ml-1" />
+            </div>
+          </div>
+          
+          <div 
+            className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-xl p-6 hover:border-fmax-primary/30 hover:shadow-lg transition-all cursor-pointer group text-left relative overflow-hidden"
+            onClick={() => onNavigate('SCR-0100')}
+          >
+            <div className="absolute top-0 right-0 w-20 h-20 bg-fmax-primary/5 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform relative z-10">
+              <LayoutDashboard className="w-6 h-6 text-fmax-text-main" />
+            </div>
+            <h4 className="font-bold text-fmax-text-main mb-2 text-lg">대시보드 홈</h4>
+            <p className="text-xs text-fmax-text-sub leading-relaxed">
+              전체 현황을 한눈에<br/>확인하러 가기
+            </p>
+            <div className="mt-4 flex items-center text-xs text-fmax-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+              이동하기 <ArrowRight className="w-3 h-3 ml-1" />
+            </div>
+          </div>
+        </div>
+        
+        {/* 메인 CTA 버튼 개선 */}
+        <Button
+          onClick={() => onNavigate('SCR-0200')}
+          className="h-14 w-full text-lg font-bold shadow-xl shadow-fmax-primary/20 hover:shadow-fmax-primary/30 transition-all relative overflow-hidden group"
+        >
+          <span className="relative z-10 flex items-center justify-center">
+            바로 매물 등록 시작하기 
+            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </span>
+          <div className="absolute inset-0 bg-gradient-to-r from-fmax-primary to-fmax-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+        </Button>
       </div>
     </div>
   );
@@ -1186,6 +2539,8 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
   const [formData, setFormData] = useState({ plateNumber: '', vin: '', manufacturer: '', modelName: '', modelYear: '', fuelType: '', registrationDate: '', mileage: '', color: '', price: '' });
   const [isOCRLoading, setIsOCRLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [wonbuInputMode, setWonbuInputMode] = useState<'image' | 'manual'>('image'); // B-1: 이미지/직접 입력 모드
+  const [vehicleFields, setVehicleFields] = useState<Array<{ label: string; value: string; field: string }>>([]); // B-1: 자동 입력된 항목들
   const [priceEstimate, setPriceEstimate] = useState<any>(null);
   const [vehicleStatistics, setVehicleStatistics] = useState<any>(null);  // 공공데이터 통계 정보
   const [publicDataMetadata, setPublicDataMetadata] = useState<any>(null);  // 공공데이터 메타데이터
@@ -1298,6 +2653,25 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
       if (result.color) newAutoFilledFields.add('color');
       
       setAutoFilledFields(newAutoFilledFields);
+      
+      // B-1: 자동 입력된 항목들을 vehicleFields에 추가 (모든 필드 포함)
+      const fields = [
+        { label: '차량번호', value: result.plateNumber || '', field: 'plateNumber' },
+        { label: '차대번호', value: result.vin || '', field: 'vin' },
+        { label: '제조사', value: result.manufacturer || '', field: 'manufacturer' },
+        { label: '모델명', value: result.model || '', field: 'modelName' },
+        { label: '연식', value: result.year || '', field: 'modelYear' },
+        { label: '주행거리', value: result.mileage || '', field: 'mileage' },
+        { label: '연료', value: result.fuelType || '', field: 'fuelType' },
+        { label: '등록일자', value: result.registrationDate || '', field: 'registrationDate' },
+        { label: '색상', value: result.color || '', field: 'color' },
+      ].filter(f => f.value);
+      setVehicleFields(fields);
+      
+      // 자동 입력 완료 토스트 메시지
+      if (fields.length > 0) {
+        showToast(`✅ ${fields.length}개 항목이 자동으로 입력되었습니다.`, 'success');
+      }
       
       setFormData(prev => ({
         ...prev,
@@ -1463,8 +2837,8 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
 
   return (
     <>
-    {/* 리포트 미리보기 모달 */}
-    {generatedReport && !isGeneratingReport && (
+      {/* 리포트 미리보기 모달 */}
+      {generatedReport && !isGeneratingReport && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
         <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col">
           <div className="p-6 border-b border-gray-200 flex items-center justify-between">
@@ -1654,467 +3028,261 @@ const RegisterVehiclePage = ({ onNavigate, editingVehicleId }: any) => {
       </div>
     )}
     
-    <div className="min-h-screen bg-fmax-surface flex flex-col">
-       <header className="bg-white border-b border-fmax-border sticky top-0 z-30 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-4">
-            <button onClick={() => onNavigate('SCR-0100')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
-              <ArrowLeft className="w-5 h-5 text-fmax-text-secondary" />
-            </button>
-            <h1 className="text-lg font-bold text-fmax-text-main">{editingVehicleId ? "매물 정보 수정" : "새 매물 등록"}</h1>
-          </div>
-          <div className="flex gap-2">
-             <Button variant="outline" onClick={() => onNavigate('SCR-0200-Draft')}>임시 저장</Button>
-             <Button 
-               onClick={async () => {
-                 // ✅ formData를 기반으로 Mock 차량 생성 (프로토타입용)
-                 let savedVehicleId = editingVehicleId;
-                 
-                 if (!savedVehicleId) {
-                   // 새 차량인 경우 formData로 Mock 차량 생성
-                   const newVehicle = MockDataService.createVehicle(formData);
-                   savedVehicleId = newVehicle.id;
-                 } else {
-                   // 기존 차량 수정인 경우 정보 업데이트
-                   const existingVehicle = MockDataService.getVehicleById(savedVehicleId);
-                   if (existingVehicle) {
-                     existingVehicle.plateNumber = formData.plateNumber || existingVehicle.plateNumber;
-                     existingVehicle.manufacturer = formData.manufacturer || existingVehicle.manufacturer;
-                     existingVehicle.modelName = formData.modelName || existingVehicle.modelName;
-                     existingVehicle.modelYear = formData.modelYear || existingVehicle.modelYear;
-                     existingVehicle.mileage = formData.mileage || existingVehicle.mileage;
-                     existingVehicle.price = formData.price || existingVehicle.price;
-                     existingVehicle.fuelType = formData.fuelType || existingVehicle.fuelType;
-                     existingVehicle.registrationDate = formData.registrationDate || existingVehicle.registrationDate;
-                     existingVehicle.color = formData.color || existingVehicle.color;
-                     existingVehicle.vin = formData.vin || existingVehicle.vin;
-                   }
-                 }
-                 
-                 // 검차 신청 화면으로 이동
-                 onNavigate('SCR-0201', savedVehicleId);
-               }} 
-               icon={ChevronRight}
-             >
-               검차 요청
-             </Button>
-          </div>
+    <div className="min-h-screen bg-white flex flex-col">
+       {/* Header with GNB */}
+       <header className="bg-white border-b border-fmax-border px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+          <div className="text-lg font-bold text-fmax-text-main">logo</div>
+          <nav className="flex items-center gap-6 text-sm text-fmax-text-main">
+            <a href="#" className="hover:text-fmax-primary">매물등록</a>
+            <a href="#" className="hover:text-fmax-primary">검차</a>
+            <a href="#" className="hover:text-fmax-primary">거래</a>
+            <a href="#" className="hover:text-fmax-primary">진행상황</a>
+            <a href="#" className="hover:text-fmax-primary">로그아웃</a>
+          </nav>
+          {/* Dev Skip Button */}
+          <button
+            onClick={() => {
+              showToast('개발용: 목록으로 이동합니다.', 'info');
+              onNavigate('SCR-0101');
+            }}
+            className="ml-4 px-3 py-1.5 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded hover:bg-orange-100 transition-colors"
+            title="개발용: 검증 없이 목록으로 이동"
+          >
+            [DEV] 스킵
+          </button>
        </header>
 
-       <main className="flex-grow p-4 sm:p-6 lg:p-8 w-full flex justify-center">
-         <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left: Document Recognition */}
-            <div className="lg:col-span-5 space-y-6">
-               <div className="sticky top-24 space-y-4">
-                 <h3 className="text-base font-bold text-fmax-text-main flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-fmax-primary" />
-                    등록증 인식
-                 </h3>
-                 <div 
-                    className={`aspect-[3/4] rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-6 transition-all cursor-pointer bg-white relative overflow-hidden
-                       ${previewUrl ? 'border-fmax-primary/30' : 'border-gray-200 hover:border-fmax-primary hover:bg-blue-50/10'}
-                       ${isOCRLoading ? 'pointer-events-none opacity-75' : ''}
-                    `}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      if (!isOCRLoading && fileInputRef.current) {
-                        console.log('이미지 업로드 버튼 클릭됨');
-                        fileInputRef.current.click();
-                      } else {
-                        console.log('OCR 처리 중이므로 클릭 무시');
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        if (!isOCRLoading && fileInputRef.current) {
-                          fileInputRef.current.click();
-                        }
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label="등록증 사진 업로드"
-                    title={isOCRLoading ? '분석 중입니다...' : '클릭하여 등록증 사진 업로드'}
-                 >
-                    <input 
-                      type="file" 
-                      ref={fileInputRef} 
-                      className="hidden" 
-                      accept="image/*,.pdf" 
-                      onChange={handleFileChange}
-                      disabled={isOCRLoading}
-                      onClick={(e) => {
-                        // input 클릭 이벤트가 부모로 전파되지 않도록
-                        e.stopPropagation();
-                      }}
-                    />
-                    {previewUrl ? (
-                      <div className="w-full h-full relative">
-                         <img src={previewUrl} className="w-full h-full object-contain rounded" alt="등록증 미리보기" />
-                         {isOCRLoading && (
-                           <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center rounded">
-                              <Loader2 className="w-8 h-8 text-fmax-primary animate-spin mb-2" />
-                              <span className="font-semibold text-fmax-primary text-xs">분석 중...</span>
-                           </div>
-                         )}
-                         {!isOCRLoading && (
-                           <button
-                             onClick={(e) => {
-                               e.stopPropagation();
-                               setPreviewUrl(null);
-                               if (fileInputRef.current) {
-                                 fileInputRef.current.value = '';
-                               }
-                             }}
-                             className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                             aria-label="이미지 제거"
-                           >
-                             <X className="w-4 h-4" />
-                           </button>
-                         )}
+       <main className="flex-grow max-w-7xl mx-auto px-6 py-12 w-full">
+          {/* Page Title */}
+          <h1 className="text-h1 text-fmax-text-main mb-12 text-center">차량등록</h1>
+
+          {/* Section 1: 차량 번호 입력 */}
+          <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-8 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-1 h-6 bg-fmax-primary rounded-full" />
+              <h2 className="text-h3 text-fmax-text-main">차량 번호 입력</h2>
+            </div>
+            <p className="text-sm text-fmax-text-sub mb-6">차량번호를 입력하시면 자동으로 차량 정보를 불러옵니다.</p>
+            <div className="max-w-md">
+              <Input
+                label="차량 번호"
+                value={formData.plateNumber}
+                onChange={(e: any) => setFormData({ ...formData, plateNumber: e.target.value })}
+                placeholder="예: 12가 3456"
+                icon={Hash}
+              />
+              {formData.plateNumber && (
+                <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" />
+                  차량번호가 입력되었습니다
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Section 2: 차량 등록 원부 등록 */}
+          <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-8 mb-8">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-1 h-6 bg-fmax-primary rounded-full" />
+              <h2 className="text-h3 text-fmax-text-main">차량 등록 원부 등록</h2>
+            </div>
+            
+            {/* Tab Toggle */}
+            <div className="flex gap-2 mb-6 border-b border-fmax-border">
+              <button
+                onClick={() => setWonbuInputMode('image')}
+                className={`px-6 py-3 font-semibold text-sm transition-colors border-b-2 ${
+                  wonbuInputMode === 'image'
+                    ? 'border-fmax-primary text-fmax-primary'
+                    : 'border-transparent text-fmax-text-sub hover:text-fmax-text-main'
+                }`}
+              >
+                이미지로 등록
+              </button>
+              <button
+                onClick={() => setWonbuInputMode('manual')}
+                className={`px-6 py-3 font-semibold text-sm transition-colors border-b-2 ${
+                  wonbuInputMode === 'manual'
+                    ? 'border-fmax-primary text-fmax-primary'
+                    : 'border-transparent text-fmax-text-sub hover:text-fmax-text-main'
+                }`}
+              >
+                직접 입력
+              </button>
+            </div>
+
+            {/* Image Upload Mode */}
+            {wonbuInputMode === 'image' && (
+              <div className="space-y-4">
+                <div
+                  className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all duration-200 group relative overflow-hidden ${
+                    previewUrl
+                      ? 'border-green-300 bg-green-50/30'
+                      : 'border-gray-300 hover:border-fmax-primary/50 hover:bg-blue-50/30'
+                  }`}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-fmax-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*,.pdf"
+                    onChange={handleFileChange}
+                    disabled={isOCRLoading}
+                  />
+                  {previewUrl ? (
+                    <div className="flex flex-col items-center justify-center gap-3 relative z-10">
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-8 h-8 text-green-600" />
                       </div>
-                    ) : (
+                      <div className="text-sm text-fmax-text-main font-medium">이미지 업로드 완료</div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPreviewUrl(null);
+                          if (fileInputRef.current) fileInputRef.current.value = '';
+                        }}
+                        className="text-xs text-red-500 hover:text-red-700 underline"
+                      >
+                        파일 제거
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4 group-hover:text-fmax-primary transition-colors relative z-10" />
+                      <p className="text-sm text-gray-500 group-hover:text-fmax-text-main font-medium relative z-10 mb-2">
+                        이미지 업로드 시 각 항목이 자동으로 입력됩니다.
+                      </p>
+                      <p className="text-xs text-gray-400 relative z-10">*부가설명은 다음과 같이 들어갑니다</p>
+                      <button className="mt-4 px-6 py-2 bg-gray-100 text-fmax-text-main rounded-lg hover:bg-gray-200 text-sm font-medium transition-colors relative z-10">
+                        이미지 등록
+                      </button>
+                    </>
+                  )}
+                  {isOCRLoading && (
+                    <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex items-center justify-center rounded-xl">
                       <div className="text-center">
-                         <Upload className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                         <p className="font-medium text-fmax-text-main text-sm">등록증 사진 업로드</p>
-                         <p className="text-xs text-gray-400 mt-1">JPG, PNG, WEBP, PDF</p>
+                        <Loader2 className="w-8 h-8 text-fmax-primary animate-spin mx-auto mb-2" />
+                        <span className="text-sm text-fmax-primary font-medium">분석 중...</span>
                       </div>
-                    )}
-                 </div>
-                 <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-xs text-blue-700">
-                    차대번호와 제원을 자동으로 입력합니다.
-                 </div>
-               </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Manual Input Mode */}
+            {wonbuInputMode === 'manual' && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Input label="차대번호" value={formData.vin} onChange={(e: any) => setFormData({ ...formData, vin: e.target.value })} />
+                  <Input label="제조사" value={formData.manufacturer} onChange={(e: any) => setFormData({ ...formData, manufacturer: e.target.value })} />
+                  <Input label="모델명" value={formData.modelName} onChange={(e: any) => setFormData({ ...formData, modelName: e.target.value })} />
+                  <Input label="연식" value={formData.modelYear} onChange={(e: any) => setFormData({ ...formData, modelYear: e.target.value })} />
+                  <Input label="주행거리" value={formData.mileage} onChange={(e: any) => setFormData({ ...formData, mileage: e.target.value })} />
+                  <Input label="연료" value={formData.fuelType} onChange={(e: any) => setFormData({ ...formData, fuelType: e.target.value })} />
+                </div>
+              </div>
+            )}
+
+            {/* Auto-filled Fields List */}
+            {vehicleFields.length > 0 && (
+              <div className="mt-8">
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <h3 className="text-base font-bold text-fmax-text-main">자동 입력된 항목</h3>
+                  <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full font-semibold">{vehicleFields.length}개</span>
+                </div>
+                <div className="space-y-3">
+                  {vehicleFields.map((field, index) => (
+                    <div key={field.field} className="flex items-center gap-4 p-4 bg-green-50/50 rounded-lg border border-green-200 hover:bg-green-50 transition-colors group">
+                      <span className="text-sm font-semibold text-fmax-text-main w-28 flex-shrink-0">{field.label}</span>
+                      <Input
+                        value={field.value}
+                        onChange={(e: any) => {
+                          const updatedFields = [...vehicleFields];
+                          updatedFields[index].value = e.target.value;
+                          setVehicleFields(updatedFields);
+                          setFormData({ ...formData, [field.field]: e.target.value });
+                        }}
+                        className="flex-1"
+                      />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const input = e.currentTarget.parentElement?.querySelector('input') as HTMLInputElement;
+                          if (input) {
+                            input.focus();
+                            input.select();
+                          }
+                        }}
+                        className="px-4 py-2 text-sm text-fmax-primary hover:text-fmax-primary-hover font-medium hover:bg-white rounded-lg transition-colors"
+                      >
+                        수정
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Footer Actions */}
+          <div className="bg-gray-900 rounded-lg px-8 py-6 flex items-center justify-between">
+            <div className="text-sm text-gray-400">
+              {vehicleFields.length > 0 && (
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-400" />
+                  <span>{vehicleFields.length}개 항목이 자동 입력되었습니다</span>
+                </span>
+              )}
             </div>
-
-            {/* Right: Form Data */}
-            <div className="lg:col-span-7 space-y-8">
-               <div className="space-y-5">
-                  <h3 className="text-base font-bold text-fmax-text-main border-b border-gray-100 pb-2">
-                     차량 기본 정보
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                     <div className={autoFilledFields.has('plateNumber') ? 'animate-pulse' : ''}>
-                        <Input label="차량 번호" value={formData.plateNumber} onChange={(e:any) => {
-                          setFormData({...formData, plateNumber: e.target.value});
-                          setAutoFilledFields(prev => {
-                            const next = new Set(prev);
-                            next.delete('plateNumber');
-                            return next;
-                          });
-                        }} placeholder="예: 12가 3456" highlight={!!formData.plateNumber} />
-                        {autoFilledFields.has('plateNumber') && (
-                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
-                            <Check className="w-3 h-3" /> 자동 입력됨
-                          </p>
-                        )}
-                     </div>
-                     <div className={autoFilledFields.has('vin') ? 'animate-pulse' : ''}>
-                        <Input label="차대번호 (VIN)" value={formData.vin} readOnly icon={Lock} placeholder="자동 인식" highlight={!!formData.vin} />
-                        {autoFilledFields.has('vin') && (
-                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
-                            <Check className="w-3 h-3" /> 자동 인식됨
-                          </p>
-                        )}
-                     </div>
-                     <div className={autoFilledFields.has('manufacturer') ? 'animate-pulse' : ''}>
-                        <Input label="제조사" value={formData.manufacturer} onChange={(e:any) => {
-                          setFormData({...formData, manufacturer: e.target.value});
-                          setAutoFilledFields(prev => {
-                            const next = new Set(prev);
-                            next.delete('manufacturer');
-                            return next;
-                          });
-                        }} highlight={!!formData.manufacturer} />
-                        {autoFilledFields.has('manufacturer') && (
-                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
-                            <Check className="w-3 h-3" /> 자동 입력됨
-                          </p>
-                        )}
-                     </div>
-                     <div className={autoFilledFields.has('modelName') ? 'animate-pulse' : ''}>
-                        <Input label="모델명" value={formData.modelName} onChange={(e:any) => {
-                          setFormData({...formData, modelName: e.target.value});
-                          setAutoFilledFields(prev => {
-                            const next = new Set(prev);
-                            next.delete('modelName');
-                            return next;
-                          });
-                        }} highlight={!!formData.modelName} />
-                        {autoFilledFields.has('modelName') && (
-                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
-                            <Check className="w-3 h-3" /> 자동 입력됨
-                          </p>
-                        )}
-                     </div>
-                     <div className={autoFilledFields.has('modelYear') ? 'animate-pulse' : ''}>
-                        <Input label="연식" value={formData.modelYear} onChange={(e:any) => {
-                          setFormData({...formData, modelYear: e.target.value});
-                          setAutoFilledFields(prev => {
-                            const next = new Set(prev);
-                            next.delete('modelYear');
-                            return next;
-                          });
-                        }} highlight={!!formData.modelYear} />
-                        {autoFilledFields.has('modelYear') && (
-                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
-                            <Check className="w-3 h-3" /> 자동 입력됨
-                          </p>
-                        )}
-                     </div>
-                     <div className={autoFilledFields.has('fuelType') ? 'animate-pulse' : ''}>
-                        <Input label="연료" value={formData.fuelType} onChange={(e:any) => {
-                          setFormData({...formData, fuelType: e.target.value});
-                          setAutoFilledFields(prev => {
-                            const next = new Set(prev);
-                            next.delete('fuelType');
-                            return next;
-                          });
-                        }} highlight={!!formData.fuelType} />
-                        {autoFilledFields.has('fuelType') && (
-                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
-                            <Check className="w-3 h-3" /> 자동 입력됨
-                          </p>
-                        )}
-                     </div>
-                  </div>
-               </div>
-
-               <div className="space-y-5">
-                  <h3 className="text-base font-bold text-fmax-text-main border-b border-gray-100 pb-2">
-                     가격 정보
-                  </h3>
-                  <div className="space-y-4">
-                     <div className="flex gap-3 items-end">
-                        <div className="flex-1">
-                           <Input label="판매 희망가 (USD)" value={formData.price} onChange={(e:any) => setFormData({...formData, price: e.target.value})} type="number" placeholder="예: 25,000" />
-                        </div>
-                        <Button variant="outline" onClick={handleEstimate} loading={isOCRLoading} className="h-[42px] px-4">시세 조회</Button>
-                     </div>
-                     {priceEstimate && (
-                        <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
-                           <div className="flex items-start gap-3">
-                              <Zap className="w-5 h-5 text-blue-600 mt-0.5" />
-                              <div>
-                                 <p className="text-sm font-bold text-blue-800 mb-1">AI 마켓 분석</p>
-                                 <p className="text-sm text-blue-900 leading-relaxed">
-                                    {priceEstimate.text}
-                                 </p>
-                              </div>
-                           </div>
-                        </div>
-                     )}
-                  </div>
-               </div>
-
-               {/* 공공데이터 통계 정보는 백엔드에서 차량 정보로 변환되어 반환됨 */}
-               {formData.plateNumber && (
-                  <div className="space-y-5">
-                     <div className="bg-green-50 rounded-lg p-4 border border-green-100">
-                        <div className="flex items-start gap-3">
-                           <Check className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
-                           <div className="flex-1">
-                              <p className="text-sm font-bold text-green-800 mb-1">차량 정보 조회 완료</p>
-                              <p className="text-xs text-green-700">
-                                 차량번호 {formData.plateNumber}에 대한 정보를 공공데이터에서 조회하여 자동 입력되었습니다.
-                              </p>
-                              {isGeneratingReport && (
-                                 <div className="mt-3 pt-3 border-t border-green-200">
-                                    <div className="flex items-center gap-2 mb-2">
-                                       <Loader2 className="w-3 h-3 animate-spin text-green-600" />
-                                       <p className="text-xs text-green-600">성능 평가 리포트 생성 중...</p>
-                                    </div>
-                                    {/* 진행률 바 */}
-                                    <div className="w-full bg-gray-200 rounded-full h-1.5 mb-2">
-                                       <div 
-                                          className="bg-green-600 h-1.5 rounded-full transition-all duration-300"
-                                          style={{ width: `${reportGenerationProgress}%` }}
-                                       />
-                                    </div>
-                                    <p className="text-xs text-gray-500">{reportGenerationProgress}%</p>
-                                 </div>
-                              )}
-                              {reportGenerationError && !isGeneratingReport && (
-                                 <div className="mt-3 pt-3 border-t border-red-200">
-                                    <div className="flex items-start gap-2 mb-2">
-                                       <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
-                                       <div className="flex-1">
-                                          <p className="text-xs text-red-600 font-semibold mb-1">리포트 생성 실패</p>
-                                          <p className="text-xs text-red-500">{reportGenerationError}</p>
-                                       </div>
-                                    </div>
-                                    <Button 
-                                       size="sm" 
-                                       variant="outline" 
-                                       disabled={isGeneratingReport}
-                                       onClick={async () => {
-                                          // 재시도 로직 (중복 실행 방지)
-                                          if (isGeneratingReport) return;
-                                          
-                                          setReportGenerationError(null);
-                                          setIsGeneratingReport(true);
-                                          setReportGenerationProgress(0);
-                                          
-                                          let progressInterval: NodeJS.Timeout | null = null;
-                                          
-                                          try {
-                                             progressInterval = setInterval(() => {
-                                                setReportGenerationProgress(prev => {
-                                                   if (prev >= 90) {
-                                                      if (progressInterval) clearInterval(progressInterval);
-                                                      return 90;
-                                                   }
-                                                   return prev + 10;
-                                                });
-                                             }, 300);
-
-                                             // 백엔드 리포트 생성 API 호출
-                                             const reportResult = await apiClient.report.generateReport({
-                                                plateNumber: formData.plateNumber,
-                                                vin: formData.vin,
-                                                manufacturer: formData.manufacturer,
-                                                modelName: formData.modelName,
-                                                modelYear: formData.modelYear,
-                                                mileage: formData.mileage,
-                                                fuelType: formData.fuelType,
-                                                registrationDate: formData.registrationDate,
-                                                color: formData.color,
-                                             });
-                                             
-                                             // 진행률 인터벌 정리
-                                             if (progressInterval) {
-                                                clearInterval(progressInterval);
-                                                progressInterval = null;
-                                             }
-                                             
-                                             // 생성된 리포트 유효성 검증
-                                             if (!reportResult || !reportResult.success || !reportResult.condition) {
-                                                throw new Error('리포트 생성 결과가 유효하지 않습니다.');
-                                             }
-                                             
-                                             // 필수 필드 확인
-                                             const requiredFields = ['exterior', 'interior', 'mechanic', 'frame'];
-                                             const missingFields = requiredFields.filter(field => !reportResult.condition[field]);
-                                             if (missingFields.length > 0) {
-                                                throw new Error(`리포트 필수 필드가 누락되었습니다: ${missingFields.join(', ')}`);
-                                             }
-                                             
-                                             setReportGenerationProgress(100);
-                                             
-                                             setGeneratedReport({
-                                                condition: reportResult.condition,
-                                                vehicleInfo: reportResult.vehicleInfo || {
-                                                   plateNumber: formData.plateNumber,
-                                                   vin: formData.vin,
-                                                   manufacturer: formData.manufacturer,
-                                                   model: formData.modelName,
-                                                   year: formData.modelYear,
-                                                   mileage: formData.mileage,
-                                                   fuelType: formData.fuelType,
-                                                   registrationDate: formData.registrationDate,
-                                                   color: formData.color,
-                                                },
-                                                generatedAt: reportResult.generatedAt || new Date().toISOString(),
-                                             });
-                                          } catch (retryError: any) {
-                                             // 진행률 인터벌 정리 (에러 발생 시에도)
-                                             if (progressInterval) {
-                                                clearInterval(progressInterval);
-                                                progressInterval = null;
-                                             }
-                                             setReportGenerationError(retryError.message || '리포트 생성 중 오류가 발생했습니다.');
-                                             setReportGenerationProgress(0);
-                                          } finally {
-                                             setIsGeneratingReport(false);
-                                          }
-                                       }}
-                                       className="text-xs mt-2"
-                                    >
-                                       재시도
-                                    </Button>
-                                 </div>
-                              )}
-                              {generatedReport && !isGeneratingReport && !reportGenerationError && (
-                                 <div className="mt-3 pt-3 border-t border-green-200">
-                                    <p className="text-xs text-green-600 mb-2">성능 평가 리포트가 생성되었습니다.</p>
-                                    <div className="flex gap-2 flex-wrap">
-                                       <Button 
-                                          size="sm" 
-                                          variant="outline" 
-                                          onClick={() => {
-                                             // 차량 저장 후 리포트 페이지로 이동
-                                             const savedVehicle = MockDataService.createVehicle(formData);
-                                             onNavigate('SCR-0202', savedVehicle.id);
-                                          }}
-                                          className="text-xs"
-                                       >
-                                          리포트 보기
-                                       </Button>
-                                       <Button 
-                                          size="sm" 
-                                          variant="outline" 
-                                          disabled={isSavingReport || !!savedReportId}
-                                          onClick={async () => {
-                                             // 리포트 저장 (중복 저장 방지)
-                                             if (!generatedReport || savedReportId || isSavingReport) return;
-                                             
-                                             setIsSavingReport(true);
-                                             try {
-                                                // 리포트 유효성 검증
-                                                if (!generatedReport.condition || typeof generatedReport.condition !== 'object') {
-                                                   throw new Error('저장할 리포트 데이터가 유효하지 않습니다.');
-                                                }
-                                                
-                                                // 차량 저장 또는 기존 차량 ID 가져오기
-                                                let vehicleId = editingVehicleId;
-                                                if (!vehicleId) {
-                                                   const savedVehicle = MockDataService.createVehicle(formData);
-                                                   vehicleId = savedVehicle.id;
-                                                }
-                                                
-                                                if (!vehicleId) {
-                                                   throw new Error('차량 ID를 가져올 수 없습니다.');
-                                                }
-                                                
-                                                const saveResult = await apiClient.report.saveReport({
-                                                   vehicleId: vehicleId,
-                                                   report: {
-                                                      condition: generatedReport.condition,
-                                                      summary: '',
-                                                      score: 'A',
-                                                   },
-                                                   vehicleInfo: generatedReport.vehicleInfo || {},
-                                                });
-                                                
-                                                if (saveResult && saveResult.reportId) {
-                                                   setSavedReportId(saveResult.reportId);
-                                                   showToast('리포트가 저장되었습니다.', 'success');
-                                                } else {
-                                                   throw new Error('리포트 저장 응답이 유효하지 않습니다.');
-                                                }
-                                             } catch (saveError: any) {
-                                                console.error('리포트 저장 실패:', saveError);
-                                                showToast('리포트 저장 중 오류가 발생했습니다: ' + (saveError.message || '알 수 없는 오류'), 'error');
-                                             } finally {
-                                                setIsSavingReport(false);
-                                             }
-                                          }}
-                                          loading={isSavingReport}
-                                          className="text-xs"
-                                       >
-                                          {savedReportId ? '저장됨' : '저장'}
-                                       </Button>
-                                    </div>
-                                 </div>
-                              )}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               )}
+            <div className="flex items-center gap-4">
+              <button
+                onClick={async () => {
+                  // 임시 저장: 목록으로 돌아가기
+                  if (editingVehicleId) {
+                    showToast('임시 저장되었습니다.', 'success');
+                    onNavigate('SCR-0101');
+                  } else {
+                    const savedVehicle = MockDataService.createVehicle(formData);
+                    showToast('임시 저장되었습니다.', 'success');
+                    onNavigate('SCR-0101');
+                  }
+                }}
+                className="px-6 py-2.5 bg-gray-700 text-white rounded-lg font-medium hover:bg-gray-600 transition-colors flex items-center gap-2"
+              >
+                <Save className="w-4 h-4" />
+                임시저장
+              </button>
+              <button
+                onClick={async () => {
+                  if (!formData.plateNumber) {
+                    showToast('차량번호를 입력해주세요.', 'warning');
+                    return;
+                  }
+                  // 등록하기: 차량 저장 후 목록으로 이동
+                  let savedVehicleId = editingVehicleId;
+                  if (!savedVehicleId) {
+                    const newVehicle = MockDataService.createVehicle(formData);
+                    savedVehicleId = newVehicle.id;
+                  } else {
+                    const existingVehicle = MockDataService.getVehicleById(savedVehicleId);
+                    if (existingVehicle) {
+                      Object.assign(existingVehicle, formData);
+                    }
+                  }
+                  showToast('차량이 등록되었습니다.', 'success');
+                  onNavigate('SCR-0101');
+                }}
+                className="px-6 py-2.5 bg-fmax-primary text-white rounded-lg font-medium hover:bg-fmax-primary-hover transition-colors shadow-md flex items-center gap-2"
+              >
+                등록하기
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
-         </div>
+          </div>
        </main>
     </div>
     </>
@@ -2149,214 +3317,73 @@ const LandingPage = ({ onNavigate }: any) => {
           </div>
           
           <div className="flex items-center gap-4">
-             <button onClick={() => onNavigate('SCR-0001')} className="hidden sm:block text-base font-bold text-[#050B20] px-4 py-2 hover:bg-gray-50 rounded-lg">Sign In</button>
-             <Button onClick={() => onNavigate('SCR-0001')} className="h-11 px-6 rounded-full text-base">Submit Listing</Button>
+            <button 
+              onClick={() => onNavigate('SCR-0001')}
+              className="text-sm font-medium text-[#050B20] hover:text-[#405FF2] transition-colors"
+            >
+              Sign In
+            </button>
+            <button 
+              onClick={() => onNavigate('SCR-0002')}
+              className="px-4 py-2 bg-[#405FF2] text-white rounded-lg font-medium hover:bg-[#2A30C6] transition-colors"
+            >
+              Sign Up
+            </button>
           </div>
         </div>
       </nav>
 
+      {/* Hero Section */}
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="pt-16 pb-32 px-6 max-w-[1440px] mx-auto text-center relative">
-          <Badge variant="neutral" className="mb-6 bg-blue-50 text-[#405FF2] border-blue-100 px-3 py-1 text-sm">Find Your Dream Car</Badge>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-[#050B20] mb-12">
-            Find Your Dream Car
-          </h1>
-
-          {/* Search Filter Bar */}
-          <div className="max-w-5xl mx-auto bg-white rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-2.5 flex flex-col md:flex-row items-center divide-y md:divide-y-0 md:divide-x divide-gray-100 border border-gray-100 relative z-10">
-             {["Used Cars", "Any Makes", "Any Models", "All Prices"].map((ph, idx) => (
-                <div key={idx} className="flex-1 w-full px-6 py-3 flex flex-col items-start cursor-pointer hover:bg-gray-50 transition-colors md:rounded-none first:rounded-t-2xl last:rounded-b-2xl md:first:rounded-l-full md:last:rounded-r-full">
-                   <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
-                      {idx === 0 ? "Condition" : idx === 1 ? "Make" : idx === 2 ? "Model" : "Price Range"}
-                   </span>
-                   <div className="flex items-center justify-between w-full">
-                      <span className="font-bold text-[#050B20]">{ph}</span>
-                      <ChevronDown className="w-4 h-4 text-gray-400" />
-                   </div>
-                </div>
-             ))}
-             <div className="p-2 w-full md:w-auto">
-                <button className="w-full md:w-14 h-14 bg-[#405FF2] rounded-full flex items-center justify-center text-white hover:bg-[#324bc4] shadow-lg shadow-blue-500/30 transition-all">
-                   <SearchIcon className="w-6 h-6" />
+        <div className="max-w-[1440px] mx-auto px-6 py-20">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            {/* Left: Hero Content */}
+            <div className="lg:col-span-7 space-y-8">
+              <h1 className="text-5xl lg:text-6xl font-bold text-[#050B20] leading-tight">
+                Find Your Perfect
+                <span className="text-[#405FF2]"> Used Car</span>
+              </h1>
+              <p className="text-xl text-gray-600 leading-relaxed">
+                Browse thousands of verified used cars from trusted dealers. Get the best deals with transparent pricing and detailed vehicle reports.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
+                  onClick={() => onNavigate('SCR-0001')}
+                  className="px-8 py-4 bg-[#405FF2] text-white rounded-lg font-semibold text-lg hover:bg-[#2A30C6] transition-colors shadow-lg"
+                >
+                  Browse Cars
                 </button>
-             </div>
-          </div>
-
-          {/* Hero Car Image */}
-          <div className="mt-16 md:-mt-10 relative pointer-events-none">
-             {/* Using a placeholder that looks like a car cutout */}
-             <div className="w-full h-[300px] md:h-[500px] flex items-center justify-center">
-                 <img src="https://placehold.co/1000x500/ffffff/ffffff?text=." alt="Car Cutout Placeholder" className="w-full h-full object-contain mix-blend-multiply opacity-0" />
-                 <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/2021_Tesla_Model_S_Plaid.jpg/1200px-2021_Tesla_Model_S_Plaid.jpg" 
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[70%] object-contain drop-shadow-2xl rounded-3xl"
-                    alt="Hero Car"
-                 />
-             </div>
-          </div>
-        </section>
-
-        {/* Browse by Type */}
-        <section className="py-20 px-6 max-w-[1440px] mx-auto">
-           <div className="flex items-center justify-between mb-10">
-              <h2 className="text-3xl font-bold text-[#050B20]">Browse by Type</h2>
-              <div className="flex gap-2">
-                 <button className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50"><ChevronLeft className="w-5 h-5" /></button>
-                 <button className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50"><ChevronRight className="w-5 h-5" /></button>
+                <button 
+                  onClick={() => onNavigate('SCR-0002')}
+                  className="px-8 py-4 bg-white border-2 border-[#405FF2] text-[#405FF2] rounded-lg font-semibold text-lg hover:bg-[#405FF2]/5 transition-colors"
+                >
+                  Sell Your Car
+                </button>
               </div>
-           </div>
-           <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-4">
-              {[
-                { n: "SUV", i: Car }, { n: "Sedan", i: Car }, { n: "Hatchback", i: Car }, 
-                { n: "Coupe", i: Car }, { n: "Hybrid", i: Zap }, { n: "Convertible", i: Car }, 
-                { n: "Van", i: Truck }, { n: "Truck", i: Truck }, { n: "Electric", i: Zap }
-              ].map((t, i) => (
-                <div key={i} className="flex flex-col items-center justify-center p-6 rounded-xl border border-gray-100 hover:shadow-lg hover:border-transparent transition-all cursor-pointer group bg-white">
-                   <t.i className="w-8 h-8 text-gray-400 group-hover:text-[#405FF2] mb-3 transition-colors" />
-                   <span className="text-sm font-bold text-[#050B20]">{t.n}</span>
-                </div>
-              ))}
-           </div>
-        </section>
-
-        {/* Promo Cards */}
-        <section className="py-10 px-6 max-w-[1440px] mx-auto">
-           <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-[#E9F2FF] rounded-3xl p-10 md:p-14 relative overflow-hidden group">
-                 <div className="relative z-10 max-w-sm">
-                    <h3 className="text-3xl font-bold text-[#050B20] mb-4">Are You Looking<br/>For a Car?</h3>
-                    <p className="text-[#050B20]/70 mb-8 leading-relaxed">We are committed to providing our customers with exceptional service.</p>
-                    <Button className="h-12 px-8 rounded-full bg-[#405FF2] border-none shadow-lg shadow-blue-500/20" icon={ArrowRight} onClick={() => onNavigate('SCR-0100')}>Get Started</Button>
-                 </div>
-                 <Car className="absolute bottom-10 right-10 w-40 h-40 text-[#405FF2]/10 group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              
-              <div className="bg-[#FFECEC] rounded-3xl p-10 md:p-14 relative overflow-hidden group">
-                 <div className="relative z-10 max-w-sm">
-                    <h3 className="text-3xl font-bold text-[#050B20] mb-4">Do You Want to<br/>Sell a Car?</h3>
-                    <p className="text-[#050B20]/70 mb-8 leading-relaxed">We are committed to providing our customers with exceptional service.</p>
-                    <Button className="h-12 px-8 rounded-full bg-[#050B20] text-white border-none shadow-lg shadow-black/20" icon={ArrowRight} onClick={() => onNavigate('SCR-0200')}>Get Started</Button>
-                 </div>
-                 <DollarSign className="absolute bottom-10 right-10 w-40 h-40 text-[#FF5858]/10 group-hover:scale-110 transition-transform duration-500" />
-              </div>
-           </div>
-        </section>
-
-        {/* The Most Searched Cars */}
-        <section className="py-20 px-6 max-w-[1440px] mx-auto">
-            <div className="flex flex-col items-center text-center mb-12">
-               <h2 className="text-3xl font-bold text-[#050B20] mb-6">The Most Searched Cars</h2>
-               <div className="inline-flex items-center p-1.5 bg-gray-100 rounded-full">
-                  {["In Stock", "Sedan", "SUV", "Convertible"].map((tab, i) => (
-                     <button key={tab} className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${i === 0 ? 'bg-white shadow-sm text-[#050B20]' : 'text-gray-500 hover:text-[#050B20]'}`}>
-                        {tab}
-                     </button>
-                  ))}
-               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-               {[
-                 { ...MOCK_VEHICLES[0], img: "https://placehold.co/600x400/eef2ff/3730a3?text=Camry", name: "Toyota Camry New", trim: "3.5 D5 PowerPulse Momentum" },
-                 { ...MOCK_VEHICLES[1], img: "https://placehold.co/600x400/fff1f2/9f1239?text=T-Cross", name: "T-Cross - 2023", trim: "4.0 D5 PowerPulse Momentum" },
-                 { ...MOCK_VEHICLES[2], img: "https://placehold.co/600x400/ecfdf5/065f46?text=C-Class", name: "C-Class - 2023", trim: "4.0 D5 PowerPulse Momentum" },
-                 { ...MOCK_VEHICLES[3], img: "https://placehold.co/600x400/fffbeb/92400e?text=Transit", name: "Ford Transit - 2021", trim: "4.0 D5 PowerPulse Momentum" },
-               ].map((car, i) => (
-                  <div key={i} className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
-                     <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
-                        <img src={car.img} alt={car.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <span className="absolute top-4 left-4 bg-[#40b93c] text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase">Great Price</span>
-                        <button className="absolute top-4 right-4 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center hover:bg-white"><HeartIcon className="w-4 h-4 text-gray-500" /></button>
-                     </div>
-                     <div className="p-5">
-                        <h4 className="text-lg font-bold text-[#050B20] mb-1">{car.name}</h4>
-                        <p className="text-xs text-gray-500 mb-4 truncate">{car.trim}</p>
-                        
-                        <div className="grid grid-cols-3 gap-2 border-t border-b border-gray-100 py-3 mb-4">
-                           <div className="flex flex-col items-center justify-center text-center gap-1">
-                              <Gauge className="w-4 h-4 text-gray-400" />
-                              <span className="text-[10px] font-medium text-gray-600">{car.mileage} Miles</span>
-                           </div>
-                           <div className="flex flex-col items-center justify-center text-center gap-1 border-l border-r border-gray-100">
-                              <Fuel className="w-4 h-4 text-gray-400" />
-                              <span className="text-[10px] font-medium text-gray-600">{car.fuelType}</span>
-                           </div>
-                           <div className="flex flex-col items-center justify-center text-center gap-1">
-                              <Zap className="w-4 h-4 text-gray-400" />
-                              <span className="text-[10px] font-medium text-gray-600">Automatic</span>
-                           </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                           <span className="text-xl font-bold text-[#050B20]">${parseInt(car.price.replace(/,/g,'')).toLocaleString()}</span>
-                           <button className="text-sm font-bold text-[#405FF2] flex items-center gap-1 hover:underline">
-                              View Details <ChevronRight className="w-4 h-4" />
-                           </button>
-                        </div>
-                     </div>
-                  </div>
-               ))}
-            </div>
-            
-            <div className="flex justify-center mt-10">
-               <div className="flex gap-2">
-                  <button className="w-10 h-10 rounded-full bg-[#050B20] text-white flex items-center justify-center hover:opacity-90"><ChevronLeft className="w-5 h-5" /></button>
-                  <button className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50"><ChevronRight className="w-5 h-5" /></button>
-               </div>
-            </div>
-        </section>
-
-        {/* Why Choose Us */}
-        <section className="py-20 px-6 max-w-[1440px] mx-auto bg-white">
-           <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-[#050B20] mb-3">Why Choose Us?</h2>
-              <p className="text-gray-500">We offer the best experience with our wide range of services.</p>
-           </div>
-           
-           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                { t: "Special Financing Offers", d: "Our stress-free finance department that can find financial solutions to save you money.", i: Percent },
-                { t: "Trusted Car Dealership", d: "Our stress-free finance department that can find financial solutions to save you money.", i: ShieldCheck },
-                { t: "Transparent Pricing", d: "Our stress-free finance department that can find financial solutions to save you money.", i: DollarSign },
-                { t: "Expert Car Service", d: "Our stress-free finance department that can find financial solutions to save you money.", i: Armchair },
-              ].map((f, i) => (
-                 <div key={i} className="flex flex-col items-start p-2">
-                    <div className="w-16 h-16 rounded-2xl bg-blue-50 text-[#405FF2] flex items-center justify-center mb-6">
-                       <f.i className="w-8 h-8" />
+            {/* Right: Image Upload Section */}
+            <div className="lg:col-span-5 space-y-6">
+               <div className="sticky top-24 space-y-4">
+                 <h3 className="text-base font-bold text-fmax-text-main flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-fmax-primary" />
+                    등록증 인식
+                 </h3>
+                 <div className="aspect-[3/4] rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-6 transition-all cursor-pointer bg-white relative overflow-hidden border-gray-200 hover:border-fmax-primary hover:bg-blue-50/10">
+                    <div className="text-center">
+                       <Upload className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                       <p className="font-medium text-fmax-text-main text-sm">등록증 사진 업로드</p>
+                       <p className="text-xs text-gray-400 mt-1">JPG, PNG, WEBP, PDF</p>
                     </div>
-                    <h4 className="text-lg font-bold text-[#050B20] mb-3">{f.t}</h4>
-                    <p className="text-sm text-gray-500 leading-relaxed">{f.d}</p>
                  </div>
-              ))}
-           </div>
-        </section>
-
-        {/* Latest Cars Section (Simplified) */}
-        <section className="py-20 px-6 max-w-[1440px] mx-auto border-t border-gray-100">
-           <div className="flex items-center justify-center mb-10">
-              <h2 className="text-3xl font-bold text-[#050B20]">Latest Cars</h2>
-           </div>
-           {/* Reusing car grid structure if needed, simply placing placeholder content for visual completeness */}
-           <div className="flex justify-center text-gray-400 text-sm">
-              <p>More inventory coming soon...</p>
-           </div>
-        </section>
+                 <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-xs text-blue-700">
+                    차대번호와 제원을 자동으로 입력합니다.
+                 </div>
+               </div>
+            </div>
+          </div>
+        </div>
       </main>
-
-      <footer className="border-t border-gray-100 bg-white py-12">
-         <div className="max-w-[1440px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-xl text-[#050B20]">ForwardMax</span>
-              <span className="text-sm text-gray-500">© 2025. All rights reserved.</span>
-            </div>
-            <div className="flex gap-8 text-sm font-medium text-gray-500">
-               <a href="#" className="hover:text-[#405FF2]">Terms & Conditions</a>
-               <a href="#" className="hover:text-[#405FF2]">Privacy Policy</a>
-               <a href="#" className="hover:text-[#405FF2]">Contact Us</a>
-            </div>
-         </div>
-      </footer>
     </div>
   );
 };
@@ -2447,32 +3474,23 @@ const GoogleMapsPicker = ({
   const [searchValue, setSearchValue] = useState(initialAddress);
   const [apiKey, setApiKey] = useState<string | null>(null);
   
-  // 백엔드에서 Google Maps API 키 가져오기
+  // 백엔드에서 Google Maps API 키 가져오기 (Secret Manager 사용)
   useEffect(() => {
     const fetchApiKey = async () => {
       try {
-        // 먼저 환경 변수 확인 (개발 환경용)
-        const envKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
-        if (envKey) {
-          setApiKey(envKey);
-          return;
-        }
-        
-        // 환경 변수가 없으면 백엔드에서 가져오기
+        // 무조건 백엔드에서 Secret Manager를 통해 가져오기
         const result = await apiClient.config.getGoogleMapsApiKey();
         if (result && result.success && result.apiKey) {
           setApiKey(result.apiKey);
+          console.log('[GoogleMaps] API key retrieved from backend Secret Manager');
         } else {
-          console.error('Failed to get Google Maps API key from backend');
+          console.error('[GoogleMaps] Failed to get API key from backend: Invalid response');
+          // API 키가 없으면 지도 로드하지 않음
         }
       } catch (error) {
-        console.error('Error fetching Google Maps API key:', error);
-        // 에러 발생 시 환경 변수 fallback
-        const fallbackKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 
-                           import.meta.env.VITE_GEMINI_API_KEY;
-        if (fallbackKey) {
-          setApiKey(fallbackKey);
-        }
+        console.error('[GoogleMaps] Error fetching API key from backend:', error);
+        // 에러 발생 시에도 환경 변수 fallback 없음
+        // Secret Manager 설정을 확인하도록 에러만 로깅
       }
     };
     
@@ -2699,6 +3717,55 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
   }>({ address: '', location: null });
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [termsAgreed, setTermsAgreed] = useState(false);
+  
+  // 시간 슬롯 생성 (9:00 ~ 18:00, 30분 간격)
+  const timeSlots = Array.from({ length: 19 }, (_, i) => {
+    const hour = 9 + Math.floor(i / 2);
+    const minute = (i % 2) * 30;
+    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+  });
+  
+  // 날짜 선택을 위한 현재 달력 생성
+  const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  
+  const getDaysInMonth = (year: number, month: number) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+  
+  const getFirstDayOfMonth = (year: number, month: number) => {
+    return new Date(year, month, 1).getDay();
+  };
+  
+  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+  const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
+  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+  const emptyDays = Array.from({ length: firstDay }, (_, i) => i);
+  
+  const handleDateClick = (day: number) => {
+    const dateStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    setSelectedDate(dateStr);
+  };
+  
+  const handlePrevMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear(currentYear - 1);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+  };
+  
+  const handleNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear(currentYear + 1);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  };
   
   useEffect(() => {
     const loadVehicle = async () => {
@@ -2708,13 +3775,10 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
         if (v) {
           setVehicle(v);
         } else {
-          // ✅ vehicleId가 있지만 Mock 데이터에 없는 경우 (새로 생성된 차량)
-          // 첫 번째 Mock 차량을 사용하거나 기본 차량 생성
           const vehicles = MockDataService.getMockVehicles();
           setVehicle(vehicles[0] || null);
         }
       } else {
-        // vehicleId가 없으면 첫 번째 차량 사용 (임시)
         const vehicles = MockDataService.getMockVehicles();
         setVehicle(vehicles[0] || null);
       }
@@ -2736,19 +3800,24 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
       showToast('방문 희망 일시를 선택해주세요.', 'warning');
       return;
     }
+    if (!termsAgreed) {
+      showToast('약관에 동의해주세요.', 'warning');
+      return;
+    }
     if (vehicle) {
        await MockDataService.scheduleInspection(vehicle.id, {
          location: selectedLocation,
          date: selectedDate,
          time: selectedTime
        });
-       onNavigate('SCR-0201-Progress', vehicle.id);
+       showToast('검차 신청이 완료되었습니다.', 'success');
+       onNavigate('SCR-0300-PROG', vehicle.id);
     }
   };
 
   if (loading || !vehicle) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-fmax-surface">
+      <div className="min-h-screen flex items-center justify-center bg-white">
          <div className="flex flex-col items-center">
             <Loader2 className="w-8 h-8 text-fmax-primary animate-spin mb-4" />
             <p className="text-sm text-fmax-text-sub">차량 정보를 불러오는 중입니다...</p>
@@ -2757,68 +3826,181 @@ const InspectionRequestPage = ({ onNavigate, vehicleId }: any) => {
     );
   }
 
+  const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+
   return (
-    <div className="min-h-screen bg-fmax-surface flex flex-col">
-      <header className="bg-white border-b border-fmax-border px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between sticky top-0 z-30 h-16">
-         <div className="flex items-center gap-4">
-            <button onClick={() => onNavigate('SCR-0200', vehicle.id)} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
-              <ArrowLeft className="w-5 h-5 text-fmax-text-secondary" />
-            </button>
-            <h1 className="text-lg font-bold text-fmax-text-main">AI 정밀 검차 신청</h1>
-         </div>
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Header with GNB */}
+      <header className="bg-white border-b border-fmax-border px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+        <div className="text-lg font-bold text-fmax-text-main">logo</div>
+        <nav className="flex items-center gap-6 text-sm text-fmax-text-main">
+          <a href="#" className="hover:text-fmax-primary">매물등록</a>
+          <a href="#" className="hover:text-fmax-primary">검차</a>
+          <a href="#" className="hover:text-fmax-primary">거래</a>
+          <a href="#" className="hover:text-fmax-primary">진행상황</a>
+          <a href="#" className="hover:text-fmax-primary">로그아웃</a>
+        </nav>
+        {/* Dev Skip Button */}
+        <button
+          onClick={() => {
+            showToast('개발용: 검차 진행 화면으로 이동합니다.', 'info');
+            onNavigate('SCR-0300-PROG', vehicleId);
+          }}
+          className="ml-4 px-3 py-1.5 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded hover:bg-orange-100 transition-colors"
+          title="개발용: 검증 없이 검차 진행 화면으로 이동"
+        >
+          [DEV] 스킵
+        </button>
       </header>
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto w-full space-y-6">
-         <Card className="!p-6">
-            <div className="flex items-start gap-5 border-b border-fmax-border pb-6 mb-6">
-               <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                  <Car className="w-8 h-8 text-gray-400" />
-               </div>
-               <div>
-                  <Badge variant="default">검차 대상</Badge>
-                  <h2 className="text-xl font-bold text-fmax-text-main mt-1">{vehicle.modelYear} {vehicle.manufacturer} {vehicle.modelName}</h2>
-                  <p className="text-sm text-fmax-text-sub mt-1">{vehicle.plateNumber} • {vehicle.mileage}km</p>
-               </div>
+
+      <main className="flex-grow max-w-7xl mx-auto px-6 py-12 w-full">
+        <h1 className="text-h1 text-fmax-text-main mb-12 text-center">검차 요청</h1>
+
+        {/* Vehicle Info Card */}
+        <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-6 mb-8">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+              <Car className="w-8 h-8 text-gray-400" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-fmax-text-main">{vehicle.modelYear} {vehicle.manufacturer} {vehicle.modelName}</h2>
+              <p className="text-sm text-fmax-text-sub">{vehicle.plateNumber} • {vehicle.mileage}만km</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Date Selection */}
+        <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-8 mb-8">
+          <h2 className="text-h3 text-fmax-text-main mb-6">날짜 선택</h2>
+          <div className="max-w-md mx-auto">
+            {/* Calendar Header */}
+            <div className="flex items-center justify-between mb-4">
+              <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <ChevronLeft className="w-5 h-5 text-fmax-text-sub" />
+              </button>
+              <h3 className="text-lg font-bold text-fmax-text-main">{currentYear}년 {monthNames[currentMonth]}</h3>
+              <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <ChevronRight className="w-5 h-5 text-fmax-text-sub" />
+              </button>
             </div>
             
-            <div className="space-y-5">
-               <div className="space-y-1.5">
-                  <label className="text-sm font-semibold text-fmax-text-main block">검차 장소</label>
-                  {selectedLocation.address && (
-                    <div className="text-sm text-fmax-text-sub bg-blue-50 p-3 rounded-lg border border-blue-100">
-                      선택된 주소: {selectedLocation.address}
-                    </div>
-                  )}
-                  <GoogleMapsPicker 
-                    onPlaceSelect={handlePlaceSelect}
-                    initialAddress={selectedLocation.address}
-                  />
-               </div>
-               <div className="space-y-1.5">
-                  <label className="text-sm font-semibold text-fmax-text-main block">방문 희망 일시</label>
-                  <div className="grid grid-cols-2 gap-4">
-                     <Input 
-                       type="date" 
-                       icon={Calendar}
-                       value={selectedDate}
-                       onChange={(e) => setSelectedDate(e.target.value)}
-                     />
-                     <Input 
-                       type="time" 
-                       icon={Clock}
-                       value={selectedTime}
-                       onChange={(e) => setSelectedTime(e.target.value)}
-                     />
-                  </div>
-               </div>
-               <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 flex gap-3">
-                  <AlertCircle className="w-5 h-5 text-blue-600 shrink-0" />
-                  <p className="text-xs text-blue-800 leading-relaxed">
-                     신청 후 24시간 이내에 평가사가 배정됩니다. 검차 비용은 최종 정산 시 차감됩니다.
-                  </p>
-               </div>
-               <Button className="w-full h-12 text-base mt-2" onClick={handleRequest}>예약 확정</Button>
+            {/* Calendar Grid */}
+            <div className="grid grid-cols-7 gap-2 mb-4">
+              {dayNames.map(day => (
+                <div key={day} className="text-center text-sm font-semibold text-fmax-text-sub py-2">
+                  {day}
+                </div>
+              ))}
+              {emptyDays.map((_, idx) => (
+                <div key={`empty-${idx}`} className="aspect-square" />
+              ))}
+              {days.map(day => {
+                const dateStr = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                const isSelected = selectedDate === dateStr;
+                const isToday = dateStr === `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+                const isPast = new Date(dateStr) < new Date(today.toISOString().split('T')[0]);
+                
+                return (
+                  <button
+                    key={day}
+                    onClick={() => !isPast && handleDateClick(day)}
+                    disabled={isPast}
+                    className={`aspect-square rounded-lg text-sm font-medium transition-all ${
+                      isSelected
+                        ? 'bg-fmax-primary text-white shadow-md'
+                        : isPast
+                        ? 'text-gray-300 cursor-not-allowed'
+                        : 'text-fmax-text-main hover:bg-gray-100'
+                    } ${isToday && !isSelected ? 'ring-2 ring-fmax-primary/30' : ''}`}
+                  >
+                    {day}
+                  </button>
+                );
+              })}
             </div>
-         </Card>
+            
+            {selectedDate && (
+              <div className="text-center text-sm text-fmax-text-sub">
+                선택된 날짜: {selectedDate}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Time Selection */}
+        <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-8 mb-8">
+          <h2 className="text-h3 text-fmax-text-main mb-6">시간 선택</h2>
+          <div className="grid grid-cols-4 md:grid-cols-6 gap-3">
+            {timeSlots.map(time => {
+              const isSelected = selectedTime === time;
+              return (
+                <button
+                  key={time}
+                  onClick={() => setSelectedTime(time)}
+                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                    isSelected
+                      ? 'bg-fmax-primary text-white shadow-md'
+                      : 'bg-gray-50 text-fmax-text-main hover:bg-gray-100 border border-gray-200'
+                  }`}
+                >
+                  {time}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Location Selection */}
+        <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-8 mb-8">
+          <h2 className="text-h3 text-fmax-text-main mb-6">위치 선택</h2>
+          {selectedLocation.address && (
+            <div className="mb-4 text-sm text-fmax-text-sub bg-blue-50 p-3 rounded-lg border border-blue-100">
+              선택된 주소: {selectedLocation.address}
+            </div>
+          )}
+          <GoogleMapsPicker 
+            onPlaceSelect={handlePlaceSelect}
+            initialAddress={selectedLocation.address}
+          />
+        </div>
+
+        {/* Terms Agreement */}
+        <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-8 mb-8">
+          <h2 className="text-h3 text-fmax-text-main mb-6">약관 동의</h2>
+          <div className="space-y-4">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={termsAgreed}
+                onChange={(e) => setTermsAgreed(e.target.checked)}
+                className="w-5 h-5 rounded border-gray-300 text-fmax-primary focus:ring-fmax-primary mt-0.5"
+              />
+              <div className="flex-1">
+                <span className="text-sm font-semibold text-fmax-text-main">검차 관련 약관에 동의합니다</span>
+                <p className="text-xs text-fmax-text-sub mt-1">
+                  검차 비용, 일정 변경, 취소 정책 등에 대한 약관 내용을 확인하고 동의합니다.
+                </p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex justify-end gap-4">
+          <button
+            onClick={() => onNavigate('SCR-0101')}
+            className="px-6 py-2.5 bg-gray-100 text-fmax-text-main rounded-lg font-medium hover:bg-gray-200 transition-colors"
+          >
+            취소
+          </button>
+          <button
+            onClick={handleRequest}
+            className="px-6 py-2.5 bg-fmax-primary text-white rounded-lg font-medium hover:bg-fmax-primary-hover transition-colors shadow-md"
+          >
+            검차 신청하기
+          </button>
+        </div>
       </main>
     </div>
   );
@@ -2901,7 +4083,7 @@ const InspectionStatusPage = ({ onNavigate, vehicleId }: any) => {
           clearInterval(timer);
           // 완료 시 검차 결과 화면으로 이동
           setTimeout(() => {
-            onNavigate('SCR-0202', currentVehicleId);
+            onNavigate('SCR-0300-RES', currentVehicleId);
           }, 2000);
           return 100;
         }
@@ -2912,35 +4094,599 @@ const InspectionStatusPage = ({ onNavigate, vehicleId }: any) => {
   }, [inspectionId, currentVehicleId, onNavigate]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
-       <div className="w-full max-w-md space-y-8">
-          <div className="relative mx-auto w-24 h-24">
-             <svg className="w-full h-full transform -rotate-90">
-                <circle cx="48" cy="48" r="44" fill="none" stroke="#e2e8f0" strokeWidth="6" />
-                <circle cx="48" cy="48" r="44" fill="none" stroke="#2563eb" strokeWidth="6" strokeDasharray={276} strokeDashoffset={276 - (276 * progress) / 100} className="transition-all duration-100 ease-linear" />
-             </svg>
-             <div className="absolute inset-0 flex items-center justify-center flex-col">
-                <span className="text-xl font-bold text-fmax-text-main">{progress}%</span>
-             </div>
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Header with GNB */}
+      <header className="bg-white border-b border-fmax-border px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+        <div className="text-lg font-bold text-fmax-text-main">logo</div>
+        <nav className="flex items-center gap-6 text-sm text-fmax-text-main">
+          <a href="#" className="hover:text-fmax-primary">매물등록</a>
+          <a href="#" className="hover:text-fmax-primary">검차</a>
+          <a href="#" className="hover:text-fmax-primary">거래</a>
+          <a href="#" className="hover:text-fmax-primary">진행상황</a>
+          <a href="#" className="hover:text-fmax-primary">로그아웃</a>
+        </nav>
+        {/* Dev Skip Button */}
+        <button
+          onClick={() => {
+            onNavigate('SCR-0300-RES', currentVehicleId);
+          }}
+          className="ml-4 px-3 py-1.5 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded hover:bg-orange-100 transition-colors"
+          title="개발용: 검증 없이 검차 결과 화면으로 이동"
+        >
+          [DEV] 스킵
+        </button>
+      </header>
+
+      <main className="flex-grow flex items-center justify-center p-6">
+        <div className="w-full max-w-md space-y-8 text-center">
+          <div className="relative mx-auto w-32 h-32">
+            <svg className="w-full h-full transform -rotate-90">
+              <circle cx="64" cy="64" r="56" fill="none" stroke="#e2e8f0" strokeWidth="8" />
+              <circle 
+                cx="64" 
+                cy="64" 
+                r="56" 
+                fill="none" 
+                stroke="#373EEF" 
+                strokeWidth="8" 
+                strokeDasharray={352} 
+                strokeDashoffset={352 - (352 * progress) / 100} 
+                className="transition-all duration-300 ease-linear"
+                strokeLinecap="round"
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center flex-col">
+              <span className="text-3xl font-bold text-fmax-text-main">{progress}%</span>
+              <span className="text-xs text-fmax-text-sub mt-1">진행 중</span>
+            </div>
           </div>
+          
           <div>
-             <h2 className="text-xl font-bold text-fmax-text-main mb-2">AI 정밀 분석 중</h2>
-             <p className="text-fmax-text-sub text-sm">차량 이미지를 분석하고 있습니다.<br/>gemini-3-pro-preview Model</p>
+            <h2 className="text-2xl font-bold text-fmax-text-main mb-3">AI 정밀 분석 중</h2>
+            <p className="text-fmax-text-sub text-sm leading-relaxed">
+              차량 이미지를 분석하고 있습니다.<br/>
+              <span className="text-xs text-fmax-text-sub/70">gemini-3-pro-preview Model</span>
+            </p>
           </div>
-          <div className="space-y-3 pt-2">
-             {['평가사 출발 확인', '차량 검차 진행', '사진 업로드 (37+)', 'AI 상태 분석'].map((step, i) => (
-                <div key={i} className={`flex items-center gap-3 text-sm font-medium transition-colors ${progress > (i + 1) * 20 ? 'text-fmax-primary' : 'text-gray-300'}`}>
-                   <div className={`w-4 h-4 rounded-full flex items-center justify-center border ${progress > (i + 1) * 20 ? 'bg-fmax-primary border-fmax-primary text-white' : 'border-gray-200'}`}>
-                      {progress > (i + 1) * 20 && <Check className="w-2.5 h-2.5" />}
-                   </div>
-                   {step}
+          
+          <div className="space-y-4 pt-4 bg-gray-50 rounded-xl p-6">
+            <h3 className="text-sm font-semibold text-fmax-text-main mb-3">검차 진행 단계</h3>
+            {[
+              { label: '평가사 출발 확인', threshold: 25 },
+              { label: '차량 검차 진행', threshold: 50 },
+              { label: '사진 업로드 (37+)', threshold: 75 },
+              { label: 'AI 상태 분석', threshold: 100 }
+            ].map((step, i) => {
+              const isCompleted = progress >= step.threshold;
+              return (
+                <div 
+                  key={i} 
+                  className={`flex items-center gap-3 text-sm font-medium transition-all ${
+                    isCompleted ? 'text-fmax-primary' : 'text-gray-400'
+                  }`}
+                >
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center border-2 transition-all ${
+                    isCompleted 
+                      ? 'bg-fmax-primary border-fmax-primary text-white' 
+                      : 'border-gray-300 bg-white'
+                  }`}>
+                    {isCompleted && <Check className="w-3 h-3" />}
+                  </div>
+                  <span className={isCompleted ? 'font-semibold' : ''}>{step.label}</span>
+                  {isCompleted && <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto" />}
                 </div>
-             ))}
+              );
+            })}
           </div>
+          
           {progress === 100 && (
-             <Button className="w-full h-12 mt-6" onClick={() => onNavigate('SCR-0202', currentVehicleId)}>결과 확인</Button>
+            <div className="space-y-4 pt-4">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <span className="text-sm font-semibold text-green-800">검차 완료</span>
+                </div>
+                <p className="text-xs text-green-700">이제 검차 결과를 업로드해주세요.</p>
+              </div>
+              <Button 
+                className="w-full h-12 text-base" 
+                onClick={() => onNavigate('SCR-0300-RES', currentVehicleId)}
+                icon={ArrowRight}
+              >
+                검차 결과 업로드하기
+              </Button>
+            </div>
           )}
-       </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+// --- SCR-0300-RES: Inspection Result Page (C-3) ---
+const InspectionResultPage = ({ onNavigate, vehicleId }: any) => {
+  const { showToast } = useToast();
+  const [vehicle, setVehicle] = useState<Vehicle | null>(null);
+  const [loading, setLoading] = useState(true);
+  
+  // 이미지/비디오 업로드 상태 관리
+  const [uploadedFiles, setUploadedFiles] = useState<Record<string, File[]>>({
+    exterior: [],
+    interior: [],
+    tires: [],
+    glass: [],
+    mirrors: [],
+    trunk: [],
+    bumper: [],
+    bonnet: [],
+    performance: [],
+    videos: [],
+  });
+  
+  const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
+  
+  // 카테고리별 요구사항 (37개 이미지 + 3개 비디오)
+  // 외관 9개 + 내부 14개 + 타이어/유리/사이드미러 10개 + 트렁크 1개 + 범퍼 2개 + 보닛 1개 = 37개
+  const categories = [
+    { key: 'exterior', label: '외관', count: 9, type: 'image', description: '전면, 후면, 좌측면, 우측면 등' },
+    { key: 'interior', label: '내부', count: 14, type: 'image', description: '대시보드, 시트, 계기판 등' },
+    { key: 'tires', label: '타이어', count: 4, type: 'image', group: 'tires-glass-mirrors' },
+    { key: 'glass', label: '유리', count: 4, type: 'image', group: 'tires-glass-mirrors' },
+    { key: 'mirrors', label: '사이드미러', count: 2, type: 'image', group: 'tires-glass-mirrors' },
+    { key: 'trunk', label: '트렁크', count: 1, type: 'image' },
+    { key: 'bumper', label: '범퍼', count: 2, type: 'image' },
+    { key: 'bonnet', label: '보닛', count: 1, type: 'image' },
+    { key: 'performance', label: '성능', count: 0, type: 'image', optional: true },
+    { key: 'videos', label: '비디오', count: 3, type: 'video', items: ['시동', '저속주행', '둘러보기'] },
+  ];
+  
+  // 그룹화된 카테고리 (타이어/유리/사이드미러)
+  const groupedCategories = useMemo(() => {
+    const grouped = categories.filter(c => c.group === 'tires-glass-mirrors');
+    const totalCount = grouped.reduce((sum, c) => sum + c.count, 0);
+    return { categories: grouped, totalCount, label: '타이어/유리/사이드미러' };
+  }, []);
+  
+  useEffect(() => {
+    const loadVehicle = async () => {
+      setLoading(true);
+      if (vehicleId) {
+        const v = MockDataService.getVehicleById(vehicleId);
+        if (v) {
+          setVehicle(v);
+        } else {
+          const vehicles = MockDataService.getMockVehicles();
+          setVehicle(vehicles[0] || null);
+        }
+      } else {
+        const vehicles = MockDataService.getMockVehicles();
+        setVehicle(vehicles[0] || null);
+      }
+      setLoading(false);
+    };
+    loadVehicle();
+  }, [vehicleId]);
+  
+  const handleFileUpload = (category: string, files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    
+    const categoryData = categories.find(c => c.key === category);
+    if (!categoryData) return;
+    
+    const fileArray = Array.from(files);
+    const currentFiles = uploadedFiles[category] || [];
+    
+    // 최대 개수 제한
+    const maxCount = categoryData.count;
+    if (currentFiles.length + fileArray.length > maxCount) {
+      showToast(`${categoryData.label}은(는) 최대 ${maxCount}개까지 업로드 가능합니다.`, 'warning');
+      return;
+    }
+    
+    setUploadedFiles(prev => ({
+      ...prev,
+      [category]: [...currentFiles, ...fileArray],
+    }));
+    
+    // 업로드 진행률 시뮬레이션
+    fileArray.forEach((file, index) => {
+      setTimeout(() => {
+        setUploadProgress(prev => ({
+          ...prev,
+          [`${category}-${currentFiles.length + index}`]: 100,
+        }));
+      }, 500 * (index + 1));
+    });
+  };
+  
+  const handleRemoveFile = (category: string, index: number) => {
+    setUploadedFiles(prev => {
+      const newFiles = [...prev[category]];
+      newFiles.splice(index, 1);
+      return { ...prev, [category]: newFiles };
+    });
+    
+    // 진행률도 제거
+    const progressKey = `${category}-${index}`;
+    setUploadProgress(prev => {
+      const newProgress = { ...prev };
+      delete newProgress[progressKey];
+      return newProgress;
+    });
+  };
+  
+  const getTotalUploaded = () => {
+    const images = Object.entries(uploadedFiles)
+      .filter(([key]) => key !== 'videos')
+      .reduce((sum, [, files]) => sum + (files as File[]).length, 0);
+    const videos = uploadedFiles.videos?.length || 0;
+    const requiredImages = 37; // 외관 9 + 내부 14 + 타이어/유리/사이드미러 10 + 트렁크 1 + 범퍼 2 + 보닛 1
+    const requiredVideos = 3;
+    return { 
+      images, 
+      videos, 
+      total: images + videos,
+      requiredImages,
+      requiredVideos,
+      imagesComplete: images >= requiredImages,
+      videosComplete: videos >= requiredVideos,
+      allComplete: images >= requiredImages && videos >= requiredVideos
+    };
+  };
+  
+  const handleSave = async () => {
+    const totals = getTotalUploaded();
+    if (!totals.allComplete) {
+      const missingImages = totals.requiredImages - totals.images;
+      const missingVideos = totals.requiredVideos - totals.videos;
+      let message = '모든 항목을 업로드해주세요.\n';
+      if (missingImages > 0) message += `- 이미지 ${missingImages}개 부족\n`;
+      if (missingVideos > 0) message += `- 비디오 ${missingVideos}개 부족`;
+      showToast(message, 'warning');
+      return;
+    }
+    
+    showToast('검차 결과가 저장되었습니다.', 'success');
+    onNavigate('SCR-0101');
+  };
+  
+  // 카테고리 섹션 렌더링 헬퍼 함수
+  const renderCategorySection = (category: any, files: File[], isComplete: boolean) => {
+    return (
+      <div key={category.key} className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg font-bold text-fmax-text-main">{category.label}</h3>
+            <span className={`px-2 py-1 rounded text-xs font-semibold ${
+              isComplete ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+            }`}>
+              {files.length}/{category.count}
+            </span>
+            {category.description && (
+              <span className="text-xs text-fmax-text-sub">({category.description})</span>
+            )}
+          </div>
+          {category.items && (
+            <div className="flex gap-2 text-xs text-fmax-text-sub">
+              {category.items.map((item: string, idx: number) => (
+                <span key={idx} className={files[idx] ? 'text-green-600 font-semibold' : ''}>
+                  {item}{idx < category.items!.length - 1 ? ' • ' : ''}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        {/* File Upload Area */}
+        <div className="mb-4">
+          <label className="block">
+            <input
+              type="file"
+              multiple={category.count > 1}
+              accept={category.type === 'video' ? 'video/*' : 'image/*'}
+              onChange={(e) => handleFileUpload(category.key, e.target.files)}
+              className="hidden"
+            />
+            <div className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${
+              isComplete 
+                ? 'border-green-300 bg-green-50/30' 
+                : 'border-gray-300 hover:border-fmax-primary hover:bg-blue-50/30'
+            }`}>
+              {isComplete ? (
+                <div className="flex flex-col items-center gap-2">
+                  <CheckCircle2 className="w-10 h-10 text-green-600" />
+                  <p className="text-sm font-medium text-green-700">업로드 완료</p>
+                </div>
+              ) : (
+                <>
+                  <Upload className="w-10 h-10 text-gray-400 mx-auto mb-3" />
+                  <p className="text-sm font-medium text-fmax-text-main mb-1">
+                    {category.type === 'video' ? '비디오' : '이미지'} 업로드
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {category.count > 1 ? `최대 ${category.count}개` : '1개'} 업로드 가능
+                  </p>
+                </>
+              )}
+            </div>
+          </label>
+        </div>
+        
+        {/* Uploaded Files Grid */}
+        {files.length > 0 && (
+          <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
+            {files.map((file, index) => (
+              <div key={index} className="relative group">
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 border-gray-200 hover:border-fmax-primary transition-colors">
+                  {category.type === 'image' ? (
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`${category.label} ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                      <PlayCircle className="w-12 h-12 text-gray-400" />
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => handleRemoveFile(category.key, index)}
+                  className="absolute top-1 right-1 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                  title="삭제"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+                <p className="text-xs text-center mt-1 truncate px-1" title={file.name}>{file.name}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+  
+  if (loading || !vehicle) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center">
+          <Loader2 className="w-8 h-8 text-fmax-primary animate-spin mb-4" />
+          <p className="text-sm text-fmax-text-sub">차량 정보를 불러오는 중입니다...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  const totals = getTotalUploaded();
+  
+  return (
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Header with GNB */}
+      <header className="bg-white border-b border-fmax-border px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+        <div className="text-lg font-bold text-fmax-text-main">logo</div>
+        <nav className="flex items-center gap-6 text-sm text-fmax-text-main">
+          <a href="#" className="hover:text-fmax-primary">매물등록</a>
+          <a href="#" className="hover:text-fmax-primary">검차</a>
+          <a href="#" className="hover:text-fmax-primary">거래</a>
+          <a href="#" className="hover:text-fmax-primary">진행상황</a>
+          <a href="#" className="hover:text-fmax-primary">로그아웃</a>
+        </nav>
+        {/* Dev Skip Button */}
+        <button
+          onClick={() => {
+            showToast('개발용: 목록으로 이동합니다.', 'info');
+            onNavigate('SCR-0101');
+          }}
+          className="ml-4 px-3 py-1.5 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded hover:bg-orange-100 transition-colors"
+          title="개발용: 검증 없이 목록으로 이동"
+        >
+          [DEV] 스킵
+        </button>
+      </header>
+
+      <main className="flex-grow max-w-7xl mx-auto px-6 py-12 w-full">
+        <div className="mb-8">
+          <h1 className="text-h1 text-fmax-text-main mb-2">검차 완료</h1>
+          <p className="text-h3 text-fmax-text-sub">검차 결과를 업로드해주세요</p>
+        </div>
+
+        {/* Vehicle Info */}
+        <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-6 mb-8">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+              <Car className="w-8 h-8 text-gray-400" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-fmax-text-main">{vehicle.modelYear} {vehicle.manufacturer} {vehicle.modelName}</h2>
+              <p className="text-sm text-fmax-text-sub">{vehicle.plateNumber} • {vehicle.mileage}만km</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Upload Progress Summary */}
+        <div className={`rounded-xl border p-6 mb-8 transition-all ${
+          totals.allComplete 
+            ? 'bg-green-50 border-green-200' 
+            : 'bg-blue-50 border-blue-100'
+        }`}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              {totals.allComplete ? (
+                <CheckCircle2 className="w-6 h-6 text-green-600" />
+              ) : (
+                <Activity className="w-6 h-6 text-blue-600" />
+              )}
+              <h3 className={`text-lg font-bold ${
+                totals.allComplete ? 'text-green-900' : 'text-blue-900'
+              }`}>
+                업로드 진행 상황
+              </h3>
+            </div>
+            <div className="flex items-center gap-4 text-sm font-semibold">
+              <span className={totals.imagesComplete ? 'text-green-700' : 'text-blue-700'}>
+                이미지 {totals.images}/{totals.requiredImages}
+              </span>
+              <span className="text-gray-400">•</span>
+              <span className={totals.videosComplete ? 'text-green-700' : 'text-blue-700'}>
+                비디오 {totals.videos}/{totals.requiredVideos}
+              </span>
+            </div>
+          </div>
+          <div className={`w-full rounded-full h-3 mb-2 ${
+            totals.allComplete ? 'bg-green-200' : 'bg-blue-200'
+          }`}>
+            <div
+              className={`h-3 rounded-full transition-all duration-300 ${
+                totals.allComplete ? 'bg-green-600' : 'bg-blue-600'
+              }`}
+              style={{ width: `${((totals.images + totals.videos) / 40) * 100}%` }}
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <p className={`text-xs font-medium ${
+              totals.allComplete ? 'text-green-700' : 'text-blue-700'
+            }`}>
+              전체 진행률: {Math.round(((totals.images + totals.videos) / 40) * 100)}%
+            </p>
+            {totals.allComplete && (
+              <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-1 rounded-full">
+                모든 항목 업로드 완료
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Image/Video Upload Sections */}
+        <div className="space-y-6">
+          {/* 외관 */}
+          {categories.filter(c => c.key === 'exterior').map(category => {
+            const files = uploadedFiles[category.key] || [];
+            const isComplete = files.length >= category.count;
+            return renderCategorySection(category, files, isComplete);
+          })}
+          
+          {/* 내부 */}
+          {categories.filter(c => c.key === 'interior').map(category => {
+            const files = uploadedFiles[category.key] || [];
+            const isComplete = files.length >= category.count;
+            return renderCategorySection(category, files, isComplete);
+          })}
+          
+          {/* 타이어/유리/사이드미러 그룹화 */}
+          <div className="bg-white rounded-xl shadow-fmax-card border border-fmax-border p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <h3 className="text-lg font-bold text-fmax-text-main">타이어/유리/사이드미러</h3>
+                <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                  groupedCategories.totalCount === (uploadedFiles.tires?.length || 0) + (uploadedFiles.glass?.length || 0) + (uploadedFiles.mirrors?.length || 0)
+                    ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                }`}>
+                  {(uploadedFiles.tires?.length || 0) + (uploadedFiles.glass?.length || 0) + (uploadedFiles.mirrors?.length || 0)}/{groupedCategories.totalCount}
+                </span>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {groupedCategories.categories.map(category => {
+                const files = uploadedFiles[category.key] || [];
+                const isComplete = files.length >= category.count;
+                return (
+                  <div key={category.key} className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-base font-semibold text-fmax-text-main">{category.label}</h4>
+                      <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                        isComplete ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        {files.length}/{category.count}
+                      </span>
+                    </div>
+                    
+                    <label className="block">
+                      <input
+                        type="file"
+                        multiple={category.count > 1}
+                        accept="image/*"
+                        onChange={(e) => handleFileUpload(category.key, e.target.files)}
+                        className="hidden"
+                      />
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-fmax-primary hover:bg-blue-50/30 transition-all">
+                        <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                        <p className="text-xs font-medium text-fmax-text-main mb-1">이미지 업로드</p>
+                        <p className="text-xs text-gray-400">{category.count}개</p>
+                      </div>
+                    </label>
+                    
+                    {files.length > 0 && (
+                      <div className="grid grid-cols-2 gap-2">
+                        {files.map((file, index) => (
+                          <div key={index} className="relative group">
+                            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                              <img
+                                src={URL.createObjectURL(file)}
+                                alt={`${category.label} ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <button
+                              onClick={() => handleRemoveFile(category.key, index)}
+                              className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* 트렁크, 범퍼, 보닛 */}
+          {categories.filter(c => ['trunk', 'bumper', 'bonnet'].includes(c.key)).map(category => {
+            const files = uploadedFiles[category.key] || [];
+            const isComplete = files.length >= category.count;
+            return renderCategorySection(category, files, isComplete);
+          })}
+          
+          {/* 비디오 */}
+          {categories.filter(c => c.key === 'videos').map(category => {
+            const files = uploadedFiles[category.key] || [];
+            const isComplete = files.length >= category.count;
+            return renderCategorySection(category, files, isComplete);
+          })}
+        </div>
+
+        {/* Save Button */}
+        <div className="mt-8 flex justify-end gap-4">
+          <button
+            onClick={() => onNavigate('SCR-0101')}
+            className="px-6 py-2.5 bg-gray-100 text-fmax-text-main rounded-lg font-medium hover:bg-gray-200 transition-colors"
+          >
+            취소
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={!totals.allComplete}
+            className={`px-6 py-2.5 rounded-lg font-medium transition-colors shadow-md ${
+              totals.allComplete
+                ? 'bg-fmax-primary text-white hover:bg-fmax-primary-hover cursor-pointer'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+            title={!totals.allComplete ? `이미지 ${totals.requiredImages - totals.images}개, 비디오 ${totals.requiredVideos - totals.videos}개 더 필요합니다` : ''}
+          >
+            {totals.allComplete ? (
+              <>
+                <CheckCircle2 className="w-4 h-4 inline-block mr-2" />
+                검차 결과 저장
+              </>
+            ) : (
+              `업로드 필요 (이미지 ${totals.requiredImages - totals.images}개, 비디오 ${totals.requiredVideos - totals.videos}개)`
+            )}
+          </button>
+        </div>
+      </main>
     </div>
   );
 };
@@ -3686,8 +5432,9 @@ const App = () => {
       case 'SCR-0000': return <LandingPage onNavigate={handleNavigate} />;
       case 'SCR-0001': return <LoginPage onNavigate={handleNavigate} onLogin={() => handleNavigate('SCR-0100')} />;
       case 'SCR-0002':
-      case 'SCR-0002-1': return <SignupTermsPage onNavigate={handleNavigate} onSkip={() => handleNavigate('SCR-0003-2')} />;
-      case 'SCR-0002-2': return <SignupInfoPage onNavigate={handleNavigate} onSkip={() => handleNavigate('SCR-0003-2')} />;
+      case 'SCR-0002-1':
+      case 'SCR-0002-2':
+      case 'SCR-0002-3': return <SignupWizard onNavigate={handleNavigate} />;
       case 'SCR-0003-1': return <ApprovalStatusPage status="pending" onNavigate={handleNavigate} />;
       case 'SCR-0003-2': return <ApprovalStatusPage status="complete" onNavigate={handleNavigate} />;
       case 'SCR-0100': return <DashboardPage onNavigate={handleNavigate} />;
@@ -3701,6 +5448,9 @@ const App = () => {
       case 'SCR-0201': return <InspectionRequestPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
       case 'SCR-0201-Progress': return <InspectionStatusPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
       case 'SCR-0202': return <InspectionReportPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
+      case 'SCR-0300-REQ': return <InspectionRequestPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
+      case 'SCR-0300-PROG': return <InspectionStatusPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
+      case 'SCR-0300-RES': return <InspectionResultPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
       case 'SCR-0300': return <SalesMethodPage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
       case 'SCR-0600': return <LogisticsSchedulePage onNavigate={handleNavigate} vehicleId={currentVehicleId || undefined} />;
       case 'SCR-0601': return <LogisticsHistoryPage onNavigate={handleNavigate} />;

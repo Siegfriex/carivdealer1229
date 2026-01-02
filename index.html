@@ -32,9 +32,13 @@
               'fmax-surface': '#F8F9FA',
               'fmax-border': '#E9ECEF',
               'fmax-primary': '#373EEF',
+              'fmax-primary-hover': '#2A30C6',
+              'fmax-primary-light': '#5A5FF5',
+              'fmax-primary-dark': '#1E22A8',
               'fmax-accent': '#00D8FF',
               'fmax-text-main': '#1A233A',
               'fmax-text-sub': '#6C757D',
+              'fmax-text-secondary': '#475569',
               'fmax-success': '#00B37E',
               'fmax-error': '#E03131'
             },
@@ -44,6 +48,22 @@
             },
             boxShadow: {
               'fmax-card': '0 2px 12px rgba(0, 0, 0, 0.08)'
+            },
+            animation: {
+              'bounce-slow': 'bounce 2s infinite',
+              'fade-in': 'fadeIn 0.3s ease-in',
+              'slide-up': 'slideUp 0.3s ease-out',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(10px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
             }
           }
         }
@@ -79,6 +99,58 @@
       }
       .checkbox-wrapper input[type="checkbox"]:checked + div svg {
         display: block;
+      }
+      
+      /* Typography System */
+      .text-display {
+        font-size: 64px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+      .text-h1 {
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .text-h2 {
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .text-h3 {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+      .text-body-lg {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.5;
+      }
+      .text-body {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.5;
+      }
+      .text-caption {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.5;
+      }
+      
+      @media (max-width: 768px) {
+        .text-display {
+          font-size: 48px;
+        }
+        .text-h1 {
+          font-size: 32px;
+        }
+        .text-h2 {
+          font-size: 24px;
+        }
+        .text-h3 {
+          font-size: 20px;
+        }
       }
     </style>
   <script type="importmap">

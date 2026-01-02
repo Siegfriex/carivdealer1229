@@ -672,3 +672,4 @@ export const generateReport = async (req: Request, res: Response) => {
 **작성자**: AI Assistant  
 **상태**: ✅ 점검 완료
 
+
