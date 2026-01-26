@@ -1,173 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ForwardMax | B2B Used Car Export Platform</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              background: '#ffffff',
-              surface: '#F8FAFC',
-              surfaceHover: '#F1F5F9',
-              primary: '#373EEF',
-              primaryHover: '#2A30C6',
-              accent: '#00B8D4',
-              text: {
-                primary: '#0F172A',
-                secondary: '#475569',
-                muted: '#94A3B8'
-              },
-              border: '#E2E8F0',
-              
-              /* New FMAX Design System Colors */
-              'fmax-bg': '#FFFFFF',
-              'fmax-surface': '#F8F9FA',
-              'fmax-border': '#E9ECEF',
-              'fmax-primary': '#373EEF',
-              'fmax-primary-hover': '#2A30C6',
-              'fmax-primary-light': '#5A5FF5',
-              'fmax-primary-dark': '#1E22A8',
-              'fmax-accent': '#00D8FF',
-              'fmax-text-main': '#1A233A',
-              'fmax-text-sub': '#6C757D',
-              'fmax-text-secondary': '#475569',
-              'fmax-success': '#00B37E',
-              'fmax-error': '#E03131'
-            },
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
-            },
-            boxShadow: {
-              'fmax-card': '0 2px 12px rgba(0, 0, 0, 0.08)'
-            },
-            animation: {
-              'bounce-slow': 'bounce 2s infinite',
-              'fade-in': 'fadeIn 0.3s ease-in',
-              'slide-up': 'slideUp 0.3s ease-out',
-              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
-              },
-              slideUp: {
-                '0%': { transform: 'translateY(10px)', opacity: '0' },
-                '100%': { transform: 'translateY(0)', opacity: '1' },
-              },
-            }
-          }
-        }
-      }
-    </script>
-    <style>
-      body {
-        background-color: #ffffff;
-        color: #0F172A;
-        font-family: 'Inter', sans-serif;
-        -webkit-font-smoothing: antialiased;
-      }
-      /* Custom Scrollbar for high-density look */
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #ffffff; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #CBD5E1; 
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #94A3B8; 
-      }
-      
-      /* Checkbox Custom Styling */
-      .checkbox-wrapper input[type="checkbox"]:checked + div {
-        background-color: #373EEF;
-        border-color: #373EEF;
-      }
-      .checkbox-wrapper input[type="checkbox"]:checked + div svg {
-        display: block;
-      }
-      
-      /* Typography System */
-      .text-display {
-        font-size: 64px;
-        font-weight: 700;
-        line-height: 1.2;
-      }
-      .text-h1 {
-        font-size: 40px;
-        font-weight: 700;
-        line-height: 1.3;
-      }
-      .text-h2 {
-        font-size: 32px;
-        font-weight: 600;
-        line-height: 1.35;
-      }
-      .text-h3 {
-        font-size: 24px;
-        font-weight: 500;
-        line-height: 1.4;
-      }
-      .text-body-lg {
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 1.5;
-      }
-      .text-body {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 1.5;
-      }
-      .text-caption {
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 1.5;
-      }
-      
-      @media (max-width: 768px) {
-        .text-display {
-          font-size: 48px;
-        }
-        .text-h1 {
-          font-size: 32px;
-        }
-        .text-h2 {
-          font-size: 24px;
-        }
-        .text-h3 {
-          font-size: 20px;
-        }
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+    <title>ForwardMax | B2B 중고차 수출 플랫폼</title>
+  </head>
   <body>
+    <!-- Mobile Blocker (700px 미만에서만 표시) -->
+    <div id="mobile-blocker">
+      <div style="min-height: 100vh; display: flex; align-items: center; justify-center; padding: 1rem; background-color: #F8F9FA;">
+        <div style="text-center; max-width: 28rem;">
+          <h1 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: #111827;">데스크톱에서 접속해주세요</h1>
+          <p style="color: #4B5563; line-height: 1.75;">
+            본 서비스는 데스크톱 환경에 최적화되어 있습니다.<br />
+            PC나 태블릿(가로 모드)에서 접속해주세요.
+          </p>
+          <p style="font-size: 0.875rem; color: #6B7280; margin-top: 1rem;">
+            최소 권장 해상도: 700px × 600px
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Application (700px 이상) -->
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    
+    <script type="module" src="/src/app/main.tsx"></script>
   </body>
 </html>

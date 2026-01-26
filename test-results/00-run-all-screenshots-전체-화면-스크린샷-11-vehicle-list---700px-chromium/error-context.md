@@ -1,0 +1,82 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - heading "ForwardMax" [level=1] [ref=e7]
+        - navigation [ref=e8]:
+          - link "대시보드" [ref=e9] [cursor=pointer]:
+            - /url: /dashboard
+          - link "차량 관리" [ref=e10] [cursor=pointer]:
+            - /url: /vehicles
+          - link "탁송 관리" [ref=e11] [cursor=pointer]:
+            - /url: /logistics/schedule
+          - link "정산 관리" [ref=e12] [cursor=pointer]:
+            - /url: /settlements
+        - button "딜러명" [ref=e14] [cursor=pointer]:
+          - img [ref=e15]
+          - generic [ref=e18]: 딜러명
+    - generic [ref=e19]:
+      - complementary [ref=e20]:
+        - navigation [ref=e21]:
+          - list [ref=e22]:
+            - listitem [ref=e23]:
+              - link "대시보드" [ref=e24] [cursor=pointer]:
+                - /url: /dashboard
+                - img [ref=e25]
+                - text: 대시보드
+            - listitem [ref=e30]:
+              - link "차량 관리" [ref=e31] [cursor=pointer]:
+                - /url: /vehicles
+                - img [ref=e32]
+                - text: 차량 관리
+            - listitem [ref=e36]:
+              - link "탁송 관리" [ref=e37] [cursor=pointer]:
+                - /url: /logistics/schedule
+                - img [ref=e38]
+                - text: 탁송 관리
+            - listitem [ref=e43]:
+              - link "정산 관리" [ref=e44] [cursor=pointer]:
+                - /url: /settlements
+                - img [ref=e45]
+                - text: 정산 관리
+            - listitem [ref=e48]:
+              - link "판매 이력" [ref=e49] [cursor=pointer]:
+                - /url: /sales/history
+                - img [ref=e50]
+                - text: 판매 이력
+      - main [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - heading "차량 목록" [level=1] [ref=e56]
+            - paragraph [ref=e57]: 총 0개의 차량
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - textbox "차량번호 또는 모델명 검색" [ref=e63]
+            - generic [ref=e64]:
+              - button [ref=e65] [cursor=pointer]:
+                - img [ref=e66]
+              - button [ref=e67] [cursor=pointer]:
+                - img [ref=e68]
+            - button "차량 등록" [ref=e70] [cursor=pointer]:
+              - img [ref=e71]
+              - text: 차량 등록
+        - table [ref=e74]:
+          - rowgroup [ref=e75]:
+            - row "차량번호 모델명 연식 주행거리 가격 상태 액션" [ref=e76]:
+              - columnheader "차량번호" [ref=e77]
+              - columnheader "모델명" [ref=e78]
+              - columnheader "연식" [ref=e79]
+              - columnheader "주행거리" [ref=e80]
+              - columnheader "가격" [ref=e81]
+              - columnheader "상태" [ref=e82]
+              - columnheader "액션" [ref=e83]
+          - rowgroup
+  - generic [ref=e84]:
+    - img [ref=e86]
+    - button "Open Tanstack query devtools" [ref=e134] [cursor=pointer]:
+      - img [ref=e135]
+```

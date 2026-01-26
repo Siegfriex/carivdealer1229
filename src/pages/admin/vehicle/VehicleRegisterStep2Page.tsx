@@ -1,0 +1,120 @@
+/**
+ * VehicleRegisterStep2Page Component
+ * 차량 등록 Step 2 - 상세 정보 및 사진 업로드
+ * 
+ * 디자인: design/design_vehicle_input/vehicle_input_1/매물 등록 관리_차량 등록2.svg
+ */
+
+import { useState } from 'react';
+import { Header } from '@/widgets/Header/ui/Header';
+import { StepProgress, type Step } from '@/shared/ui/StepProgress';
+import { Input } from '@/shared/ui/Input';
+import { Select } from '@/shared/ui/Select';
+import { Button } from '@/shared/ui/Button';
+import { ImageUpload } from '@/shared/ui/ImageUpload';
+import { Save } from 'lucide-react';
+
+const steps: Step[] = [
+  { id: 'step1', label: '차량 정보 입력', status: 'completed' },
+  { id: 'step2', label: '상세 정보 입력', status: 'current' },
+  { id: 'step3', label: '검차 신청', status: 'upcoming' },
+];
+
+const fuelTypeOptions = [
+  { value: '가솔린', label: '가솔린' },
+  { value: '디젤', label: '디젤' },
+  { value: '하이브리드', label: '하이브리드' },
+  { value: '전기', label: '전기' },
+];
+
+export const VehicleRegisterStep2Page = () => {
+  const [fuelType, setFuelType] = useState('');
+  const [color, setColor] = useState('');
+  const [price, setPrice] = useState('');
+  const [files, setFiles] = useState<File[]>([]);
+
+  const handleSaveDraft = () => {
+    // 임시저장
+    console.log('임시저장');
+  };
+
+  const handleNext = () => {
+    // 검차 신청 단계로 이동
+    console.log('다음 단계');
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+
+      <main className="container mx-auto px-6 py-8">
+        <StepProgress steps={steps} className="mb-12" />
+
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-h1 font-bold text-gray-900 mb-2">상세 정보를 입력해주세요</h1>
+          <p className="text-body text-gray-600 mb-8">차량의 추가 정보를 입력하고 사진을 업로드하세요</p>
+
+          <div className="bg-white rounded-lg shadow-md p-8 space-y-8">
+            {/* 상세 정보 */}
+            <div className="grid grid-cols-2 gap-6">
+              <Select
+                label="연료 종류"
+                options={fuelTypeOptions}
+                placeholder="선택하세요"
+                value={fuelType}
+                onChange={(e) => setFuelType(e.target.value)}
+                fullWidth
+                required
+              />
+
+              <Input
+                label="색상"
+                type="text"
+                placeholder="예: 화이트"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                fullWidth
+              />
+
+              <Input
+                label="판매가 (만원)"
+                type="number"
+                placeholder="2850"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                fullWidth
+                className="col-span-2"
+              />
+            </div>
+
+            {/* 차량 사진 업로드 */}
+            <div>
+              <label className="block text-body font-medium text-gray-700 mb-4">
+                차량 사진 업로드
+              </label>
+              <ImageUpload
+                onFilesSelect={(selectedFiles) => setFiles([...files, ...selectedFiles])}
+                maxFiles={20}
+              />
+            </div>
+
+            {/* 액션 버튼 */}
+            <div className="flex justify-between pt-6">
+              <Button variant="secondary" onClick={() => window.history.back()}>
+                이전
+              </Button>
+              
+              <div className="flex gap-4">
+                <Button variant="ghost" onClick={handleSaveDraft}>
+                  <Save className="h-5 w-5 mr-2" />
+                  임시저장
+                </Button>
+                <Button onClick={handleNext}>다음 (검차 신청)</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};

@@ -1,0 +1,208 @@
+/**
+ * ForwardMax Design System - Design Tokens
+ * 1440px 기준 디자인, vw 기반 반응형
+ * 
+ * 참조 디자인 파일:
+ * - design/design_typhography/Typography.png
+ * - design/design_component/*.svg (10개)
+ */
+
+:root {
+  /* ===== Typography System ===== */
+  
+  /* Font Family */
+  --font-primary: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  
+  /* Font Sizes (1440px 기준, Typography.png 참조) */
+  --text-h1: clamp(2rem, 2.5vw, 36px);           /* 36px */
+  --text-h2: clamp(1.5rem, 1.67vw, 24px);        /* 24px */
+  --text-h3: clamp(1.125rem, 1.25vw, 18px);      /* 18px */
+  --text-h4: clamp(1rem, 1.11vw, 16px);          /* 16px */
+  --text-body: clamp(0.875rem, 0.97vw, 14px);    /* 14px */
+  --text-button: clamp(0.75rem, 0.83vw, 12px);   /* 12px */
+  --text-caption: clamp(0.625rem, 0.69vw, 10px); /* 10px */
+  
+  /* Font Weights (Typography.png 참조) */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  
+  /* Line Heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+  
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+
+  /* ===== Layout System ===== */
+  
+  /* Container (1440px 기준) */
+  --container-max: 1440px;
+  --container-padding: max(24px, 1.67vw);        /* 24px at 1440px */
+  
+  /* Breakpoints */
+  --bp-desktop: 700px;  /* 700px 이상: 데스크톱 */
+  --bp-mobile: 699px;   /* 699px 이하: MobileBlocker */
+  
+  /* Spacing Scale (1440px 기준) */
+  --space-1: clamp(4px, 0.28vw, 4px);            /* 4px */
+  --space-2: clamp(8px, 0.56vw, 8px);            /* 8px */
+  --space-3: clamp(12px, 0.83vw, 12px);          /* 12px */
+  --space-4: clamp(16px, 1.11vw, 16px);          /* 16px */
+  --space-5: clamp(20px, 1.39vw, 20px);          /* 20px */
+  --space-6: clamp(24px, 1.67vw, 24px);          /* 24px */
+  --space-8: clamp(32px, 2.22vw, 32px);          /* 32px */
+  --space-10: clamp(40px, 2.78vw, 40px);         /* 40px */
+  --space-12: clamp(48px, 3.33vw, 48px);         /* 48px */
+  --space-16: clamp(64px, 4.44vw, 64px);         /* 64px */
+  --space-20: clamp(80px, 5.56vw, 80px);         /* 80px */
+  --space-24: clamp(96px, 6.67vw, 96px);         /* 96px */
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* ===== Color System ===== */
+  
+  /* Primary Brand (디자인 파일에서 추출: #2048E5) */
+  --color-primary: #2048E5;
+  --color-primary-hover: #1A3BB8;
+  --color-primary-active: #142E8C;
+  --color-primary-light: #EEF5FE;
+  --color-primary-border: #D9E7FC;
+  
+  /* Accent (디자인 파일에서 추출: #8A38F5) */
+  --color-accent: #8A38F5;
+  --color-accent-hover: #7229CC;
+  --color-accent-active: #5A1FA3;
+  
+  /* Neutral Colors */
+  --color-white: #FFFFFF;
+  --color-gray-50: #F8F9FA;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E6E6E6;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #909090;
+  --color-gray-600: #727272;
+  --color-gray-700: #4B5563;
+  --color-gray-800: #1F2937;
+  --color-gray-900: #111827;
+  --color-black: #000000;
+  
+  /* Semantic Colors */
+  --color-success: #10B981;
+  --color-success-light: #D1FAE5;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FEF3C7;
+  --color-error: #EF4444;
+  --color-error-light: #FEE2E2;
+  --color-info: #3B82F6;
+  --color-info-light: #DBEAFE;
+  
+  /* Status Colors (차량 상태 등) */
+  --color-draft: var(--color-gray-500);
+  --color-inspection: var(--color-info);
+  --color-bidding: #8B5CF6;  /* Purple */
+  --color-active-sale: var(--color-success);
+  --color-sold: #F97316;  /* Orange */
+  --color-pending-settlement: var(--color-warning);
+  --color-completed: #14B8A6;  /* Teal */
+  
+  /* Background Colors */
+  --color-bg-primary: #F8F9FA;
+  --color-bg-secondary: var(--color-white);
+  --color-bg-tertiary: var(--color-gray-100);
+  
+  /* Border Colors */
+  --color-border-light: var(--color-gray-200);
+  --color-border-medium: var(--color-gray-300);
+  --color-border-strong: var(--color-gray-400);
+  
+  /* Text Colors */
+  --color-text-primary: var(--color-gray-900);
+  --color-text-secondary: var(--color-gray-600);
+  --color-text-tertiary: var(--color-gray-500);
+  --color-text-disabled: var(--color-gray-400);
+  --color-text-inverse: var(--color-white);
+
+  /* ===== z-index Layering System ===== */
+  
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 800;
+  --z-loading: 900;
+
+  /* ===== Component Specific (디자인 파일에서 추출) ===== */
+  
+  /* GNB (Header) - design/design_component/GNB(상단 네비게이션 메뉴).svg */
+  --gnb-height: 64px;
+  --gnb-height-vw: 4.44vw;  /* 64/1440 */
+  
+  /* Progress Sidebar - design/design_component/좌측 프로그래스바.svg */
+  --sidebar-width: 249px;
+  --sidebar-width-vw: 17.29vw;  /* 249/1440 */
+  --progress-step-gap: 105px;
+  --progress-step-gap-vw: 7.29vw;  /* 105/1440 */
+  --progress-circle-size: 27.2px;
+  --progress-circle-size-vw: 1.89vw;  /* 27.2/1440 */
+  
+  /* Step Progress (검차단계 프로그래스바) */
+  --step-progress-height: 60px;
+  --step-progress-height-vw: 4.17vw;
+  
+  /* Cards */
+  --card-border-radius: 10px;
+  --card-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.08);
+  
+  /* Status Badge */
+  --badge-height: 33px;
+  --badge-height-vw: 2.29vw;
+  --badge-padding-x: 20px;
+  --badge-padding-x-vw: 1.39vw;
+  
+  /* Checkbox */
+  --checkbox-size: 12px;
+  --checkbox-size-vw: 0.83vw;
+  
+  /* Image Upload */
+  --image-upload-size: 120px;
+  --image-upload-size-vw: 8.33vw;
+  
+  /* Footer */
+  --footer-height: 327px;
+  --footer-height-vw: 22.71vw;  /* 327/1440 */
+  --footer-bg: #F3F4F6;
+
+  /* ===== Transitions & Animations ===== */
+  
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 250ms ease-in-out;
+  --transition-slow: 400ms ease-in-out;
+  
+  /* ===== Shadows ===== */
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 3px 10px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Dark Mode Support (향후 확장) ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* 다크 모드 색상은 향후 추가 */
+  }
+}
