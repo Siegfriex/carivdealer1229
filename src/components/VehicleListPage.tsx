@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Search as SearchIcon, Filter, Car, Edit2, Trash2, Eye, FileCheck, Loader2 } from 'lucide-react';
-import { db } from '../config/firebase';
+import { db } from '@/shared/config/firebase';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 
 interface Vehicle {

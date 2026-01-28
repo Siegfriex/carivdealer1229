@@ -1,50 +1,89 @@
 /**
- * SignupEntryPage Component
- * 회원가입 진입 페이지
- * 
- * 디자인: design/design_SignIn/A. 회원/회원가입진입.svg
+ * SignupEntryPage (회원가입 1단계 첫페이지)
+ * Figma 1194-6171: 회원가입 진입 - 딜러 증빙조건 안내, 3카드, 딜러로 시작하기
+ * 로그인 모달에서 "회원가입" 클릭 시 진입
  */
 
 import { Button } from '@/shared/ui/Button';
-import { Building, ArrowRight } from 'lucide-react';
+import { Typography } from '@/shared/ui/Typography';
+import { FileText, Car, Wallet } from 'lucide-react';
+
+const SIGNUP_CARDS = [
+  {
+    icon: FileText,
+    title: '사업자 필수 정보 입력',
+    description: '판매할 차량의 차량등록원부를 업로드하고, 기본 정보와 판매방식을 선택하여 매물을 등록합니다.',
+  },
+  {
+    icon: Car,
+    title: '중고차 매매업 관련 인증',
+    description: '판매할 차량의 차량등록원부를 업로드하고, 기본 정보와 판매방식을 선택하여 매물을 등록합니다.',
+  },
+  {
+    icon: Wallet,
+    title: '정산(입출금) 관련 정보',
+    description: '판매할 차량의 차량등록원부를 업로드하고, 기본 정보와 판매방식을 선택하여 매물을 등록합니다.',
+  },
+] as const;
 
 export const SignupEntryPage = () => {
+  const handleStartDealer = () => {
+    window.history.pushState({}, '', '/signup/step1');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        {/* 로고 */}
-        <div className="text-center mb-12">
-          <h1 className="text-h1 font-bold text-primary mb-4">ForwardMax</h1>
-          <p className="text-body text-gray-600">B2B 중고차 수출 플랫폼</p>
-        </div>
-
-        {/* 회원가입 카드 */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-6">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 rounded-full bg-primary-light flex items-center justify-center">
-              <Building className="h-8 w-8 text-primary" />
-            </div>
-            <div>
-              <h2 className="text-h3 font-bold text-gray-900">딜러 회원가입</h2>
-              <p className="text-body text-gray-600">사업자 인증으로 간편하게</p>
-            </div>
-          </div>
-
-          <Button fullWidth size="lg" className="mb-4">
-            딜러 회원가입 시작
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-
-          <div className="text-center">
-            <a href="/login" className="text-body text-primary hover:underline">
-              이미 계정이 있으신가요? 로그인
-            </a>
-          </div>
-        </div>
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
+      <div className="container max-w-3xl mx-auto text-center">
+        {/* 제목 */}
+        <Typography variant="h1" className="text-gray-900 mb-4">
+          회원가입
+        </Typography>
 
         {/* 안내 문구 */}
-        <p className="text-caption text-gray-500 text-center">
-          회원가입 후 관리자 승인이 필요합니다
+        <Typography variant="body" className="text-gray-600 mb-12 max-w-2xl mx-auto">
+          딜러 자격으로 가입을 위한 증빙조건이 필요합니다.
+        </Typography>
+
+        {/* 3카드 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 text-left">
+          {SIGNUP_CARDS.map(({ icon: Icon, title, description }) => (
+            <div
+              key={title}
+              className="bg-gray-100 rounded-lg p-6 flex flex-col"
+            >
+              <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center mb-4 shadow-sm">
+                <Icon className="h-6 w-6 text-primary" />
+              </div>
+              <Typography variant="h4" className="font-bold text-gray-900 mb-2">
+                {title}
+              </Typography>
+              <Typography variant="body" className="text-gray-600">
+                {description}
+              </Typography>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <Button size="lg" onClick={handleStartDealer} className="mb-6 min-w-[200px]">
+          딜러로 시작하기
+        </Button>
+
+        {/* 로그인 링크 */}
+        <p className="text-body text-gray-600">
+          이미 회원이라면?{' '}
+          <a
+            href="/"
+            className="text-primary font-medium hover:underline"
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState({}, '', '/');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+            }}
+          >
+            로그인
+          </a>
         </p>
       </div>
     </div>

@@ -66,13 +66,14 @@ export default {
       fontFamily: {
         sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'sans-serif'],
       },
+      /* Figma Typography 1194-7425, 가로 기준 1440px (vw = px/1440*100) */
       fontSize: {
-        'h1': ['clamp(2rem, 2.5vw, 36px)', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
-        'h2': ['clamp(1.5rem, 1.67vw, 24px)', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
-        'h3': ['clamp(1.125rem, 1.25vw, 18px)', { lineHeight: '1.2' }],
-        'h4': ['clamp(1rem, 1.11vw, 16px)', { lineHeight: '1.5' }],
-        'body': ['clamp(0.875rem, 0.97vw, 14px)', { lineHeight: '1.5' }],
-        'button': ['clamp(0.75rem, 0.83vw, 12px)', { lineHeight: '1.5' }],
+        'h1': ['clamp(2rem, 2.5vw, 36px)', { lineHeight: '1.2', letterSpacing: '-0.02em' }],   /* H1: 36px Medium */
+        'h2': ['clamp(1.5rem, 1.67vw, 24px)', { lineHeight: '1.2', letterSpacing: '-0.02em' }], /* H2: 24px Medium */
+        'h3': ['clamp(1.125rem, 1.25vw, 18px)', { lineHeight: '1.2' }],                         /* H3: 18px Bold */
+        'h4': ['clamp(1rem, 1.11vw, 16px)', { lineHeight: '1.5' }],                           /* H4: 16px Regular */
+        'body': ['clamp(0.875rem, 0.97vw, 14px)', { lineHeight: '1.5' }],                      /* Body: 14px Regular */
+        'button': ['clamp(0.75rem, 0.83vw, 12px)', { lineHeight: '1.5' }],                     /* Button: 12px Regular */
         'caption': ['clamp(0.625rem, 0.69vw, 10px)', { lineHeight: '1.5' }],
       },
       spacing: {

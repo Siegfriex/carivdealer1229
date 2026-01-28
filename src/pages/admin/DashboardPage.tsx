@@ -1,112 +1,119 @@
 /**
- * DashboardPage Component
- * 딜러 대시보드 (그리드/리스트 뷰)
- * 
- * 디자인:
- * - design/design_vehicle_dashboard/매물 등록 관리_그리드 뷰1.svg
- * - design/design_vehicle_dashboard/매물 등록 관리_리스트 뷰2.svg
+ * DashboardPage (로그인/회원가입 성공 후 메인 랜딩)
+ * Figma 1194-7664: 전체 차량 그리드 + 좌측 사이드바 + 헤더 + 페이지네이션 + 푸터
  */
 
-import { useState } from 'react';
-import { Header } from '@/widgets/Header/ui/Header';
-import { Sidebar } from '@/widgets/Sidebar/ui/Sidebar';
-import { VehicleTable } from '@/widgets/VehicleTable/ui/VehicleTable';
+import { useState, useMemo } from 'react';
+import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
 import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
 import { Button } from '@/shared/ui/Button';
+import { Pagination } from '@/shared/ui/Pagination';
 import { useVehicles } from '@/features/vehicle/register-form/model/useVehicles';
-import { Grid3x3, List, Plus } from 'lucide-react';
+
+const PAGE_SIZE = 9;
 
 export const DashboardPage = () => {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sidebarActive, setSidebarActive] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { data: vehicles = [], isLoading } = useVehicles();
+
+  const filteredVehicles = useMemo(() => {
+    if (!searchTerm.trim()) return vehicles;
+    const q = searchTerm.toLowerCase();
+    return vehicles.filter(
+      (v) =>
+        v.plateNumber.toLowerCase().includes(q) ||
+        v.modelName.toLowerCase().includes(q) ||
+        (v.manufacturer && v.manufacturer.toLowerCase().includes(q))
+    );
+  }, [vehicles, searchTerm]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredVehicles.length / PAGE_SIZE));
+  const paginatedVehicles = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return filteredVehicles.slice(start, start + PAGE_SIZE);
+  }, [filteredVehicles, currentPage]);
+
+  const handleRegister = () => {
+    window.location.href = '/vehicles/new/step1';
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <LandingHeader
+        userName="홍길동"
+        variant="main"
+        activeNav="vehicles"
+        onRegisterListing={handleRegister}
+      />
 
       <div className="flex">
-        <Sidebar currentPath="/dashboard" />
+        <MainLandingSidebar
+          searchValue={searchTerm}
+          onSearchChange={setSearchTerm}
+          activeKey={sidebarActive}
+        />
 
         <main className="flex-1 p-8">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-h1 font-bold text-gray-900 mb-2">매물 등록 관리</h1>
-              <p className="text-body text-gray-600">
-                총 {vehicles.length}개의 차량이 등록되어 있습니다
-              </p>
-            </div>
-
-            <div className="flex items-center gap-4">
-              {/* View Toggle */}
-              <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-md">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`
-                    p-2 rounded transition-fast
-                    ${viewMode === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'}
-                  `}
-                  aria-label="그리드 뷰"
-                >
-                  <Grid3x3 className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`
-                    p-2 rounded transition-fast
-                    ${viewMode === 'list' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'}
-                  `}
-                  aria-label="리스트 뷰"
-                >
-                  <List className="h-5 w-5" />
-                </button>
-              </div>
-
-              <Button>
-                <Plus className="h-5 w-5 mr-2" />
-                차량 등록
-              </Button>
-            </div>
+          {/* 상단: 전체 차량 + 확인 필요차량 */}
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-h1 font-bold text-gray-900">전체 차량</h1>
+            <Button variant="secondary" size="md">
+              확인 필요차량
+            </Button>
           </div>
 
-          {/* Content */}
+          {/* 그리드 */}
           {isLoading ? (
-            <div className="text-center py-12">
+            <div className="text-center py-16">
               <p className="text-body text-gray-500">로딩 중...</p>
             </div>
-          ) : viewMode === 'grid' ? (
-            /* 그리드 뷰 */
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {vehicles.map((vehicle) => (
-                <VehicleCard key={vehicle.id} vehicle={vehicle} />
-              ))}
+          ) : paginatedVehicles.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-lg shadow-md">
+              <p className="text-body text-gray-600">등록된 차량이 없습니다.</p>
+              <Button className="mt-4" onClick={handleRegister}>
+                매물 등록하기
+              </Button>
             </div>
           ) : (
-            /* 리스트 뷰 */
-            <div className="bg-white rounded-lg shadow-md">
-              <VehicleTable vehicles={vehicles} />
-            </div>
-          )}
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedVehicles.map((vehicle) => (
+                  <VehicleCard
+                    key={vehicle.id}
+                    vehicle={vehicle}
+                    variant="mainLanding"
+                    onClick={() => {
+                      window.location.href = `/vehicles/${vehicle.id}`;
+                    }}
+                  />
+                ))}
+              </div>
 
-          {/* Empty State */}
-          {!isLoading && vehicles.length === 0 && (
-            <div className="text-center py-16">
-              <Car className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-              <h2 className="text-h3 font-bold text-gray-900 mb-2">등록된 차량이 없습니다</h2>
-              <p className="text-body text-gray-600 mb-6">첫 차량을 등록하여 시작하세요</p>
-              <Button>차량 등록하기</Button>
-            </div>
+              {/* 페이지네이션 */}
+              {totalPages > 1 && (
+                <div className="mt-10 flex justify-center">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </div>
+              )}
+            </>
           )}
         </main>
       </div>
+
+      {/* 푸터 */}
+      <footer className="container py-6 border-t border-gray-200">
+        <p className="text-caption text-gray-500">
+          ForwardMax Cariv Domestic Seller 1.0 Prototype
+        </p>
+      </footer>
     </div>
   );
 };
-
-const Car = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path d="M5 17h14v-5l-1.5-4.5h-11L5 12v5z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    <circle cx="7.5" cy="17.5" r="1.5" fill="currentColor"/>
-    <circle cx="16.5" cy="17.5" r="1.5" fill="currentColor"/>
-  </svg>
-);

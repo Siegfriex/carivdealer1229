@@ -44,7 +44,7 @@ export const schedule = async (req: Request, res: Response) => {
       destinationAddress: '인천광역시 중구 인천항 물류센터', // 고정 도착지
       status: 'scheduled',
       specialNotes: special_notes || '',
-      handoverPin: handoverPin, // 인계 승인용 PIN 저장
+      pin: handoverPin, // 인계 승인용 PIN 저장
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });

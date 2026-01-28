@@ -59,10 +59,12 @@
       "TodoWrite(*)",
       "NotebookEdit(*)",
       "LSP(*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Claude Code 오토런 모드 설정 완료\n\n## 추가된 파일\n- .claude/settings.local.json: 전체 권한 자동 승인\n- CLAUDE.md: 프로젝트 컨텍스트 및 자율 운영 가이드\n- .claude/commands/: 커스텀 슬래시 명령어\n  - /deploy: 전체 배포\n  - /build-check: 빌드 상태 확인\n  - /sync: Git 동기화\n  - /fix-all: 자동 에러 수정\n  - /status: 프로젝트 상태 확인\n\n## Anti-Gravity Mode 활성화\n- 모든 Bash 명령어 자동 승인\n- 파일 읽기/쓰기/편집 자동 승인\n- 웹 검색/페치 자동 승인\n- 에이전트 작업 자동 승인\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nchore: 코드베이스 종합 업데이트 \\(2024-12-31\\)\n\n## Functions 개선\n- 모든 엔드포인트 로깅 및 에러 처리 강화\n- middlewares/ 공통 미들웨어 추가\n- utils/ 유틸리티 함수 추가\n- config/getGoogleMapsApiKey.ts 추가\n- report/generateReport.ts 추가\n\n## 문서 추가\n- API 계약 정의서, 엔드포인트 매핑\n- OCR 공공데이터 리포트 플로우 개선 보고서\n- 배포 준비 체크리스트\n- 베이스라인 프리즈 문서\n\n## 프론트엔드\n- UI 컴포넌트 추가\n- API 엔드포인트 설정 분리\n- api.ts 서비스 개선\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git checkout:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nrefactor: FSD 구조 완성 및 코드베이스 정리\n\nPhase 1: 비필수 파일 정리\n- 루트 레벨 보고서 11개 → docs/archive/ 이동\n- docs/ 중복 문서 28개 → docs/archive/ 이동\n- .gitignore 업데이트 \\(playwright-report/, test-results/\\)\n\nPhase 2: FSD 구조 완성\n- src/config/ → src/shared/config/ 통합 후 삭제\n- src/services/ → src/shared/api/ 통합 후 삭제\n- src/utils/ → src/shared/lib/ 통합 후 삭제\n- 7개 Entity index.ts 생성 \\(vehicle, auction, inspection, logistics, trade, member, settlement\\)\n- apiEndpoints.ts 구조화 \\(도메인별 그룹핑\\)\n\nPhase 3: DB 스키마 재작성\n- docs/DATABASE_ERD_SCHEMA.md 전면 재작성 \\(원본 ERD 기준\\)\n- 신규 Entity 타입 정의: order, payment, listing, address, review\n- Functions 필드명 정합성 수정 \\(dispatchAt→dispatchedAt, handoverPin→pin\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ],
     "deny": []
   }

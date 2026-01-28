@@ -1,88 +1,201 @@
 /**
- * LandingPage Component
- * 로그인 후 랜딩페이지 (첫 사용자)
- * 
- * 디자인: design/landing/로그인 후 랜딩페이지_첫 사용자.svg
+ * LandingPage
+ * 첫 홈 화면 (웹앱 첫 진입·로그아웃 시) — Figma 1194-7481
+ * Hero, 사용 가이드(5단계), FAQ, 문의(KakaoTalk), 푸터
  */
 
-import { Header } from '@/widgets/Header/ui/Header';
+import { useState } from 'react';
+import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Button } from '@/shared/ui/Button';
-import { Car, FileSearch, TrendingUp } from 'lucide-react';
+import { Typography } from '@/shared/ui/Typography';
+import {
+  Upload,
+  Search,
+  FileText,
+  ShoppingCart,
+  CheckCircle,
+  ChevronDown,
+  MessageCircle,
+} from 'lucide-react';
+
+const USER_GUIDE_STEPS = [
+  {
+    step: 1,
+    title: '차량 업로드',
+    description: '차량 정보를 등록하고 이미지를 업로드하세요.',
+    icon: Upload,
+  },
+  {
+    step: 2,
+    title: '검차 진행',
+    description: '전문 검차를 신청하고 결과를 확인하세요.',
+    icon: Search,
+  },
+  {
+    step: 3,
+    title: '거래 진행',
+    description: '경매 또는 일반 판매로 거래를 진행하세요.',
+    icon: FileText,
+  },
+  {
+    step: 4,
+    title: '탁송 요청',
+    description: '탁송을 신청하고 배차 일정을 확인하세요.',
+    icon: ShoppingCart,
+  },
+  {
+    step: 5,
+    title: '거래 완료',
+    description: '정산을 확인하고 거래를 완료하세요.',
+    icon: CheckCircle,
+  },
+] as const;
+
+const FAQ_ITEMS = [
+  { q: '구매 시 필요한 서류는 무엇인가요?', a: '신분증, 자동차 등록증, 보험증권 등이 필요합니다. 구체적인 서류는 거래 유형에 따라 안내드립니다.' },
+  { q: '시세는 어떻게 결정되나요?', a: '검차 결과와 시장 데이터를 바탕으로 시세가 산정됩니다.' },
+  { q: '결제가 가능한 수단은 무엇이 있나요?', a: '계좌이체, 토스페이먼츠 등 다양한 결제 수단을 지원합니다.' },
+  { q: '명의 이전은 어떻게 진행되나요?', a: '거래 완료 후 필요한 서류를 제출하시면 명의 이전을 안내드립니다.' },
+  { q: '탁송 시 필요한 서류는 무엇인가요?', a: '운송 신청서와 차량 관련 서류가 필요할 수 있습니다.' },
+  { q: '검차 시 필요한 서류는 무엇인가요?', a: '자동차 등록증과 차량 키를 지참해 주시면 됩니다.' },
+] as const;
+
+const KAKAO_CHAT_URL = 'https://pf.kakao.com/_example'; // 실제 채널 URL로 교체
 
 export const LandingPage = () => {
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const userName = '홍길동'; // TODO: auth context에서 가져오기
+
+  const handleStartNow = () => {
+    window.location.href = '/vehicles/new/step1';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <LandingHeader userName={userName} onRegisterListing={handleStartNow} />
 
-      <main className="container mx-auto px-6 py-16">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-h1 font-bold text-gray-900 mb-4">
-            ForwardMax에 오신 것을 환영합니다
-          </h1>
-          <p className="text-h4 text-gray-600 mb-8">
-            B2B 중고차 수출 플랫폼 1.0 프로토타입
-          </p>
-          <p className="text-body text-gray-500 mb-12">
-            차량 등록부터 검차, 경매, 탁송, 정산까지 원스톱 서비스를 시작하세요
-          </p>
-
-          <Button size="lg" className="px-12">
-            차량 등록하기
+      {/* Hero */}
+      <section className="relative w-full min-h-[420px] flex items-center justify-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(to bottom, rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.5)), url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1440&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gray-900/50" />
+        <div className="container relative z-10 py-20 text-center md:text-left">
+          <Typography variant="h2" className="text-gray-200 mb-2">
+            안녕하세요 {userName}님! 👋
+          </Typography>
+          <Typography variant="h1" className="text-white font-medium mb-6 max-w-2xl">
+            ForwardMax Cariv와 함께 첫 거래를 시작해보세요
+          </Typography>
+          <Button size="lg" onClick={handleStartNow} className="gap-2">
+            지금 시작하기
+            <span aria-hidden>&rarr;</span>
           </Button>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gray-50 rounded-t-[2rem]" />
+      </section>
 
-        {/* 가이드 플로우 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {/* Step 1 */}
-          <div className="text-center">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary-light flex items-center justify-center">
-              <Car className="h-10 w-10 text-primary" />
+      {/* 사용 가이드 */}
+      <section className="container py-16 md:py-24 bg-gray-50">
+        <Typography variant="h2" className="text-gray-900 mb-2">
+          사용 가이드
+        </Typography>
+        <Typography variant="body" className="text-gray-600 mb-12">
+          처음 이용하시는 분들을 위한 사용 가이드
+        </Typography>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {USER_GUIDE_STEPS.map(({ step, title, description, icon: Icon }) => (
+            <div
+              key={step}
+              className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition-base"
+            >
+              <span className="text-caption text-gray-500 mb-2">STEP.{step}</span>
+              <Typography variant="h4" className="text-gray-900 mb-2 font-bold">
+                {title}
+              </Typography>
+              <Typography variant="body" className="text-gray-600 mb-6 flex-1">
+                {description}
+              </Typography>
+              <div className="w-14 h-14 rounded-full bg-primary-light flex items-center justify-center">
+                <Icon className="h-7 w-7 text-primary" />
+              </div>
             </div>
-            <h3 className="text-h3 font-bold text-gray-900 mb-2">1. 차량 등록</h3>
-            <p className="text-body text-gray-600">
-              차량 정보를 입력하고
-              <br />
-              OCR로 빠르게 등록하세요
-            </p>
-          </div>
-
-          {/* Step 2 */}
-          <div className="text-center">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-info-light flex items-center justify-center">
-              <FileSearch className="h-10 w-10 text-info" />
-            </div>
-            <h3 className="text-h3 font-bold text-gray-900 mb-2">2. 검차 신청</h3>
-            <p className="text-body text-gray-600">
-              전문 평가사에게
-              <br />
-              차량 검차를 신청하세요
-            </p>
-          </div>
-
-          {/* Step 3 */}
-          <div className="text-center">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-success-light flex items-center justify-center">
-              <TrendingUp className="h-10 w-10 text-success" />
-            </div>
-            <h3 className="text-h3 font-bold text-gray-900 mb-2">3. 판매 시작</h3>
-            <p className="text-body text-gray-600">
-              경매 또는 일반 판매로
-              <br />
-              차량을 판매하세요
-            </p>
-          </div>
+          ))}
         </div>
+      </section>
 
-        {/* CTA Section */}
-        <div className="mt-16 p-8 bg-white rounded-lg shadow-md text-center max-w-3xl mx-auto">
-          <h2 className="text-h2 font-bold text-gray-900 mb-4">첫 차량을 등록하세요</h2>
-          <p className="text-body text-gray-600 mb-6">
-            간편한 OCR 기능으로 등록원부에서 차량 정보를 자동으로 추출합니다
-          </p>
-          <Button size="lg">지금 시작하기</Button>
+      {/* FAQ */}
+      <section className="container py-16 md:py-24 bg-white">
+        <Typography variant="h2" className="text-gray-900 mb-2">
+          자주 묻는 질문이에요
+        </Typography>
+        <Typography variant="body" className="text-gray-600 mb-12">
+          자주 묻는 질문을 통해 빠르게 궁금증을 해결해보세요
+        </Typography>
+        <div className="max-w-3xl space-y-2">
+          {FAQ_ITEMS.map((item, index) => (
+            <div
+              key={index}
+              className="border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                type="button"
+                onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                className="w-full flex items-center gap-3 px-5 py-4 text-left bg-white hover:bg-gray-50 transition-fast"
+                aria-expanded={openFaqIndex === index}
+              >
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-body font-bold">
+                  ?
+                </span>
+                <span className="flex-1 text-body font-medium text-gray-900">
+                  {item.q}
+                </span>
+                <ChevronDown
+                  className={`h-5 w-5 text-gray-500 flex-shrink-0 transition-transform ${
+                    openFaqIndex === index ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              {openFaqIndex === index && (
+                <div className="px-5 pb-4 pt-2 pl-[3.25rem] border-t border-gray-100">
+                  <p className="text-body text-gray-600">{item.a}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      </main>
+      </section>
+
+      {/* 문의 (KakaoTalk) */}
+      <section className="container py-16 md:py-24 bg-gray-50">
+        <Typography variant="h2" className="text-gray-900 mb-2">
+          다른 궁금증이 있으시다면
+        </Typography>
+        <Typography variant="body" className="text-gray-600 mb-8 max-w-2xl">
+          카카오톡 1:1 채팅을 통해 문의 주시면, 포워드맥스 매니저가 1:1로 친절히 안내드려요
+        </Typography>
+        <a
+          href={KAKAO_CHAT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-base text-gray-900 font-medium"
+        >
+          <span className="w-8 h-8 rounded-full bg-[#FEE500] flex items-center justify-center text-gray-900 font-bold text-caption">
+            TALK
+          </span>
+          지금 바로 문의하기
+        </a>
+      </section>
+
+      {/* Footer */}
+      <footer className="container py-6 border-t border-gray-200">
+        <p className="text-caption text-gray-500">
+          ForwardMax Cariv Domestic Seller 1.0 Prototype
+        </p>
+      </footer>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Truck, Calendar, MapPin, User, CheckCircle2, Lock } from 'lucide-react';
-import { apiClient } from '../services/api';
+import { apiClient } from '@/shared/api/apiClient';
 
 interface LogisticsRecord {
   id: string;

@@ -3,7 +3,7 @@
  * Firebase Functions 호출
  */
 
-import { apiClient } from '@/shared/api/client';
+import { apiClient } from '@/shared/api/apiClient';
 import { API_ENDPOINTS } from '@/shared/config/apiEndpoints';
 
 /**
@@ -18,7 +18,7 @@ export interface OcrResponse {
 }
 
 export const ocrRegistration = async (carNo: string): Promise<OcrResponse> => {
-  return await apiClient.post<OcrResponse>(API_ENDPOINTS.OCR_REGISTRATION, {
+  return await apiClient.post<OcrResponse>(API_ENDPOINTS.VEHICLE.OCR_REGISTRATION, {
     car_no: carNo,
   });
 };
@@ -41,7 +41,7 @@ export const getVehicleStatistics = async (
   params: VehicleStatisticsParams
 ): Promise<VehicleStatisticsResponse> => {
   return await apiClient.post<VehicleStatisticsResponse>(
-    API_ENDPOINTS.GET_VEHICLE_STATISTICS,
+    API_ENDPOINTS.VEHICLE.GET_STATISTICS,
     params
   );
 };

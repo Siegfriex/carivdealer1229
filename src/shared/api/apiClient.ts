@@ -1,9 +1,9 @@
-import { mockResponses } from './apiMockData';
-import { analyzeError } from '../utils/errorHandler';
-import { API_ENDPOINTS } from '../config/apiEndpoints';
+import { mockResponses } from './mockData';
+import { analyzeError } from '@/shared/lib/errorHandler';
+import { API_ENDPOINTS } from '@/shared/config/apiEndpoints';
 
 // API Base URL - Firebase Functions v2 endpoint
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
   'https://asia-northeast3-carivdealer.cloudfunctions.net';
 
 // API 타임아웃 (밀리초)
@@ -51,7 +51,7 @@ async function apiCall<T>(
   mockFallback?: () => T
 ): Promise<T> {
   const url = `${API_BASE_URL}/${endpoint}${queryString || ''}`;
-  
+
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
   };
@@ -66,7 +66,6 @@ async function apiCall<T>(
     }, API_TIMEOUT);
 
     if (!response.ok) {
-      // 응답이 온 실패(400, 404, 409 등)는 폴백하지 않고 에러만 throw
       let errorData: any;
       try {
         errorData = await response.json();
@@ -86,14 +85,10 @@ async function apiCall<T>(
 
     return response.json();
   } catch (error: any) {
-    // 타임아웃(AbortError)만 폴백: 무응답(5초) 시에만 Mock 데이터로 폴백
-    // 400/404/409 같은 "응답이 온 실패"는 폴백하지 않음
     if (error.message === 'API_TIMEOUT') {
       if (mockFallback) {
         logMockCall(`API 타임아웃(5초)로 인한 Mock 폴백: ${endpoint}`, error.message);
-        // 폴백 발생 시 반환값에 플래그 추가 (선택 사항)
         const fallbackResult = mockFallback();
-        // 유령 성공 방지를 위한 플래그 (화면에서 사용 가능)
         if (typeof fallbackResult === 'object' && fallbackResult !== null) {
           (fallbackResult as any)._isMockData = true;
         }
@@ -101,8 +96,7 @@ async function apiCall<T>(
       }
       throw new Error(`API 호출 타임아웃(5초). Mock 데이터가 설정되지 않았습니다.`);
     }
-    
-    // 네트워크 에러(TypeError: Failed to fetch)도 타임아웃과 동일하게 처리
+
     if (error instanceof TypeError && (error.message.includes('fetch') || error.message.includes('Failed to fetch'))) {
       if (mockFallback) {
         logMockCall(`네트워크 에러로 인한 Mock 폴백: ${endpoint}`, error.message);
@@ -115,8 +109,7 @@ async function apiCall<T>(
       const apiError = analyzeError(error);
       throw new Error(apiError.message);
     }
-    
-    // 그 외 에러는 그대로 throw (400/404/409 등)
+
     throw error;
   }
 }
@@ -139,7 +132,7 @@ export const apiClient = {
     verifyBusiness: async (businessRegistrationImage: File) => {
       const formData = new FormData();
       formData.append('business_registration_image', businessRegistrationImage);
-      
+
       try {
         const response = await fetchWithTimeout(
           `${API_BASE_URL}/${API_ENDPOINTS.MEMBER.VERIFY_BUSINESS}`,
@@ -151,7 +144,6 @@ export const apiClient = {
         );
         return response.json();
       } catch (error: any) {
-        // 사업자 인증은 폴백 없음: 타임아웃/네트워크 에러도 그대로 throw
         if (error.message === 'API_TIMEOUT' || (error instanceof TypeError && error.message.includes('fetch'))) {
           const apiError = analyzeError(error);
           throw new Error(apiError.message || '사업자 인증 API 호출 실패. 네트워크 연결을 확인해주세요.');
@@ -166,7 +158,7 @@ export const apiClient = {
     ocrRegistration: async (file: File) => {
       const formData = new FormData();
       formData.append('registration_image', file);
-      
+
       try {
         const response = await fetchWithTimeout(
           `${API_BASE_URL}/${API_ENDPOINTS.VEHICLE.OCR_REGISTRATION}`,
@@ -209,7 +201,6 @@ export const apiClient = {
           publicDataError?: string | null;
         }>;
       } catch (error: any) {
-        // OCR은 폴백 없음: 타임아웃/네트워크 에러도 그대로 throw
         if (error.message === 'API_TIMEOUT' || (error instanceof TypeError && error.message.includes('fetch'))) {
           const apiError = analyzeError(error);
           throw new Error(apiError.message || '등록원부 OCR API 호출 실패. 네트워크 연결을 확인해주세요.');
@@ -259,12 +250,12 @@ export const apiClient = {
       images: File[];
     }) => {
       const formData = new FormData();
-      formData.append('inspection_id', inspectionId); // Body에 포함
+      formData.append('inspection_id', inspectionId);
       formData.append('inspection_result', JSON.stringify(data.inspection_result));
       data.images.forEach((img, idx) => {
         formData.append(`images[${idx}]`, img);
       });
-      
+
       try {
         const response = await fetchWithTimeout(
           `${API_BASE_URL}/${API_ENDPOINTS.INSPECTION.UPLOAD_RESULT}`,
@@ -276,7 +267,6 @@ export const apiClient = {
         );
         return response.json();
       } catch (error: any) {
-        // 타임아웃 또는 네트워크 에러만 폴백
         if (error.message === 'API_TIMEOUT' || (error instanceof TypeError && error.message.includes('fetch'))) {
           logMockCall(`API 타임아웃/네트워크 에러로 인한 Mock 폴백: inspectionUploadResultAPI`, error.message);
           const fallbackResult = mockResponses.uploadInspectionResult(inspectionId);
@@ -318,7 +308,7 @@ export const apiClient = {
       message: string;
     }>(
       API_ENDPOINTS.AUCTION.BUY_NOW,
-      { 
+      {
         method: 'POST',
         body: JSON.stringify({ auction_id: auctionId }),
       }
@@ -355,8 +345,6 @@ export const apiClient = {
     ),
 
     confirmProposal: (proposalId: string, confirmed: boolean) => {
-      // TODO: Firebase Functions v2 엔드포인트 구현 후 연결
-      // 현재는 Mock 응답만 반환
       logMockCall(`confirmProposal 호출: proposalId=${proposalId}, confirmed=${confirmed}`);
       return Promise.resolve(mockResponses.confirmProposal(proposalId, confirmed));
     },
@@ -536,5 +524,29 @@ export const apiClient = {
       { method: 'GET' }
     ),
   },
-};
 
+  // Generic methods for direct API calls
+  post: <T = unknown>(endpoint: string, data?: unknown): Promise<T> =>
+    apiCall<T>(endpoint, {
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined,
+    }),
+
+  upload: async <T = unknown>(endpoint: string, formData: FormData): Promise<T> => {
+    const response = await fetchWithTimeout(
+      `${API_BASE_URL}/${endpoint}`,
+      {
+        method: 'POST',
+        body: formData,
+      },
+      API_TIMEOUT
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Upload failed');
+    }
+
+    return response.json();
+  },
+};

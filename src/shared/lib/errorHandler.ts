@@ -1,6 +1,6 @@
 /**
  * 통합 에러 처리 유틸리티
- * 
+ *
  * API 호출 실패 시 사용자 친화적인 에러 메시지를 제공합니다.
  */
 
@@ -136,10 +136,6 @@ export const logError = (error: ApiError, context?: string) => {
 
 /**
  * 에러 처리 헬퍼 함수
- * 
- * @param error - 처리할 에러 객체
- * @param context - 에러 발생 컨텍스트 (선택사항)
- * @returns 사용자 친화적인 에러 메시지
  */
 export const handleError = (error: any, context?: string): string => {
   const apiError = analyzeError(error);
@@ -176,11 +172,11 @@ export const retryWithBackoff = async <T>(
       const apiError = analyzeError(error);
 
       if (!isRetryableError(apiError)) {
-        throw error; // 재시도 불가능한 에러는 즉시 throw
+        throw error;
       }
 
       if (attempt < maxRetries - 1) {
-        const delay = initialDelay * Math.pow(2, attempt); // Exponential backoff
+        const delay = initialDelay * Math.pow(2, attempt);
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
@@ -188,4 +184,3 @@ export const retryWithBackoff = async <T>(
 
   throw lastError;
 };
-

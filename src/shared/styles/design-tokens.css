@@ -1,31 +1,40 @@
 /**
  * ForwardMax Design System - Design Tokens
- * 1440px 기준 디자인, vw 기반 반응형
- * 
- * 참조 디자인 파일:
+ * 모든 가로(레이아웃·타이포) 기준: 1440px
+ *
+ * 참조:
+ * - Figma Domestic Seller 1.0, Typography (node 1194-7425)
  * - design/design_typhography/Typography.png
- * - design/design_component/*.svg (10개)
  */
 
 :root {
-  /* ===== Typography System ===== */
+  /* ===== Layout Base (가로 기준) ===== */
+  --layout-base-width: 1440px;
+
+  /* ===== Typography System (Figma 1194-7425, 1440px 기준) ===== */
   
-  /* Font Family */
+  /* Font Family: Pretendard. 혼용 시 영문/숫자는 Roboto 권장, Baseline 정렬 */
   --font-primary: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   
-  /* Font Sizes (1440px 기준, Typography.png 참조) */
-  --text-h1: clamp(2rem, 2.5vw, 36px);           /* 36px */
-  --text-h2: clamp(1.5rem, 1.67vw, 24px);        /* 24px */
-  --text-h3: clamp(1.125rem, 1.25vw, 18px);      /* 18px */
-  --text-h4: clamp(1rem, 1.11vw, 16px);          /* 16px */
-  --text-body: clamp(0.875rem, 0.97vw, 14px);    /* 14px */
-  --text-button: clamp(0.75rem, 0.83vw, 12px);   /* 12px */
-  --text-caption: clamp(0.625rem, 0.69vw, 10px); /* 10px */
+  /* Type Scale @ 1440px (vw = px/1440*100) */
+  --text-h1: clamp(2rem, 2.5vw, 36px);           /* H1: 36px, Medium */
+  --text-h2: clamp(1.5rem, 1.67vw, 24px);       /* H2: 24px, Medium */
+  --text-h3: clamp(1.125rem, 1.25vw, 18px);     /* H3: 18px, Bold */
+  --text-h4: clamp(1rem, 1.11vw, 16px);         /* H4: 16px, Regular */
+  --text-body: clamp(0.875rem, 0.97vw, 14px);    /* Body: 14px, Regular */
+  --text-button: clamp(0.75rem, 0.83vw, 12px);  /* Button: 12px, Regular */
+  --text-caption: clamp(0.625rem, 0.69vw, 10px); /* Caption: 10px (Figma 외 확장) */
   
-  /* Font Weights (Typography.png 참조) */
+  /* Font Weights per Figma Typography */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
+  --text-h1-weight: var(--font-weight-medium);
+  --text-h2-weight: var(--font-weight-medium);
+  --text-h3-weight: var(--font-weight-bold);
+  --text-h4-weight: var(--font-weight-regular);
+  --text-body-weight: var(--font-weight-regular);
+  --text-button-weight: var(--font-weight-regular);
   
   /* Line Heights */
   --leading-tight: 1.2;
@@ -37,18 +46,18 @@
   --tracking-normal: 0;
   --tracking-wide: 0.02em;
 
-  /* ===== Layout System ===== */
+  /* ===== Layout System (가로 1440px 기준) ===== */
   
-  /* Container (1440px 기준) */
-  --container-max: 1440px;
-  --container-padding: max(24px, 1.67vw);        /* 24px at 1440px */
+  /* Container */
+  --container-max: var(--layout-base-width);
+  --container-padding: max(24px, 1.67vw);         /* 24px at 1440px */
   
   /* Breakpoints */
   --bp-desktop: 700px;  /* 700px 이상: 데스크톱 */
   --bp-mobile: 699px;   /* 699px 이하: MobileBlocker */
   
-  /* Spacing Scale (1440px 기준) */
-  --space-1: clamp(4px, 0.28vw, 4px);            /* 4px */
+  /* Spacing Scale (가로 1440px 기준, vw = px/1440*100) */
+  --space-1: clamp(4px, 0.28vw, 4px);             /* 4px */
   --space-2: clamp(8px, 0.56vw, 8px);            /* 8px */
   --space-3: clamp(12px, 0.83vw, 12px);          /* 12px */
   --space-4: clamp(16px, 1.11vw, 16px);          /* 16px */

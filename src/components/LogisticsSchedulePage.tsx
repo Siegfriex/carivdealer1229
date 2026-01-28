@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, Clock, MapPin, Truck, CheckCircle2, SkipForward } from 'lucide-react';
-import { apiClient } from '../services/api';
+import { apiClient } from '@/shared/api/apiClient';
 
 // 도착지 상수 정의 (인천항 물류센터)
 const DESTINATION_ADDRESS = "인천광역시 중구 인천항 물류센터";

@@ -46,7 +46,7 @@ export const approveHandover = async (req: Request, res: Response) => {
     }
 
     // PIN 검증
-    if (logisticsData.handoverPin !== pin) {
+    if (logisticsData.pin !== pin) {
       res.status(401).json({ error: 'Invalid PIN' });
       return;
     }

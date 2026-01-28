@@ -47,7 +47,7 @@ export const requestDispatch = async (req: Request, res: Response) => {
     await logisticsRef.update({
       dispatchId: mockDispatchId,
       status: 'dispatched',
-      dispatchAt: admin.firestore.FieldValue.serverTimestamp(),
+      dispatchedAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 

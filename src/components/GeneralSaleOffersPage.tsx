@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Check, X, Clock, DollarSign, Building } from 'lucide-react';
-import { apiClient } from '../services/api';
+import { apiClient } from '@/shared/api/apiClient';
 
 interface Offer {
   id: string;
