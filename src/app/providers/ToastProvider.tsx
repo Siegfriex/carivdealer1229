@@ -1,6 +1,6 @@
 /**
  * Toast Provider
- * 기존 Toast 컴포넌트 통합
+ * FSD 구조 준수: shared/ui/Toast 사용
  */
 
-export { ToastProvider, useToast } from '@/components/ui/Toast';
+export { ToastProvider, useToast } from '@/shared/ui/Toast';
