@@ -11,6 +11,7 @@ export type SaleMethod = 'auction' | 'general';
 
 export interface Settlement {
   id: string;
+  platform_id?: string;
   vehicleId: string;
   dealerId?: string;
   salePrice: number;

@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Check, X, Clock, DollarSign, Building } from 'lucide-react';
 import { apiClient } from '@/shared/api/apiClient';
 import { useToast } from '@/shared/ui/Toast';
@@ -21,7 +22,8 @@ interface Offer {
   };
 }
 
-export const GeneralSaleOffersPage = ({ onNavigate }: { onNavigate: (screen: string, vehicleId?: string) => void }) => {
+export const GeneralSaleOffersPage = () => {
+  const navigate = useNavigate();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
@@ -103,7 +105,7 @@ export const GeneralSaleOffersPage = ({ onNavigate }: { onNavigate: (screen: str
     <div className="min-h-screen bg-fmax-surface flex flex-col">
       <header className="bg-white border-b border-fmax-border px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-4">
-          <button onClick={() => onNavigate('SCR-0100')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
+          <button onClick={() => navigate('/dashboard')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5 text-fmax-text-secondary" />
           </button>
           <h1 className="text-lg font-bold text-fmax-text-main">일반 판매 제안 목록</h1>

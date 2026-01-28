@@ -1,17 +1,16 @@
 /**
  * InspectionRequestStep2Page Component
  * 검차 신청 Step 2 - 평가사 선택 (리스트/카드 뷰 토글)
- * 
- * 디자인:
- * - design/design_vehicle_input/vehicle_input_2/매물 등록 관리_차량 검차 신청2_리스트뷰.svg
- * - design/design_vehicle_input/vehicle_input_2/매물 등록 관리_차량 검차 신청2_2_카드뷰_토글.svg
+ * DEV:SKIP(좌하단): 평가사 선택 스킵 후 목록(/inspections) 이동
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Header } from '@/widgets/Header/ui/Header';
 import { StepProgress, type Step } from '@/shared/ui/StepProgress';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
+import { DevSkipButton } from '@/shared/ui/DevSkipButton';
 import { Grid3x3, List, Star } from 'lucide-react';
 
 const steps: Step[] = [
@@ -29,14 +28,32 @@ const evaluators = [
 ];
 
 export const InspectionRequestStep2Page = () => {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<'list' | 'card'>('list');
   const [selectedId, setSelectedId] = useState('');
+
+  const handleDevSkip = () => {
+    navigate('/inspections');
+  };
+
+  const handleSubmit = () => {
+    if (!selectedId) {
+      alert('평가사를 선택해주세요.');
+      return;
+    }
+
+    const selectedEvaluator = evaluators.find((e) => e.id === selectedId);
+    console.log('검차 신청:', { evaluatorId: selectedId, evaluatorName: selectedEvaluator?.name });
+
+    alert('검차 신청이 완료되었습니다.');
+    navigate('/inspections');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="container mx-auto px-6 py-8">
+      <main className="container py-8">
         <StepProgress steps={steps} className="mb-12" />
 
         <div className="max-w-4xl mx-auto">
@@ -147,13 +164,16 @@ export const InspectionRequestStep2Page = () => {
           )}
 
           <div className="flex justify-between pt-8">
-            <Button variant="secondary" onClick={() => window.history.back()}>
+            <Button variant="secondary" onClick={() => navigate(-1)}>
               이전
             </Button>
-            <Button disabled={!selectedId}>검차 신청 완료</Button>
+            <Button onClick={handleSubmit} disabled={!selectedId}>
+              검차 신청 완료
+            </Button>
           </div>
         </div>
       </main>
+      <DevSkipButton onClick={handleDevSkip} subLabel="목록으로 스킵" />
     </div>
   );
 };

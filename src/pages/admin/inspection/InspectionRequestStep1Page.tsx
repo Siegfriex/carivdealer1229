@@ -1,15 +1,16 @@
 /**
  * InspectionRequestStep1Page Component
  * 검차 신청 Step 1 - 날짜 및 장소 선택
- * 
- * 디자인: design/design_vehicle_input/vehicle_input_2/매물 등록 관리_차량 검차 신청1.svg
+ * DEV:SKIP(좌하단): 필수 입력 스킵 후 step2 이동
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Header } from '@/widgets/Header/ui/Header';
 import { StepProgress, type Step } from '@/shared/ui/StepProgress';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
+import { useDevSkip } from '@/shared/context/DevSkipContext';
 import { MapPin } from 'lucide-react';
 
 const steps: Step[] = [
@@ -20,23 +21,25 @@ const steps: Step[] = [
 ];
 
 export const InspectionRequestStep1Page = () => {
+  const navigate = useNavigate();
+  const { skipRequired } = useDevSkip();
   const [preferredDate, setPreferredDate] = useState('');
   const [preferredTime, setPreferredTime] = useState('');
   const [address, setAddress] = useState('');
 
   const handleNext = () => {
-    if (!preferredDate || !preferredTime || !address) {
+    if (!skipRequired && (!preferredDate || !preferredTime || !address)) {
       alert('모든 필드를 입력해주세요');
       return;
     }
-    // 평가사 선택 단계로 이동
+    navigate('/inspections/request/step2');
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="container mx-auto px-6 py-8">
+      <main className="container py-8">
         <StepProgress steps={steps} className="mb-12" />
 
         <div className="max-w-3xl mx-auto">
@@ -80,7 +83,7 @@ export const InspectionRequestStep1Page = () => {
             </Button>
 
             <div className="flex justify-between pt-6">
-              <Button variant="secondary" onClick={() => window.history.back()}>
+              <Button variant="secondary" onClick={() => navigate(-1)}>
                 이전
               </Button>
               <Button onClick={handleNext}>다음 (평가사 선택)</Button>

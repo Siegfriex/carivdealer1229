@@ -4,9 +4,12 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StepProgress } from '@/shared/ui/StepProgress';
 import { Checkbox } from '@/shared/ui/Checkbox';
 import { Button } from '@/shared/ui/Button';
+import { PageLayout } from '@/shared/ui/PageLayout';
+import { useToast } from '@/shared/ui/Toast';
 
 const SIGNUP_STEPS = [
   { id: '1', label: '① 본인인증', status: 'completed' as const },
@@ -111,6 +114,8 @@ function TermsSection({
 }
 
 export const SignupStep5Page = () => {
+  const navigate = useNavigate();
+  const { showToast } = useToast();
   const [agreeAll, setAgreeAll] = useState(false);
   const [agreeAge14, setAgreeAge14] = useState(false);
   const [agreeService, setAgreeService] = useState(false);
@@ -143,25 +148,23 @@ export const SignupStep5Page = () => {
   };
 
   const handlePrev = () => {
-    window.history.pushState({}, '', '/signup/step4');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup/step4');
   };
 
   const handleNext = () => {
     if (!agreeAge14 || !agreeService || !agreePrivacy || !agreeCollection) {
-      alert('필수 약관에 모두 동의해주세요.');
+      showToast('필수 약관에 모두 동의해주세요.', 'error');
       return;
     }
 
-    window.history.pushState({}, '', '/signup/pending');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup/pending');
   };
 
   const canProceed = agreeAge14 && agreeService && agreePrivacy && agreeCollection;
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container max-w-3xl mx-auto px-6 py-10">
+      <PageLayout maxContentWidth="3xl">
         <h1 className="text-h1 font-bold text-gray-900 text-center mb-8">회원가입</h1>
         <StepProgress steps={SIGNUP_STEPS} className="mb-12" />
 
@@ -251,7 +254,7 @@ export const SignupStep5Page = () => {
             </Button>
           </div>
         </div>
-      </div>
+      </PageLayout>
     </div>
   );
 };

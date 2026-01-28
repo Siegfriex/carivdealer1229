@@ -4,6 +4,7 @@
  */
 
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
 import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
@@ -14,8 +15,9 @@ import { useVehicles } from '@/features/vehicle/register-form/model/useVehicles'
 const PAGE_SIZE = 9;
 
 export const DashboardPage = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [sidebarActive, setSidebarActive] = useState('all');
+  const [sidebarActive] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data: vehicles = [], isLoading } = useVehicles();
@@ -38,7 +40,7 @@ export const DashboardPage = () => {
   }, [filteredVehicles, currentPage]);
 
   const handleRegister = () => {
-    window.location.href = '/vehicles/new/step1';
+    navigate('/vehicles/new/step1');
   };
 
   return (
@@ -87,7 +89,7 @@ export const DashboardPage = () => {
                     vehicle={vehicle}
                     variant="mainLanding"
                     onClick={() => {
-                      window.location.href = `/vehicles/${vehicle.id}`;
+                      navigate(`/vehicles/${vehicle.id}`);
                     }}
                   />
                 ))}

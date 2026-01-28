@@ -1,9 +1,9 @@
 # 다음 에이전트 필수 인수인계 문서 (최종 검증본)
 
-**검증일**: 2025-01-28  
-**검증 기준**: 현 코드베이스 + FSD 규칙  
-**이번 세션**: 검차 플로우 Figma 8노드 구현 완료  
-**다음 권장 작업**: admin 6개 페이지 FSD 이전 또는 추가 Figma 구현
+**검증일**: 2026-01-28
+**검증 기준**: 현 코드베이스 + FSD 규칙
+**이번 세션**: Phase 2.4-2.5 레거시 페이지 마이그레이션 + TypeScript 오류 수정 완료
+**다음 권장 작업**: 추가 Figma 구현 또는 ESLint v9 마이그레이션
 
 ---
 
@@ -29,138 +29,120 @@
 
 ---
 
-## 2. 이번 세션 수행 작업 (본 에이전트)
+## 2. 완료된 작업 요약
 
-### 2.1 구현 완료 – 검차 플로우 (Figma 8노드)
+### 2.1 Phase 2.4-2.5 레거시 페이지 마이그레이션 (완료)
 
-| Figma 노드 | 화면 | 구현 파일 | 라우트 경로 | 비고 |
-|------------|------|-----------|-------------|------|
-| 915-998 | 차량등록 완료 (2-2) | `pages/admin/vehicle/VehicleRegistrationCompletePage.tsx` | `/vehicles/.../complete` | 검차 진행하기 버튼 추가 |
-| - | GNB "검차" 추가 | `widgets/Header/ui/LandingHeader.tsx` | - | NAV_ITEMS에 검차 추가, `/inspections` |
-| 1202-6390 | 검차신청 랜딩 (3) | `pages/admin/inspection/InspectionRequestLandingPage.tsx` | `/inspections/request` | 사이드바(검색+단계), 검차 신청하기 → step1 |
-| 1202-6685 | 검차 신청 목록 (4) | `pages/admin/inspection/InspectionListPage.tsx` | `/inspections` | 목업데이터 4건, 상태별 행, 확장 기능 |
-| 1202-7020, 7204 | 목록 확장 (4-1, 4-1-1) | `pages/admin/inspection/InspectionListPage.tsx` | `/inspections` | expandedIds, ChevronDown/Up, 다중 확장 |
-| 1202-7440, 7752, 7902 | 검차 진행 (5, 5-1, 5-2) | `pages/admin/inspection/InspectionProgressPage.tsx` | `/inspections/:id/progress?stage=...` | matching/en_route/complete, DEV:SKIP/스킵 |
-| 1202-7588 | 검차내역 (6) | `pages/admin/inspection/InspectionHistoryPage.tsx` | `/inspections/history` | 완료 목록, 검색, 상세 이동 |
-| - | 목업데이터 | `pages/admin/inspection/mockInspectionList.ts` | - | pending/assigned/in_progress/completed 각 1건 |
+| 작업 | 상태 |
+|------|------|
+| 6개 admin 페이지 인라인 병합 | ✅ 완료 |
+| `src/components/` 폴더 삭제 | ✅ 완료 |
+| `@/components` 참조 제거 | ✅ **0건** |
+| alert() → Toast 교체 | ✅ 8건 |
+| console.error 제거 | ✅ |
 
-**라우팅 정리**:
-- `/inspections` → `INSPECTIONS_LIST` → `InspectionListPage`
-- `/inspections/request` → `INSPECTION_REQUEST_LANDING` → `InspectionRequestLandingPage`
-- `/inspections/request/step1` → `INSPECTION_REQUEST_STEP1` → `InspectionRequestStep1Page`
-- `/inspections/request/step2` → `INSPECTION_REQUEST_STEP2` → `InspectionRequestStep2Page`
-- `/inspections/:id/progress` → `INSPECTION_PROGRESS` → `InspectionProgressPage` (stage 쿼리)
-- `/inspections/:id/complete` → `INSPECTION_COMPLETE` → `InspectionCompletePage`
-- `/inspections/history` → `INSPECTION_HISTORY` → `InspectionHistoryPage`
-- `/vehicles/.../complete` → `VEHICLE_REGISTRATION_COMPLETE` → `VehicleRegistrationCompletePage`
+**마이그레이션 완료 파일**:
+- `src/pages/admin/SalesHistoryPage.tsx`
+- `src/pages/admin/GeneralSaleOffersPage.tsx`
+- `src/pages/admin/SettlementListPage.tsx`
+- `src/pages/admin/SettlementDetailPage.tsx`
+- `src/pages/admin/LogisticsSchedulePage.tsx`
+- `src/pages/admin/LogisticsHistoryPage.tsx`
 
-**플로우 연동**:
-- 2-2 완료 → "검차 진행하기" → `/inspections/request` (3)
-- 3 랜딩 → "검차 신청하기" → `/inspections/request/step1` → step2 → 제출 후 `/inspections` (4)
-- 4 목록 → 행 클릭: `pending` → `/inspections/:id/progress?stage=matching` (5), `assigned` → `?stage=en_route` (5-1), `in_progress` → `?stage=complete` (5-2), `completed` → `/inspections/history` (6)
-- 5 → DEV:SKIP → 5-1 → 스킵 → 5-2 → "검차내역 보기" → 6
+### 2.2 TypeScript 오류 수정 (이번 세션)
 
-### 2.2 현 코드베이스 검증 결과
+| 오류 | 수정 내용 |
+|------|----------|
+| `@/shared/api/client` 모듈 없음 | `client.ts` 생성 (apiClient re-export) |
+| `API_ENDPOINTS.BID` 경로 오류 | → `API_ENDPOINTS.AUCTION.BID` |
+| `API_ENDPOINTS.BUY_NOW` 경로 오류 | → `API_ENDPOINTS.AUCTION.BUY_NOW` |
+| `API_ENDPOINTS.INSPECTION_REQUEST` 경로 오류 | → `API_ENDPOINTS.VEHICLE.INSPECTION_REQUEST` |
+| Firebase `app` 변수 할당 전 사용 | definite assignment assertion 적용 |
+
+### 2.3 검차 플로우 (이전 세션 완료)
+
+| Figma 노드 | 화면 | 구현 파일 | 라우트 경로 |
+|------------|------|-----------|-------------|
+| 915-998 | 차량등록 완료 (2-2) | `pages/admin/vehicle/VehicleRegistrationCompletePage.tsx` | `/vehicles/.../complete` |
+| 1202-6390 | 검차신청 랜딩 (3) | `pages/admin/inspection/InspectionRequestLandingPage.tsx` | `/inspections/request` |
+| 1202-6685 | 검차 신청 목록 (4) | `pages/admin/inspection/InspectionListPage.tsx` | `/inspections` |
+| 1202-7020, 7204 | 목록 확장 (4-1, 4-1-1) | `pages/admin/inspection/InspectionListPage.tsx` | `/inspections` |
+| 1202-7440, 7752, 7902 | 검차 진행 (5, 5-1, 5-2) | `pages/admin/inspection/InspectionProgressPage.tsx` | `/inspections/:id/progress` |
+| 1202-7588 | 검차내역 (6) | `pages/admin/inspection/InspectionHistoryPage.tsx` | `/inspections/history` |
+
+---
+
+## 3. 현재 코드베이스 검증 결과
 
 | 항목 | 검증 결과 |
 |------|-----------|
-| 검차 inspection 페이지 | 7개 파일 존재 (List, RequestLanding, RequestStep1/2, Progress, Complete, History) |
-| 차량 vehicle 페이지 | VehicleRegistrationCompletePage 수정 (검차 진행하기 추가) |
-| GNB 헤더 | LandingHeader에 검차 추가 (NAV_ITEMS, NavKey 'inspections') |
-| `@/components` 참조 | **검차 플로우 파일 0건** (FSD 준수) |
-| `@/config`, `@/services`, `@/utils` | 참조 0건 |
-| 빌드 | `npm run build` 성공 |
-| FSD (검차) | Import `@/shared/ui/*`, `@/widgets/*/ui/*`, `@/entities/*/ui/*`만 사용 |
+| `@/components` 참조 | ✅ **0건** (완전 제거) |
+| `@/config` 참조 | ✅ **0건** |
+| `@/services` 참조 | ✅ **0건** |
+| `@/utils` 참조 | ✅ **0건** |
+| `src/components/` 폴더 | ✅ **삭제됨** |
+| TypeScript 검사 | ✅ `npx tsc --noEmit` 성공 |
+| 빌드 | ✅ `npm run build` 성공 (1850 modules, 3.91s) |
+| Dev 서버 | ✅ `http://localhost:3000` 실행 중 |
 
-**현재 `@/components` 참조 중인 파일 (6개, 검차 플로우 제외)**:
-```
-src/pages/admin/SettlementListPage.tsx
-src/pages/admin/SettlementDetailPage.tsx
-src/pages/admin/SalesHistoryPage.tsx
-src/pages/admin/LogisticsHistoryPage.tsx
-src/pages/admin/LogisticsSchedulePage.tsx
-src/pages/admin/GeneralSaleOffersPage.tsx
-```
+---
 
-### 2.3 공통 컴포넌트 및 버튼 규칙 준수 확인
+## 4. FSD 규칙 준수 현황
 
-| 컴포넌트 | 사용 위치 | 규칙 준수 | 비고 |
-|----------|----------|----------|------|
-| `Button` | InspectionListPage, InspectionRequestLandingPage, InspectionProgressPage, VehicleRegistrationCompletePage | ✅ | variant (primary/secondary), size (sm/md/lg), fullWidth 올바르게 사용 |
-| `Card` | InspectionProgressPage, VehicleRegistrationCompletePage | ✅ | padding (sm/md/lg), hover 올바르게 사용 |
-| `LandingHeader` | 모든 검차 페이지 | ✅ | activeNav='inspections' 올바르게 설정 |
-| `InspectionStatusBadge` | InspectionListPage | ✅ | entities/inspection/ui에서 import |
-| `ProgressSidebar` | InspectionProgressPage | ✅ | widgets/ProgressSidebar/ui에서 import |
-
-**FSD 규칙 준수**:
-- ✅ `@/components`, `@/config`, `@/services`, `@/utils` 미참조
-- ✅ `@/shared/ui/*` (Button, Card) 사용
-- ✅ `@/widgets/*/ui/*` (LandingHeader, ProgressSidebar) 사용
-- ✅ `@/entities/*/ui/*` (InspectionStatusBadge) 사용
-- ✅ 레이어 의존성 준수 (pages → widgets/entities/shared)
-
-### 2.4 FSD 위반 요약
-
-| 규칙 | 위반 여부 | 비고 |
-|------|----------|------|
-| `@/components` 참조 금지 (검차 플로우) | ✅ **0건** | 검차 플로우 파일 모두 준수 |
-| `@/components` 참조 금지 (전체) | ⚠️ **6개** (admin만, 검차 제외) | 위 목록 |
-| `@/config` / `@/services` / `@/utils` | ✅ 준수 | 0건 |
+| 규칙 | 상태 | 비고 |
+|------|------|------|
+| `@/components` 참조 금지 | ✅ **완료** | 0건 |
+| `@/config`, `@/services`, `@/utils` 참조 금지 | ✅ **완료** | 0건 |
 | app/shared/entities/widgets 레이어 | ✅ 준수 | 올바른 경로 사용 |
 | Public API (entities) | ⚠️ 선택적 | 내부 경로 직접 참조 다수 (강제 아님) |
 
 ---
 
-## 3. 잠재 요인 (리스크·기회)
+## 5. 잠재 요인 (리스크/기회)
 
-### 3.1 리스크
+### 5.1 리스크
 
 | 리스크 | 설명 | 권장 조치 |
 |--------|------|----------|
-| **npm run lint** | ESLint 9 사용 시 `eslint.config.js` 없음으로 실패 가능. 6개 admin 파일은 `@/components` 참조로 FSD 위반. | 새 코드는 `@/components` 미사용. admin 6개 FSD 이전 시 lint 구간 해소. |
-| **admin 6개 페이지** | 레거시 `@/components` 래핑 상태. | FSD 구조로 완전 이전 시 위반 해소. |
+| **npm run lint** | ESLint 9 사용 시 `eslint.config.js` 없음으로 실패 가능 | ESLint v9 flat config 마이그레이션 |
+| **Firebase 취약점** | undici 관련 10개 moderate 취약점 | `npm audit fix` 검토 |
+| **`any` 타입** | 15개 인스턴스 남아있음 | 점진적 타입 강화 |
 
-### 3.2 기회
+### 5.2 기회
 
 | 기회 | 설명 |
 |------|------|
-| **검차 플로우** | 8개 노드 일괄 구현 완료. 동일 패턴(사이드바, 목록 확장, 프로그래스, 상태별 라우팅) 재사용 가능. |
+| **검차 플로우** | 8개 노드 일괄 구현 완료. 동일 패턴 재사용 가능. |
 | **공통 컴포넌트** | Button, Card, LandingHeader, ProgressSidebar, InspectionStatusBadge 활용. |
-| **1440px·토큰** | design-tokens.css, TYPOGRAPHY_SYSTEM.md 기준 유지. |
-| **FSD 준수** | 검차 플로우 파일 모두 FSD 규칙 준수, 레거시 폴더 미참조. |
+| **FSD 준수** | 모든 레거시 폴더 참조 제거 완료. 클린 아키텍처. |
 
 ---
 
-## 4. 구현 시 준수 사항 (요약)
+## 6. 다음 에이전트 권장 작업
 
-- **FSD**: `pages/[domain]/`, `shared/ui/`, `entities/*/ui/`, `widgets/*/ui/` 등 준수. `@/components`, `@/config`, `@/services`, `@/utils` 사용 금지.
-- **1440px**: design-tokens.css, TYPOGRAPHY_SYSTEM.md 기준.
-- **재사용**: `shared/ui/*`, `entities/*/ui/*`, `widgets/*/ui/*` 우선.
-- **공통 컴포넌트**: Button (variant, size, fullWidth), Card (padding, hover) 올바르게 사용.
-- **검증**: 구현 후 `npm run build`, `read_lints` 실행.
+1. **추가 Figma 구현**
+   - AGENT_GUIDE.md 프로세스 따르기
+   - FSD, 1440px 준수
 
----
+2. **ESLint v9 마이그레이션** (선택)
+   - `eslint.config.js` flat config 생성
+   - `npm run lint` 동작 복구
 
-## 5. 다음 에이전트 권장 작업
-
-1. **admin 6개 페이지 FSD 이전**  
-   위 6개 파일에서 `@/components` 제거 후 widgets/entities/shared 조합으로 전환.
-2. **추가 Figma 구현**  
-   신규 화면은 AGENT_GUIDE.md 프로세스·체크리스트 따르고, FSD·1440px 준수.
-3. **ESLint 설정**  
-   필요 시 `eslint.config.js` 마이그레이션으로 `npm run lint` 동작 복구.
+3. **코드 품질 개선** (선택)
+   - `any` 타입 정리 (15개)
+   - Firebase 취약점 수정
 
 **체크리스트 (신규 Figma 구현 시)**:
 - [ ] AGENT_GUIDE.md, FSD_ENFORCEMENT_RULES.md 확인
 - [ ] Figma 노드 확인 (MCP/스크린샷)
-- [ ] FSD 구조·import 준수 (레거시 폴더 미참조)
+- [ ] FSD 구조/import 준수 (레거시 폴더 미참조)
 - [ ] 공통 컴포넌트 올바르게 사용 (Button variant/size, Card padding 등)
-- [ ] `npm run build` 및 `read_lints` 실행
+- [ ] `npm run build` 및 TypeScript 검사 실행
 - [ ] ReNew 문서 업데이트 (SESSION_SUMMARY 등)
 
 ---
 
-## 6. 참고 문서 경로
+## 7. 참고 문서 경로
 
 | 문서 | 경로 |
 |------|------|
@@ -177,4 +159,4 @@ src/pages/admin/GeneralSaleOffersPage.tsx
 
 ---
 
-*이 문서는 현 코드베이스 기준으로 본 에이전트의 수행 작업을 반영하고, 다음 에이전트용 필수 문서를 정리한 최종 인수인계 문서입니다.*
+*마지막 업데이트: 2026-01-28 | Phase 2.4-2.5 완료, TypeScript 오류 수정, Dev 서버 검증 완료*

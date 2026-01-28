@@ -1,14 +1,17 @@
 /**
  * ProgressSidebar Component
  * 회원가입/차량등록 플로우 진행 표시
- * 
+ *
  * 디자인: design/design_component/좌측 프로그래스바.svg
- * 너비: 249px (17.29vw)
- * z-index: 300 (FIXED)
+ * 너비: 256px (w-64) - 다른 Sidebar와 통일
+ *
+ * Props:
+ * - inline: true면 fixed가 아닌 일반 flex 배치
  */
 
 import { Check } from 'lucide-react';
 import { Z_INDEX } from '@/shared/config/zIndex';
+import { LAYOUT_CLASSES } from '@/shared/config/layout';
 
 export interface ProgressStep {
   id: string;
@@ -20,18 +23,20 @@ export interface ProgressStep {
 interface ProgressSidebarProps {
   steps: ProgressStep[];
   className?: string;
+  /** true면 fixed가 아닌 일반 배치 (flex 레이아웃용) */
+  inline?: boolean;
 }
 
-export const ProgressSidebar = ({ steps, className = '' }: ProgressSidebarProps) => {
+export const ProgressSidebar = ({ steps, className = '', inline = false }: ProgressSidebarProps) => {
+  const baseClasses = `${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200`;
+  const positionClasses = inline
+    ? LAYOUT_CLASSES.CONTENT_MIN_HEIGHT
+    : 'fixed left-0 top-0 bottom-0';
+
   return (
     <aside
-      className={`fixed left-0 top-0 bottom-0 bg-white border-r border-gray-200 ${className}`}
-      style={{
-        width: 'var(--sidebar-width-vw)',
-        minWidth: '200px',
-        maxWidth: '249px',
-        zIndex: Z_INDEX.FIXED,
-      }}
+      className={`${baseClasses} ${positionClasses} ${className}`}
+      style={inline ? undefined : { zIndex: Z_INDEX.FIXED }}
     >
       <div className="p-8">
         {steps.map((step, index) => (

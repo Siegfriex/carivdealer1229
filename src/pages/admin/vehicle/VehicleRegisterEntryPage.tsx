@@ -7,11 +7,12 @@
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
 
 export const VehicleRegisterEntryPage = () => {
+  const navigate = useNavigate();
   const [plateNumber, setPlateNumber] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -36,11 +37,11 @@ export const VehicleRegisterEntryPage = () => {
     // }
 
     // 다음 단계로 이동
-    window.location.href = `/vehicles/new/step1?plateNumber=${encodeURIComponent(plateNumber)}`;
+    navigate(`/vehicles/new/step1?plateNumber=${encodeURIComponent(plateNumber)}`);
   };
 
   const handleRegister = () => {
-    window.location.href = '/vehicles/new/step1';
+    navigate('/vehicles/new/step1');
   };
 
   return (
@@ -52,7 +53,7 @@ export const VehicleRegisterEntryPage = () => {
         onRegisterListing={handleRegister}
       />
 
-      <main className="container mx-auto px-6 py-16">
+      <main className="container py-16">
         <div className="max-w-2xl mx-auto text-center">
           {/* 제목 */}
           <h1 className="text-h1 font-bold text-gray-900 mb-12">

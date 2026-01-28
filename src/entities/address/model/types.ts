@@ -7,6 +7,7 @@ import { Timestamp } from 'firebase/firestore';
 
 export interface Address {
   id: string;
+  platform_id?: string;
   user_id: string;
   address_type: AddressType;
   postal_code: string;

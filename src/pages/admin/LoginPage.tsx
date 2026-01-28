@@ -4,6 +4,7 @@
  */
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 
@@ -12,8 +13,7 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // 로그인 처리
-    console.log('Login:', { email, password });
+    // TODO: 실제 로그인 API 연동 (Firebase Auth signInWithEmailAndPassword 등)
   };
 
   return (
@@ -55,12 +55,12 @@ export const LoginPage = () => {
             </Button>
 
             <div className="text-center space-y-2">
-              <a href="/signup" className="block text-body text-primary hover:underline">
+              <Link to="/signup" className="block text-body text-primary hover:underline">
                 회원가입
-              </a>
-              <a href="/forgot-password" className="block text-caption text-gray-500 hover:underline">
+              </Link>
+              <Link to="/forgot-password" className="block text-caption text-gray-500 hover:underline">
                 비밀번호를 잊으셨나요?
-              </a>
+              </Link>
             </div>
           </div>
         </div>

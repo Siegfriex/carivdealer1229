@@ -1,69 +1,115 @@
 /**
  * 에러 처리 미들웨어
- * Functions 전반에 일관된 에러 응답 및 로깅 패턴 적용
+ * RFC 9457 Problem Details for HTTP APIs 형식으로 일관된 에러 응답 및 로깅
  */
 
 import { Request, Response } from 'express';
+
+const ERROR_BASE_URI = 'https://api.carivdealer.com/errors#';
+
+/** HTTP 상태 코드별 problem type (RFC 9457) */
+const STATUS_TO_TYPE: Record<number, string> = {
+  400: `${ERROR_BASE_URI}BadRequest`,
+  401: `${ERROR_BASE_URI}Unauthorized`,
+  403: `${ERROR_BASE_URI}Forbidden`,
+  404: `${ERROR_BASE_URI}NotFound`,
+  405: `${ERROR_BASE_URI}MethodNotAllowed`,
+  409: `${ERROR_BASE_URI}Conflict`,
+  422: `${ERROR_BASE_URI}ValidationError`,
+  500: `${ERROR_BASE_URI}InternalError`,
+};
+
+function getProblemType(statusCode: number): string {
+  return STATUS_TO_TYPE[statusCode] ?? `${ERROR_BASE_URI}InternalError`;
+}
+
+function generateTraceId(): string {
+  return `trace-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+}
 
 export interface ApiError extends Error {
   statusCode?: number;
   code?: string;
   context?: Record<string, any>;
+  /** RFC 9457: problem type URI */
+  type?: string;
+  /** RFC 9457: short summary */
+  title?: string;
+  /** RFC 9457: human-readable detail (default: message) */
+  detail?: string;
+  /** RFC 9457: instance URI (e.g. request path) */
+  instance?: string;
+  /** 확장: 요청 추적 ID */
+  traceId?: string;
 }
 
 /**
- * 통합 에러 핸들러
- * @param error 에러 객체
- * @param req Express Request 객체
- * @param res Express Response 객체
+ * RFC 9457 Problem Details 응답 본문
+ */
+export interface ProblemDetails {
+  type: string;
+  status: number;
+  title: string;
+  detail: string;
+  instance?: string;
+  traceId?: string;
+  /** 확장: 에러 코드 */
+  code?: string;
+  /** 확장: 개발용 컨텍스트 (개발 환경에서만) */
+  context?: Record<string, any>;
+}
+
+/**
+ * 통합 에러 핸들러 (RFC 9457)
+ * Content-Type: application/problem+json
  */
 export function errorHandler(error: ApiError, req: Request, res: Response): void {
   const statusCode = error.statusCode || 500;
   const message = error.message || 'Internal server error';
-  
-  // 로깅 (상세 정보)
+  const reqId = req.headers['x-request-id'];
+  const traceId =
+    error.traceId ??
+    (typeof reqId === 'string' ? reqId : Array.isArray(reqId) ? reqId[0] : undefined) ??
+    generateTraceId();
+
   const logContext = {
     method: req.method,
     path: req.path,
-    endpoint: req.path,
     statusCode,
     code: error.code,
     message,
     context: error.context,
+    traceId,
     timestamp: new Date().toISOString(),
   };
-  
-  // 개발 환경에서는 스택 트레이스 포함
+
   if (process.env.NODE_ENV === 'development' || process.env.FUNCTIONS_EMULATOR) {
     console.error('[ErrorHandler]', logContext, '\nStack:', error.stack);
   } else {
     console.error('[ErrorHandler]', logContext);
   }
-  
-  // 응답 (프로덕션에서는 상세 정보 제한)
-  const response: any = {
-    error: message,
+
+  const problem: ProblemDetails = {
+    type: error.type ?? getProblemType(statusCode),
+    status: statusCode,
+    title: error.title ?? (statusCode === 500 ? 'Internal Server Error' : 'Request Error'),
+    detail: error.detail ?? message,
+    instance: error.instance ?? req.path,
+    traceId,
+    code: error.code,
   };
-  
-  // 개발 환경에서만 추가 정보 제공
+
   if (process.env.NODE_ENV === 'development' || process.env.FUNCTIONS_EMULATOR) {
-    if (error.code) {
-      response.code = error.code;
-    }
     if (error.context) {
-      response.context = error.context;
+      problem.context = error.context;
     }
   }
-  
-  res.status(statusCode).json(response);
+
+  res.status(statusCode).setHeader('Content-Type', 'application/problem+json').json(problem);
 }
 
 /**
  * 비동기 핸들러 래퍼
- * Express 핸들러를 래핑하여 에러를 자동으로 처리합니다.
- * 
- * @param fn 비동기 Express 핸들러 함수
- * @returns 래핑된 핸들러 함수
  */
 export function asyncHandler(
   fn: (req: Request, res: Response) => Promise<void>
@@ -72,50 +118,38 @@ export function asyncHandler(
     try {
       await fn(req, res);
     } catch (error: any) {
-      // ApiError로 변환
-      const apiError: ApiError = error instanceof Error 
-        ? error as ApiError
-        : new Error(String(error)) as ApiError;
-      
-      // 기본 statusCode 설정
+      const apiError: ApiError =
+        error instanceof Error ? (error as ApiError) : (new Error(String(error)) as ApiError);
+
       if (!apiError.statusCode) {
-        if (error.statusCode) {
-          apiError.statusCode = error.statusCode;
-        } else if (error.status) {
-          apiError.statusCode = error.status;
-        } else {
-          apiError.statusCode = 500;
-        }
+        apiError.statusCode = error.statusCode ?? error.status ?? 500;
       }
-      
+      if (!apiError.traceId) {
+        apiError.traceId = generateTraceId();
+      }
+
       errorHandler(apiError, req, res);
     }
   };
 }
 
 /**
- * 에러 생성 헬퍼
- * @param message 에러 메시지
- * @param statusCode HTTP 상태 코드
- * @param code 에러 코드 (선택)
- * @param context 추가 컨텍스트 정보 (선택)
- * @returns ApiError 객체
+ * 에러 생성 헬퍼 (RFC 9457 필드 지원)
  */
 export function createError(
   message: string,
   statusCode: number = 500,
   code?: string,
-  context?: Record<string, any>
+  context?: Record<string, any>,
+  options?: { type?: string; title?: string; detail?: string; instance?: string }
 ): ApiError {
   const error = new Error(message) as ApiError;
   error.statusCode = statusCode;
-  if (code) {
-    error.code = code;
-  }
-  if (context) {
-    error.context = context;
-  }
+  if (code) error.code = code;
+  if (context) error.context = context;
+  if (options?.type) error.type = options.type;
+  if (options?.title) error.title = options.title;
+  if (options?.detail) error.detail = options.detail;
+  if (options?.instance) error.instance = options.instance;
   return error;
 }
-
-

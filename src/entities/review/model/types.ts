@@ -7,6 +7,7 @@ import { Timestamp } from 'firebase/firestore';
 
 export interface Review {
   id: string;
+  platform_id?: string;
   order_id: string;
   reviewer_id: string;
   reviewee_id: string;

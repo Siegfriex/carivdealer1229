@@ -22,7 +22,7 @@ export const useBuyNow = () => {
 
   return useMutation({
     mutationFn: async (input: BuyNowInput): Promise<BuyNowResponse> => {
-      return await apiClient.post<BuyNowResponse>(API_ENDPOINTS.BUY_NOW, input);
+      return await apiClient.post<BuyNowResponse>(API_ENDPOINTS.AUCTION.BUY_NOW, input);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auctions'] });

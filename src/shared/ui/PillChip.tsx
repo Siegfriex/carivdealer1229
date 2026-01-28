@@ -3,8 +3,6 @@
  * 필터 칩 (Figma 컴포넌트 정리 - 전체, 기본 상품, 옵션 상품, 선택, 비활성, 활성 등)
  */
 
-import type { ReactNode } from 'react';
-
 export interface PillChipOption<T extends string = string> {
   value: T;
   label: string;
@@ -22,7 +20,7 @@ export function PillChip<T extends string>({
   options,
   value,
   onChange,
-  multiple = false,
+  multiple: _multiple = false,
   className = '',
 }: PillChipProps<T>) {
   const selectedSet = Array.isArray(value) ? new Set(value) : value != null ? new Set([value]) : new Set<string>();

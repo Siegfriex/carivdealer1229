@@ -7,17 +7,23 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryProvider } from './providers/QueryProvider';
 import { ToastProvider } from './providers/ToastProvider';
+import { DevSkipProvider } from '@/shared/context/DevSkipContext';
+import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import { Router } from './router';
 import './styles/globals.css';
 
 const App = () => {
   return (
     <React.StrictMode>
-      <QueryProvider>
-        <ToastProvider>
-          <Router />
-        </ToastProvider>
-      </QueryProvider>
+      <ErrorBoundary>
+        <QueryProvider>
+          <ToastProvider>
+            <DevSkipProvider>
+              <Router />
+            </DevSkipProvider>
+          </ToastProvider>
+        </QueryProvider>
+      </ErrorBoundary>
     </React.StrictMode>
   );
 };

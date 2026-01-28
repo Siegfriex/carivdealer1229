@@ -6,7 +6,6 @@
 import { Card } from '@/shared/ui/Card';
 import { VehicleStatusBadge } from './VehicleStatusBadge';
 import type { Vehicle } from '@/entities/vehicle/model/types';
-import { VEHICLE_STATUS_LABELS } from '@/entities/vehicle/model/constants';
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -31,7 +30,6 @@ const DEFAULT_TAGS = ['낙찰가', '단순교환부위', '기본정보', '성능
 
 export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'default' }: VehicleCardProps) => {
   const isMainLanding = variant === 'mainLanding';
-  const statusLabel = VEHICLE_STATUS_LABELS[vehicle.status];
   const showRedDot = vehicle.status === 'bidding' || vehicle.status === 'inspection';
 
   return (

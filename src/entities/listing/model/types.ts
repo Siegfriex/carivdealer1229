@@ -7,6 +7,7 @@ import { Timestamp } from 'firebase/firestore';
 
 export interface Listing {
   id: string;
+  platform_id?: string;
   vehicle_id: string;
   seller_id: string;
   sale_type: SaleType;

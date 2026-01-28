@@ -18,6 +18,22 @@ import { buyNow } from './auction/buyNow';
 import { saveReport } from './report/saveReport';
 import { generateReport } from './report/generateReport';
 import { getGoogleMapsApiKey } from './config/getGoogleMapsApiKey';
+import { createOrder } from './order/createOrder';
+import { getOrder } from './order/getOrder';
+import { updateOrderStatus } from './order/updateOrderStatus';
+import { createPayment } from './payment/createPayment';
+import { getPayment } from './payment/getPayment';
+import { refundPayment } from './payment/refundPayment';
+import { createAddress } from './address/createAddress';
+import { getAddress } from './address/getAddress';
+import { listAddresses } from './address/listAddresses';
+import { updateAddress } from './address/updateAddress';
+import { deleteAddress } from './address/deleteAddress';
+import { createReview } from './review/createReview';
+import { listReviews } from './review/listReviews';
+import { uploadDoc } from './seller_docs/uploadDoc';
+import { approveDoc } from './seller_docs/approveDoc';
+import { listDocs } from './seller_docs/listDocs';
 
 // 전역 옵션 설정: 리전을 asia-northeast3로 설정
 // 통합 런타임 서비스 계정 사용 (Secret Manager 접근 권한 포함)
@@ -140,4 +156,100 @@ export const getGoogleMapsApiKeyAPI = onRequest({
   region: 'asia-northeast3',
   cors: true,
 }, getGoogleMapsApiKey);
+
+// API-0400: 주문 생성
+export const createOrderAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, createOrder);
+
+// API-0401: 주문 단건 조회
+export const getOrderAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, getOrder);
+
+// API-0402: 주문 상태 업데이트
+export const updateOrderStatusAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, updateOrderStatus);
+
+// API-0500: 결제 생성
+export const createPaymentAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, createPayment);
+
+// API-0501: 결제 단건 조회
+export const getPaymentAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, getPayment);
+
+// API-0502: 결제 환불
+export const refundPaymentAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, refundPayment);
+
+// API-0700: 주소 생성
+export const createAddressAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, createAddress);
+
+// API-0701: 주소 단건 조회
+export const getAddressAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, getAddress);
+
+// API-0702: 주소 목록 조회 (user_id)
+export const listAddressesAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, listAddresses);
+
+// API-0703: 주소 수정
+export const updateAddressAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, updateAddress);
+
+// API-0704: 주소 삭제
+export const deleteAddressAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, deleteAddress);
+
+// API-0800: 리뷰 생성
+export const createReviewAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, createReview);
+
+// API-0801: 리뷰 목록 조회
+export const listReviewsAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, listReviews);
+
+// API-0900: 판매자 서류 업로드
+export const uploadDocAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, uploadDoc);
+
+// API-0901: 판매자 서류 승인/거절
+export const approveDocAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, approveDoc);
+
+// API-0902: 판매자 서류 목록 조회
+export const listDocsAPI = onRequest({
+  region: 'asia-northeast3',
+  cors: true,
+}, listDocs);
 

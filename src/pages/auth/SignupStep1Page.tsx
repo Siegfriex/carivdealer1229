@@ -1,22 +1,26 @@
 /**
  * SignupStep1Page (회원가입 Step 1 - 본인인증)
  * Figma 1194-5792: 기본정보 입력, 본인인증, 신분증 등록
+ * DEV:SKIP(좌하단): dev:skip ON 시 필수 입력 검증 스킵 후 step2 이동
  */
 
+import { useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { StepProgress } from '@/shared/ui/StepProgress';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
 import { Select } from '@/shared/ui/Select';
+import { PageLayout } from '@/shared/ui/PageLayout';
+import { useDevSkip } from '@/shared/context/DevSkipContext';
 import { Eye, EyeOff, Plus } from 'lucide-react';
 
 const SIGNUP_STEPS = [
-  { id: '1', label: '1 본인인증', status: 'current' as const },
-  { id: '2', label: '2 사업자 정보 입력', status: 'upcoming' as const },
-  { id: '3', label: '3 중고차 매매업 인증', status: 'upcoming' as const },
-  { id: '4', label: '4 정산 정보 입력', status: 'upcoming' as const },
-  { id: '5', label: '5 약관 동의', status: 'upcoming' as const },
-  { id: '6', label: '6 승인 대기', status: 'upcoming' as const },
+  { id: '1', label: '① 본인인증', status: 'current' as const },
+  { id: '2', label: '② 사업자 정보 입력', status: 'upcoming' as const },
+  { id: '3', label: '③ 중고차 매매업 인증', status: 'upcoming' as const },
+  { id: '4', label: '④ 정산 정보 입력', status: 'upcoming' as const },
+  { id: '5', label: '⑤ 약관 동의', status: 'upcoming' as const },
+  { id: '6', label: '⑥ 승인 대기', status: 'upcoming' as const },
 ];
 
 const DOMAIN_OPTIONS = [
@@ -29,6 +33,8 @@ const DOMAIN_OPTIONS = [
 ];
 
 export const SignupStep1Page = () => {
+  const navigate = useNavigate();
+  const { skipRequired } = useDevSkip();
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -46,39 +52,39 @@ export const SignupStep1Page = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePrev = () => {
-    window.history.pushState({}, '', '/signup');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup');
   };
 
   const handleNext = () => {
     setError('');
-    if (!loginId || !password || !confirmPassword) {
-      setError('기본정보를 모두 입력해주세요.');
-      return;
+    if (!skipRequired) {
+      if (!loginId || !password || !confirmPassword) {
+        setError('기본정보를 모두 입력해주세요.');
+        return;
+      }
+      if (password.length < 6) {
+        setError('비밀번호는 6자 이상이어야 합니다.');
+        return;
+      }
+      if (password !== confirmPassword) {
+        setError('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+      const domainVal = emailDomain === 'direct' ? emailDirect : emailDomain;
+      if (!emailLocal || !domainVal) {
+        setError('이메일을 입력해주세요.');
+        return;
+      }
+      if (!name || !phone) {
+        setError('본인인증 정보를 입력해주세요.');
+        return;
+      }
+      if (files.length === 0) {
+        setError('신분증을 등록해주세요.');
+        return;
+      }
     }
-    if (password.length < 6) {
-      setError('비밀번호는 6자 이상이어야 합니다.');
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-    const domainVal = emailDomain === 'direct' ? emailDirect : emailDomain;
-    if (!emailLocal || !domainVal) {
-      setError('이메일을 입력해주세요.');
-      return;
-    }
-    if (!name || !phone) {
-      setError('본인인증 정보를 입력해주세요.');
-      return;
-    }
-    if (files.length === 0) {
-      setError('신분증을 등록해주세요.');
-      return;
-    }
-    window.history.pushState({}, '', '/signup/step2');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup/step2');
   };
 
   const handleCheckDuplicate = () => {
@@ -111,7 +117,7 @@ export const SignupStep1Page = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container max-w-3xl mx-auto px-6 py-10">
+      <PageLayout maxContentWidth="3xl">
         {/* 제목 */}
         <h1 className="text-h1 font-bold text-gray-900 text-center mb-8">회원가입</h1>
 
@@ -332,7 +338,7 @@ export const SignupStep1Page = () => {
             <Button onClick={handleNext}>다음</Button>
           </div>
         </div>
-      </div>
+      </PageLayout>
     </div>
   );
 };

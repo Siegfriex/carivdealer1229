@@ -96,6 +96,7 @@ export interface MediaMetadata {
  */
 export interface Inspection {
   id: string;
+  platform_id?: string;
   vehicleId: string;
   preferredDate: string;
   preferredTime: string;

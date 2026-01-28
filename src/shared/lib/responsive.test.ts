@@ -32,6 +32,6 @@ describe('Responsive Utilities', () => {
 
   test('gridColumnWidth 계산', () => {
     const width = gridColumnWidth(3, 24);
-    expect(width).toBeCloseTo(31.11, 2);  // (1440 - 24*2) / 3 / 1440 * 100
+    expect(width).toBeCloseTo(32.22, 2);  // (1440 - 24*2) / 3 → 464px → 32.22vw
   });
 });

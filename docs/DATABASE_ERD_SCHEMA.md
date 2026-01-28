@@ -207,6 +207,7 @@ interface Seller {
 ```typescript
 interface SellerDocs {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 3.2)
   seller_id: string;             // FK → seller.id
   doc_type: DocType;             // 서류 유형
   file_url: string;              // 파일 URL
@@ -224,6 +225,7 @@ type DocStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 ```typescript
 interface Address {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 2.2)
   user_id: string;               // FK → user.id
   address_type: AddressType;     // 주소 유형
   postal_code: string;           // 우편번호
@@ -242,6 +244,7 @@ type AddressType = 'HOME' | 'WORK' | 'DEALER';
 ```typescript
 interface Vehicle {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 2.3)
   seller_id: string;             // FK → seller.id
   vehicle_number: string;        // 차량번호
   vin: string;                   // 차대번호
@@ -300,6 +303,7 @@ interface VehicleOption {
 ```typescript
 interface VehicleInspection {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 2.3)
   vehicle_id: string;            // FK → vehicle.id
   inspector_id: string;          // FK → user.id (검사원)
   inspection_date: Timestamp;    // 검사일
@@ -326,6 +330,7 @@ type InspectionStatus = 'DONE' | 'REQUESTED' | 'SCHEDULED' | 'ASSIGNED' | 'IN_PR
 ```typescript
 interface Listing {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 2.1)
   vehicle_id: string;            // FK → vehicle.id
   seller_id: string;             // FK → seller.id
   sale_type: SaleType;           // 판매 유형
@@ -349,6 +354,7 @@ type ListingStatus = 'ACTIVE' | 'SOLD' | 'CANCELLED' | 'EXPIRED';
 ```typescript
 interface Auction {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 2.3)
   listing_id: string;            // FK → listing.id
   start_price: number;           // 시작가
   current_price: number;         // 현재가
@@ -426,6 +432,7 @@ type PaymentStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED' | 'PARTIAL_
 ```typescript
 interface Delivery {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 2.3)
   order_id: string;              // FK → order.id
   vehicle_id: string;            // FK → vehicle.id
   driver_id?: string;            // FK → user.id (기사)
@@ -456,6 +463,7 @@ type DeliveryStatus = 'REQUESTED' | 'MATCHED' | 'PICKUP_DONE' | 'HANDOVER_DONE' 
 ```typescript
 interface Settlement {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 2.3)
   order_id: string;              // FK → order.id
   seller_id: string;             // FK → seller.id
   vehicle_price: number;         // 차량가
@@ -481,6 +489,7 @@ type SettlementStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
 ```typescript
 interface Review {
   id: string;                    // PK
+  platform_id?: string;           // 플랫폼 식별자 (Phase 3.1)
   order_id: string;              // FK → order.id
   reviewer_id: string;           // FK → user.id
   reviewee_id: string;           // FK → user.id (판매자 또는 구매자)
@@ -498,6 +507,7 @@ interface Review {
 ```typescript
 interface CarsOfKoreaVehicle {
   id: string;
+  platform_id?: string;           // 플랫폼 식별자 (Phase 4.1)
   external_id: string;           // 외부 시스템 ID
   vehicle_id: string;            // FK → vehicle.id
   sync_status: SyncStatus;
@@ -508,6 +518,7 @@ interface CarsOfKoreaVehicle {
 
 interface CarsOfKoreaListing {
   id: string;
+  platform_id?: string;           // 플랫폼 식별자 (Phase 4.1)
   external_id: string;
   listing_id: string;            // FK → listing.id
   sync_status: SyncStatus;
@@ -518,6 +529,7 @@ interface CarsOfKoreaListing {
 
 interface CarsOfKoreaAuction {
   id: string;
+  platform_id?: string;           // 플랫폼 식별자 (Phase 4.1)
   external_id: string;
   auction_id: string;            // FK → auction.id
   sync_status: SyncStatus;
@@ -528,6 +540,7 @@ interface CarsOfKoreaAuction {
 
 interface CarsOfKoreaAuctionBid {
   id: string;
+  platform_id?: string;           // 플랫폼 식별자 (Phase 4.1)
   external_id: string;
   auction_bid_id: string;        // FK → auction_bid.id
   sync_status: SyncStatus;

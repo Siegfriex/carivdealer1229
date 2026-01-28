@@ -4,25 +4,36 @@
  * 그리드 레이아웃, "홈으로 돌아가기" + "검차 진행하기" 버튼
  */
 
+import { useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Card } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { CheckCircle2, TrendingUp, Gavel, Home, SearchCheck } from 'lucide-react';
 
 export const VehicleRegistrationCompletePage = () => {
+  const navigate = useNavigate();
+
   const handleGoHome = () => {
-    window.location.href = '/vehicles';
+    navigate('/vehicles');
   };
 
   const handleInspection = () => {
-    window.location.href = '/inspections/request';
+    navigate('/inspections/request');
+  };
+
+  const handleAuctionSale = () => {
+    navigate('/offers?type=auction');
+  };
+
+  const handleGeneralSale = () => {
+    navigate('/offers?type=general');
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
 
-      <main className="container mx-auto px-6 py-8 max-w-[1440px]">
+      <main className="container py-8">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-success-light flex items-center justify-center">
@@ -66,7 +77,7 @@ export const VehicleRegistrationCompletePage = () => {
             <h2 className="text-h3 font-bold text-gray-900 mb-4">다음 단계를 선택하세요</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card hover className="cursor-pointer">
+              <Card hover className="cursor-pointer" onClick={handleAuctionSale}>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center">
                     <Gavel className="h-6 w-6 text-primary" />
@@ -78,7 +89,7 @@ export const VehicleRegistrationCompletePage = () => {
                 </div>
               </Card>
 
-              <Card hover className="cursor-pointer">
+              <Card hover className="cursor-pointer" onClick={handleGeneralSale}>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-success-light flex items-center justify-center">
                     <TrendingUp className="h-6 w-6 text-success" />

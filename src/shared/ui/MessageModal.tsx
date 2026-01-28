@@ -27,7 +27,7 @@ export function MessageModal({
   confirmLabel = '확인',
   cancelLabel = '취소',
   onConfirm,
-  variant = 'confirm',
+  variant: _variant = 'confirm',
 }: MessageModalProps) {
   const handleConfirm = () => {
     onConfirm?.();

@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Button } from '@/shared/ui/Button';
 import { Typography } from '@/shared/ui/Typography';
@@ -15,7 +16,6 @@ import {
   ShoppingCart,
   CheckCircle,
   ChevronDown,
-  MessageCircle,
 } from 'lucide-react';
 
 const USER_GUIDE_STEPS = [
@@ -63,11 +63,12 @@ const FAQ_ITEMS = [
 const KAKAO_CHAT_URL = 'https://pf.kakao.com/_example'; // 실제 채널 URL로 교체
 
 export const LandingPage = () => {
+  const navigate = useNavigate();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const userName = '홍길동'; // TODO: auth context에서 가져오기
 
   const handleStartNow = () => {
-    window.location.href = '/vehicles/new/step1';
+    navigate('/vehicles/new/step1');
   };
 
   return (

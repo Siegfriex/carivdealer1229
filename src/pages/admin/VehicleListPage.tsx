@@ -9,6 +9,7 @@
  */
 
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
 import { VehicleTable } from '@/widgets/VehicleTable/ui/VehicleTable';
@@ -25,6 +26,7 @@ const PAGE_SIZE = 9;
 type FilterTab = 'all' | 'draft' | 'completed';
 
 export const VehicleListPage = () => {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterTab, setFilterTab] = useState<FilterTab>('all');
@@ -80,7 +82,7 @@ export const VehicleListPage = () => {
   }, [attentionFilteredVehicles, currentPage]);
 
   const handleRegister = () => {
-    window.location.href = '/vehicles/new/step1';
+    navigate('/vehicles/new/step1');
   };
 
   // 필터 탭 옵션
@@ -175,7 +177,7 @@ export const VehicleListPage = () => {
                     vehicle={vehicle}
                     variant="mainLanding"
                     onClick={() => {
-                      window.location.href = `/vehicles/${vehicle.id}`;
+                      navigate(`/vehicles/${vehicle.id}`);
                     }}
                   />
                 ))}

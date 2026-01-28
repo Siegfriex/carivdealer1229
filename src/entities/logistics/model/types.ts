@@ -9,6 +9,7 @@ export type LogisticsStatus = 'scheduled' | 'dispatched' | 'in_transit' | 'compl
 
 export interface Logistics {
   id: string;
+  platform_id?: string;
   vehicleId: string;
   scheduleDate: string;
   scheduleTime: string;

@@ -4,10 +4,12 @@
  */
 
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StepProgress } from '@/shared/ui/StepProgress';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
 import { Select } from '@/shared/ui/Select';
+import { PageLayout } from '@/shared/ui/PageLayout';
 import { Plus, Image as ImageIcon } from 'lucide-react';
 
 const SIGNUP_STEPS = [
@@ -43,6 +45,7 @@ const VAT_TAX_TYPE_OPTIONS = [
 ];
 
 export const SignupStep2Page = () => {
+  const navigate = useNavigate();
   // 필수정보
   const [businessRegNo, setBusinessRegNo] = useState('');
   const [businessRegImage, setBusinessRegImage] = useState<File | null>(null);
@@ -59,8 +62,7 @@ export const SignupStep2Page = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePrev = () => {
-    window.history.pushState({}, '', '/signup/step1');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup/step1');
   };
 
   const handleNext = () => {
@@ -92,9 +94,7 @@ export const SignupStep2Page = () => {
       return;
     }
 
-    // 다음 단계로 이동
-    window.history.pushState({}, '', '/signup/step3');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup/step3');
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,7 +137,7 @@ export const SignupStep2Page = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container max-w-3xl mx-auto px-6 py-10">
+      <PageLayout maxContentWidth="3xl">
         {/* 제목 */}
         <h1 className="text-h1 font-bold text-gray-900 text-center mb-8">회원가입</h1>
 
@@ -296,7 +296,7 @@ export const SignupStep2Page = () => {
             <Button onClick={handleNext}>다음</Button>
           </div>
         </div>
-      </div>
+      </PageLayout>
     </div>
   );
 };

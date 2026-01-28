@@ -152,6 +152,8 @@
   --z-tooltip: 700;
   --z-toast: 800;
   --z-loading: 900;
+  --z-dev-skip: 950;       /* 개발용 스킵 전역 (Z_INDEX.DEV_SKIP) */
+  --z-dev-skip-page: 951;  /* 개발용 스킵 페이지 (Z_INDEX.DEV_SKIP_PAGE) */
 
   /* ===== Component Specific (디자인 파일에서 추출) ===== */
   

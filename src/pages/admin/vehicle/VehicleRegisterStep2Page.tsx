@@ -6,6 +6,7 @@
  */
 
 import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Header } from '@/widgets/Header/ui/Header';
 import { StepProgress, type Step } from '@/shared/ui/StepProgress';
 import { Input } from '@/shared/ui/Input';
@@ -28,26 +29,38 @@ const fuelTypeOptions = [
 ];
 
 export const VehicleRegisterStep2Page = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [fuelType, setFuelType] = useState('');
   const [color, setColor] = useState('');
   const [price, setPrice] = useState('');
   const [files, setFiles] = useState<File[]>([]);
 
   const handleSaveDraft = () => {
-    // 임시저장
-    console.log('임시저장');
+    console.log('임시저장:', { fuelType, color, price, files });
+    alert('임시저장되었습니다.');
+    navigate('/vehicles?filter=draft');
   };
 
   const handleNext = () => {
-    // 검차 신청 단계로 이동
-    console.log('다음 단계');
+    if (!fuelType) {
+      alert('연료 종류를 선택해주세요.');
+      return;
+    }
+    if (!price) {
+      alert('판매가를 입력해주세요.');
+      return;
+    }
+
+    const vehicleId = searchParams.get('vehicleId') || 'new';
+    navigate(`/vehicles/${vehicleId}/complete`);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="container mx-auto px-6 py-8">
+      <main className="container py-8">
         <StepProgress steps={steps} className="mb-12" />
 
         <div className="max-w-3xl mx-auto">
@@ -100,7 +113,7 @@ export const VehicleRegisterStep2Page = () => {
 
             {/* 액션 버튼 */}
             <div className="flex justify-between pt-6">
-              <Button variant="secondary" onClick={() => window.history.back()}>
+              <Button variant="secondary" onClick={() => navigate(-1)}>
                 이전
               </Button>
               

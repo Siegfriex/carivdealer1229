@@ -63,6 +63,61 @@ service cloud.firestore {
     //   allow read: if request.auth != null && request.auth.uid == memberId;
     //   allow write: if request.auth != null && request.auth.uid == memberId;
     // }
+
+    // Orders collection (Phase 1.1)
+    // match /orders/{orderId} {
+    //   allow read, write: if request.auth != null &&
+    //     (resource == null || request.auth.uid == resource.data.buyer_id ||
+    //      request.auth.uid == resource.data.seller_id ||
+    //      (resource.data.platform_id != null && request.auth.token.platform_id == resource.data.platform_id));
+    //   allow create: if request.auth != null;
+    // }
+
+    // Payments collection (Phase 1.2)
+    // match /payments/{paymentId} {
+    //   allow read, write: if request.auth != null &&
+    //     (resource == null || get(/databases/$(database)/documents/orders/$(resource.data.order_id)).data.buyer_id == request.auth.uid ||
+    //      get(/databases/$(database)/documents/orders/$(resource.data.order_id)).data.seller_id == request.auth.uid ||
+    //      (resource.data.platform_id != null && request.auth.token.platform_id == resource.data.platform_id));
+    //   allow create: if request.auth != null;
+    // }
+
+    // Listings collection (Phase 2.1)
+    // match /listings/{listingId} {
+    //   allow read, write: if request.auth != null &&
+    //     (resource == null || request.auth.uid == resource.data.seller_id ||
+    //      (resource.data.platform_id != null && request.auth.token.platform_id == resource.data.platform_id));
+    //   allow create: if request.auth != null;
+    // }
+
+    // Addresses collection (Phase 2.2)
+    // match /addresses/{addressId} {
+    //   allow read, write: if request.auth != null &&
+    //     (resource == null || request.auth.uid == resource.data.user_id ||
+    //      (resource.data.platform_id != null && request.auth.token.platform_id == resource.data.platform_id));
+    //   allow create: if request.auth != null;
+    // }
+
+    // Reviews collection (Phase 3.1)
+    // match /reviews/{reviewId} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null &&
+    //     (resource == null || request.auth.uid == resource.data.reviewer_id ||
+    //      (resource.data.platform_id != null && request.auth.token.platform_id == resource.data.platform_id));
+    //   allow create: if request.auth != null;
+    // }
+
+    // Seller Docs collection (Phase 3.2)
+    // match /seller_docs/{docId} {
+    //   allow read: if request.auth != null &&
+    //     (resource == null || request.auth.uid == resource.data.seller_id ||
+    //      (resource.data.platform_id != null && request.auth.token.platform_id == resource.data.platform_id));
+    //   allow write: if request.auth != null &&
+    //     (resource == null || request.auth.uid == resource.data.seller_id ||
+    //      request.auth.token.role == 'admin' ||
+    //      (resource.data.platform_id != null && request.auth.token.platform_id == resource.data.platform_id));
+    //   allow create: if request.auth != null;
+    // }
   }
 }
 

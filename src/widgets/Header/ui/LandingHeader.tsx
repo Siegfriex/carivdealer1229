@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { User, Search, ChevronDown, Car, FileText, Truck, Calculator, Bell, SearchCheck } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { LoginModal } from '@/shared/ui/LoginModal';
@@ -32,19 +33,19 @@ interface LandingHeaderProps {
 const NAV_KEYS: NavKey[] = ['vehicles', 'inspections', 'offers', 'logistics', 'settlements'];
 
 export function LandingHeader({ userName, onRegisterListing, variant = 'landing', activeNav }: LandingHeaderProps) {
+  const navigate = useNavigate();
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const isMain = variant === 'main';
 
   const handleSignupFromModal = () => {
     setLoginModalOpen(false);
-    window.history.pushState({}, '', '/signup');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup');
   };
 
   const handleRegister = () => {
     onRegisterListing?.();
-    if (!onRegisterListing) window.location.href = '/vehicles/new';
+    if (!onRegisterListing) navigate('/vehicles/new');
   };
 
   return (
@@ -52,13 +53,13 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
       className="sticky top-0 left-0 right-0 bg-white border-b border-gray-200 shadow-sm"
       style={{ zIndex: Z_INDEX.STICKY }}
     >
-      <div className="container h-16 flex items-center justify-between gap-6">
+      <div className="container mx-auto h-16 flex items-center justify-between gap-6">
         {/* 로고: FORWARDMAX */}
-        <a href="/" className="flex items-center shrink-0">
+        <Link to="/" className="flex items-center shrink-0">
           <span className="text-h3 font-bold text-gray-900 tracking-tight">
             FORWARD<span className="text-primary">MAX</span>
           </span>
-        </a>
+        </Link>
 
         {/* 네비: 차량목록(활성 시 파란 밑줄), 거래, 탁송, 정산 */}
         <nav className="hidden md:flex items-center gap-8">
@@ -66,16 +67,16 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
             const key = NAV_KEYS[index];
             const isActive = isMain && activeNav === key;
             return (
-              <a
+              <Link
                 key={label}
-                href={href}
+                to={href}
                 className={`flex items-center gap-2 text-body font-medium transition-fast border-b-2 ${
                   isActive ? 'text-primary border-primary' : 'text-gray-700 border-transparent hover:text-primary hover:border-primary'
                 }`}
               >
                 <Icon className="h-5 w-5" />
                 {label}
-              </a>
+              </Link>
             );
           })}
         </nav>

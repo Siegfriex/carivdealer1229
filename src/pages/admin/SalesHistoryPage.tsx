@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Car, Calendar, DollarSign, Eye } from 'lucide-react';
 
 interface SaleRecord {
@@ -19,7 +20,8 @@ interface SaleRecord {
   saleMethod: 'auction' | 'general';
 }
 
-export const SalesHistoryPage = ({ onNavigate }: { onNavigate: (screen: string, vehicleId?: string) => void }) => {
+export const SalesHistoryPage = () => {
+  const navigate = useNavigate();
   const [sales, setSales] = useState<SaleRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -69,7 +71,7 @@ export const SalesHistoryPage = ({ onNavigate }: { onNavigate: (screen: string, 
     <div className="min-h-screen bg-fmax-surface flex flex-col">
       <header className="bg-white border-b border-fmax-border px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-4">
-          <button onClick={() => onNavigate('SCR-0100')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
+          <button onClick={() => navigate('/dashboard')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5 text-fmax-text-secondary" />
           </button>
           <h1 className="text-lg font-bold text-fmax-text-main">판매 내역</h1>
@@ -138,7 +140,7 @@ export const SalesHistoryPage = ({ onNavigate }: { onNavigate: (screen: string, 
                       </td>
                       <td className="p-4 text-right pr-6">
                         <button
-                          onClick={() => onNavigate('SCR-0105', sale.vehicleId)}
+                          onClick={() => navigate(`/vehicles/${sale.vehicleId}`)}
                           className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-fmax-primary transition-colors"
                           title="상세보기"
                         >

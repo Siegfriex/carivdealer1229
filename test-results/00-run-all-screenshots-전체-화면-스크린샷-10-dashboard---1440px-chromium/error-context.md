@@ -5,69 +5,81 @@
   - generic [ref=e3]:
     - banner [ref=e4]:
       - generic [ref=e5]:
-        - heading "ForwardMax" [level=1] [ref=e7]
+        - link "FORWARDMAX" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e7]: FORWARDMAX
         - navigation [ref=e8]:
-          - link "대시보드" [ref=e9] [cursor=pointer]:
-            - /url: /dashboard
-          - link "차량 관리" [ref=e10] [cursor=pointer]:
+          - link "차량목록" [ref=e9] [cursor=pointer]:
             - /url: /vehicles
-          - link "탁송 관리" [ref=e11] [cursor=pointer]:
+            - img [ref=e10]
+            - text: 차량목록
+          - link "검차" [ref=e14] [cursor=pointer]:
+            - /url: /inspections
+            - img [ref=e15]
+            - text: 검차
+          - link "거래" [ref=e19] [cursor=pointer]:
+            - /url: /offers
+            - img [ref=e20]
+            - text: 거래
+          - link "탁송" [ref=e23] [cursor=pointer]:
             - /url: /logistics/schedule
-          - link "정산 관리" [ref=e12] [cursor=pointer]:
+            - img [ref=e24]
+            - text: 탁송
+          - link "정산" [ref=e29] [cursor=pointer]:
             - /url: /settlements
-        - button "딜러명" [ref=e14] [cursor=pointer]:
-          - img [ref=e15]
-          - generic [ref=e18]: 딜러명
-    - generic [ref=e19]:
-      - complementary [ref=e20]:
-        - navigation [ref=e21]:
-          - list [ref=e22]:
-            - listitem [ref=e23]:
-              - link "대시보드" [ref=e24] [cursor=pointer]:
-                - /url: /dashboard
-                - img [ref=e25]
-                - text: 대시보드
-            - listitem [ref=e30]:
-              - link "차량 관리" [ref=e31] [cursor=pointer]:
-                - /url: /vehicles
-                - img [ref=e32]
-                - text: 차량 관리
-            - listitem [ref=e36]:
-              - link "탁송 관리" [ref=e37] [cursor=pointer]:
-                - /url: /logistics/schedule
-                - img [ref=e38]
-                - text: 탁송 관리
-            - listitem [ref=e43]:
-              - link "정산 관리" [ref=e44] [cursor=pointer]:
-                - /url: /settlements
-                - img [ref=e45]
-                - text: 정산 관리
-            - listitem [ref=e48]:
-              - link "판매 이력" [ref=e49] [cursor=pointer]:
-                - /url: /sales/history
-                - img [ref=e50]
-                - text: 판매 이력
-      - main [ref=e53]:
-        - generic [ref=e54]:
-          - generic [ref=e55]:
-            - heading "매물 등록 관리" [level=1] [ref=e56]
-            - paragraph [ref=e57]: 총 0개의 차량이 등록되어 있습니다
-          - generic [ref=e58]:
+            - img [ref=e30]
+            - text: 정산
+        - generic [ref=e32]:
+          - button "검색" [ref=e33] [cursor=pointer]:
+            - img [ref=e34]
+          - button "알림" [ref=e37] [cursor=pointer]:
+            - img [ref=e38]
+          - button "홍길동님" [ref=e42] [cursor=pointer]:
+            - img [ref=e43]
+            - generic [ref=e46]: 홍길동님
+            - img [ref=e47]
+          - button "매물 등록하기" [ref=e49] [cursor=pointer]:
+            - img [ref=e50]
+            - text: 매물 등록하기
+    - generic [ref=e54]:
+      - complementary [ref=e55]:
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - heading "검색" [level=3] [ref=e58]
             - generic [ref=e59]:
-              - button "그리드 뷰" [ref=e60] [cursor=pointer]:
-                - img [ref=e61]
-              - button "리스트 뷰" [ref=e63] [cursor=pointer]:
-                - img [ref=e64]
-            - button "차량 등록" [ref=e65] [cursor=pointer]:
-              - img [ref=e66]
-              - text: 차량 등록
-        - generic [ref=e67]:
-          - img [ref=e68]
-          - heading "등록된 차량이 없습니다" [level=2] [ref=e72]
-          - paragraph [ref=e73]: 첫 차량을 등록하여 시작하세요
-          - button "차량 등록하기" [ref=e74] [cursor=pointer]
-  - generic [ref=e75]:
-    - img [ref=e77]
-    - button "Open Tanstack query devtools" [ref=e125] [cursor=pointer]:
-      - img [ref=e126]
+              - textbox "차량번호/모델명" [ref=e60]
+              - img
+          - generic [ref=e61]:
+            - heading "목록" [level=3] [ref=e62]
+            - list [ref=e63]:
+              - listitem [ref=e64]:
+                - link "전체" [ref=e65] [cursor=pointer]:
+                  - /url: /dashboard
+              - listitem [ref=e66]:
+                - link "차량 상태" [ref=e67] [cursor=pointer]:
+                  - /url: /vehicles?filter=status
+              - listitem [ref=e68]:
+                - link "판매/거래 단계" [ref=e69] [cursor=pointer]:
+                  - /url: /vehicles?filter=sale
+              - listitem [ref=e70]:
+                - link "탁송 단계" [ref=e71] [cursor=pointer]:
+                  - /url: /vehicles?filter=logistics
+              - listitem [ref=e72]:
+                - link "정산" [ref=e73] [cursor=pointer]:
+                  - /url: /settlements
+      - main [ref=e74]:
+        - generic [ref=e75]:
+          - heading "전체 차량" [level=1] [ref=e76]
+          - button "확인 필요차량" [ref=e77] [cursor=pointer]
+        - generic [ref=e78]:
+          - paragraph [ref=e79]: 등록된 차량이 없습니다.
+          - button "매물 등록하기" [ref=e80] [cursor=pointer]
+    - contentinfo [ref=e81]:
+      - paragraph [ref=e82]: ForwardMax Cariv Domestic Seller 1.0 Prototype
+  - 'generic "개발용: 필수 입력 스킵 토글" [ref=e83]':
+    - button "dev:skip OFF" [ref=e84] [cursor=pointer]
+  - generic [ref=e85]:
+    - img [ref=e87]
+    - button "Open Tanstack query devtools" [ref=e135] [cursor=pointer]:
+      - img [ref=e136]
 ```

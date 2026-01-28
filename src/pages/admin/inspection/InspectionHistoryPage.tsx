@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Search, ChevronRight } from 'lucide-react';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
@@ -12,6 +13,7 @@ import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionLi
 const completedInspections = MOCK_INSPECTIONS.filter((i) => i.status === 'completed');
 
 export const InspectionHistoryPage = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
   const list = completedInspections.filter((insp) => {
@@ -24,14 +26,14 @@ export const InspectionHistoryPage = () => {
   });
 
   const goToDetail = (insp: InspectionWithVehicle) => {
-    window.location.href = `/inspections/${insp.id}/complete`;
+    navigate(`/inspections/${insp.id}/complete`);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
-      <div className="flex">
+      <div className="flex max-w-[1440px] mx-auto">
         <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)]">
           <div className="p-4 space-y-6">
             <div>

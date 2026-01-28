@@ -8,8 +8,10 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
+import { useDevSkip } from '@/shared/context/DevSkipContext';
 import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
 import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
@@ -28,17 +30,17 @@ const progressSteps: ProgressStep[] = [
 ];
 
 export const VehicleRegisterStep1Page = () => {
-  // URL에서 차량번호 가져오기
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [plateNumber, setPlateNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const plate = params.get('plateNumber');
+    const plate = searchParams.get('plateNumber');
     if (plate) {
       setPlateNumber(decodeURIComponent(plate));
     }
-  }, []);
+  }, [searchParams]);
 
   // 차량 정보 (OCR 결과 또는 수동 입력)
   const [vehicleData, setVehicleData] = useState({
@@ -63,10 +65,12 @@ export const VehicleRegisterStep1Page = () => {
   });
 
   const [ocrLoading, setOcrLoading] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [, setUploadedFiles] = useState<File[]>([]);
+
+  const { skipRequired } = useDevSkip();
 
   const handleOcr = async () => {
-    if (!plateNumber) {
+    if (!skipRequired && !plateNumber) {
       alert('차량번호를 입력해주세요');
       return;
     }
@@ -94,18 +98,22 @@ export const VehicleRegisterStep1Page = () => {
     // TODO: 임시저장 API 호출 (status: 'draft')
     console.log('임시저장:', { vehicleData, registrationData });
     alert('임시저장되었습니다.');
-    window.location.href = '/vehicles?filter=draft';
+    navigate('/vehicles?filter=draft');
   };
 
   const handleSubmit = () => {
     // TODO: 등록 제출 API 호출
     console.log('등록 제출:', { vehicleData, registrationData });
-    window.location.href = '/vehicles/new/step2';
+    // 차량번호를 쿼리 파라미터로 전달
+    const params = new URLSearchParams();
+    if (plateNumber) params.set('plateNumber', plateNumber);
+    const queryString = params.toString();
+    navigate(`/vehicles/new/step2${queryString ? `?${queryString}` : ''}`);
   };
 
   const handleDelete = () => {
     if (confirm('정말 삭제하시겠습니까?')) {
-      window.location.href = '/vehicles';
+      navigate('/vehicles');
     }
   };
 
@@ -117,21 +125,21 @@ export const VehicleRegisterStep1Page = () => {
         activeNav="vehicles"
       />
 
-      <div className="flex">
-        {/* 좌측 사이드바: ProgressSidebar + 검색 */}
-        <div className="w-64 flex-shrink-0">
-          <ProgressSidebar steps={progressSteps} />
-          <div className="fixed left-0 top-64 w-64 p-4 bg-white border-r border-gray-200">
+      <div className="flex max-w-[1440px] mx-auto">
+        {/* 좌측 사이드바: ProgressSidebar + 검색 (통합) */}
+        <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)]">
+          <ProgressSidebar steps={progressSteps} inline />
+          <div className="p-4 border-t border-gray-200">
             <MainLandingSidebar
               searchValue={searchTerm}
               onSearchChange={setSearchTerm}
               activeKey="all"
             />
           </div>
-        </div>
+        </aside>
 
         {/* 메인 콘텐츠 */}
-        <main className="flex-1 p-8 ml-64">
+        <main className="flex-1 p-8">
           <h1 className="text-h1 font-bold text-gray-900 mb-8">차량 원부 등록</h1>
 
           {/* 차량 정보 섹션 */}

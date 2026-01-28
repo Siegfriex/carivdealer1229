@@ -31,11 +31,13 @@ FOWARDMAX/
 │   │   ├── vehicle/     # 차량 관련 Functions
 │   │   └── index.ts     # Entry point
 │   └── package.json
-├── src/                 # React 프론트엔드
-│   ├── components/      # React 컴포넌트
-│   ├── services/        # API 서비스
-│   ├── hooks/           # Custom Hooks
-│   └── utils/           # 유틸리티
+├── src/                 # React 프론트엔드 (FSD)
+│   ├── app/             # 앱 초기화, 라우터, 프로바이더, 전역 스타일
+│   ├── entities/        # 비즈니스 엔티티 (vehicle, inspection, auction 등)
+│   ├── features/        # 사용자 시나리오 훅/로직 (place-bid, register-form 등)
+│   ├── pages/           # 페이지 컴포넌트 (admin, auth, landing)
+│   ├── shared/          # 공유 UI, API 클라이언트, 설정, 유틸
+│   └── widgets/         # 복합 UI (Header, Sidebar, VehicleTable 등)
 ├── docs/                # 문서
 ├── scripts/             # 배포/설정 스크립트
 ├── firestore.rules      # Firestore 보안 규칙

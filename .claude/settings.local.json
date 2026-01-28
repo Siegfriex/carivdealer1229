@@ -71,7 +71,10 @@
       "Bash(npx eslint:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nchore: 현재 작업 상태 스냅샷 \\(마이그레이션 준비\\)\n\n- ReNew 문서 업데이트 \\(WORK_SUMMARY, FSD_COMPLIANCE 등\\)\n- Signup 페이지들 수정\n- Vehicle 등록 페이지들 추가\n- Inspection 페이지들 추가\n- LandingHeader 수정\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Phase 2.4-2.5 레거시 페이지 FSD 마이그레이션 완료\n\n- 7개 레거시 컴포넌트 인라인 병합 완료\n  - SalesHistoryPage, GeneralSaleOffersPage, SettlementListPage\n  - SettlementDetailPage, LogisticsSchedulePage, LogisticsHistoryPage\n  - VehicleListPage \\(이미 마이그레이션 완료 상태\\)\n\n- alert\\(\\) → Toast 알림으로 교체 \\(8개\\)\n- console.error 제거 → silent catch 패턴\n\n- src/components/ 폴더 삭제\n- @/components 참조 제거 완료\n\n빌드 검증: ✓ 1850 modules, 4.03s\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Phase 2.4-2.5 레거시 페이지 FSD 마이그레이션 완료\n\n- 7개 레거시 컴포넌트 인라인 병합 완료\n  - SalesHistoryPage, GeneralSaleOffersPage, SettlementListPage\n  - SettlementDetailPage, LogisticsSchedulePage, LogisticsHistoryPage\n  - VehicleListPage \\(이미 마이그레이션 완료 상태\\)\n\n- alert\\(\\) → Toast 알림으로 교체 \\(8개\\)\n- console.error 제거 → silent catch 패턴\n\n- src/components/ 폴더 삭제\n- @/components 참조 제거 완료\n\n빌드 검증: ✓ 1850 modules, 4.03s\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(npx tsc:*)",
+      "Bash(npm run dev:*)",
+      "Bash(xargs:*)"
     ],
     "deny": []
   }

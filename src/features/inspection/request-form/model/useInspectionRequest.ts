@@ -25,7 +25,7 @@ export const useInspectionRequest = () => {
   return useMutation({
     mutationFn: async (input: InspectionRequestInput): Promise<InspectionRequestResponse> => {
       return await apiClient.post<InspectionRequestResponse>(
-        API_ENDPOINTS.INSPECTION_REQUEST,
+        API_ENDPOINTS.VEHICLE.INSPECTION_REQUEST,
         input
       );
     },

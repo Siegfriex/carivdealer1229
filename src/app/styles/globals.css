@@ -91,7 +91,8 @@
 
 /* Component Styles */
 @layer components {
-  /* Container */
+  /* Container: 페이지 최외곽용. 전체 폭 제한(1440px) + 좌우 패딩.
+   * 내부 콘텐츠 너비는 자식에 max-w-3xl / max-w-4xl 등 적용. */
   .container {
     max-width: var(--container-max);
     margin-left: auto;

@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Modal } from '@/shared/ui/Modal';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
@@ -17,6 +18,7 @@ export interface LoginModalProps {
 }
 
 export function LoginModal({ isOpen, onClose, onSignupClick }: LoginModalProps) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -27,8 +29,7 @@ export function LoginModal({ isOpen, onClose, onSignupClick }: LoginModalProps) 
       setError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
-    // TODO: 실제 로그인 API 연동
-    console.log('Login:', { email, password });
+    // TODO: 실제 로그인 API 연동 (Firebase Auth signInWithEmailAndPassword 등)
     onClose();
   };
 
@@ -37,8 +38,7 @@ export function LoginModal({ isOpen, onClose, onSignupClick }: LoginModalProps) 
     if (onSignupClick) {
       onSignupClick();
     } else {
-      window.history.pushState({}, '', '/signup');
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      navigate('/signup');
     }
   };
 
@@ -79,9 +79,9 @@ export function LoginModal({ isOpen, onClose, onSignupClick }: LoginModalProps) 
           </button>
         </div>
         <div className="text-center">
-          <a href="/login" className="text-caption text-gray-500 hover:underline">
+          <Link to="/forgot-password" className="text-caption text-gray-500 hover:underline">
             비밀번호를 잊으셨나요?
-          </a>
+          </Link>
         </div>
       </div>
     </Modal>

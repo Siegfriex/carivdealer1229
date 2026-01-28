@@ -16,6 +16,8 @@ export const Z_INDEX = {
   TOOLTIP: 700,         // 툴팁
   TOAST: 800,           // 토스트 알림
   LOADING: 900,         // 로딩 오버레이
+  DEV_SKIP: 950,       // 개발용 스킵 전역 토글 (DevSkipFloatingButton)
+  DEV_SKIP_PAGE: 951,  // 개발용 스킵 페이지 버튼 (DevSkipButton, 전역 위에 표시)
 } as const;
 
 export type ZIndexLayer = (typeof Z_INDEX)[keyof typeof Z_INDEX];
@@ -33,4 +35,6 @@ export type ZIndexLayer = (typeof Z_INDEX)[keyof typeof Z_INDEX];
  * TOOLTIP (700): 툴팁 (항상 최상단 근처)
  * TOAST (800): 토스트 알림 (툴팁 위)
  * LOADING (900): 전체 화면 로딩 오버레이
+ * DEV_SKIP (950): 개발용 스킵 전역 토글 (DevSkipFloatingButton)
+ * DEV_SKIP_PAGE (951): 개발용 스킵 페이지 버튼 (DevSkipButton)
  */

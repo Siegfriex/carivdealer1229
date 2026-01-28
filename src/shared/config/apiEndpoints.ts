@@ -64,6 +64,42 @@ export const API_ENDPOINTS = {
   CONFIG: {
     GOOGLE_MAPS_API_KEY: 'getGoogleMapsApiKeyAPI',
   },
+
+  // Order APIs (Phase 1.3)
+  ORDER: {
+    CREATE: 'createOrderAPI',
+    GET: 'getOrderAPI',
+    UPDATE_STATUS: 'updateOrderStatusAPI',
+  },
+
+  // Payment APIs (Phase 1.3)
+  PAYMENT: {
+    CREATE: 'createPaymentAPI',
+    GET: 'getPaymentAPI',
+    REFUND: 'refundPaymentAPI',
+  },
+
+  // Address APIs (Phase 2.2)
+  ADDRESS: {
+    CREATE: 'createAddressAPI',
+    GET: 'getAddressAPI',
+    LIST: 'listAddressesAPI',
+    UPDATE: 'updateAddressAPI',
+    DELETE: 'deleteAddressAPI',
+  },
+
+  // Review APIs (Phase 3.1)
+  REVIEW: {
+    CREATE: 'createReviewAPI',
+    LIST: 'listReviewsAPI',
+  },
+
+  // Seller Docs APIs (Phase 3.2)
+  SELLER_DOCS: {
+    UPLOAD: 'uploadDocAPI',
+    APPROVE: 'approveDocAPI',
+    LIST: 'listDocsAPI',
+  },
 } as const;
 
 /**
@@ -78,7 +114,12 @@ export type ApiEndpoint =
   | typeof API_ENDPOINTS.LOGISTICS[keyof typeof API_ENDPOINTS.LOGISTICS]
   | typeof API_ENDPOINTS.SETTLEMENT[keyof typeof API_ENDPOINTS.SETTLEMENT]
   | typeof API_ENDPOINTS.REPORT[keyof typeof API_ENDPOINTS.REPORT]
-  | typeof API_ENDPOINTS.CONFIG[keyof typeof API_ENDPOINTS.CONFIG];
+  | typeof API_ENDPOINTS.CONFIG[keyof typeof API_ENDPOINTS.CONFIG]
+  | typeof API_ENDPOINTS.ORDER[keyof typeof API_ENDPOINTS.ORDER]
+  | typeof API_ENDPOINTS.PAYMENT[keyof typeof API_ENDPOINTS.PAYMENT]
+  | typeof API_ENDPOINTS.ADDRESS[keyof typeof API_ENDPOINTS.ADDRESS]
+  | typeof API_ENDPOINTS.REVIEW[keyof typeof API_ENDPOINTS.REVIEW]
+  | typeof API_ENDPOINTS.SELLER_DOCS[keyof typeof API_ENDPOINTS.SELLER_DOCS];
 
 /**
  * 엔드포인트 유효성 검증 함수

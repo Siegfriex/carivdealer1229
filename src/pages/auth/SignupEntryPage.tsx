@@ -4,8 +4,10 @@
  * 로그인 모달에서 "회원가입" 클릭 시 진입
  */
 
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/ui/Button';
 import { Typography } from '@/shared/ui/Typography';
+import { PageLayout } from '@/shared/ui/PageLayout';
 import { FileText, Car, Wallet } from 'lucide-react';
 
 const SIGNUP_CARDS = [
@@ -27,14 +29,15 @@ const SIGNUP_CARDS = [
 ] as const;
 
 export const SignupEntryPage = () => {
+  const navigate = useNavigate();
   const handleStartDealer = () => {
-    window.history.pushState({}, '', '/signup/step1');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup/step1');
   };
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
-      <div className="container max-w-3xl mx-auto text-center">
+      <PageLayout maxContentWidth="3xl">
+        <div className="text-center">
         {/* 제목 */}
         <Typography variant="h1" className="text-gray-900 mb-4">
           회원가입
@@ -78,14 +81,14 @@ export const SignupEntryPage = () => {
             className="text-primary font-medium hover:underline"
             onClick={(e) => {
               e.preventDefault();
-              window.history.pushState({}, '', '/');
-              window.dispatchEvent(new PopStateEvent('popstate'));
+              navigate('/');
             }}
           >
             로그인
           </a>
         </p>
-      </div>
+        </div>
+      </PageLayout>
     </div>
   );
 };

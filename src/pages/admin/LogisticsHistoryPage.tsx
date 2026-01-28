@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Truck, Calendar, MapPin, User, Lock } from 'lucide-react';
 import { apiClient } from '@/shared/api/apiClient';
 import { useToast } from '@/shared/ui/Toast';
@@ -21,7 +22,8 @@ interface LogisticsRecord {
   pin?: string;
 }
 
-export const LogisticsHistoryPage = ({ onNavigate }: { onNavigate: (screen: string, vehicleId?: string) => void }) => {
+export const LogisticsHistoryPage = () => {
+  const navigate = useNavigate();
   const [logistics, setLogistics] = useState<LogisticsRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedLogistics, setSelectedLogistics] = useState<LogisticsRecord | null>(null);
@@ -88,7 +90,7 @@ export const LogisticsHistoryPage = ({ onNavigate }: { onNavigate: (screen: stri
       setPin('');
       setSelectedLogistics(null);
 
-      onNavigate('SCR-0105', vehicleId);
+      navigate(`/vehicles/${vehicleId}`);
     } catch {
       showToast('인계 승인에 실패했습니다.', 'error');
     } finally {
@@ -114,13 +116,13 @@ export const LogisticsHistoryPage = ({ onNavigate }: { onNavigate: (screen: stri
     <div className="min-h-screen bg-fmax-surface flex flex-col">
       <header className="bg-white border-b border-fmax-border px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-4">
-          <button onClick={() => onNavigate('SCR-0100')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
+          <button onClick={() => navigate('/dashboard')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5 text-fmax-text-secondary" />
           </button>
           <h1 className="text-lg font-bold text-fmax-text-main">탁송 내역</h1>
         </div>
         <button
-          onClick={() => onNavigate('SCR-0600')}
+          onClick={() => navigate('/logistics/schedule')}
           className="px-4 py-2 bg-fmax-primary text-white rounded-lg hover:bg-primaryHover transition-colors text-sm font-medium"
         >
           새 탁송 예약

@@ -4,13 +4,17 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, MapPin, Truck, CheckCircle2, SkipForward } from 'lucide-react';
 import { apiClient } from '@/shared/api/apiClient';
 import { useToast } from '@/shared/ui/Toast';
 
 const DESTINATION_ADDRESS = "인천광역시 중구 인천항 물류센터";
 
-export const LogisticsSchedulePage = ({ onNavigate, vehicleId }: { onNavigate: (screen: string, vehicleId?: string) => void; vehicleId?: string }) => {
+export const LogisticsSchedulePage = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const vehicleId = searchParams.get('vehicleId') ?? undefined;
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [departureAddress, setDepartureAddress] = useState('');
@@ -77,7 +81,7 @@ export const LogisticsSchedulePage = ({ onNavigate, vehicleId }: { onNavigate: (
           <h2 className="text-2xl font-bold text-fmax-text-main mb-2">탁송 예약이 완료되었습니다</h2>
           <p className="text-gray-500 text-sm mb-8">배차가 확정되면 알림을 통해 알려드려요!</p>
           <button
-            onClick={() => onNavigate('SCR-0601')}
+            onClick={() => navigate('/logistics/history')}
             className="w-full px-4 py-3 bg-fmax-primary text-white rounded-lg hover:bg-primaryHover transition-colors font-medium"
           >
             탁송 내역 보기
@@ -91,7 +95,7 @@ export const LogisticsSchedulePage = ({ onNavigate, vehicleId }: { onNavigate: (
     <div className="min-h-screen bg-fmax-surface flex flex-col">
       <header className="bg-white border-b border-fmax-border px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-4">
-          <button onClick={() => onNavigate('SCR-0100')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
+          <button onClick={() => navigate('/dashboard')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5 text-fmax-text-secondary" />
           </button>
           <h1 className="text-lg font-bold text-fmax-text-main">탁송 예약/배차</h1>

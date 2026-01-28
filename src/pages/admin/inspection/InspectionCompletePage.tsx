@@ -5,6 +5,7 @@
  * 디자인: design/design_vehicle_input/vehicle_input_45/매물 등록 관리_차량 검차 완료4.svg
  */
 
+import { useNavigate } from 'react-router-dom';
 import { Header } from '@/widgets/Header/ui/Header';
 import { StepProgress, type Step } from '@/shared/ui/StepProgress';
 import { Card } from '@/shared/ui/Card';
@@ -19,11 +20,21 @@ const steps: Step[] = [
 ];
 
 export const InspectionCompletePage = () => {
+  const navigate = useNavigate();
+
+  const handleAuctionSale = () => {
+    navigate('/offers?type=auction');
+  };
+
+  const handleGeneralSale = () => {
+    navigate('/offers?type=general');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="container mx-auto px-6 py-8">
+      <main className="container py-8">
         <StepProgress steps={steps} className="mb-12" />
 
         <div className="max-w-3xl mx-auto">
@@ -94,10 +105,10 @@ export const InspectionCompletePage = () => {
               판매 방식을 선택하세요
             </h2>
             <div className="grid grid-cols-2 gap-6">
-              <Button size="lg" fullWidth>
+              <Button size="lg" fullWidth onClick={handleAuctionSale}>
                 경매로 판매하기
               </Button>
-              <Button size="lg" variant="secondary" fullWidth>
+              <Button size="lg" variant="secondary" fullWidth onClick={handleGeneralSale}>
                 일반 판매하기
               </Button>
             </div>

@@ -8,6 +8,7 @@ import { Timestamp } from 'firebase/firestore';
 export interface Payment {
   id: string;
   order_id: string;
+  platform_id?: string;
   amount: number;
   method: PaymentMethod;
   status: PaymentStatus;

@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, CreditCard, DollarSign, Percent, FileText, Download, Printer, Truck, Banknote } from 'lucide-react';
 
 interface SettlementDetail {
@@ -31,7 +32,9 @@ interface SettlementDetail {
   settlementStatus?: 'pending' | 'completed' | 'paid';
 }
 
-export const SettlementDetailPage = ({ onNavigate, settlementId }: { onNavigate: (screen: string, vehicleId?: string) => void; settlementId?: string }) => {
+export const SettlementDetailPage = () => {
+  const navigate = useNavigate();
+  const { settlementId } = useParams<{ settlementId: string }>();
   const [settlement, setSettlement] = useState<SettlementDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -97,7 +100,7 @@ export const SettlementDetailPage = ({ onNavigate, settlementId }: { onNavigate:
     <div className="min-h-screen bg-fmax-surface flex flex-col">
       <header className="bg-white border-b border-fmax-border px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-4">
-          <button onClick={() => onNavigate('SCR-0104')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
+          <button onClick={() => navigate('/settlements')} className="p-2 hover:bg-fmax-surface rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5 text-fmax-text-secondary" />
           </button>
           <h1 className="text-lg font-bold text-fmax-text-main">정산 상세</h1>
@@ -248,14 +251,14 @@ export const SettlementDetailPage = ({ onNavigate, settlementId }: { onNavigate:
           <div className="bg-white rounded-lg p-6 border border-fmax-border">
             <div className="flex flex-col sm:flex-row gap-3">
               <button
-                onClick={() => onNavigate('SCR-0600', settlement.vehicleId)}
+                onClick={() => navigate(`/logistics/schedule?vehicleId=${settlement.vehicleId}`)}
                 className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-fmax-primary text-white rounded-lg hover:bg-primaryHover transition-colors font-medium"
               >
                 <Truck className="w-5 h-5" />
                 탁송 신청
               </button>
               <button
-                onClick={() => onNavigate('SCR-0601')}
+                onClick={() => navigate('/logistics/history')}
                 className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-white border border-fmax-border rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
                 탁송 내역 보기

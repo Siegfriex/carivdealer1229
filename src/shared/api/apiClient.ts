@@ -12,7 +12,7 @@ const OCR_TIMEOUT = 90000; // OCR 전용: 90초 (이미지 처리 시간이 오�
 
 // 개발 환경에서만 로그 출력
 const isDev = import.meta.env.DEV;
-const logMockCall = (message: string, ...args: any[]) => {
+const logMockCall = (message: string, ...args: unknown[]) => {
   if (isDev) {
     console.warn(`[프로토타입] ${message}`, ...args);
   }
@@ -34,9 +34,9 @@ async function fetchWithTimeout(
     });
     clearTimeout(timeoutId);
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     clearTimeout(timeoutId);
-    if (error.name === 'AbortError') {
+    if (error instanceof Error && error.name === 'AbortError') {
       throw new Error('API_TIMEOUT');
     }
     throw error;
@@ -66,11 +66,11 @@ async function apiCall<T>(
     }, API_TIMEOUT);
 
     if (!response.ok) {
-      let errorData: any;
+      let errorData: { error?: string; message?: string } = { message: response.statusText };
       try {
-        errorData = await response.json();
+        errorData = (await response.json()) as { error?: string; message?: string };
       } catch {
-        errorData = { message: response.statusText };
+        // keep default
       }
 
       const error = {
@@ -84,25 +84,26 @@ async function apiCall<T>(
     }
 
     return response.json();
-  } catch (error: any) {
-    if (error.message === 'API_TIMEOUT') {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : String(error);
+    if (errMsg === 'API_TIMEOUT') {
       if (mockFallback) {
-        logMockCall(`API 타임아웃(5초)로 인한 Mock 폴백: ${endpoint}`, error.message);
+        logMockCall(`API 타임아웃(30초)로 인한 Mock 폴백: ${endpoint}`, errMsg);
         const fallbackResult = mockFallback();
-        if (typeof fallbackResult === 'object' && fallbackResult !== null) {
-          (fallbackResult as any)._isMockData = true;
+        if (typeof fallbackResult === 'object' && fallbackResult !== null && !Array.isArray(fallbackResult)) {
+          (fallbackResult as Record<string, unknown>)._isMockData = true;
         }
         return fallbackResult;
       }
-      throw new Error(`API 호출 타임아웃(5초). Mock 데이터가 설정되지 않았습니다.`);
+      throw new Error(`API 호출 타임아웃(30초). Mock 데이터가 설정되지 않았습니다.`);
     }
 
-    if (error instanceof TypeError && (error.message.includes('fetch') || error.message.includes('Failed to fetch'))) {
+    if (error instanceof TypeError && (errMsg.includes('fetch') || errMsg.includes('Failed to fetch'))) {
       if (mockFallback) {
-        logMockCall(`네트워크 에러로 인한 Mock 폴백: ${endpoint}`, error.message);
+        logMockCall(`네트워크 에러로 인한 Mock 폴백: ${endpoint}`, errMsg);
         const fallbackResult = mockFallback();
-        if (typeof fallbackResult === 'object' && fallbackResult !== null) {
-          (fallbackResult as any)._isMockData = true;
+        if (typeof fallbackResult === 'object' && fallbackResult !== null && !Array.isArray(fallbackResult)) {
+          (fallbackResult as Record<string, unknown>)._isMockData = true;
         }
         return fallbackResult;
       }
@@ -143,8 +144,9 @@ export const apiClient = {
           API_TIMEOUT
         );
         return response.json();
-      } catch (error: any) {
-        if (error.message === 'API_TIMEOUT' || (error instanceof TypeError && error.message.includes('fetch'))) {
+      } catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : String(error);
+        if (errMsg === 'API_TIMEOUT' || (error instanceof TypeError && errMsg.includes('fetch'))) {
           const apiError = analyzeError(error);
           throw new Error(apiError.message || '사업자 인증 API 호출 실패. 네트워크 연결을 확인해주세요.');
         }
@@ -170,11 +172,11 @@ export const apiClient = {
         );
 
         if (!response.ok) {
-          let errorData: any;
+          let errorData: { error?: string; message?: string } = { message: response.statusText };
           try {
-            errorData = await response.json();
+            errorData = (await response.json()) as { error?: string; message?: string };
           } catch {
-            errorData = { message: response.statusText };
+            // keep default
           }
 
           const error = {
@@ -200,8 +202,9 @@ export const apiClient = {
           publicDataSuccess?: boolean;
           publicDataError?: string | null;
         }>;
-      } catch (error: any) {
-        if (error.message === 'API_TIMEOUT' || (error instanceof TypeError && error.message.includes('fetch'))) {
+      } catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : String(error);
+        if (errMsg === 'API_TIMEOUT' || (error instanceof TypeError && errMsg.includes('fetch'))) {
           const apiError = analyzeError(error);
           throw new Error(apiError.message || '등록원부 OCR API 호출 실패. 네트워크 연결을 확인해주세요.');
         }
@@ -246,7 +249,7 @@ export const apiClient = {
     ),
 
     uploadResult: async (inspectionId: string, data: {
-      inspection_result: any;
+      inspection_result: unknown;
       images: File[];
     }) => {
       const formData = new FormData();
@@ -266,11 +269,12 @@ export const apiClient = {
           API_TIMEOUT
         );
         return response.json();
-      } catch (error: any) {
-        if (error.message === 'API_TIMEOUT' || (error instanceof TypeError && error.message.includes('fetch'))) {
-          logMockCall(`API 타임아웃/네트워크 에러로 인한 Mock 폴백: inspectionUploadResultAPI`, error.message);
+      } catch (error: unknown) {
+        const errMsg = error instanceof Error ? error.message : String(error);
+        if (errMsg === 'API_TIMEOUT' || (error instanceof TypeError && errMsg.includes('fetch'))) {
+          logMockCall(`API 타임아웃/네트워크 에러로 인한 Mock 폴백: inspectionUploadResultAPI`, errMsg);
           const fallbackResult = mockResponses.uploadInspectionResult(inspectionId);
-          (fallbackResult as any)._isMockData = true;
+          (fallbackResult as Record<string, unknown>)._isMockData = true;
           return fallbackResult;
         }
         throw error;
@@ -279,8 +283,8 @@ export const apiClient = {
 
     getResult: (inspectionId: string) => apiCall<{
       success: boolean;
-      result: any;
-      inspection: any;
+      result: unknown;
+      inspection: unknown;
     }>(
       API_ENDPOINTS.INSPECTION.GET_RESULT,
       { method: 'GET' },

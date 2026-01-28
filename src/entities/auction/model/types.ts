@@ -9,6 +9,7 @@ export type AuctionStatus = 'Active' | 'Ended' | 'Sold';
 
 export interface Auction {
   id: string;
+  platform_id?: string;
   vehicleId: string;
   startPrice: number;
   buyNowPrice?: number;

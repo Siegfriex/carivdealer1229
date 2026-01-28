@@ -4,9 +4,11 @@
  */
 
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StepProgress } from '@/shared/ui/StepProgress';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
+import { PageLayout } from '@/shared/ui/PageLayout';
 import { Plus, Image as ImageIcon } from 'lucide-react';
 
 const SIGNUP_STEPS = [
@@ -98,6 +100,7 @@ function FileUploadZone({
 }
 
 export const SignupStep3Page = () => {
+  const navigate = useNavigate();
   // 필수정보
   const [dealershipRegCert, setDealershipRegCert] = useState<File | null>(null);
   const [dealershipName, setDealershipName] = useState('');
@@ -115,8 +118,7 @@ export const SignupStep3Page = () => {
   const regImageRef = useRef<HTMLInputElement>(null);
 
   const handlePrev = () => {
-    window.history.pushState({}, '', '/signup/step2');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup/step2');
   };
 
   const handleNext = () => {
@@ -143,8 +145,7 @@ export const SignupStep3Page = () => {
       return;
     }
 
-    window.history.pushState({}, '', '/signup/step4');
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    navigate('/signup/step4');
   };
 
   const clearFile = (
@@ -157,7 +158,7 @@ export const SignupStep3Page = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container max-w-3xl mx-auto px-6 py-10">
+      <PageLayout maxContentWidth="3xl">
         <h1 className="text-h1 font-bold text-gray-900 text-center mb-8">회원가입</h1>
         <StepProgress steps={SIGNUP_STEPS} className="mb-12" />
 
@@ -263,7 +264,7 @@ export const SignupStep3Page = () => {
             <Button onClick={handleNext}>다음</Button>
           </div>
         </div>
-      </div>
+      </PageLayout>
     </div>
   );
 };

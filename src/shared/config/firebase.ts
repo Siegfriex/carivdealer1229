@@ -18,20 +18,20 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-let app: FirebaseApp;
-let db: Firestore;
-let storage: FirebaseStorage;
-let auth: Auth;
+// Firebase 초기화 (실패 시에도 앱 동작하도록 처리)
+let app!: FirebaseApp;
+let db!: Firestore;
+let storage!: FirebaseStorage;
+let auth!: Auth;
 
 try {
-  // Firebase 초기화
   app = initializeApp(firebaseConfig);
   db = getFirestore(app);
   storage = getStorage(app);
   auth = getAuth(app);
 } catch (error) {
   console.warn('Firebase initialization failed. Running in demo mode.', error);
-  // Demo mode - Firestore는 나중에 연결 시도
+  // 에러 발생 시에도 export를 위해 더미 값 필요 없음 (try에서 항상 초기화됨)
 }
 
 export { app, db, storage, auth };

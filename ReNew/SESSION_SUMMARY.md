@@ -22,7 +22,13 @@
 | 4 | [1194-7664](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-7664&m=dev) | 로그인 후 메인 랜딩 (전체 차량) | `pages/admin/DashboardPage.tsx`, `widgets/MainLandingSidebar/ui/MainLandingSidebar.tsx`, `entities/vehicle/ui/VehicleCard.tsx` | ✅ 완료 |
 | 5 | [1194-6171](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-6171&m=dev) | 회원가입 1단계 첫페이지 | `pages/auth/SignupEntryPage.tsx`, `shared/ui/LoginModal.tsx` | ✅ 완료 |
 | 6 | [1194-5792](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-5792&m=dev) | 회원가입 Step 1 - 본인인증 | `pages/auth/SignupStep1Page.tsx` | ✅ 완료 |
-| 7 | [1198-6370](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1198-6370&m=dev) | 매물목록뷰 | `pages/admin/VehicleListPage.tsx` | ✅ 완료 |
+| 7 | [1194-5866](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-5866&m=dev) | 회원가입 Step 2 - 사업자 정보 입력 | `pages/auth/SignupStep2Page.tsx` | ✅ 완료 |
+| 8 | [1194-5921](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-5921&m=dev) | 회원가입 Step 3 - 중고차 매매업 인증 | `pages/auth/SignupStep3Page.tsx` | ✅ 완료 |
+| 9 | [1194-6002](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-6002&m=dev) | 회원가입 Step 4 - 정산 정보 입력 | `pages/auth/SignupStep4Page.tsx` | ✅ 완료 |
+| 10 | [1194-6072](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-6072&m=dev) | 회원가입 Step 5 - 약관 동의 | `pages/auth/SignupStep5Page.tsx` | ✅ 완료 |
+| 11 | [1194-6063](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-6063&m=dev) | 회원가입 Step 6 - 승인 대기 | `pages/auth/SignupPendingPage.tsx` | ✅ 완료 |
+| 12 | [1194-6054](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-6054&m=dev) | 회원가입 승인 완료 | `pages/auth/SignupCompletePage.tsx` | ✅ 완료 |
+| 13 | [1198-6370](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1198-6370&m=dev) | 매물목록뷰 | `pages/admin/VehicleListPage.tsx` | ✅ 완료 |
 | 8 | [1198-6939](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1198-6939&m=dev) | 그리드뷰 | `VehicleListPage` (viewMode='grid') | ✅ 완료 |
 | 9 | [1198-6578](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1198-6578&m=dev) | 리스트뷰 | `VehicleListPage` (viewMode='list') | ✅ 완료 |
 | 10 | [1198-6791](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1198-6791&m=dev) | 임시저장됨 필터 | `VehicleListPage` (filterTab='draft') | ✅ 완료 |
@@ -59,6 +65,12 @@
 | `admin/DashboardPage.tsx` | 로그인 후 메인 랜딩 (전체 차량 그리드) | 1194-7664 | ✅ pages → widgets, entities, shared만 참조 |
 | `auth/SignupEntryPage.tsx` | 회원가입 진입 (3카드, 딜러로 시작하기) | 1194-6171 | ✅ pages → shared만 참조 |
 | `auth/SignupStep1Page.tsx` | 회원가입 Step 1 본인인증 (기본정보, 본인인증, 신분증) | 1194-5792 | ✅ pages → shared만 참조 |
+| `auth/SignupStep2Page.tsx` | 회원가입 Step 2 사업자 정보 입력 | 1194-5866 | ✅ pages → shared만 참조 |
+| `auth/SignupStep3Page.tsx` | 회원가입 Step 3 중고차 매매업 인증 | 1194-5921 | ✅ pages → shared만 참조 |
+| `auth/SignupStep4Page.tsx` | 회원가입 Step 4 정산 정보 입력 | 1194-6002 | ✅ pages → shared만 참조 |
+| `auth/SignupStep5Page.tsx` | 회원가입 Step 5 약관 동의 | 1194-6072 | ✅ pages → shared만 참조 |
+| `auth/SignupPendingPage.tsx` | 회원가입 Step 6 승인 대기 | 1194-6063 | ✅ pages → shared만 참조 |
+| `auth/SignupCompletePage.tsx` | 회원가입 승인 완료 | 1194-6054 | ✅ pages → shared만 참조 |
 
 ### 4. 엔티티 (`src/entities/`)
 
@@ -160,33 +172,23 @@
 
 ---
 
-## 🎯 다음 작업 가이드 (Figma 1194-5866)
+## 🎯 다음 작업 가이드
 
-### 1. Figma 디자인 확인
+### 회원가입 플로우 완료
 
-```bash
-# Figma MCP 사용
-mcp_Figma_Desktop_get_design_context(nodeId="1194:5866", ...)
-mcp_Figma_Desktop_get_screenshot(nodeId="1194:5866", ...)
-```
+회원가입 플로우 전체 (Entry → Step 1~5 → Pending → Complete) 구현 완료:
+- E2E 테스트 업데이트 완료
+- Figma 디자인 확인 및 세부 조정 완료
+- 빌드 및 린트 검증 통과
 
-### 2. FSD 규칙 준수 체크리스트
+### FSD 규칙 준수 체크리스트
 
 - ✅ **레이어 의존성**: 하위 레이어는 상위 레이어 참조 불가
 - ✅ **레거시 폴더 금지**: `@/components`, `@/config`, `@/services`, `@/utils` 사용 금지
 - ✅ **세그먼트 경로**: `ui/`, `model/`, `api/` 내부 구조 준수
 - ✅ **1440px 기준**: 모든 가로는 1440px 기준
 
-### 3. 구현 순서
-
-1. **Figma 디자인 확인** (MCP 또는 스크린샷)
-2. **기존 코드 확인** (관련 페이지/컴포넌트 읽기)
-3. **FSD 규칙 점검** (import 경로 확인)
-4. **구현** (FSD 구조 준수)
-5. **검증** (`npm run build`, `read_lints`)
-6. **ReNew 문서 업데이트**
-
-### 4. 공통 컴포넌트 활용
+### 공통 컴포넌트 활용
 
 이번 세션에서 추가된 컴포넌트:
 - `SegmentedControl` – 옵션 선택 세그먼트
@@ -195,6 +197,9 @@ mcp_Figma_Desktop_get_screenshot(nodeId="1194:5866", ...)
 - `DateRangePicker` – 기간 선택
 - `Typography` – 타이포그래피
 - `LoginModal` – 로그인 모달
+- `StepProgress` – 가로형 스텝 진행 표시
+- `Checkbox` – 체크박스
+- `Input`, `Button`, `Select` – 기본 폼 컴포넌트
 
 **사용 예시**: [IMPLEMENTATION_LOG.md](./IMPLEMENTATION_LOG.md) 참고
 
@@ -234,7 +239,50 @@ grep -r "from '@/components" src/
 grep -r "from '@/config" src/
 grep -r "from '@/services" src/
 grep -r "from '@/utils" src/
+
+# E2E 테스트 실행
+npx playwright test tests/e2e/02-signup-flow.spec.ts
 ```
+
+---
+
+## 🧪 E2E 테스트 및 디자인 조정 (최신 세션)
+
+### E2E 테스트 업데이트
+
+**파일**: `tests/e2e/02-signup-flow.spec.ts`
+
+**업데이트 내용**:
+- 새 회원가입 플로우에 맞춘 테스트 작성 (Step 1~5, pending, complete)
+- 각 단계별 필수 필드 입력 및 검증 메시지 확인
+- 파일 업로드 (드래그 앤 드롭, 클릭) 테스트
+- "이전"/"다음" 버튼 동작 테스트
+- StepProgress 현재 단계 확인
+- 각 단계별 스크린샷 저장
+
+**테스트 시나리오**:
+1. `/signup` → SignupEntryPage (3카드, "딜러로 시작하기")
+2. `/signup/step1` → SignupStep1Page (기본정보, 본인인증, 신분증 등록)
+3. `/signup/step2` → SignupStep2Page (사업자 정보 입력)
+4. `/signup/step3` → SignupStep3Page (중고차 매매업 인증)
+5. `/signup/step4` → SignupStep4Page (정산 정보 입력)
+6. `/signup/step5` → SignupStep5Page (약관 동의)
+7. `/signup/pending` → SignupPendingPage (승인 대기)
+8. `/signup/complete` → SignupCompletePage (승인 완료)
+
+### 디자인 조정 내역
+
+**Figma Dev 확인**: 6개 노드 (1194-5866, 1194-5921, 1194-6002, 1194-6072, 1194-6063, 1194-6054) 스크린샷 및 디자인 컨텍스트 확인 완료
+
+**조정 사항**:
+1. **StepProgress 라벨 통일**: SignupStep1Page의 라벨을 "① 본인인증" 형식으로 통일 (다른 페이지와 일치)
+2. **Toast 사용**: SignupStep5Page에서 `alert()` 대신 `useToast()` 사용
+3. **레이아웃/타이포/컴포넌트**: Figma 디자인과 비교 결과, 현재 구현이 Figma 기준을 잘 준수하고 있음을 확인
+
+**검증 결과**:
+- `npm run build`: ✅ 성공
+- `read_lints`: ✅ 에러 없음
+- FSD 규칙: ✅ 준수 (auth 페이지 모두 `@/shared/ui/*`만 사용)
 
 ---
 

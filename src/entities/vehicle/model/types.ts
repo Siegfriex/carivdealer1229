@@ -61,6 +61,7 @@ export interface PublicDataMetadata {
  */
 export interface Vehicle {
   id: string;
+  platform_id?: string;
   status: VehicleStatus;
   plateNumber: string;
   vin?: string;

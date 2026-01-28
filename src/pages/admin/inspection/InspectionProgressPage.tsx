@@ -1,15 +1,17 @@
 /**
  * InspectionProgressPage Component
- * 검차 진행 내역 (Figma 1202-7440, 1202-7752, 1202-7902)
+ * 검차 진행 상황 (Figma 1202-7440, 1202-7752, 1202-7902)
  * 5: 검차자 매칭중 | 5-1: 검차자 이동중 | 5-2: 검차완료
- * stage 쿼리: matching | en_route | complete. DEV:SKIP/스킵으로 5-1, 5-2 이동
+ * DEV:SKIP/스킵: 좌하단 고정, 단계별 필수 스킵
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { Card } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
+import { DevSkipButton } from '@/shared/ui/DevSkipButton';
 import { User, Calendar as CalendarIcon, MapPin, CheckCircle2 } from 'lucide-react';
 
 type ProgressStage = 'matching' | 'en_route' | 'complete';
@@ -21,31 +23,28 @@ const STAGE_LABELS: Record<ProgressStage, string> = {
 };
 
 function useProgressStage(): { inspectionId: string; stage: ProgressStage } {
-  const [inspectionId, setInspectionId] = useState('');
-  const [stage, setStage] = useState<ProgressStage>('matching');
-
-  useEffect(() => {
-    const pathname = window.location.pathname;
-    const params = new URLSearchParams(window.location.search);
-    const stageParam = params.get('stage') as ProgressStage | null;
-    const id = pathname.replace('/inspections/', '').replace('/progress', '') || '';
-    setInspectionId(id);
-    if (stageParam && ['matching', 'en_route', 'complete'].includes(stageParam)) {
-      setStage(stageParam);
-    }
-  }, []);
+  const { inspectionId: paramId } = useParams<{ inspectionId: string }>();
+  const [searchParams] = useSearchParams();
+  const inspectionId = paramId ?? '';
+  const stageParam = searchParams.get('stage') as ProgressStage | null;
+  const stage: ProgressStage =
+    stageParam && ['matching', 'en_route', 'complete'].includes(stageParam) ? stageParam : 'matching';
 
   return { inspectionId, stage };
 }
 
-function setStageInUrl(stage: ProgressStage) {
-  const pathname = window.location.pathname;
-  window.history.replaceState({}, '', `${pathname}?stage=${stage}`);
-  window.dispatchEvent(new PopStateEvent('popstate'));
+function useSetStageInUrl() {
+  const navigate = useNavigate();
+  const { inspectionId: inspectionIdParam } = useParams<{ inspectionId: string }>();
+  return (stage: ProgressStage) => {
+    navigate(`/inspections/${inspectionIdParam}/progress?stage=${stage}`, { replace: true });
+  };
 }
 
 export const InspectionProgressPage = () => {
-  const { inspectionId, stage } = useProgressStage();
+  const navigate = useNavigate();
+  const setStageInUrl = useSetStageInUrl();
+  const { stage } = useProgressStage();
   const [localStage, setLocalStage] = useState<ProgressStage>(stage);
 
   useEffect(() => {
@@ -69,22 +68,24 @@ export const InspectionProgressPage = () => {
   };
 
   const handleGoToHistory = () => {
-    window.location.href = '/inspections/history';
+    navigate('/inspections/history');
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
-      <div className="flex">
-        {/* 좌측 ProgressSidebar */}
-        <ProgressSidebar steps={progressSteps} />
+      <div className="flex max-w-[1440px] mx-auto">
+        {/* 좌측 ProgressSidebar (inline) */}
+        <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)]">
+          <ProgressSidebar steps={progressSteps} inline />
+        </aside>
 
-        <main className="flex-1 p-8 ml-64">
+        <main className="flex-1 p-8">
           {/* 5: 검차자 매칭중 */}
           {localStage === 'matching' && (
             <>
-              <h1 className="text-h1 font-bold text-gray-900 mb-2">검차 진행내역</h1>
+              <h1 className="text-h1 font-bold text-gray-900 mb-2">검차 진행상황</h1>
               <p className="text-body text-gray-600 mb-8">{STAGE_LABELS.matching}</p>
 
               <div className="max-w-2xl">
@@ -102,11 +103,8 @@ export const InspectionProgressPage = () => {
                 </Card>
 
                 <div className="flex items-center gap-4">
-                  <Button variant="secondary" onClick={() => (window.location.href = '/inspections')}>
+                  <Button variant="secondary" onClick={() => navigate('/inspections')}>
                     목록으로
-                  </Button>
-                  <Button variant="secondary" onClick={handleDevSkipToEnRoute}>
-                    DEV:SKIP (검차자 이동중으로)
                   </Button>
                 </div>
               </div>
@@ -116,7 +114,7 @@ export const InspectionProgressPage = () => {
           {/* 5-1: 검차자 이동중 */}
           {localStage === 'en_route' && (
             <>
-              <h1 className="text-h1 font-bold text-gray-900 mb-2">검차 진행내역</h1>
+              <h1 className="text-h1 font-bold text-gray-900 mb-2">검차 진행상황</h1>
               <p className="text-body text-gray-600 mb-8">{STAGE_LABELS.en_route}</p>
 
               <div className="max-w-2xl">
@@ -163,11 +161,8 @@ export const InspectionProgressPage = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <Button variant="secondary" onClick={() => (window.location.href = '/inspections')}>
+                  <Button variant="secondary" onClick={() => navigate('/inspections')}>
                     목록으로
-                  </Button>
-                  <Button variant="secondary" onClick={handleSkipToComplete}>
-                    스킵 (검차완료로)
                   </Button>
                 </div>
               </div>
@@ -177,7 +172,7 @@ export const InspectionProgressPage = () => {
           {/* 5-2: 검차완료 */}
           {localStage === 'complete' && (
             <>
-              <h1 className="text-h1 font-bold text-gray-900 mb-2">검차 진행내역</h1>
+              <h1 className="text-h1 font-bold text-gray-900 mb-2">검차 진행상황</h1>
               <p className="text-body text-gray-600 mb-8">{STAGE_LABELS.complete}</p>
 
               <div className="max-w-2xl">
@@ -211,7 +206,7 @@ export const InspectionProgressPage = () => {
                 </Card>
 
                 <div className="flex items-center gap-4">
-                  <Button variant="secondary" onClick={() => (window.location.href = '/inspections')}>
+                  <Button variant="secondary" onClick={() => navigate('/inspections')}>
                     목록으로
                   </Button>
                   <Button onClick={handleGoToHistory}>검차내역 보기</Button>
@@ -221,6 +216,22 @@ export const InspectionProgressPage = () => {
           )}
         </main>
       </div>
+
+      {/* 좌하단 고정: 필수 단계 스킵 (DEV/E2E) */}
+      {localStage === 'matching' && (
+        <DevSkipButton
+          label="DEV:SKIP"
+          subLabel="검차자 이동중으로"
+          onClick={handleDevSkipToEnRoute}
+        />
+      )}
+      {localStage === 'en_route' && (
+        <DevSkipButton
+          label="스킵"
+          subLabel="검차완료로"
+          onClick={handleSkipToComplete}
+        />
+      )}
     </div>
   );
 };

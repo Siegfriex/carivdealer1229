@@ -25,6 +25,10 @@ const pages = [
   { path: '/inspections/insp-001/progress', name: '16-inspection-progress' },
   { path: '/inspections/insp-001/complete', name: '17-inspection-complete' },
   { path: '/vehicles/v-001/complete', name: '18-vehicle-complete' },
+  // 검차 플로우 (SSOT·정합성 측정용)
+  { path: '/inspections', name: '30-inspection-list' },
+  { path: '/inspections/request', name: '31-inspection-request-landing' },
+  { path: '/inspections/history', name: '32-inspection-history' },
 ];
 
 test.describe('전체 화면 스크린샷', () => {

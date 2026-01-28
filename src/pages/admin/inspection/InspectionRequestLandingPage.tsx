@@ -6,26 +6,28 @@
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Button } from '@/shared/ui/Button';
 import { Search } from 'lucide-react';
 
 export const InspectionRequestLandingPage = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleStartRequest = () => {
-    window.location.href = '/inspections/request/step1';
+    navigate('/inspections/request/step1');
   };
 
   const handleSaveDraft = () => {
-    window.location.href = '/inspections';
+    navigate('/inspections');
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
-      <div className="flex">
+      <div className="flex max-w-[1440px] mx-auto">
         {/* 좌측 사이드바: 검색 + 단계 */}
         <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)]">
           <div className="p-4 space-y-6">

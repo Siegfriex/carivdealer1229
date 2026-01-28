@@ -22,7 +22,7 @@ export const useBid = () => {
 
   return useMutation({
     mutationFn: async (input: BidInput): Promise<BidResponse> => {
-      return await apiClient.post<BidResponse>(API_ENDPOINTS.BID, input);
+      return await apiClient.post<BidResponse>(API_ENDPOINTS.AUCTION.BID, input);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auctions'] });

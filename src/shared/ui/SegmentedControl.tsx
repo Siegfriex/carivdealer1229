@@ -3,7 +3,6 @@
  * 옵션 선택 세그먼트 (Figma 컴포넌트 정리 - 옵션1/옵션2/옵션3 + 건수)
  */
 
-import type { ReactNode } from 'react';
 
 export interface SegmentedControlOption<T extends string = string> {
   value: T;

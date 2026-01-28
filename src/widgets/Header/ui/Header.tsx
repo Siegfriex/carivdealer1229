@@ -9,6 +9,7 @@
 
 import { User, Menu } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Z_INDEX } from '@/shared/config/zIndex';
 
 interface HeaderProps {
@@ -41,18 +42,18 @@ export const Header = ({ userName = '딜러명', onMenuClick, onLogout }: Header
 
         {/* 중앙: 네비게이션 메뉴 */}
         <nav className="hidden md:flex items-center gap-8">
-          <a href="/dashboard" className="text-body font-medium text-gray-700 hover:text-primary transition-fast">
+          <Link to="/dashboard" className="text-body font-medium text-gray-700 hover:text-primary transition-fast">
             대시보드
-          </a>
-          <a href="/vehicles" className="text-body font-medium text-gray-700 hover:text-primary transition-fast">
+          </Link>
+          <Link to="/vehicles" className="text-body font-medium text-gray-700 hover:text-primary transition-fast">
             차량 관리
-          </a>
-          <a href="/logistics/schedule" className="text-body font-medium text-gray-700 hover:text-primary transition-fast">
+          </Link>
+          <Link to="/logistics/schedule" className="text-body font-medium text-gray-700 hover:text-primary transition-fast">
             탁송 관리
-          </a>
-          <a href="/settlements" className="text-body font-medium text-gray-700 hover:text-primary transition-fast">
+          </Link>
+          <Link to="/settlements" className="text-body font-medium text-gray-700 hover:text-primary transition-fast">
             정산 관리
-          </a>
+          </Link>
         </nav>
 
         {/* 우측: 사용자 정보 */}

@@ -5,33 +5,72 @@
  * 목록 행 클릭/벡터 아이콘으로 확장(4-1), 상태별로 5/5-1/5-2/6 이동
  */
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { InspectionStatusBadge } from '@/entities/inspection/ui/InspectionStatusBadge';
 import { Button } from '@/shared/ui/Button';
+import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { Search, ChevronDown, ChevronUp } from 'lucide-react';
 import type { InspectionStatus } from '@/entities/inspection/model/types';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
 
 const STATUS_LABELS: Record<InspectionStatus, string> = {
   pending: '검차자 매칭중',
-  assigned: '검차자 이동중',
+  assigned: '검차자 매칭완료',
   in_progress: '검차 진행중',
   completed: '검차 완료',
 };
 
+type StatusFilter = 'all' | 'pending' | 'assigned' | 'in_progress' | 'completed';
+
 export const InspectionListPage = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
 
-  const inspections = MOCK_INSPECTIONS.filter((insp) => {
-    if (!searchTerm.trim()) return true;
-    const q = searchTerm.toLowerCase();
-    return (
-      (insp.vehiclePlateNumber && insp.vehiclePlateNumber.toLowerCase().includes(q)) ||
-      (insp.vehicleModelName && insp.vehicleModelName.toLowerCase().includes(q))
-    );
-  });
+  // 상태별 건수 계산
+  const statusCounts = useMemo(() => {
+    const counts = {
+      all: MOCK_INSPECTIONS.length,
+      pending: MOCK_INSPECTIONS.filter((i) => i.status === 'pending').length,
+      assigned: MOCK_INSPECTIONS.filter((i) => i.status === 'assigned').length,
+      in_progress: MOCK_INSPECTIONS.filter((i) => i.status === 'in_progress').length,
+      completed: MOCK_INSPECTIONS.filter((i) => i.status === 'completed').length,
+    };
+    return counts;
+  }, []);
+
+  // 필터 옵션
+  const filterOptions: SegmentedControlOption<StatusFilter>[] = [
+    { value: 'all', label: '전체', count: statusCounts.all },
+    { value: 'pending', label: '검차자 매칭중', count: statusCounts.pending },
+    { value: 'assigned', label: '검차자 매칭완료', count: statusCounts.assigned },
+    { value: 'in_progress', label: '검차 진행중', count: statusCounts.in_progress },
+    { value: 'completed', label: '검차 완료', count: statusCounts.completed },
+  ];
+
+  const inspections = useMemo(() => {
+    let filtered = MOCK_INSPECTIONS;
+
+    // 상태 필터
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter((insp) => insp.status === statusFilter);
+    }
+
+    // 검색 필터
+    if (searchTerm.trim()) {
+      const q = searchTerm.toLowerCase();
+      filtered = filtered.filter(
+        (insp) =>
+          (insp.vehiclePlateNumber && insp.vehiclePlateNumber.toLowerCase().includes(q)) ||
+          (insp.vehicleModelName && insp.vehicleModelName.toLowerCase().includes(q))
+      );
+    }
+
+    return filtered;
+  }, [searchTerm, statusFilter]);
 
   const toggleExpand = (id: string) => {
     setExpandedIds((prev) => {
@@ -43,11 +82,11 @@ export const InspectionListPage = () => {
   };
 
   const goToProgress = (insp: InspectionWithVehicle, stage: 'matching' | 'en_route' | 'complete') => {
-    window.location.href = `/inspections/${insp.id}/progress?stage=${stage}`;
+    navigate(`/inspections/${insp.id}/progress?stage=${stage}`);
   };
 
   const goToHistory = () => {
-    window.location.href = '/inspections/history';
+    navigate('/inspections/history');
   };
 
   const handleRowClick = (insp: InspectionWithVehicle) => {
@@ -64,7 +103,7 @@ export const InspectionListPage = () => {
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
-      <div className="flex">
+      <div className="flex max-w-[1440px] mx-auto">
         {/* 좌측 사이드바 */}
         <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)]">
           <div className="p-4 space-y-6">
@@ -108,9 +147,18 @@ export const InspectionListPage = () => {
         <main className="flex-1 p-8">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-h1 font-bold text-gray-900">검차 신청 목록</h1>
-            <Button size="md" onClick={() => (window.location.href = '/inspections/request')}>
+            <Button size="md" onClick={() => (navigate('/inspections/request'))}>
               검차 신청하기
             </Button>
+          </div>
+
+          {/* 상태 필터 탭 */}
+          <div className="mb-6">
+            <SegmentedControl
+              options={filterOptions}
+              value={statusFilter}
+              onChange={(value) => setStatusFilter(value as StatusFilter)}
+            />
           </div>
 
           {/* 리스트 컨테이너 */}
@@ -209,7 +257,7 @@ export const InspectionListPage = () => {
           {inspections.length === 0 && (
             <div className="text-center py-12 bg-white rounded-lg shadow-md">
               <p className="text-body text-gray-600">검차 신청 목록이 없습니다.</p>
-              <Button className="mt-4" onClick={() => (window.location.href = '/inspections/request')}>
+              <Button className="mt-4" onClick={() => (navigate('/inspections/request'))}>
                 검차 신청하기
               </Button>
             </div>

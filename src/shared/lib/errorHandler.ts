@@ -16,23 +16,38 @@ export enum ErrorType {
 export interface ApiError {
   type: ErrorType;
   message: string;
-  originalError?: any;
+  originalError?: unknown;
   statusCode?: number;
+}
+
+function hasMessage(e: unknown): e is { message: string } {
+  return typeof e === 'object' && e !== null && 'message' in e && typeof (e as { message: unknown }).message === 'string';
+}
+function hasCode(e: unknown): e is { code: string } {
+  return typeof e === 'object' && e !== null && 'code' in e && typeof (e as { code: unknown }).code === 'string';
+}
+function hasName(e: unknown): e is { name: string } {
+  return typeof e === 'object' && e !== null && 'name' in e && typeof (e as { name: unknown }).name === 'string';
+}
+function hasStatus(e: unknown): e is { statusCode?: number; status?: number; message?: string } {
+  return typeof e === 'object' && e !== null && (('statusCode' in e) || ('status' in e));
 }
 
 /**
  * 에러를 분석하여 타입을 결정합니다.
  */
-export const analyzeError = (error: any): ApiError => {
+export const analyzeError = (error: unknown): ApiError => {
   // 네트워크 에러 감지
   if (
-    error?.message?.includes('Failed to fetch') ||
-    error?.message?.includes('NetworkError') ||
-    error?.message?.includes('Network request failed') ||
-    error?.message?.includes('ERR_CONNECTION_REFUSED') ||
-    error?.message?.includes('ECONNREFUSED') ||
-    error?.code === 'ECONNREFUSED' ||
-    error?.name === 'NetworkError'
+    (hasMessage(error) && (
+      error.message.includes('Failed to fetch') ||
+      error.message.includes('NetworkError') ||
+      error.message.includes('Network request failed') ||
+      error.message.includes('ERR_CONNECTION_REFUSED') ||
+      error.message.includes('ECONNREFUSED')
+    )) ||
+    (hasCode(error) && error.code === 'ECONNREFUSED') ||
+    (hasName(error) && error.name === 'NetworkError')
   ) {
     return {
       type: ErrorType.NETWORK_ERROR,
@@ -43,9 +58,8 @@ export const analyzeError = (error: any): ApiError => {
 
   // 타임아웃 에러 감지
   if (
-    error?.message?.includes('timeout') ||
-    error?.message?.includes('Timeout') ||
-    error?.code === 'ETIMEDOUT'
+    (hasMessage(error) && (error.message.includes('timeout') || error.message.includes('Timeout'))) ||
+    (hasCode(error) && error.code === 'ETIMEDOUT')
   ) {
     return {
       type: ErrorType.TIMEOUT_ERROR,
@@ -55,8 +69,8 @@ export const analyzeError = (error: any): ApiError => {
   }
 
   // HTTP 상태 코드 기반 에러 처리
-  if (error?.statusCode || error?.status) {
-    const statusCode = error.statusCode || error.status;
+  if (hasStatus(error)) {
+    const statusCode = error.statusCode ?? error.status ?? 0;
 
     if (statusCode >= 400 && statusCode < 500) {
       // 클라이언트 에러 (4xx)
@@ -72,7 +86,7 @@ export const analyzeError = (error: any): ApiError => {
       if (statusCode === 400) {
         return {
           type: ErrorType.VALIDATION_ERROR,
-          message: error.message || '입력 정보를 확인해주세요.',
+          message: (hasMessage(error) ? error.message : null) || '입력 정보를 확인해주세요.',
           originalError: error,
           statusCode,
         };
@@ -89,7 +103,7 @@ export const analyzeError = (error: any): ApiError => {
 
       return {
         type: ErrorType.VALIDATION_ERROR,
-        message: error.message || '요청을 처리할 수 없습니다.',
+        message: (hasMessage(error) ? error.message : null) || '요청을 처리할 수 없습니다.',
         originalError: error,
         statusCode,
       };
@@ -109,7 +123,7 @@ export const analyzeError = (error: any): ApiError => {
   // 알 수 없는 에러
   return {
     type: ErrorType.UNKNOWN_ERROR,
-    message: error?.message || '알 수 없는 오류가 발생했습니다.',
+    message: (hasMessage(error) ? error.message : null) || '알 수 없는 오류가 발생했습니다.',
     originalError: error,
   };
 };
@@ -137,7 +151,7 @@ export const logError = (error: ApiError, context?: string) => {
 /**
  * 에러 처리 헬퍼 함수
  */
-export const handleError = (error: any, context?: string): string => {
+export const handleError = (error: unknown, context?: string): string => {
   const apiError = analyzeError(error);
   logError(apiError, context);
   return getUserFriendlyMessage(apiError);
@@ -162,7 +176,7 @@ export const retryWithBackoff = async <T>(
   maxRetries: number = 3,
   initialDelay: number = 1000
 ): Promise<T> => {
-  let lastError: any;
+  let lastError: unknown;
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {

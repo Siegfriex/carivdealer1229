@@ -6,7 +6,7 @@ import type { InspectionStatus } from './types';
 
 export const INSPECTION_STATUS_LABELS: Record<InspectionStatus, string> = {
   pending: '평가사 배정 대기',
-  assigned: '평가사 배정 완료',
+  assigned: '검차자 매칭완료',
   in_progress: '검차 진행 중',
   completed: '검차 완료',
 };

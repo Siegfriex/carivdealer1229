@@ -1,9 +1,9 @@
 /**
  * Application Router
- * 라우팅 설정
+ * React Router 기반 라우팅 (URL 단일 진입점, 새로고침/딥링크/뒤로가기 지원)
  */
 
-import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LandingPage } from '@/pages/landing/LandingPage';
 import { SignupEntryPage } from '@/pages/auth/SignupEntryPage';
 import { SignupStep1Page } from '@/pages/auth/SignupStep1Page';
@@ -25,7 +25,9 @@ import { InspectionProgressPage } from '@/pages/admin/inspection/InspectionProgr
 import { InspectionCompletePage } from '@/pages/admin/inspection/InspectionCompletePage';
 import { InspectionHistoryPage } from '@/pages/admin/inspection/InspectionHistoryPage';
 import { VehicleRegistrationCompletePage } from '@/pages/admin/vehicle/VehicleRegistrationCompletePage';
+import { VehicleDetailPage } from '@/pages/admin/vehicle/VehicleDetailPage';
 import { LoginPage } from '@/pages/admin/LoginPage';
+import { ForgotPasswordPage } from '@/pages/admin/ForgotPasswordPage';
 import { VehicleListPage } from '@/pages/admin/VehicleListPage';
 import { GeneralSaleOffersPage } from '@/pages/admin/GeneralSaleOffersPage';
 import { LogisticsSchedulePage } from '@/pages/admin/LogisticsSchedulePage';
@@ -33,183 +35,60 @@ import { LogisticsHistoryPage } from '@/pages/admin/LogisticsHistoryPage';
 import { SalesHistoryPage } from '@/pages/admin/SalesHistoryPage';
 import { SettlementListPage } from '@/pages/admin/SettlementListPage';
 import { SettlementDetailPage } from '@/pages/admin/SettlementDetailPage';
-
-// 간단한 라우팅 (React Router 없이, 기존 Screen 기반)
-export type Screen =
-  | 'SCR-0000'  // Landing
-  | 'SCR-0001'  // Login
-  | 'SCR-0100'  // Dashboard
-  | 'SCR-0101'  // Vehicle List
-  | 'SCR-0200'  // General Sale Offers
-  | 'SCR-0300'  // Logistics Schedule
-  | 'SCR-0301'  // Logistics History
-  | 'SCR-0400'  // Sales History
-  | 'SCR-0500'  // Settlement List
-  | 'SCR-0501'  // Settlement Detail
-  | 'SIGNUP_ENTRY'
-  | 'SIGNUP_STEP1'
-  | 'SIGNUP_STEP2'
-  | 'SIGNUP_STEP3'
-  | 'SIGNUP_STEP4'
-  | 'SIGNUP_STEP5'
-  | 'SIGNUP_PENDING'
-  | 'SIGNUP_COMPLETE'
-  | 'VEHICLE_REGISTER_ENTRY'
-  | 'VEHICLE_REGISTER_STEP1'
-  | 'VEHICLE_REGISTER_STEP2'
-  | 'INSPECTIONS_LIST'
-  | 'INSPECTION_REQUEST_STEP1'
-  | 'INSPECTION_REQUEST_STEP2'
-  | 'INSPECTION_PROGRESS'
-  | 'INSPECTION_COMPLETE'
-  | 'INSPECTION_HISTORY'
-  | 'INSPECTION_REQUEST_LANDING'
-  | 'VEHICLE_REGISTRATION_COMPLETE';
+import { GeneralSaleAnalyzingPage } from '@/pages/admin/sale/GeneralSaleAnalyzingPage';
+import { GeneralSalePricePage } from '@/pages/admin/sale/GeneralSalePricePage';
+import { GeneralSaleCompletePage } from '@/pages/admin/sale/GeneralSaleCompletePage';
+import { AuctionDetailPage } from '@/pages/admin/auction/AuctionDetailPage';
+import { AuctionStartPricePage } from '@/pages/admin/auction/AuctionStartPricePage';
+import { AuctionDurationPage } from '@/pages/admin/auction/AuctionDurationPage';
+import { AuctionCompletePage } from '@/pages/admin/auction/AuctionCompletePage';
+import { DevSkipFloatingButton } from '@/shared/ui/DevSkipFloatingButton';
 
 export const Router = () => {
-  // URL 기반 라우팅
-  const [pathname, setPathname] = useState(window.location.pathname);
-
-  // URL 변경 감지
-  useEffect(() => {
-    const handleLocationChange = () => {
-      setPathname(window.location.pathname);
-    };
-
-    window.addEventListener('popstate', handleLocationChange);
-    return () => window.removeEventListener('popstate', handleLocationChange);
-  }, []);
-
-  const handleNavigate = (screen: string) => {
-    // Screen ID를 URL로 변환하여 이동 (기존 호환성)
-    const screenToPath: Record<string, string> = {
-      'SCR-0000': '/',
-      'SCR-0001': '/login',
-      'SCR-0100': '/dashboard',
-      'SCR-0101': '/vehicles',
-      // ... 필요시 추가
-    };
-    const path = screenToPath[screen] || '/login';
-    window.history.pushState({}, '', path);
-    setPathname(path);
-  };
-
-  // URL to Screen 매핑
-  const getScreenFromPath = (): Screen => {
-    const pathToScreen: Record<string, Screen> = {
-      '/': 'SCR-0000',
-      '/login': 'SCR-0001',
-      '/signup': 'SIGNUP_ENTRY',
-      '/signup/step1': 'SIGNUP_STEP1',
-      '/signup/step2': 'SIGNUP_STEP2',
-      '/signup/step3': 'SIGNUP_STEP3',
-      '/signup/step4': 'SIGNUP_STEP4',
-      '/signup/step5': 'SIGNUP_STEP5',
-      '/signup/pending': 'SIGNUP_PENDING',
-      '/signup/complete': 'SIGNUP_COMPLETE',
-      '/dashboard': 'SCR-0100',
-      '/vehicles': 'SCR-0101',
-      '/vehicles/new': 'VEHICLE_REGISTER_ENTRY',
-      '/vehicles/new/step1': 'VEHICLE_REGISTER_STEP1',
-      '/vehicles/new/step2': 'VEHICLE_REGISTER_STEP2',
-      '/inspections': 'INSPECTIONS_LIST',
-      '/inspections/request/step1': 'INSPECTION_REQUEST_STEP1',
-      '/inspections/request/step2': 'INSPECTION_REQUEST_STEP2',
-      '/offers': 'SCR-0200',
-      '/logistics/schedule': 'SCR-0300',
-      '/logistics/history': 'SCR-0301',
-      '/sales/history': 'SCR-0400',
-      '/settlements': 'SCR-0500',
-    };
-
-    // 동적 경로 처리: /inspections/history, /inspections/request, /inspections/:id/progress
-    if (pathname === '/inspections/history') return 'INSPECTION_HISTORY';
-    if (pathname === '/inspections/request') return 'INSPECTION_REQUEST_LANDING';
-    if (pathname.startsWith('/inspections/') && pathname.endsWith('/progress')) {
-      return 'INSPECTION_PROGRESS';
-    }
-    if (pathname.startsWith('/inspections/') && pathname.endsWith('/complete')) {
-      return 'INSPECTION_COMPLETE';
-    }
-    if (pathname.startsWith('/vehicles/') && pathname.endsWith('/complete')) {
-      return 'VEHICLE_REGISTRATION_COMPLETE';
-    }
-    if (pathname.startsWith('/settlements/')) {
-      return 'SCR-0501';
-    }
-
-    return pathToScreen[pathname] || 'SCR-0001';
-  };
-
-  const currentScreen = getScreenFromPath();
-
-  // Screen to Component 매핑
-  const renderScreen = () => {
-    switch (currentScreen) {
-      case 'SCR-0000':
-        return <LandingPage />;
-      case 'SCR-0001':
-        return <LoginPage />;
-      case 'SCR-0100':
-        // Dashboard를 매물목록뷰로 리다이렉트
-        window.location.href = '/vehicles';
-        return <VehicleListPage />;
-      case 'SCR-0101':
-        return <VehicleListPage />;
-      case 'INSPECTIONS_LIST':
-        return <InspectionListPage />;
-      case 'SCR-0200':
-        return <GeneralSaleOffersPage onNavigate={handleNavigate} />;
-      case 'SCR-0300':
-        return <LogisticsSchedulePage onNavigate={handleNavigate} />;
-      case 'SCR-0301':
-        return <LogisticsHistoryPage onNavigate={handleNavigate} />;
-      case 'SCR-0400':
-        return <SalesHistoryPage onNavigate={handleNavigate} />;
-      case 'SCR-0500':
-        return <SettlementListPage onNavigate={handleNavigate} />;
-      case 'SCR-0501':
-        return <SettlementDetailPage onNavigate={handleNavigate} />;
-      case 'SIGNUP_ENTRY':
-        return <SignupEntryPage />;
-      case 'SIGNUP_STEP1':
-        return <SignupStep1Page />;
-      case 'SIGNUP_STEP2':
-        return <SignupStep2Page />;
-      case 'SIGNUP_STEP3':
-        return <SignupStep3Page />;
-      case 'SIGNUP_STEP4':
-        return <SignupStep4Page />;
-      case 'SIGNUP_STEP5':
-        return <SignupStep5Page />;
-      case 'SIGNUP_PENDING':
-        return <SignupPendingPage />;
-      case 'SIGNUP_COMPLETE':
-        return <SignupCompletePage />;
-      case 'VEHICLE_REGISTER_ENTRY':
-        return <VehicleRegisterEntryPage />;
-      case 'VEHICLE_REGISTER_STEP1':
-        return <VehicleRegisterStep1Page />;
-      case 'VEHICLE_REGISTER_STEP2':
-        return <VehicleRegisterStep2Page />;
-      case 'INSPECTION_REQUEST_STEP1':
-        return <InspectionRequestStep1Page />;
-      case 'INSPECTION_REQUEST_STEP2':
-        return <InspectionRequestStep2Page />;
-      case 'INSPECTION_PROGRESS':
-        return <InspectionProgressPage />;
-      case 'INSPECTION_COMPLETE':
-        return <InspectionCompletePage />;
-      case 'INSPECTION_HISTORY':
-        return <InspectionHistoryPage />;
-      case 'INSPECTION_REQUEST_LANDING':
-        return <InspectionRequestLandingPage />;
-      case 'VEHICLE_REGISTRATION_COMPLETE':
-        return <VehicleRegistrationCompletePage />;
-      default:
-        return <DashboardPage />;
-    }
-  };
-
-  return renderScreen();
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupEntryPage />} />
+        <Route path="/signup/step1" element={<SignupStep1Page />} />
+        <Route path="/signup/step2" element={<SignupStep2Page />} />
+        <Route path="/signup/step3" element={<SignupStep3Page />} />
+        <Route path="/signup/step4" element={<SignupStep4Page />} />
+        <Route path="/signup/step5" element={<SignupStep5Page />} />
+        <Route path="/signup/pending" element={<SignupPendingPage />} />
+        <Route path="/signup/complete" element={<SignupCompletePage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/vehicles" element={<VehicleListPage />} />
+        <Route path="/vehicles/new" element={<VehicleRegisterEntryPage />} />
+        <Route path="/vehicles/new/step1" element={<VehicleRegisterStep1Page />} />
+        <Route path="/vehicles/new/step2" element={<VehicleRegisterStep2Page />} />
+        <Route path="/vehicles/:vehicleId/complete" element={<VehicleRegistrationCompletePage />} />
+        <Route path="/vehicles/:vehicleId/sale/analyzing" element={<GeneralSaleAnalyzingPage />} />
+        <Route path="/vehicles/:vehicleId/sale/price" element={<GeneralSalePricePage />} />
+        <Route path="/vehicles/:vehicleId/sale/complete" element={<GeneralSaleCompletePage />} />
+        <Route path="/vehicles/:vehicleId/auction" element={<AuctionDetailPage />} />
+        <Route path="/vehicles/:vehicleId/auction/start-price" element={<AuctionStartPricePage />} />
+        <Route path="/vehicles/:vehicleId/auction/duration" element={<AuctionDurationPage />} />
+        <Route path="/vehicles/:vehicleId/auction/complete" element={<AuctionCompletePage />} />
+        <Route path="/vehicles/:vehicleId" element={<VehicleDetailPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/inspections" element={<InspectionListPage />} />
+        <Route path="/inspections/request" element={<InspectionRequestLandingPage />} />
+        <Route path="/inspections/request/step1" element={<InspectionRequestStep1Page />} />
+        <Route path="/inspections/request/step2" element={<InspectionRequestStep2Page />} />
+        <Route path="/inspections/history" element={<InspectionHistoryPage />} />
+        <Route path="/inspections/:inspectionId/progress" element={<InspectionProgressPage />} />
+        <Route path="/inspections/:inspectionId/complete" element={<InspectionCompletePage />} />
+        <Route path="/offers" element={<GeneralSaleOffersPage />} />
+        <Route path="/logistics/schedule" element={<LogisticsSchedulePage />} />
+        <Route path="/logistics/history" element={<LogisticsHistoryPage />} />
+        <Route path="/sales/history" element={<SalesHistoryPage />} />
+        <Route path="/settlements" element={<SettlementListPage />} />
+        <Route path="/settlements/:settlementId" element={<SettlementDetailPage />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+      {import.meta.env.DEV && <DevSkipFloatingButton />}
+    </BrowserRouter>
+  );
 };

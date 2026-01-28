@@ -28,7 +28,7 @@ describe('VehicleCard Component', () => {
     
     expect(screen.getByText('Carnival KA4')).toBeInTheDocument();
     expect(screen.getByText('Kia')).toBeInTheDocument();
-    expect(screen.getByText('2022년식')).toBeInTheDocument();
+    expect(screen.getByText(/2022년형/)).toBeInTheDocument();
     expect(screen.getByText('50,000km')).toBeInTheDocument();
   });
 

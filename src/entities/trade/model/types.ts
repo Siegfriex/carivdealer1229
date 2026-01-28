@@ -9,6 +9,7 @@ export type TradeStatus = 'pending' | 'accepted' | 'rejected' | 'completed';
 
 export interface Trade {
   id: string;
+  platform_id?: string;
   vehicleId: string;
   buyerId?: string;
   sellerId?: string;

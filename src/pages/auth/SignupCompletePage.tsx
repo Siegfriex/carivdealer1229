@@ -3,8 +3,10 @@
  * Figma 1194-6054: 회원가입 승인 완료
  */
 
+import { useNavigate } from 'react-router-dom';
 import { StepProgress } from '@/shared/ui/StepProgress';
 import { Button } from '@/shared/ui/Button';
+import { PageLayout } from '@/shared/ui/PageLayout';
 import { CheckCircle2 } from 'lucide-react';
 
 const SIGNUP_STEPS = [
@@ -17,13 +19,14 @@ const SIGNUP_STEPS = [
 ];
 
 export const SignupCompletePage = () => {
+  const navigate = useNavigate();
   // TODO: 실제 사용자 정보로 대체
   const userName = '홍길동';
   const userId = 'user123';
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container max-w-3xl mx-auto px-6 py-10">
+      <PageLayout maxContentWidth="3xl">
         <h1 className="text-h1 font-bold text-gray-900 text-center mb-8">회원가입</h1>
         <StepProgress steps={SIGNUP_STEPS} className="mb-12" />
 
@@ -42,11 +45,11 @@ export const SignupCompletePage = () => {
           </p>
 
           {/* 버튼 */}
-          <Button size="lg" onClick={() => (window.location.href = '/dashboard')}>
+          <Button size="lg" onClick={() => navigate('/dashboard')}>
             매물 등록하러 가기
           </Button>
         </div>
-      </div>
+      </PageLayout>
     </div>
   );
 };
