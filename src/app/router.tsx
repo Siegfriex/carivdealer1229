@@ -23,6 +23,7 @@ import { InspectionRequestStep1Page } from '@/pages/admin/inspection/InspectionR
 import { InspectionRequestStep2Page } from '@/pages/admin/inspection/InspectionRequestStep2Page';
 import { InspectionProgressPage } from '@/pages/admin/inspection/InspectionProgressPage';
 import { InspectionCompletePage } from '@/pages/admin/inspection/InspectionCompletePage';
+import { InspectionHistoryPage } from '@/pages/admin/inspection/InspectionHistoryPage';
 import { VehicleRegistrationCompletePage } from '@/pages/admin/vehicle/VehicleRegistrationCompletePage';
 import { LoginPage } from '@/pages/admin/LoginPage';
 import { VehicleListPage } from '@/pages/admin/VehicleListPage';
@@ -200,7 +201,7 @@ export const Router = () => {
       case 'INSPECTION_COMPLETE':
         return <InspectionCompletePage />;
       case 'INSPECTION_HISTORY':
-        return <InspectionCompletePage />;
+        return <InspectionHistoryPage />;
       case 'INSPECTION_REQUEST_LANDING':
         return <InspectionRequestLandingPage />;
       case 'VEHICLE_REGISTRATION_COMPLETE':
