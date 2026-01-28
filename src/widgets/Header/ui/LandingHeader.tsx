@@ -5,19 +5,20 @@
  */
 
 import { useState } from 'react';
-import { User, Search, ChevronDown, Car, FileText, Truck, Calculator, Bell } from 'lucide-react';
+import { User, Search, ChevronDown, Car, FileText, Truck, Calculator, Bell, SearchCheck } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { LoginModal } from '@/shared/ui/LoginModal';
 import { Z_INDEX } from '@/shared/config/zIndex';
 
 const NAV_ITEMS = [
   { label: '차량목록', href: '/vehicles', icon: Car },
+  { label: '검차', href: '/inspections', icon: SearchCheck },
   { label: '거래', href: '/offers', icon: FileText },
   { label: '탁송', href: '/logistics/schedule', icon: Truck },
   { label: '정산', href: '/settlements', icon: Calculator },
 ] as const;
 
-type NavKey = 'vehicles' | 'offers' | 'logistics' | 'settlements';
+type NavKey = 'vehicles' | 'inspections' | 'offers' | 'logistics' | 'settlements';
 
 interface LandingHeaderProps {
   userName?: string | null;
@@ -28,7 +29,7 @@ interface LandingHeaderProps {
   activeNav?: NavKey;
 }
 
-const NAV_KEYS: NavKey[] = ['vehicles', 'offers', 'logistics', 'settlements'];
+const NAV_KEYS: NavKey[] = ['vehicles', 'inspections', 'offers', 'logistics', 'settlements'];
 
 export function LandingHeader({ userName, onRegisterListing, variant = 'landing', activeNav }: LandingHeaderProps) {
   const [isUserOpen, setIsUserOpen] = useState(false);
@@ -43,7 +44,7 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
 
   const handleRegister = () => {
     onRegisterListing?.();
-    if (!onRegisterListing) window.location.href = '/vehicles/new/step1';
+    if (!onRegisterListing) window.location.href = '/vehicles/new';
   };
 
   return (

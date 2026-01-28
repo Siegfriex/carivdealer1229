@@ -1,34 +1,69 @@
 /**
  * VehicleRegisterStep1Page Component
- * 차량 등록 Step 1 - 차량번호 및 OCR
+ * 차량 원부 등록 (Figma 1198-5889)
  * 
- * 디자인: design/design_vehicle_input/vehicle_input_1/매물 등록 관리_차량 등록1.svg
+ * 좌측: ProgressSidebar (검색 + 스텝 진행)
+ * 메인: 차량 정보 섹션 + 차량 등록원부 섹션
+ * 하단: 삭제, 임시저장, 거래하기 버튼
  */
 
-import { useState } from 'react';
-import { Header } from '@/widgets/Header/ui/Header';
-import { StepProgress, type Step } from '@/shared/ui/StepProgress';
+import { useState, useEffect } from 'react';
+import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
+import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
+import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
+import { ImageUpload } from '@/shared/ui/ImageUpload';
 import { ocrRegistration } from '@/features/vehicle/register-form/api/vehicleApi';
-import { ScanEye } from 'lucide-react';
+import { VehicleStatusBadge } from '@/entities/vehicle/ui/VehicleStatusBadge';
+import { ChevronLeft, ChevronRight, ScanEye } from 'lucide-react';
 
-const steps: Step[] = [
-  { id: 'step1', label: '차량 정보 입력', status: 'current' },
-  { id: 'step2', label: '상세 정보 입력', status: 'upcoming' },
-  { id: 'step3', label: '검차 신청', status: 'upcoming' },
+const progressSteps: ProgressStep[] = [
+  { id: 'upload', label: '차량 업로드', status: 'current' },
+  { id: 'inspection', label: '검차 진행', status: 'upcoming' },
+  { id: 'trade', label: '거래', status: 'upcoming' },
+  { id: 'logistics', label: '탁송', status: 'upcoming' },
+  { id: 'complete', label: '완료', status: 'upcoming' },
 ];
 
 export const VehicleRegisterStep1Page = () => {
+  // URL에서 차량번호 가져오기
   const [plateNumber, setPlateNumber] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const plate = params.get('plateNumber');
+    if (plate) {
+      setPlateNumber(decodeURIComponent(plate));
+    }
+  }, []);
+
+  // 차량 정보 (OCR 결과 또는 수동 입력)
   const [vehicleData, setVehicleData] = useState({
     vin: '',
-    manufacturer: '',
-    modelName: '',
-    modelYear: '',
-    mileage: '',
+    manufacturer: '현대',
+    modelName: 'G70 3T 스포츠 엘리트',
+    modelYear: '2020',
+    mileage: '9.0',
+    price: '3000',
+    status: 'inspection' as const,
+    updatedAt: new Date(),
   });
+
+  // 등록원부 정보
+  const [registrationData, setRegistrationData] = useState({
+    businessNumber: '',
+    businessCertificateImage: null as File | null,
+    representativeName: '',
+    businessAddress: '',
+    businessType: '',
+    businessInfo: '',
+  });
+
   const [ocrLoading, setOcrLoading] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   const handleOcr = async () => {
     if (!plateNumber) {
@@ -40,6 +75,7 @@ export const VehicleRegisterStep1Page = () => {
     try {
       const result = await ocrRegistration(plateNumber);
       setVehicleData({
+        ...vehicleData,
         vin: result.vin,
         manufacturer: result.manufacturer,
         modelName: result.model,
@@ -54,58 +90,274 @@ export const VehicleRegisterStep1Page = () => {
     }
   };
 
+  const handleSaveDraft = async () => {
+    // TODO: 임시저장 API 호출 (status: 'draft')
+    console.log('임시저장:', { vehicleData, registrationData });
+    alert('임시저장되었습니다.');
+    window.location.href = '/vehicles?filter=draft';
+  };
+
+  const handleSubmit = () => {
+    // TODO: 등록 제출 API 호출
+    console.log('등록 제출:', { vehicleData, registrationData });
+    window.location.href = '/vehicles/new/step2';
+  };
+
+  const handleDelete = () => {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      window.location.href = '/vehicles';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <LandingHeader
+        userName="홍길동"
+        variant="main"
+        activeNav="vehicles"
+      />
 
-      <main className="container mx-auto px-6 py-8">
-        <StepProgress steps={steps} className="mb-12" />
+      <div className="flex">
+        {/* 좌측 사이드바: ProgressSidebar + 검색 */}
+        <div className="w-64 flex-shrink-0">
+          <ProgressSidebar steps={progressSteps} />
+          <div className="fixed left-0 top-64 w-64 p-4 bg-white border-r border-gray-200">
+            <MainLandingSidebar
+              searchValue={searchTerm}
+              onSearchChange={setSearchTerm}
+              activeKey="all"
+            />
+          </div>
+        </div>
 
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-h1 font-bold text-gray-900 mb-2">차량 정보를 입력해주세요</h1>
-          <p className="text-body text-gray-600 mb-8">
-            OCR 기능으로 등록원부에서 정보를 자동으로 가져올 수 있습니다
-          </p>
+        {/* 메인 콘텐츠 */}
+        <main className="flex-1 p-8 ml-64">
+          <h1 className="text-h1 font-bold text-gray-900 mb-8">차량 원부 등록</h1>
 
-          <div className="bg-white rounded-lg shadow-md p-8 space-y-6">
-            {/* 차량번호 + OCR */}
-            <div className="flex gap-4">
-              <Input
-                label="차량번호"
-                type="text"
-                placeholder="33바 3333"
-                value={plateNumber}
-                onChange={(e) => setPlateNumber(e.target.value)}
-                className="flex-1"
-                required
-              />
-              <div className="flex items-end">
-                <Button onClick={handleOcr} loading={ocrLoading} className="whitespace-nowrap">
-                  <ScanEye className="h-5 w-5 mr-2" />
-                  OCR 실행
-                </Button>
+          {/* 차량 정보 섹션 */}
+          <Card className="mb-6" padding="lg">
+            <h2 className="text-h3 font-bold text-gray-900 mb-6">
+              차량 정보<span className="text-error ml-1">*</span>
+            </h2>
+
+            <div className="grid grid-cols-2 gap-8">
+              {/* 좌측: 차량 요약 정보 */}
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <VehicleStatusBadge status={vehicleData.status} size="sm" />
+                  <span className="text-caption text-gray-500">
+                    {vehicleData.updatedAt.toLocaleTimeString('ko-KR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      second: '2-digit',
+                      hour12: false,
+                    })}
+                  </span>
+                </div>
+
+                <h3 className="text-h3 font-bold text-gray-900 mb-2">
+                  {vehicleData.modelName}
+                </h3>
+                <p className="text-body text-gray-600 mb-4">
+                  {plateNumber || '123가 4567'} {vehicleData.modelYear}년형 {vehicleData.mileage}만 km
+                </p>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <span className="px-3 py-1 rounded-full text-caption text-gray-600 bg-gray-100">
+                    위탁차량
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-caption text-gray-600 bg-gray-100">
+                    단순교환무사고
+                  </span>
+                </div>
+
+                <div className="mb-4">
+                  <p className="text-h3 font-bold text-primary mb-1">
+                    {parseInt(vehicleData.price, 10).toLocaleString()}만원
+                  </p>
+                  <p className="text-caption text-gray-500 line-through">
+                    신차 {(parseInt(vehicleData.price, 10) * 1.5).toLocaleString()}만원
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button className="p-2 text-gray-400 hover:text-gray-600">
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <span className="text-caption text-gray-500">이전 차량</span>
+                  <span className="text-caption text-gray-500 mx-2">|</span>
+                  <span className="text-caption text-gray-500">다음 차량</span>
+                  <button className="p-2 text-gray-400 hover:text-gray-600">
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* 우측: 차량 이미지 갤러리 */}
+              <div>
+                <div className="relative w-full h-64 bg-gray-100 rounded-md flex items-center justify-center">
+                  <img
+                    src="https://via.placeholder.com/400x300?text=차량+이미지"
+                    alt={vehicleData.modelName}
+                    className="w-full h-full object-cover rounded-md"
+                  />
+                  <div className="absolute top-4 right-4 flex gap-2">
+                    {['L', 'R', 'F', 'B'].map((view) => (
+                      <button
+                        key={view}
+                        className="w-8 h-8 rounded-full bg-white bg-opacity-80 text-caption font-medium text-gray-700 hover:bg-opacity-100"
+                      >
+                        {view}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* 차량 등록원부 섹션 */}
+          <Card className="mb-6" padding="lg">
+            <h2 className="text-h3 font-bold text-gray-900 mb-6">
+              차량 등록원부<span className="text-error ml-1">*</span>
+            </h2>
+
+            <div className="grid grid-cols-2 gap-8">
+              {/* 좌측 열 */}
+              <div className="space-y-6">
+                <Input
+                  label="사업자 등록 번호"
+                  value={registrationData.businessNumber}
+                  onChange={(e) =>
+                    setRegistrationData({ ...registrationData, businessNumber: e.target.value })
+                  }
+                  placeholder="XXX-XX-XXXXX"
+                  disabled
+                  fullWidth
+                />
+
+                <div>
+                  <label className="block text-body font-medium text-gray-700 mb-2">
+                    사업자 등록증 이미지
+                  </label>
+                  <ImageUpload
+                    onFilesSelect={(files) => {
+                      if (files.length > 0) {
+                        setUploadedFiles(files);
+                        setRegistrationData({
+                          ...registrationData,
+                          businessCertificateImage: files[0],
+                        });
+                      }
+                    }}
+                    maxFiles={1}
+                    accept="image/*"
+                  />
+                  <div className="flex gap-2 mt-2">
+                    <Button variant="secondary" size="sm">
+                      파일추가
+                    </Button>
+                    <Button variant="secondary" size="sm">
+                      항목 제거
+                    </Button>
+                    <Button variant="secondary" size="sm">
+                      전체 항목 제거
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 우측 열 */}
+              <div className="space-y-6">
+                <Input
+                  label="대표자명"
+                  value={registrationData.representativeName}
+                  onChange={(e) =>
+                    setRegistrationData({ ...registrationData, representativeName: e.target.value })
+                  }
+                  placeholder="XXX-XX-XXXXX"
+                  disabled
+                  fullWidth
+                />
+
+                <Input
+                  label="사업장 주소"
+                  value={registrationData.businessAddress}
+                  onChange={(e) =>
+                    setRegistrationData({ ...registrationData, businessAddress: e.target.value })
+                  }
+                  placeholder="XXX-XX-XXXXX"
+                  disabled
+                  fullWidth
+                />
+
+                <Input
+                  label="업태 종목"
+                  value={registrationData.businessType}
+                  onChange={(e) =>
+                    setRegistrationData({ ...registrationData, businessType: e.target.value })
+                  }
+                  placeholder="XXX-XX-XXXXX"
+                  disabled
+                  fullWidth
+                />
+
+                <Input
+                  label="사업자 정보 선택"
+                  value={registrationData.businessInfo}
+                  onChange={(e) =>
+                    setRegistrationData({ ...registrationData, businessInfo: e.target.value })
+                  }
+                  placeholder="XXX-XX-XXXXX"
+                  disabled
+                  fullWidth
+                />
               </div>
             </div>
 
-            {/* OCR 결과 */}
-            <div className="grid grid-cols-2 gap-6">
-              <Input label="VIN" value={vehicleData.vin} readOnly fullWidth />
-              <Input label="제조사" value={vehicleData.manufacturer} readOnly fullWidth />
-              <Input label="모델명" value={vehicleData.modelName} readOnly fullWidth />
-              <Input label="연식" value={vehicleData.modelYear} readOnly fullWidth />
-              <Input label="주행거리" value={vehicleData.mileage} readOnly fullWidth />
+            {/* 차량번호 + OCR (상단에 추가) */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <div className="flex gap-4">
+                <Input
+                  label="차량번호"
+                  type="text"
+                  placeholder="123가 4567"
+                  value={plateNumber}
+                  onChange={(e) => setPlateNumber(e.target.value)}
+                  className="flex-1"
+                />
+                <div className="flex items-end">
+                  <Button onClick={handleOcr} loading={ocrLoading} className="whitespace-nowrap">
+                    <ScanEye className="h-5 w-5 mr-2" />
+                    OCR 실행
+                  </Button>
+                </div>
+              </div>
             </div>
+          </Card>
 
-            {/* 액션 버튼 */}
-            <div className="flex justify-between pt-6">
-              <Button variant="secondary" onClick={() => window.history.back()}>
-                취소
-              </Button>
-              <Button disabled={!vehicleData.vin}>다음 단계</Button>
+          {/* 하단 액션 바 */}
+          <div className="flex items-center justify-between">
+            <div className="flex gap-4">
+              <button
+                onClick={handleDelete}
+                className="text-body text-gray-600 hover:text-gray-900 transition-fast"
+              >
+                삭제
+              </button>
+              <button
+                onClick={handleSaveDraft}
+                className="text-body text-gray-600 hover:text-gray-900 transition-fast"
+              >
+                임시저장
+              </button>
             </div>
+            <Button onClick={handleSubmit} size="lg">
+              거래하기
+            </Button>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };

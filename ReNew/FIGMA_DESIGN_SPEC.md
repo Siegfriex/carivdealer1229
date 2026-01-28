@@ -16,6 +16,7 @@
 | B. 로그인 후 랜딩 | 로그인 후 메인 페이지, 전체 차량 목록 등 | - |
 | C. 첫 홈/랜딩 | 첫 진입·로그아웃 시 첫 화면 (노드 1194-7481) | 구현 완료 |
 | D. 로그인 후 메인 랜딩 | 로그인/회원가입 성공 후 전체 차량 (노드 1194-7664) | 구현 완료 |
+| E. 매물등록관리 | 매물목록뷰 + 매물등록 플로우 (노드 1198-6370, 1198-6939, 1198-6578, 1198-6791, 1198-5843, 1198-5889) | 구현 완료 |
 
 ---
 
@@ -116,7 +117,60 @@
 
 ---
 
-## 5. 프로젝트 내 대응 관계
+## 5. E. 매물등록관리 (Vehicle Registration Management)
+
+### 5.1 매물목록뷰 (Figma 1198-6370)
+
+- **역할**: 회원가입/로그인 후 진입하는 "나의 매물 목록" 화면
+- **구성**
+  - **GNB**: LandingHeader (variant=main, activeNav='vehicles') - FORWARDMAX 로고, 차량목록(활성)/검차/거래/탁송/정산, 검색/알림/사용자, 매물 등록하기 버튼
+  - **좌측 사이드바**: MainLandingSidebar - 검색 필드 (차량번호/모델명)
+  - **메인**: 제목 "나의 매물 목록", 필터 탭 (전체/임시저장됨/등록완료) + 건수, 그리드/리스트 토글, 확인 필요차량 체크박스, 차량 카드 그리드(3열), 페이지네이션
+  - **카드**: 상태(빨간 점 + 등록됨/임시저장됨), 타임스탬프(16:03:30), 이미지, 모델명, 연식·주행거리, 가격(파란 굵게), 신차가(회색), 태그
+  - **푸터**: ForwardMax Cariv Domestic Seller 1.0 Prototype
+- **구현**: `src/pages/admin/VehicleListPage.tsx`, `LandingHeader`(variant=main), `MainLandingSidebar`, `SegmentedControl`, `VehicleCard`(variant=mainLanding), `Pagination`
+
+### 5.2 그리드뷰 (Figma 1198-6939)
+
+- **역할**: 매물목록뷰의 그리드 뷰 모드
+- **구성**: 5.1과 동일하되, 메인 영역만 차량 카드 그리드(3열)로 표시
+- **구현**: `VehicleListPage`의 `viewMode === 'grid'` 상태
+
+### 5.3 리스트뷰 (Figma 1198-6578)
+
+- **역할**: 매물목록뷰의 리스트(테이블) 뷰 모드
+- **구성**: 5.1과 동일하되, 메인 영역만 VehicleTable로 표시 (차량번호, 모델명, 연식, 주행거리, 가격, 상태, 액션)
+- **구현**: `VehicleListPage`의 `viewMode === 'list'` 상태, `VehicleTable`
+
+### 5.4 임시저장됨 필터 활성화 (Figma 1198-6791)
+
+- **역할**: 필터 탭에서 "임시저장됨" 선택 시 상태 필터링
+- **구성**: 5.3과 동일하되, 필터 탭에서 "임시저장됨"이 활성화된 상태
+- **구현**: `VehicleListPage`의 `filterTab === 'draft'` 상태, `useVehicles({ status: ['draft'] })`
+
+### 5.5 매물등록 첫 화면 (Figma 1198-5843)
+
+- **역할**: 매물목록뷰에서 "매물 등록하기" 클릭 시 진입하는 첫 화면
+- **구성**
+  - **GNB**: LandingHeader (variant=main, activeNav='vehicles')
+  - **메인**: 제목 "빠르고 간편하게! 완벽한 비대면 차량등록", 차량번호 입력 필드 (KOR 국기 + 입력 필드), 오류 메시지 (※ 이미 등록 또는 거래된 매물입니다), "다음" 버튼
+- **구현**: `src/pages/admin/vehicle/VehicleRegisterEntryPage.tsx`, 경로 `/vehicles/new`
+
+### 5.6 차량원부등록 (Figma 1198-5889)
+
+- **역할**: 매물등록 첫 화면에서 차량번호 입력 후 진입하는 "차량 원부 등록" 화면
+- **구성**
+  - **GNB**: LandingHeader (variant=main, activeNav='vehicles')
+  - **좌측 사이드바**: ProgressSidebar (검색 + 스텝 진행: 차량 업로드(활성)/검차 진행/거래/탁송/완료)
+  - **메인**: 제목 "차량 원부 등록"
+    - **차량 정보 섹션**: 차량 요약 정보 (상태, 타임스탬프, 모델명, 차량번호·연식·주행거리, 태그, 가격·신차가), 차량 이미지 갤러리 (L/R/F/B 뷰)
+    - **차량 등록원부 섹션**: 사업자 등록 번호, 사업자 등록증 이미지 업로드, 대표자명, 사업장 주소, 업태 종목, 사업자 정보 선택, 차량번호 입력 + OCR 실행 버튼
+  - **하단 액션**: 삭제, 임시저장, 거래하기 버튼
+- **구현**: `src/pages/admin/vehicle/VehicleRegisterStep1Page.tsx`, 경로 `/vehicles/new/step1`
+
+---
+
+## 6. 프로젝트 내 대응 관계
 
 | Figma 화면 | 프로젝트 경로/페이지 |
 |------------|----------------------|
@@ -131,10 +185,16 @@
 | 회원가입_6_승인대기 | `src/pages/auth/SignupPendingPage.tsx` |
 | 회원가입_6_승인완료 | `src/pages/auth/SignupCompletePage.tsx` |
 | 로그인 후 랜딩 | `src/pages/admin/DashboardPage.tsx` 또는 차량 목록 페이지 |
+| **매물목록뷰 (1198-6370)** | `src/pages/admin/VehicleListPage.tsx`, `LandingHeader`(variant=main), `MainLandingSidebar`, `SegmentedControl`, `VehicleCard`(variant=mainLanding) |
+| **그리드뷰 (1198-6939)** | `VehicleListPage` (viewMode='grid') |
+| **리스트뷰 (1198-6578)** | `VehicleListPage` (viewMode='list'), `VehicleTable` |
+| **임시저장됨 필터 (1198-6791)** | `VehicleListPage` (filterTab='draft') |
+| **매물등록 첫 화면 (1198-5843)** | `src/pages/admin/vehicle/VehicleRegisterEntryPage.tsx`, 경로 `/vehicles/new` |
+| **차량원부등록 (1198-5889)** | `src/pages/admin/vehicle/VehicleRegisterStep1Page.tsx`, 경로 `/vehicles/new/step1`, `ProgressSidebar` |
 
 ---
 
-## 6. ReNew 폴더 용도
+## 7. ReNew 폴더 용도
 
 - **FIGMA_DESIGN_SPEC.md** (본 문서): Figma 디자인 요약 및 화면별 스펙
 - 추후 추가 가능: 스크린샷, 컴포넌트 매핑표, 디자인 토큰 정리 등

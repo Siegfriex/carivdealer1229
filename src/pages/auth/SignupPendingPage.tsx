@@ -1,55 +1,49 @@
 /**
- * SignupPendingPage Component
- * 회원가입 Step 6 - 승인 대기
- * 
- * 디자인: design/design_SignIn/A. 회원/회원가입_6승인대기.svg
+ * SignupPendingPage (회원가입 Step 6 - 승인 대기)
+ * Figma 1194-6063: 회원가입 승인 동의
  */
 
-import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
+import { StepProgress } from '@/shared/ui/StepProgress';
 import { Button } from '@/shared/ui/Button';
-import { Clock } from 'lucide-react';
+import { ClipboardList } from 'lucide-react';
 
-const steps: ProgressStep[] = [
-  { id: 'step1', label: '이메일 입력', status: 'completed' },
-  { id: 'step2', label: '비밀번호 설정', status: 'completed' },
-  { id: 'step3', label: '딜러 정보 입력', status: 'completed' },
-  { id: 'step4', label: '사업자 정보 입력', status: 'completed' },
-  { id: 'step5', label: '약관 동의', status: 'completed' },
-  { id: 'step6', label: '승인 대기', status: 'current' },
+const SIGNUP_STEPS = [
+  { id: '1', label: '① 본인인증', status: 'completed' as const },
+  { id: '2', label: '② 사업자 정보 입력', status: 'completed' as const },
+  { id: '3', label: '③ 중고차 매매업 인증', status: 'completed' as const },
+  { id: '4', label: '④ 정산 정보 입력', status: 'completed' as const },
+  { id: '5', label: '⑤ 약관 동의', status: 'completed' as const },
+  { id: '6', label: '⑥ 승인 대기', status: 'current' as const },
 ];
 
 export const SignupPendingPage = () => {
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <ProgressSidebar steps={steps} />
+    <div className="min-h-screen bg-white">
+      <div className="container max-w-3xl mx-auto px-6 py-10">
+        <h1 className="text-h1 font-bold text-gray-900 text-center mb-8">회원가입</h1>
+        <StepProgress steps={SIGNUP_STEPS} className="mb-12" />
 
-      <div className="flex-1" style={{ marginLeft: 'var(--sidebar-width-vw)' }}>
-        <div className="max-w-2xl mx-auto px-6 py-16">
-          <div className="text-center">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-warning-light flex items-center justify-center">
-              <Clock className="h-12 w-12 text-warning" />
-            </div>
-
-            <h1 className="text-h1 font-bold text-gray-900 mb-4">승인 대기 중입니다</h1>
-            <p className="text-h4 text-gray-600 mb-8">
-              회원가입이 완료되었습니다
-            </p>
-
-            <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-              <p className="text-body text-gray-700 mb-4">
-                관리자의 승인이 필요합니다.
-                <br />
-                승인 완료 시 등록하신 이메일로 안내드립니다.
-              </p>
-              <p className="text-caption text-gray-500">
-                승인은 영업일 기준 1-2일 소요됩니다
-              </p>
-            </div>
-
-            <Button size="lg" onClick={() => (window.location.href = '/login')}>
-              로그인 페이지로 이동
-            </Button>
+        <div className="text-center">
+          {/* 아이콘 */}
+          <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-primary/10 flex items-center justify-center">
+            <ClipboardList className="h-12 w-12 text-primary" />
           </div>
+
+          {/* 메시지 */}
+          <h2 className="text-h2 font-bold text-gray-900 mb-4">
+            감사합니다. 딜러 승인 대기 중 입니다
+          </h2>
+          <p className="text-body text-gray-600 mb-2">
+            링크를 누르고 일정을 저장하세요.
+          </p>
+          <p className="text-caption text-gray-500 mb-8">
+            승인까지는 영업일 기준 1-2일 정도 소요됩니다.
+          </p>
+
+          {/* 버튼 */}
+          <Button size="lg" onClick={() => (window.location.href = '/login')}>
+            로그인 페이지로 이동
+          </Button>
         </div>
       </div>
     </div>

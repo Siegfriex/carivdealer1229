@@ -64,7 +64,12 @@
       "Bash(git commit:*)",
       "Bash(npm run build:*)",
       "Bash(npm install:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nrefactor: FSD 구조 완성 및 코드베이스 정리\n\nPhase 1: 비필수 파일 정리\n- 루트 레벨 보고서 11개 → docs/archive/ 이동\n- docs/ 중복 문서 28개 → docs/archive/ 이동\n- .gitignore 업데이트 \\(playwright-report/, test-results/\\)\n\nPhase 2: FSD 구조 완성\n- src/config/ → src/shared/config/ 통합 후 삭제\n- src/services/ → src/shared/api/ 통합 후 삭제\n- src/utils/ → src/shared/lib/ 통합 후 삭제\n- 7개 Entity index.ts 생성 \\(vehicle, auction, inspection, logistics, trade, member, settlement\\)\n- apiEndpoints.ts 구조화 \\(도메인별 그룹핑\\)\n\nPhase 3: DB 스키마 재작성\n- docs/DATABASE_ERD_SCHEMA.md 전면 재작성 \\(원본 ERD 기준\\)\n- 신규 Entity 타입 정의: order, payment, listing, address, review\n- Functions 필드명 정합성 수정 \\(dispatchAt→dispatchedAt, handoverPin→pin\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nrefactor: FSD 구조 완성 및 코드베이스 정리\n\nPhase 1: 비필수 파일 정리\n- 루트 레벨 보고서 11개 → docs/archive/ 이동\n- docs/ 중복 문서 28개 → docs/archive/ 이동\n- .gitignore 업데이트 \\(playwright-report/, test-results/\\)\n\nPhase 2: FSD 구조 완성\n- src/config/ → src/shared/config/ 통합 후 삭제\n- src/services/ → src/shared/api/ 통합 후 삭제\n- src/utils/ → src/shared/lib/ 통합 후 삭제\n- 7개 Entity index.ts 생성 \\(vehicle, auction, inspection, logistics, trade, member, settlement\\)\n- apiEndpoints.ts 구조화 \\(도메인별 그룹핑\\)\n\nPhase 3: DB 스키마 재작성\n- docs/DATABASE_ERD_SCHEMA.md 전면 재작성 \\(원본 ERD 기준\\)\n- 신규 Entity 타입 정의: order, payment, listing, address, review\n- Functions 필드명 정합성 수정 \\(dispatchAt→dispatchedAt, handoverPin→pin\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: FSD Compliance 최종 점검 및 인수인계 문서 작성\n\n- Toast 컴포넌트 중복 해결: components/ui/Toast.tsx 삭제\n- ToastProvider.tsx: @/shared/ui/Toast 참조로 수정\n- ESLint FSD 규칙 적용: no-restricted-imports 추가\n- 레이어별 의존성 규칙 override 적용\n- AGENT_HANDOFF_DOCUMENT.md 인수인계 문서 생성\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(dir \"C:\\\\carivdealer\" /B)",
+      "Bash(npm audit:*)",
+      "Bash(npx eslint:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nchore: 현재 작업 상태 스냅샷 \\(마이그레이션 준비\\)\n\n- ReNew 문서 업데이트 \\(WORK_SUMMARY, FSD_COMPLIANCE 등\\)\n- Signup 페이지들 수정\n- Vehicle 등록 페이지들 추가\n- Inspection 페이지들 추가\n- LandingHeader 수정\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ],
     "deny": []
   }

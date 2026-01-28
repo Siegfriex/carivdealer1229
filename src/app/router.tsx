@@ -14,8 +14,11 @@ import { SignupStep5Page } from '@/pages/auth/SignupStep5Page';
 import { SignupPendingPage } from '@/pages/auth/SignupPendingPage';
 import { SignupCompletePage } from '@/pages/auth/SignupCompletePage';
 import { DashboardPage } from '@/pages/admin/DashboardPage';
+import { VehicleRegisterEntryPage } from '@/pages/admin/vehicle/VehicleRegisterEntryPage';
 import { VehicleRegisterStep1Page } from '@/pages/admin/vehicle/VehicleRegisterStep1Page';
 import { VehicleRegisterStep2Page } from '@/pages/admin/vehicle/VehicleRegisterStep2Page';
+import { InspectionListPage } from '@/pages/admin/inspection/InspectionListPage';
+import { InspectionRequestLandingPage } from '@/pages/admin/inspection/InspectionRequestLandingPage';
 import { InspectionRequestStep1Page } from '@/pages/admin/inspection/InspectionRequestStep1Page';
 import { InspectionRequestStep2Page } from '@/pages/admin/inspection/InspectionRequestStep2Page';
 import { InspectionProgressPage } from '@/pages/admin/inspection/InspectionProgressPage';
@@ -50,12 +53,16 @@ export type Screen =
   | 'SIGNUP_STEP5'
   | 'SIGNUP_PENDING'
   | 'SIGNUP_COMPLETE'
+  | 'VEHICLE_REGISTER_ENTRY'
   | 'VEHICLE_REGISTER_STEP1'
   | 'VEHICLE_REGISTER_STEP2'
+  | 'INSPECTIONS_LIST'
   | 'INSPECTION_REQUEST_STEP1'
   | 'INSPECTION_REQUEST_STEP2'
   | 'INSPECTION_PROGRESS'
   | 'INSPECTION_COMPLETE'
+  | 'INSPECTION_HISTORY'
+  | 'INSPECTION_REQUEST_LANDING'
   | 'VEHICLE_REGISTRATION_COMPLETE';
 
 export const Router = () => {
@@ -101,8 +108,10 @@ export const Router = () => {
       '/signup/complete': 'SIGNUP_COMPLETE',
       '/dashboard': 'SCR-0100',
       '/vehicles': 'SCR-0101',
+      '/vehicles/new': 'VEHICLE_REGISTER_ENTRY',
       '/vehicles/new/step1': 'VEHICLE_REGISTER_STEP1',
       '/vehicles/new/step2': 'VEHICLE_REGISTER_STEP2',
+      '/inspections': 'INSPECTIONS_LIST',
       '/inspections/request/step1': 'INSPECTION_REQUEST_STEP1',
       '/inspections/request/step2': 'INSPECTION_REQUEST_STEP2',
       '/offers': 'SCR-0200',
@@ -112,7 +121,9 @@ export const Router = () => {
       '/settlements': 'SCR-0500',
     };
 
-    // 동적 경로 처리
+    // 동적 경로 처리: /inspections/history, /inspections/request, /inspections/:id/progress
+    if (pathname === '/inspections/history') return 'INSPECTION_HISTORY';
+    if (pathname === '/inspections/request') return 'INSPECTION_REQUEST_LANDING';
     if (pathname.startsWith('/inspections/') && pathname.endsWith('/progress')) {
       return 'INSPECTION_PROGRESS';
     }
@@ -139,9 +150,13 @@ export const Router = () => {
       case 'SCR-0001':
         return <LoginPage />;
       case 'SCR-0100':
-        return <DashboardPage />;
+        // Dashboard를 매물목록뷰로 리다이렉트
+        window.location.href = '/vehicles';
+        return <VehicleListPage />;
       case 'SCR-0101':
         return <VehicleListPage />;
+      case 'INSPECTIONS_LIST':
+        return <InspectionListPage />;
       case 'SCR-0200':
         return <GeneralSaleOffersPage onNavigate={handleNavigate} />;
       case 'SCR-0300':
@@ -170,6 +185,8 @@ export const Router = () => {
         return <SignupPendingPage />;
       case 'SIGNUP_COMPLETE':
         return <SignupCompletePage />;
+      case 'VEHICLE_REGISTER_ENTRY':
+        return <VehicleRegisterEntryPage />;
       case 'VEHICLE_REGISTER_STEP1':
         return <VehicleRegisterStep1Page />;
       case 'VEHICLE_REGISTER_STEP2':
@@ -182,6 +199,10 @@ export const Router = () => {
         return <InspectionProgressPage />;
       case 'INSPECTION_COMPLETE':
         return <InspectionCompletePage />;
+      case 'INSPECTION_HISTORY':
+        return <InspectionCompletePage />;
+      case 'INSPECTION_REQUEST_LANDING':
+        return <InspectionRequestLandingPage />;
       case 'VEHICLE_REGISTRATION_COMPLETE':
         return <VehicleRegistrationCompletePage />;
       default:
