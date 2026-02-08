@@ -1,0 +1,4 @@
+# Python 의존성 (0208 하이브리드 — 데이터/ERD 검증용)
+# Phase 4: pip install -r requirements.txt
+pandas
+google-cloud-bigquery

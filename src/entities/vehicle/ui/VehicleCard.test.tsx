@@ -1,0 +1,49 @@
+/**
+ * VehicleCard Component Tests
+ */
+
+import { describe, test, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { VehicleCard } from './VehicleCard';
+import { Timestamp } from 'firebase/firestore';
+import type { Vehicle } from '../model/types';
+
+describe('VehicleCard Component', () => {
+  const mockVehicle: Vehicle = {
+    id: 'v-001',
+    status: 'draft',
+    plateNumber: '33바 3333',
+    manufacturer: 'Kia',
+    modelName: 'Carnival KA4',
+    modelYear: '2022',
+    mileage: '50000',
+    price: '2850',
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+  };
+
+  test('차량 정보 렌더링', () => {
+    render(<VehicleCard vehicle={mockVehicle} />);
+    
+    expect(screen.getByText('Carnival KA4')).toBeInTheDocument();
+    expect(screen.getByText('Kia')).toBeInTheDocument();
+    expect(screen.getByText(/2022년형/)).toBeInTheDocument();
+    expect(screen.getByText('50,000km')).toBeInTheDocument();
+  });
+
+  test('가격 표시', () => {
+    render(<VehicleCard vehicle={mockVehicle} />);
+    expect(screen.getByText('2,850만원')).toBeInTheDocument();
+  });
+
+  test('클릭 이벤트 처리', () => {
+    const handleClick = vi.fn();
+    render(<VehicleCard vehicle={mockVehicle} onClick={handleClick} />);
+    
+    const card = screen.getByText('Carnival KA4').closest('div');
+    if (card) {
+      fireEvent.click(card);
+    }
+  });
+});

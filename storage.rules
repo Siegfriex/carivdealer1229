@@ -1,0 +1,40 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // ============================================
+    // 테스트 모드: 2026-01-29까지 모든 읽기/쓰기 허용
+    // ============================================
+    match /{allPaths=**} {
+      allow read, write: if request.time < timestamp.date(2026, 1, 29);
+    }
+    
+    // ============================================
+    // 프로덕션용 규칙 (현재 주석 처리)
+    // ============================================
+    // 역할 기반 접근 제어, 파일 크기 제한 등
+    // 
+    // 예시:
+    // match /vehicles/{vehicleId}/{allPaths=**} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null && 
+    //     request.auth.token.dealer_id == vehicleId.split('/')[0];
+    // }
+    // 
+    // match /inspections/{inspectionId}/{allPaths=**} {
+    //   allow read: if request.auth != null;
+    //   allow write: if request.auth != null && 
+    //     (request.auth.token.role == 'evaluator' || 
+    //      request.auth.token.dealer_id == resource.metadata.dealerId);
+    // }
+    // 
+    // match /members/{memberId}/{allPaths=**} {
+    //   allow read, write: if request.auth != null && request.auth.uid == memberId;
+    // }
+    // 
+    // match /public/{allPaths=**} {
+    //   allow read: if true;
+    //   allow write: if request.auth != null && request.auth.token.role == 'admin';
+    // }
+  }
+}
+

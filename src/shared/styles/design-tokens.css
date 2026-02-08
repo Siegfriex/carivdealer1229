@@ -1,0 +1,209 @@
+/**
+ * ForwardMax Design System - Design Tokens
+ * 모든 가로(레이아웃·타이포) 기준: 1440px
+ *
+ * 참조:
+ * - Figma Domestic Seller 1.0, Typography (node 1194-7425)
+ * - design/design_typhography/Typography.png
+ */
+
+:root {
+  /* ===== Layout Base (가로 기준) ===== */
+  --layout-base-width: 1440px;
+
+  /* ===== Typography System (Figma 1194-7425, 1440px 기준) ===== */
+  
+  /* Font Family: Pretendard. 혼용 시 영문/숫자는 Roboto 권장, Baseline 정렬 */
+  --font-primary: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  
+  /* Type Scale @ 1440px (Figma SSOT, px 정합) */
+  --text-h1: 36px;   /* H1: Medium */
+  --text-h2: 24px;   /* H2: Medium */
+  --text-h3: 18px;   /* H3: Bold */
+  --text-h4: 16px;   /* H4: Regular */
+  --text-body: 14px; /* Body: Regular */
+  --text-button: 12px;  /* Button: Regular */
+  --text-caption: 10px;  /* Caption (Figma 외 확장) */
+  
+  /* Font Weights per Figma Typography */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --text-h1-weight: var(--font-weight-medium);
+  --text-h2-weight: var(--font-weight-medium);
+  --text-h3-weight: var(--font-weight-bold);
+  --text-h4-weight: var(--font-weight-regular);
+  --text-body-weight: var(--font-weight-regular);
+  --text-button-weight: var(--font-weight-regular);
+  
+  /* Line Heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+  
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+
+  /* ===== Layout System (가로 1440px 기준) ===== */
+  
+  /* Container */
+  --container-max: var(--layout-base-width);
+  --container-padding: 24px;  /* 1440px 기준 */
+  
+  /* Breakpoints */
+  --bp-desktop: 700px;  /* 700px 이상: 데스크톱 */
+  --bp-mobile: 699px;   /* 699px 이하: MobileBlocker */
+  
+  /* Spacing Scale (1440px 기준, px 정합) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* ===== Color System ===== */
+  
+  /* Primary Brand (디자인 파일에서 추출: #2048E5) */
+  --color-primary: #2048E5;
+  --color-primary-hover: #1A3BB8;
+  --color-primary-active: #142E8C;
+  --color-primary-light: #EEF5FE;
+  --color-primary-border: #D9E7FC;
+  
+  /* Accent (디자인 파일에서 추출: #8A38F5) */
+  --color-accent: #8A38F5;
+  --color-accent-hover: #7229CC;
+  --color-accent-active: #5A1FA3;
+  
+  /* Neutral Colors */
+  --color-white: #FFFFFF;
+  --color-gray-50: #F8F9FA;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E6E6E6;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #909090;
+  --color-gray-600: #727272;
+  --color-gray-700: #4B5563;
+  --color-gray-800: #1F2937;
+  --color-gray-900: #111827;
+  --color-black: #000000;
+  
+  /* Semantic Colors */
+  --color-success: #10B981;
+  --color-success-light: #D1FAE5;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FEF3C7;
+  --color-error: #EF4444;
+  --color-error-light: #FEE2E2;
+  --color-info: #3B82F6;
+  --color-info-light: #DBEAFE;
+  
+  /* Status Colors (차량 상태 등) */
+  --color-draft: var(--color-gray-500);
+  --color-inspection: var(--color-info);
+  --color-bidding: #8B5CF6;  /* Purple */
+  --color-active-sale: var(--color-success);
+  --color-sold: #F97316;  /* Orange */
+  --color-pending-settlement: var(--color-warning);
+  --color-completed: #14B8A6;  /* Teal */
+  
+  /* Background Colors */
+  --color-bg-primary: #F8F9FA;
+  --color-bg-secondary: var(--color-white);
+  --color-bg-tertiary: var(--color-gray-100);
+  
+  /* Border Colors */
+  --color-border-light: var(--color-gray-200);
+  --color-border-medium: var(--color-gray-300);
+  --color-border-strong: var(--color-gray-400);
+  
+  /* Text Colors */
+  --color-text-primary: var(--color-gray-900);
+  --color-text-secondary: var(--color-gray-600);
+  --color-text-tertiary: var(--color-gray-500);
+  --color-text-disabled: var(--color-gray-400);
+  --color-text-inverse: var(--color-white);
+
+  /* ===== z-index Layering System ===== */
+  
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 800;
+  --z-loading: 900;
+  --z-dev-skip: 950;       /* 개발용 스킵 전역 (Z_INDEX.DEV_SKIP) */
+  --z-dev-skip-page: 951;  /* 개발용 스킵 페이지 (Z_INDEX.DEV_SKIP_PAGE) */
+
+  /* ===== Component Specific (디자인 파일에서 추출) ===== */
+  
+  /* GNB (Header) - 1440px 기준 px */
+  --gnb-height: 64px;
+
+  /* Progress Sidebar - 1440px 기준 px */
+  --sidebar-width: 249px;
+  --progress-step-gap: 105px;
+  --progress-circle-size: 27.2px;
+
+  /* Step Progress (검차단계 프로그래스바) */
+  --step-progress-height: 60px;
+  
+  /* Cards */
+  --card-border-radius: 10px;
+  --card-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.08);
+  
+  /* Status Badge */
+  --badge-height: 33px;
+  --badge-padding-x: 20px;
+
+  /* Checkbox */
+  --checkbox-size: 12px;
+
+  /* Image Upload */
+  --image-upload-size: 120px;
+
+  /* Footer */
+  --footer-height: 327px;
+  --footer-bg: #F3F4F6;
+
+  /* ===== Transitions & Animations ===== */
+  
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 250ms ease-in-out;
+  --transition-slow: 400ms ease-in-out;
+  
+  /* ===== Shadows ===== */
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 3px 10px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Dark Mode Support (향후 확장) ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* 다크 모드 색상은 향후 추가 */
+  }
+}

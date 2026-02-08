@@ -1,0 +1,188 @@
+/**
+ * Global Styles
+ * Tailwind + Custom Design Tokens
+ */
+
+/* Design Tokens - @import must come first */
+@import '../../shared/styles/design-tokens.css';
+
+/* Tailwind Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Styles */
+@layer base {
+  /* Pretendard Font */
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Global Resets */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans text-gray-900 bg-gray-50;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Typography Styles */
+  h1 {
+    @apply text-h1 font-medium leading-tight;
+  }
+
+  h2 {
+    @apply text-h2 font-medium leading-tight;
+  }
+
+  h3 {
+    @apply text-h3 font-bold leading-tight;
+  }
+
+  h4 {
+    @apply text-h4 font-normal leading-normal;
+  }
+
+  p {
+    @apply text-body leading-normal;
+  }
+
+  /* Remove default button styles */
+  button {
+    font-family: inherit;
+  }
+
+  /* Focus Styles (접근성) */
+  *:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Component Styles */
+@layer components {
+  /* Container: 페이지 최외곽용. 전체 폭 제한(1440px) + 좌우 패딩.
+   * 내부 콘텐츠 너비는 자식에 max-w-3xl / max-w-4xl 등 적용. */
+  .container {
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+  }
+
+  /* Custom Scrollbar */
+  .scrollbar-custom::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded hover:bg-gray-500;
+  }
+
+  /* Card Base */
+  .card {
+    @apply bg-white rounded-md shadow-md;
+  }
+
+  .card-hover {
+    @apply card transition-shadow duration-base hover:shadow-lg;
+  }
+}
+
+/* Utility Styles */
+@layer utilities {
+  /* Text Utilities */
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .text-tertiary {
+    color: var(--color-text-tertiary);
+  }
+
+  /* Transition Utilities */
+  .transition-fast {
+    transition-duration: var(--transition-fast);
+  }
+
+  .transition-base {
+    transition-duration: var(--transition-base);
+  }
+
+  .transition-slow {
+    transition-duration: var(--transition-slow);
+  }
+
+  /* Truncate Text */
+  .truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Mobile Blocker (700px 미만) */
+@media (max-width: 699px) {
+  #root {
+    display: none;
+  }
+  
+  #mobile-blocker {
+    display: flex;
+  }
+}
+
+@media (min-width: 700px) {
+  #mobile-blocker {
+    display: none;
+  }
+}

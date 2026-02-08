@@ -1,0 +1,204 @@
+# Domestic Seller 1.0 – Figma 디자인 스펙
+
+**Figma 파일**: [Domestic Seller 1.0](https://www.figma.com/design/4w3ft8RpGwoho5EtvNO9hQ/Domestic-Seller-1.0?node-id=1194-5754)  
+**문서 버전**: 1.0  
+**최종 확인**: 2026-01-28  
+
+---
+
+## 1. 개요
+
+중고차 딜러 플랫폼 **Domestic Seller 1.0** Figma 디자인은 다음 두 흐름을 포함합니다.
+
+| 구분 | 설명 | 태그 |
+|------|------|------|
+| A. 회원 / 인증 관리 | 회원가입 진입 → 단계별 가입 → 약관동의 → 승인대기/승인완료 | Ready for dev |
+| B. 로그인 후 랜딩 | 로그인 후 메인 페이지, 전체 차량 목록 등 | - |
+| C. 첫 홈/랜딩 | 첫 진입·로그아웃 시 첫 화면 (노드 1194-7481) | 구현 완료 |
+| D. 로그인 후 메인 랜딩 | 로그인/회원가입 성공 후 전체 차량 (노드 1194-7664) | 구현 완료 |
+| E. 매물등록관리 | 매물목록뷰 + 매물등록 플로우 (노드 1198-6370, 1198-6939, 1198-6578, 1198-6791, 1198-5843, 1198-5889) | 구현 완료 |
+
+---
+
+## 2. C. 첫 홈/랜딩 (Landing, node 1194-7481)
+
+- **역할**: 웹앱 첫 진입·로그아웃 시 노출되는 첫 화면
+- **구성**
+  - **Header**: FORWARDMAX 로고, 차량목록/거래/탁송/정산(아이콘), 검색, 유저(홍길동님)+드롭다운, 매물등록하기
+  - **Hero**: 차량 배경 이미지+다크 오버레이, "안녕하세요 홍길동님! 👋", "ForwardMax Cariv와 함께 첫 거래를 시작해보세요", CTA "지금 시작하기 >", 하단 곡선 전환
+  - **사용 가이드**: 제목 "사용 가이드", 5단계 카드 (STEP.1 차량 업로드 ~ STEP.5 거래 완료)
+  - **FAQ**: "자주 묻는 질문이에요", 6개 아코디언
+  - **문의**: "다른 궁금증이 있으시다면", 카카오톡 1:1 "지금 바로 문의하기"
+  - **Footer**: "ForwardMax Cariv Domestic Seller 1.0 Prototype"
+- **구현**: `src/pages/landing/LandingPage.tsx`, `src/widgets/Header/ui/LandingHeader.tsx`
+
+---
+
+## 2-2. D. 로그인 후 메인 랜딩 (Main Landing, node 1194-7664)
+
+- **역할**: 로그인/회원가입 성공 후 첫 화면 = 전체 차량 그리드
+- **구성**
+  - **Header**: FORWARDMAX 로고, 차량목록(활성)·거래·탁송·정산, 검색, **알림**, 유저(홍길동님), **매물 등록하기**(차량 아이콘)
+  - **좌측 사이드바**: 검색(차량번호/모델명), 목록(전체, 차량 상태, 판매/거래 단계, 탁송 단계, 정산)
+  - **메인**: 제목 "전체 차량", 버튼 "확인 필요차량", 차량 카드 그리드(3열), **페이지네이션**(1 2 3 … 10)
+  - **카드**: 상태(빨간 점 + 경매중/검차 진행 중 등), 타임스탬프(16:03:30), 이미지, 모델명, 연식·주행거리, 가격(파란 굵게), 신차가(회색), 태그(낙찰가, 단순교환부위, 기본정보, 성능점검)
+  - **푸터**: ForwardMax Cariv Domestic Seller 1.0 Prototype
+- **구현**: `src/pages/admin/DashboardPage.tsx`, `src/widgets/Header/ui/LandingHeader.tsx`(variant=main), `src/widgets/MainLandingSidebar/ui/MainLandingSidebar.tsx`, `src/entities/vehicle/ui/VehicleCard.tsx`(variant=mainLanding)
+
+---
+
+## 3. A. 회원 / 인증 관리 (Membership / Authentication)
+
+### 3.1 회원가입 진입 / 1단계 첫페이지 (Figma 1194-6171)
+
+- **역할**: 로그인 모달에서 "회원가입" 클릭 시 진입. 딜러 증빙조건 안내 후 "딜러로 시작하기"로 step1 이동.
+- **구성**
+  - 제목: "회원가입"
+  - 안내: "딜러 자격으로 가입을 위한 증빙조건이 필요합니다."
+  - 3카드: 사업자 필수 정보 입력, 중고차 매매업 관련 인증, 정산(입출금) 관련 정보 (아이콘 + 제목 + 설명)
+  - CTA: "딜러로 시작하기" → `/signup/step1`
+  - 링크: "이미 회원이라면? 로그인" → `/`
+- **구현**: `src/pages/auth/SignupEntryPage.tsx`. GNB "로그인" 클릭 시 `LoginModal` 표시, 모달 내 "회원가입" 클릭 시 `/signup` 이동.
+
+### 3.2 회원가입 Step 1 - 본인인증 (Figma 1194-5792)
+
+- **역할**: "딜러로 시작하기" 후 첫 폼 단계. 기본정보 + 본인인증 + 신분증 등록.
+- **구성**
+  - 제목: "회원가입"
+  - 가로형 스텝퍼: 1 본인인증 (현재), 2 사업자 정보 입력, 3 중고차 매매업 인증, 4 정산 정보 입력, 5 약관 동의, 6 승인 대기
+  - **기본정보 입력 \***: 아이디 + [중복 확인], 비밀번호 (6자 이상, 눈 아이콘), 비밀번호 확인 (6자 이상, 눈 아이콘)
+  - **본인인증 \***: 이메일 (아이디 @ 도메인 선택), 이름, 휴대폰 번호 + [인증번호 전송], 인증번호 (인증이 완료되었습니다.)
+  - **신분증 등록 \***: 업로드 영역 (더블클릭 또는 드래그), [파일추가] [항목 제거] [전체 항목 제거]
+  - [이전] → `/signup`, [다음] → `/signup/step2`
+- **구현**: `src/pages/auth/SignupStep1Page.tsx`
+
+### 3.3 회원가입 2~4단계 (폼)
+
+- **회원가입_1**: 기본 정보 (아이디, 비밀번호 등)
+- **회원가입_2**: 추가 정보 (이름, 생년월일, 성별 등)
+- **회원가입_3**: 연락처 (휴대폰, 이메일, 주소 등)
+- **회원가입_4**: 상세 정보 (직업, 회사, 추천인 등)
+- **공통**: 상단 "회원가입" 제목, 폼 필드, 하단 "다음" 버튼
+
+### 3.4 회원가입_5_약관동의
+
+- **역할**: 이용약관·개인정보처리방침 동의
+- **구성**
+  - 상단: "회원가입" + "약관동의"
+  - 스크롤 가능한 약관 본문
+  - 필수/선택 동의 체크박스
+  - 하단: "동의하고 다음" 버튼
+
+### 3.5 회원가입_6_승인대기
+
+- **역할**: 가입 완료 후 관리자 승인 대기 안내
+- **구성**
+  - 상단: "회원가입" + "승인대기"
+  - 중앙: 대기 아이콘, "회원가입 신청이 완료되었습니다. 관리자 승인 대기 중입니다." 문구
+  - 하단: "확인" 또는 "메인으로 이동" 버튼
+
+### 3.6 회원가입_6_승인완료
+
+- **역할**: 관리자 승인 완료 안내
+- **구성**
+  - 상단: "회원가입" + "승인완료"
+  - 중앙: 완료 아이콘, "회원가입이 성공적으로 완료되었습니다!" 문구
+  - 하단: "로그인" 또는 "메인으로 이동" 버튼
+
+---
+
+## 4. B. 로그인 후 랜딩 페이지
+
+- **화면명**: 로그인 후 랜딩페이지_전체차..
+- **역할**: 로그인 후 메인, 전체 차량 목록
+- **구성**
+  - 상단: 네비게이션/헤더 (사용자 정보, 검색, 필터 등)
+  - 본문: 차량 그리드 (이미지, 차량명/모델, 가격·상태 등)
+
+---
+
+## 5. E. 매물등록관리 (Vehicle Registration Management)
+
+### 5.1 매물목록뷰 (Figma 1198-6370)
+
+- **역할**: 회원가입/로그인 후 진입하는 "나의 매물 목록" 화면
+- **구성**
+  - **GNB**: LandingHeader (variant=main, activeNav='vehicles') - FORWARDMAX 로고, 차량목록(활성)/검차/거래/탁송/정산, 검색/알림/사용자, 매물 등록하기 버튼
+  - **좌측 사이드바**: MainLandingSidebar - 검색 필드 (차량번호/모델명)
+  - **메인**: 제목 "나의 매물 목록", 필터 탭 (전체/임시저장됨/등록완료) + 건수, 그리드/리스트 토글, 확인 필요차량 체크박스, 차량 카드 그리드(3열), 페이지네이션
+  - **카드**: 상태(빨간 점 + 등록됨/임시저장됨), 타임스탬프(16:03:30), 이미지, 모델명, 연식·주행거리, 가격(파란 굵게), 신차가(회색), 태그
+  - **푸터**: ForwardMax Cariv Domestic Seller 1.0 Prototype
+- **구현**: `src/pages/admin/VehicleListPage.tsx`, `LandingHeader`(variant=main), `MainLandingSidebar`, `SegmentedControl`, `VehicleCard`(variant=mainLanding), `Pagination`
+
+### 5.2 그리드뷰 (Figma 1198-6939)
+
+- **역할**: 매물목록뷰의 그리드 뷰 모드
+- **구성**: 5.1과 동일하되, 메인 영역만 차량 카드 그리드(3열)로 표시
+- **구현**: `VehicleListPage`의 `viewMode === 'grid'` 상태
+
+### 5.3 리스트뷰 (Figma 1198-6578)
+
+- **역할**: 매물목록뷰의 리스트(테이블) 뷰 모드
+- **구성**: 5.1과 동일하되, 메인 영역만 VehicleTable로 표시 (차량번호, 모델명, 연식, 주행거리, 가격, 상태, 액션)
+- **구현**: `VehicleListPage`의 `viewMode === 'list'` 상태, `VehicleTable`
+
+### 5.4 임시저장됨 필터 활성화 (Figma 1198-6791)
+
+- **역할**: 필터 탭에서 "임시저장됨" 선택 시 상태 필터링
+- **구성**: 5.3과 동일하되, 필터 탭에서 "임시저장됨"이 활성화된 상태
+- **구현**: `VehicleListPage`의 `filterTab === 'draft'` 상태, `useVehicles({ status: ['draft'] })`
+
+### 5.5 매물등록 첫 화면 (Figma 1198-5843)
+
+- **역할**: 매물목록뷰에서 "매물 등록하기" 클릭 시 진입하는 첫 화면
+- **구성**
+  - **GNB**: LandingHeader (variant=main, activeNav='vehicles')
+  - **메인**: 제목 "빠르고 간편하게! 완벽한 비대면 차량등록", 차량번호 입력 필드 (KOR 국기 + 입력 필드), 오류 메시지 (※ 이미 등록 또는 거래된 매물입니다), "다음" 버튼
+- **구현**: `src/pages/admin/vehicle/VehicleRegisterEntryPage.tsx`, 경로 `/vehicles/new`
+
+### 5.6 차량원부등록 (Figma 1198-5889)
+
+- **역할**: 매물등록 첫 화면에서 차량번호 입력 후 진입하는 "차량 원부 등록" 화면
+- **구성**
+  - **GNB**: LandingHeader (variant=main, activeNav='vehicles')
+  - **좌측 사이드바**: ProgressSidebar (검색 + 스텝 진행: 차량 업로드(활성)/검차 진행/거래/탁송/완료)
+  - **메인**: 제목 "차량 원부 등록"
+    - **차량 정보 섹션**: 차량 요약 정보 (상태, 타임스탬프, 모델명, 차량번호·연식·주행거리, 태그, 가격·신차가), 차량 이미지 갤러리 (L/R/F/B 뷰)
+    - **차량 등록원부 섹션**: 사업자 등록 번호, 사업자 등록증 이미지 업로드, 대표자명, 사업장 주소, 업태 종목, 사업자 정보 선택, 차량번호 입력 + OCR 실행 버튼
+  - **하단 액션**: 삭제, 임시저장, 거래하기 버튼
+- **구현**: `src/pages/admin/vehicle/VehicleRegisterStep1Page.tsx`, 경로 `/vehicles/new/step1`
+
+---
+
+## 6. 프로젝트 내 대응 관계
+
+| Figma 화면 | 프로젝트 경로/페이지 |
+|------------|----------------------|
+| **첫 홈/랜딩 (1194-7481)** | `src/pages/landing/LandingPage.tsx`, `src/widgets/Header/ui/LandingHeader.tsx` |
+| **로그인 후 메인 랜딩 (1194-7664)** | `src/pages/admin/DashboardPage.tsx`, `LandingHeader`(variant=main), `MainLandingSidebar`, `VehicleCard`(variant=mainLanding) |
+| **로그인 모달** | GNB "로그인" 클릭 시 `src/shared/ui/LoginModal.tsx` 표시 |
+| **회원가입 1단계 첫페이지 (1194-6171)** | `src/pages/auth/SignupEntryPage.tsx` (3카드, 딜러로 시작하기) |
+| 회원가입 진입 ver2 | (동일 SignupEntryPage로 통합) |
+| **회원가입 Step 1 본인인증 (1194-5792)** | `src/pages/auth/SignupStep1Page.tsx` (기본정보, 본인인증, 신분증) |
+| 회원가입_2~5 | `SignupStep2Page.tsx` ~ `SignupStep5Page.tsx` |
+| 회원가입_5_약관동의 | `SignupStep5Page.tsx` (약관 단계) |
+| 회원가입_6_승인대기 | `src/pages/auth/SignupPendingPage.tsx` |
+| 회원가입_6_승인완료 | `src/pages/auth/SignupCompletePage.tsx` |
+| 로그인 후 랜딩 | `src/pages/admin/DashboardPage.tsx` 또는 차량 목록 페이지 |
+| **매물목록뷰 (1198-6370)** | `src/pages/admin/VehicleListPage.tsx`, `LandingHeader`(variant=main), `MainLandingSidebar`, `SegmentedControl`, `VehicleCard`(variant=mainLanding) |
+| **그리드뷰 (1198-6939)** | `VehicleListPage` (viewMode='grid') |
+| **리스트뷰 (1198-6578)** | `VehicleListPage` (viewMode='list'), `VehicleTable` |
+| **임시저장됨 필터 (1198-6791)** | `VehicleListPage` (filterTab='draft') |
+| **매물등록 첫 화면 (1198-5843)** | `src/pages/admin/vehicle/VehicleRegisterEntryPage.tsx`, 경로 `/vehicles/new` |
+| **차량원부등록 (1198-5889)** | `src/pages/admin/vehicle/VehicleRegisterStep1Page.tsx`, 경로 `/vehicles/new/step1`, `ProgressSidebar` |
+
+---
+
+## 7. ReNew 폴더 용도
+
+- **FIGMA_DESIGN_SPEC.md** (본 문서): Figma 디자인 요약 및 화면별 스펙
+- 추후 추가 가능: 스크린샷, 컴포넌트 매핑표, 디자인 토큰 정리 등
+
+---
+
+*Figma 파일 접근: 비밀번호 설정 시 링크 공유 전 "Anyone with the link"로 변경 필요.*
