@@ -6,7 +6,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
+import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { VehicleTable } from '@/widgets/VehicleTable/ui/VehicleTable';
 import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
@@ -93,15 +93,13 @@ export const TradeListPage = () => {
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="offers" />
 
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <div className="flex">
-          <MainLandingSidebar
-            searchValue={searchTerm}
-            onSearchChange={setSearchTerm}
-            activeKey="sale"
-          />
-
-          <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_LIST}`}>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <GnbMinimalSidebar
+          sectionTitle="거래"
+          searchValue={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
+        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_LIST}`}>
             <h1 className="text-h1 font-bold text-gray-900 mb-6">거래 목록</h1>
 
             <div className="flex items-center justify-between mb-6">
@@ -191,7 +189,6 @@ export const TradeListPage = () => {
               </>
             )}
           </main>
-        </div>
 
         <footer className="py-6 border-t border-gray-200">
           <p className="text-caption text-gray-500">

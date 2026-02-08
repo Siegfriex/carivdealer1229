@@ -1,0 +1,371 @@
+// CarivDealer DB Schema (DBML)
+// 출처: docs/CarivDealer_API_ERD_Mapping.md, docs/CarivDealer_api_v1.md
+// ERD 기준: erd/IMG_3923.png (CarivDealer_ERD_v1.0) — snake_case
+// 생성일: 2026-02-09
+// 시각화: (1) VS Code dbdiagram 확장 설치 후 이 파일 열고 Ctrl+Shift+P → "DBML: Open Preview to the Side"
+//        (2) https://dbdiagram.io → Import → DBML 붙여넣기
+
+Project CarivDealer_ERD {
+  database_type: 'PostgreSQL'
+  Note: '중고차 딜러 플랫폼 ERD. API 범위: 회원가입·로그인·차량·검차. 확장 제안: 경매·탁송·정산·오퍼.'
+}
+
+// ========== Enums (API·DB 공통 값 목록) ==========
+
+Enum dealer_verification_status {
+  DRAFT [note: '임시저장']
+  SUBMITTED [note: '제출됨']
+  APPROVED [note: '승인완료']
+  REJECTED [note: '반려']
+}
+
+Enum vehicle_status {
+  DRAFT [note: '작성중/임시저장']
+  LISTABLE [note: '등록완료·노출']
+  HIDDEN [note: '비공개']
+  DELETED [note: '삭제']
+}
+
+Enum inspection_status {
+  REQUESTED [note: '검차 신청됨']
+  MATCHING_IN_PROGRESS [note: '검차자 매칭 중']
+  MATCHING_COMPLETED [note: '검차자 매칭완료']
+  IN_PROGRESS [note: '검차중']
+  COMPLETED [note: '검차완료']
+  CANCELED [note: '취소']
+}
+
+Enum fuel_type {
+  GASOLINE
+  DIESEL
+  LPG
+  ELECTRIC
+  HYBRID
+  ETC
+}
+
+Enum transmission_type {
+  AT
+  MT
+  CVT
+  DCT
+  ETC
+}
+
+Enum file_purpose {
+  BUSINESS_REGISTRATION
+  VEHICLE_REG_DOC
+  ETC
+}
+
+Enum account_option {
+  CORPORATE
+  PERSONAL
+}
+
+// ========== 1. 사용자·인증 (회원가입·로그인) ==========
+
+Table seller_user {
+  seller_user_id bigint [pk, increment, note: 'PK']
+  email varchar(255) [not null]
+  password varchar(255) [note: '로컬 로그인 시만']
+  phone varchar(50)
+  name varchar(100)
+  provider varchar(50) [note: 'LOCAL, KAKAO, GOOGLE']
+  provider_id varchar(255) [note: '소셜 제공자 식별자']
+  last_login_at timestamp [note: 'DB-only: API 미노출']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: '판매자(딜러) 계정. POST /auth/login, /auth/kakao/login, /auth/google/login'
+}
+
+Table user_profile {
+  user_profile_id bigint [pk, increment]
+  seller_user_id bigint [not null, ref: > seller_user.seller_user_id]
+  profile_image_url varchar(512)
+  nickname varchar(100)
+  gender varchar(20)
+  birth_date date
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: '사용자 프로필 확장 정보'
+}
+
+Table auth_refresh_token {
+  refresh_token_id bigint [pk, increment]
+  token varchar(512) [not null]
+  seller_user_id bigint [not null, ref: > seller_user.seller_user_id]
+  expires_at timestamp [not null, note: 'DB-only: API 미노출']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Note: 'Refresh 토큰. accessToken은 Redis 등 별도 저장(API §1.2)'
+}
+
+Table user_file {
+  user_file_id bigint [pk, increment]
+  seller_user_id bigint [not null, ref: > seller_user.seller_user_id]
+  purpose varchar(100) [not null, note: 'BUSINESS_REGISTRATION, VEHICLE_REG_DOC 등']
+  original_name varchar(255)
+  content_type varchar(100)
+  size bigint
+  url varchar(1024) [not null, note: 'API: fileId → user_file_id']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: 'POST /auth/files, POST /vehicle/files. purpose별 파일 메타'
+}
+
+// ========== 2. 딜러 인증·사업자·주소·서약·정산계좌 ==========
+
+Table seller_dealer {
+  seller_dealer_id bigint [pk, increment]
+  seller_user_id bigint [not null, ref: > seller_user.seller_user_id]
+  business_no varchar(50) [not null]
+  representative_name varchar(100) [not null]
+  business_phone varchar(50)
+  business_type varchar(100) [note: '업태/종목. API: businessType']
+  business_info_type varchar(100) [note: 'API: businessInfoType']
+  vat_type varchar(50) [note: 'TAXABLE 등']
+  dealer_company_name varchar(200)
+  dealer_employee_card_no varchar(50) [note: 'API: dealerEmployeeCardNo']
+  status dealer_verification_status [not null, note: 'API: dealerVerificationStatus']
+  next_step int [note: '가입 다음 단계 번호. 계산값으로도 사용']
+  approval_status varchar(50) [note: 'DB-only: 승인 상세. API 미노출']
+  reject_reason text [note: 'DB-only: 반려 사유']
+  business_registration_file_id bigint [ref: > user_file.user_file_id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: 'PUT /signup/dealer, POST /signup/dealer/submit. GET /signup/status'
+}
+
+Table seller_dealer_address {
+  seller_dealer_address_id bigint [pk, increment]
+  seller_dealer_id bigint [not null, ref: > seller_dealer.seller_dealer_id]
+  place_id varchar(255) [note: 'API: officeAddress.placeId']
+  address varchar(512)
+  detail_address varchar(255) [note: 'API: officeAddress.detailAddress']
+  zip_code varchar(20)
+  post_code varchar(20) [note: 'DB-only']
+  full_address varchar(1024) [note: 'DB-only']
+  address_type varchar(50) [note: 'DB-only']
+  lat decimal(10, 7)
+  lng decimal(10, 7)
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: '딜러 사업장 주소'
+}
+
+Table seller_dealer_file {
+  seller_dealer_file_id bigint [pk, increment]
+  seller_dealer_id bigint [not null, ref: > seller_dealer.seller_dealer_id]
+  user_file_id bigint [not null, ref: > user_file.user_file_id]
+  purpose varchar(100) [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: 'usedCarDealerLicenseFileIds, employeeCardPhotoFileIds 등'
+}
+
+Table seller_dealer_pledge {
+  seller_dealer_pledge_id bigint [pk, increment]
+  seller_dealer_id bigint [not null, ref: > seller_dealer.seller_dealer_id]
+  signature_text varchar(100) [note: 'API: pledge.signatureText']
+  association_member boolean [note: 'API: pledge.associationMember']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: 'pledge.agreed 컬럼 없음 → needs_domain_decision'
+}
+
+Table seller_settlement_account {
+  settlement_account_id bigint [pk, increment]
+  seller_dealer_id bigint [not null, ref: > seller_dealer.seller_dealer_id]
+  account_no varchar(50) [not null]
+  bank_name varchar(100) [not null]
+  depositor_name varchar(100) [not null]
+  account_option account_option [note: 'CORPORATE, PERSONAL']
+  passbook_copy_file_id bigint [ref: > user_file.user_file_id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: 'PUT /signup/settlement. 정산 계좌'
+}
+
+// ========== 3. 차량·차량 파일 ==========
+
+Table vehicle {
+  vehicle_id bigint [pk, increment]
+  seller_dealer_id bigint [not null, ref: > seller_dealer.seller_dealer_id]
+  vehicle_no varchar(50) [not null, note: '차량번호. API: vehicleNo']
+  vin varchar(50) [note: '차대번호']
+  first_registered_at date [note: 'API: firstRegisteredAt']
+  mileage_km int
+  brand varchar(100)
+  model_name varchar(200) [not null]
+  model_year int
+  fuel_type fuel_type [note: 'API: fuel']
+  transmission_type transmission_type [note: 'API: transmission']
+  exterior_color varchar(50)
+  interior_color varchar(50)
+  status vehicle_status [not null]
+  display_status varchar(100) [note: '계산값 또는 저장. 화면용 한글 라벨']
+  latest_inspection_status inspection_status [note: '계산값: 최신 검차 1건 status']
+  can_edit boolean [note: '계산값: 편집 허용 여부']
+  primary_cta varchar(100) [note: '계산값: 목록 카드 주 액션 라벨']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: 'GET/POST/PUT/PATCH/DELETE /vehicles. GET /vehicles/lookup, POST /vehicles/ocr/parse'
+}
+
+Table vehicle_file {
+  vehicle_file_id bigint [pk, increment]
+  vehicle_id bigint [not null, ref: > vehicle.vehicle_id]
+  user_file_id bigint [not null, ref: > user_file.user_file_id]
+  purpose varchar(100) [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: '차량별 첨부 파일'
+}
+
+// ========== 4. 검차·검차 장소 ==========
+
+Table inspection_place {
+  inspection_place_id bigint [pk, increment]
+  place_id varchar(255)
+  place_name varchar(200)
+  address varchar(512)
+  detail_address varchar(255)
+  zip_code varchar(20)
+  lat decimal(10, 7)
+  lng decimal(10, 7)
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: '검차 장소 마스터. schedule.requestDate → desired_date + desired_time'
+}
+
+Table inspection {
+  inspection_id bigint [pk, increment]
+  vehicle_id bigint [not null, ref: > vehicle.vehicle_id]
+  inspection_place_id bigint [ref: > inspection_place.inspection_place_id]
+  desired_date date [not null, note: 'API: schedule.requestDate (날짜부)']
+  desired_time varchar(20) [note: 'API: schedule.requestDate (시간부)']
+  memo text
+  status inspection_status [not null]
+  payment_method varchar(50) [note: 'AUTO 등']
+  payment_provider varchar(50) [note: 'CARD 등']
+  auto_pay_agree boolean
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  Note: 'POST /vehicles/:id/inspections, GET /vehicles/:id/inspections/latest'
+}
+
+// ========== 5. 확장 제안 테이블 (ERD_Mapping §경매·탁송·정산·오퍼) ==========
+
+Table auction {
+  auction_id bigint [pk, increment]
+  vehicle_id bigint [not null, ref: > vehicle.vehicle_id]
+  start_price decimal(15, 0) [note: '경매 시작가(원)']
+  buy_now_price decimal(15, 0) [note: '즉시 판매가']
+  start_at timestamp
+  end_at timestamp
+  status varchar(50) [note: 'DRAFT, ACTIVE, COMPLETED']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Note: '제안. vehicle.sale_mode=AUCTION 시 1:1. API 확장 시 POST /vehicles/:id/auction'
+}
+
+Table auction_bid {
+  auction_bid_id bigint [pk, increment]
+  auction_id bigint [not null, ref: > auction.auction_id]
+  bidder_id bigint [note: '입찰자. FK는 도메인 결정 후']
+  bid_amount decimal(15, 0)
+  status varchar(50) [note: 'pending, accepted, rejected, expired']
+  created_at timestamp [not null]
+
+  Note: '제안. 구매 제안/입찰'
+}
+
+Table logistics_schedule {
+  logistics_id bigint [pk, increment]
+  vehicle_id bigint [ref: > vehicle.vehicle_id]
+  scheduled_at timestamp [note: '픽업/배송 예정일시']
+  pickup_address varchar(512)
+  zip_code varchar(20)
+  detail_address varchar(255)
+  status varchar(50) [note: 'scheduled, dispatched, in_transit, completed, canceled']
+  carrier_id bigint [note: '운송사 FK 도메인 결정 후']
+  driver_name varchar(100)
+  driver_phone varchar(50)
+  pin varchar(20) [note: 'PIN 인계용, 암호화 권장']
+  handover_at timestamp
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Note: '제안. GET/POST /logistics/schedule. Figma IA §3.10'
+}
+
+Table settlement {
+  settlement_id bigint [pk, increment]
+  vehicle_id bigint [ref: > vehicle.vehicle_id]
+  seller_dealer_id bigint [ref: > seller_dealer.seller_dealer_id]
+  sale_price decimal(15, 0)
+  settlement_amount decimal(15, 0)
+  platform_fee decimal(15, 0)
+  vat_refund decimal(15, 0)
+  final_amount decimal(15, 0)
+  logistics_fee decimal(15, 0)
+  inspection_fee decimal(15, 0)
+  settlement_date date
+  settlement_status varchar(50) [note: 'pending, completed, paid']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Note: '제안. GET /settlements, GET /settlements/:id. Figma IA §3.11'
+}
+
+Table sales_history {
+  sales_history_id bigint [pk, increment]
+  vehicle_id bigint [ref: > vehicle.vehicle_id]
+  sale_date date
+  sale_price decimal(15, 0)
+  sale_type varchar(50) [note: 'general, auction']
+  buyer_name varchar(100)
+  created_at timestamp [not null]
+
+  Note: '제안. GET /sales/history'
+}
+
+Table offer {
+  offer_id bigint [pk, increment]
+  vehicle_id bigint [not null, ref: > vehicle.vehicle_id]
+  bidder_id bigint [note: '제안자 FK 도메인 결정 후']
+  amount decimal(15, 0)
+  status varchar(50) [note: 'pending, expired, rejected, accepted']
+  expires_at timestamp
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Note: '제안. GET /offers, 수락/거절 API. Figma IA §3.8 오퍼·마이페이지'
+}

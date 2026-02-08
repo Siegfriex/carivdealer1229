@@ -1,12 +1,13 @@
 /**
- * LandingPage
- * 첫 홈 화면 (웹앱 첫 진입·로그아웃 시)
- * Figma 섹션: 1368-37200 (11개 섹션 #1) | SCR 프레임: 1194-7481
- * Hero, 사용 가이드(5단계), FAQ, 문의(KakaoTalk), 푸터
+ * 랜딩 페이지. 첫 진입·로그아웃 시. IA §4.1.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.1
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * 라우트: /. Figma 1368-37201, 1368-43715.
  */
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Button } from '@/shared/ui/Button';
 import { Typography } from '@/shared/ui/Typography';
@@ -70,15 +71,18 @@ export const LandingPage = () => {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const userName = '홍길동'; // TODO: auth context에서 가져오기
 
+  /** 사이트맵: 매물등록 flow 진입 → §3.5_1418-20498_차량등록_비대면_랜딩 */
   const handleStartNow = () => {
-    navigate('/vehicles/new/step1');
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LandingPage:handleStartNow',message:'지금 시작하기',data:{to:'/vehicles/new'},timestamp:Date.now(),hypothesisId:'H_진입',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
+    navigate('/vehicles/new');
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader
         userName={userName}
-        onRegisterListing={handleStartNow}
         variant="main"
         activeNav="vehicles"
       />
@@ -99,7 +103,7 @@ export const LandingPage = () => {
           <Typography variant="h1" className="text-white font-medium mb-6 max-w-2xl">
             ForwardMax Cariv와 함께 첫 거래를 시작해보세요
           </Typography>
-          <Button size="lg" onClick={handleStartNow} className="gap-2">
+          <Button size="lg" onClick={handleStartNow} className="gap-2" type="button">
             지금 시작하기
             <span aria-hidden>&rarr;</span>
           </Button>

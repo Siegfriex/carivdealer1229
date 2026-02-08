@@ -1,19 +1,24 @@
 /**
- * VehicleRegisterStep2Page Component
- * 차량 등록 Step2 (Figma 1418:20576, 1418:21868 — §3.5 차량 등록·상세·경매)
- * 상세 정보·사진 업로드 및 확인. 라우트: /vehicles/new/step2
+ * 차량 등록 Step2. 상세 정보·사진 업로드. IA §4.9 CTA_1.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.9
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * 라우트: /vehicles/new/step2. Figma 1418-20576.
  */
 
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { useDevSkip } from '@/shared/context/DevSkipContext';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { StepProgress, type Step } from '@/shared/ui/StepProgress';
 import { Input } from '@/shared/ui/Input';
 import { Select } from '@/shared/ui/Select';
 import { Button } from '@/shared/ui/Button';
 import { ImageUpload } from '@/shared/ui/ImageUpload';
+import { useFormFeedback } from '@/shared/lib/formFeedback';
 import { Save } from 'lucide-react';
 
 const steps: Step[] = [
@@ -40,34 +45,45 @@ export const VehicleRegisterStep2Page = () => {
 
   const handleSaveDraft = () => {
     console.log('임시저장:', { fuelType, color, price, files });
-    alert('임시저장되었습니다.');
+    showSuccess('임시저장되었습니다.');
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterStep2Page:handleSaveDraft',message:'CTA_1 step2 임시저장',data:{to:'/vehicles?filter=draft'},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
     navigate('/vehicles?filter=draft');
   };
 
   const handleNext = () => {
     const vehicleId = searchParams.get('vehicleId') || 'new';
     if (skipRequired) {
-      navigate(`/vehicles/${vehicleId}/complete`);
+      const to = `/vehicles/${vehicleId}/complete`;
+      // #region agent log
+      fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterStep2Page:handleNext',message:'CTA_1 step2→등록완료',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
+      // #endregion
+      navigate(to);
       return;
     }
     if (!fuelType) {
-      alert('연료 종류를 선택해주세요.');
+      showValidationError('연료 종류를 선택해주세요.');
       return;
     }
     if (!price) {
-      alert('판매가를 입력해주세요.');
+      showValidationError('판매가를 입력해주세요.');
       return;
     }
-
-    navigate(`/vehicles/${vehicleId}/complete`);
+    const to = `/vehicles/${vehicleId}/complete`;
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterStep2Page:handleNext',message:'CTA_1 step2→등록완료(검차신청)',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
+    navigate(to);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
 
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <main className={`py-8 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <ProgressSidebar steps={getRegisterFlowSteps('upload')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline />
+        <main className={`flex-1 py-8 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
           <StepProgress steps={steps} className="mb-12" />
 
           <div className="mx-auto max-w-4xl">

@@ -1,12 +1,13 @@
 /**
- * AuctionDetailPage (Figma 1418:21690 거래상세_경매 — §3.5 차량 등록·상세·경매)
- * 거래 상세 보기 — 경매 거래 중. 좌측 진행상황, 차량정보·전체 피드백, 거래 정보(경매)·판매 방식 4카드.
- * 모달: 21512 삭제 확인, 24856 변경불가, 22153 판매방식 변경 확인.
- * 라우트: /vehicles/:id/auction
+ * 경매 거래 상세. CTA_3 경매 플로우. IA §4.11.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.11
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * 라우트: /vehicles/:vehicleId/auction. Figma 1418-21690.
  */
 
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -36,7 +37,11 @@ export const AuctionDetailPage = () => {
 
   const handleBack = () => navigate(vehicleId ? `/vehicles/${vehicleId}` : '/vehicles');
   const handleStartPrice = () => {
-    if (vehicleId) navigate(`/vehicles/${vehicleId}/auction/start-price`);
+    const to = vehicleId ? `/vehicles/${vehicleId}/auction/start-price` : '/vehicles';
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuctionDetailPage:handleStartPrice',message:'CTA_3 경매 상세→시작가',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA3_auction',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
+    if (vehicleId) navigate(to);
   };
 
   const handleDeleteConfirm = () => {

@@ -1,11 +1,10 @@
 /**
  * useBid Hook
- * 경매 입찰 (useMutation)
+ * 경매 입찰 (useMutation). apiClient.auction.bid 단일 경로 사용.
  */
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api/client';
-import { API_ENDPOINTS } from '@/shared/config/apiEndpoints';
 
 interface BidInput {
   auction_id: string;
@@ -22,7 +21,7 @@ export const useBid = () => {
 
   return useMutation({
     mutationFn: async (input: BidInput): Promise<BidResponse> => {
-      return await apiClient.post<BidResponse>(API_ENDPOINTS.AUCTION.BID, input);
+      return await apiClient.auction.bid(input.auction_id, input.bid_amount);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['auctions'] });

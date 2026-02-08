@@ -87,4 +87,16 @@ export const mockResponses = {
       evaluatorId: 'eval-001',
     },
   }),
+  // Auction APIs (타임아웃/네트워크 오류 시 폴백)
+  auction: {
+    bid: (_auctionId: string, _bidAmount: number) => ({
+      success: true,
+      message: '입찰이 접수되었습니다.',
+    }),
+    buyNow: (_auctionId: string) => ({
+      success: true,
+      contract_id: `contract-${Date.now()}`,
+      message: '즉시구매가 완료되었습니다.',
+    }),
+  },
 };

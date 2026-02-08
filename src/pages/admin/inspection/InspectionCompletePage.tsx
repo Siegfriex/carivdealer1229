@@ -8,41 +8,15 @@
 
 import { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { Card } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { User, ChevronDown, ChevronUp } from 'lucide-react';
 import { MOCK_INSPECTIONS } from './mockInspectionList';
-
-/** 검차 완료 페이지용 좌측 사이드바 (참조 10285) */
-function InspectionCompleteSidebar() {
-  return (
-    <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-64px)] p-4">
-      <div className="mb-6">
-        <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
-        <input
-          type="text"
-          placeholder="차량번호/모델명"
-          className="w-full pl-3 pr-10 py-2.5 border border-gray-200 rounded-md text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
-        />
-      </div>
-      <div>
-        <h3 className="text-button font-medium text-gray-700 mb-2">현재 거래 진행상황</h3>
-        <ul className="space-y-1">
-          {['차량 업로드', '검차 진행', '거래', '탁송', '완료'].map((label, i) => (
-            <li key={label} className="flex items-center gap-2">
-              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${i <= 1 ? 'bg-primary' : 'bg-gray-300'}`} />
-              <span className={`text-body ${i === 1 ? 'font-medium text-primary' : 'text-gray-600'}`}>
-                {i === 1 ? '검차 진행 중...' : label}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </aside>
-  );
-}
 
 const FEEDBACK_COUNTS = { good: 95, minor: 12, caution: 3, defect: 1 };
 const SUMMARY_TEXT = '총 111개의 항목이 검사되었습니다. 전반적인 상태는 양호하며, 일부 부위에 경미한 스키레치가 확인되었습니다.';
@@ -81,15 +55,37 @@ export const InspectionCompletePage = () => {
   const locationDisplay = inspection?.location?.address ?? '인천광역시 서구 봉수대로 158';
   const dateDisplay = inspection ? `${inspection.preferredDate} ${inspection.preferredTime}` : '2026년 1월 10일 (일) 오후 11:00';
 
-  const handleAuctionSale = () => navigate('/offers?type=auction');
-  const handleGeneralSale = () => navigate('/offers?type=general');
+  const vehicleId = inspection?.vehicleId;
+
+  const handleAuctionSale = () => {
+    const to = vehicleId ? `/vehicles/${vehicleId}/auction/start-price` : '/offers?type=auction';
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleAuctionSale',message:'검차완료→CTA_3 경매(해당 차량)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
+    navigate(to);
+  };
+  const handleGeneralSale = () => {
+    const to = vehicleId ? `/vehicles/${vehicleId}/sale/analyzing` : '/offers?type=general';
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleGeneralSale',message:'검차완료→CTA_3 일반(시세분석)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
+    navigate(to);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
+      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        <InspectionCompleteSidebar />
+        <aside className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}>
+          <div className="p-4 border-b border-gray-200">
+            <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
+            <input
+              type="text"
+              placeholder="차량번호/모델명"
+              className="w-full pl-3 pr-10 py-2.5 border border-gray-200 rounded-md text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          <div className="flex-1 overflow-auto">
+            <ProgressSidebar steps={getRegisterFlowSteps('trade')} inline />
+          </div>
+        </aside>
 
         <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING}`}>
           <h1 className="text-h1 font-bold text-gray-900 mb-8">검차내역</h1>
@@ -231,17 +227,30 @@ export const InspectionCompletePage = () => {
             </div>
           </div>
 
-          {/* 판매 방식 선택 */}
+          {/* 판매 방식 선택: 검차 완료된 경우에만 표시 */}
           <Card className="p-8">
-            <h2 className="text-h3 font-bold text-gray-900 mb-6 text-center">판매 방식을 선택하세요</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Button size="lg" fullWidth onClick={handleAuctionSale}>경매로 판매하기</Button>
-              <Button size="lg" variant="secondary" fullWidth onClick={handleGeneralSale}>일반 판매하기</Button>
-            </div>
-            <div className="mt-4 flex justify-center gap-4">
-              <Button variant="ghost" onClick={() => navigate('/inspections')}>목록으로</Button>
-              <Button variant="secondary" onClick={() => navigate(`/inspections/${inspectionId}/progress?stage=complete`)}>검차 진행상황</Button>
-            </div>
+            {inspection?.status === 'completed' ? (
+              <>
+                <h2 className="text-h3 font-bold text-gray-900 mb-6 text-center">판매 방식을 선택하세요</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Button size="lg" fullWidth onClick={handleAuctionSale}>경매로 판매하기</Button>
+                  <Button size="lg" variant="secondary" fullWidth onClick={handleGeneralSale}>일반 판매하기</Button>
+                </div>
+                <div className="mt-4 flex justify-center gap-4">
+                  <Button variant="ghost" onClick={() => navigate('/inspections')}>목록으로</Button>
+                  <Button variant="secondary" onClick={() => navigate(`/inspections/${inspectionId}/progress?stage=complete`)}>검차 진행상황</Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 className="text-h3 font-bold text-gray-900 mb-2 text-center">검차 진행 중</h2>
+                <p className="text-body text-gray-600 text-center mb-6">검차가 완료되면 판매 방식을 선택할 수 있습니다.</p>
+                <div className="flex justify-center gap-4">
+                  <Button variant="ghost" onClick={() => navigate('/inspections')}>목록으로</Button>
+                  <Button variant="secondary" onClick={() => navigate(`/inspections/${inspectionId}/progress`)}>검차 진행상황</Button>
+                </div>
+              </>
+            )}
           </Card>
         </main>
       </div>

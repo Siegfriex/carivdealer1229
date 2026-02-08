@@ -8,17 +8,13 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useBid } from './useBid';
 
-const apiClientPost = vi.fn();
+const auctionBid = vi.fn();
 
 vi.mock('@/shared/api/client', () => ({
   apiClient: {
-    post: (...args: unknown[]) => apiClientPost(...args),
-  },
-}));
-
-vi.mock('@/shared/config/apiEndpoints', () => ({
-  API_ENDPOINTS: {
-    AUCTION: { BID: 'auction/bid' },
+    auction: {
+      bid: (auctionId: string, bidAmount: number) => auctionBid(auctionId, bidAmount),
+    },
   },
 }));
 
@@ -37,11 +33,11 @@ function createWrapper() {
 
 describe('useBid', () => {
   beforeEach(() => {
-    apiClientPost.mockReset();
+    auctionBid.mockReset();
   });
 
-  test('mutation 성공 시 apiClient.post 호출 및 onSuccess 동작', async () => {
-    apiClientPost.mockResolvedValue({ success: true, message: '입찰되었습니다.' });
+  test('mutation 성공 시 apiClient.auction.bid 호출 및 onSuccess 동작', async () => {
+    auctionBid.mockResolvedValue({ success: true, message: '입찰되었습니다.' });
 
     const { result } = renderHook(() => useBid(), {
       wrapper: createWrapper(),
@@ -54,15 +50,12 @@ describe('useBid', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(apiClientPost).toHaveBeenCalledWith('auction/bid', {
-      auction_id: 'auc-1',
-      bid_amount: 1000,
-    });
+    expect(auctionBid).toHaveBeenCalledWith('auc-1', 1000);
     expect(result.current.data).toEqual({ success: true, message: '입찰되었습니다.' });
   });
 
   test('mutation 실패 시 error 상태', async () => {
-    apiClientPost.mockRejectedValue(new Error('입찰 실패'));
+    auctionBid.mockRejectedValue(new Error('입찰 실패'));
 
     const { result } = renderHook(() => useBid(), {
       wrapper: createWrapper(),

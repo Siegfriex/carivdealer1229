@@ -1,36 +1,33 @@
 /**
- * VehicleRegisterStep1Page Component
- * 차량 등록 Step1 (Figma 1418:23705, 1418:23880 — §3.5 차량 등록·상세·경매)
- *
- * 좌측: ProgressSidebar (검색 + 스텝 진행)
- * 메인: 차량 정보 섹션 + 차량 등록원부 섹션. 라우트: /vehicles/new/step1
+ * 차량 등록 Step1. 원부등록·차량 정보. IA §4.9 CTA_1.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.9
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * 라우트: /vehicles/new/step1. Figma 1418-20498 원부등록-2/-1.
  */
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { useDevSkip } from '@/shared/context/DevSkipContext';
 import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
 import { ImageUpload } from '@/shared/ui/ImageUpload';
+import { MessageModal } from '@/shared/ui/MessageModal';
 import { ocrRegistration } from '@/features/vehicle/register-form/api/vehicleApi';
 import { VehicleStatusBadge } from '@/entities/vehicle/ui/VehicleStatusBadge';
+import { useFormFeedback } from '@/shared/lib/formFeedback';
 import { ChevronLeft, ChevronRight, ScanEye, Search } from 'lucide-react';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-
-const progressSteps: ProgressStep[] = [
-  { id: 'upload', label: '차량 업로드', status: 'current' },
-  { id: 'inspection', label: '검차 진행', status: 'upcoming' },
-  { id: 'trade', label: '거래', status: 'upcoming' },
-  { id: 'logistics', label: '탁송', status: 'upcoming' },
-  { id: 'complete', label: '완료', status: 'upcoming' },
-];
+import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 
 export const VehicleRegisterStep1Page = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { showValidationError, showSuccess } = useFormFeedback();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [plateNumber, setPlateNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -70,7 +67,7 @@ export const VehicleRegisterStep1Page = () => {
 
   const handleOcr = async () => {
     if (!skipRequired && !plateNumber) {
-      alert('차량번호를 입력해주세요');
+      showValidationError('차량번호를 입력해주세요');
       return;
     }
 
@@ -87,7 +84,7 @@ export const VehicleRegisterStep1Page = () => {
       });
     } catch (error) {
       console.error('OCR failed:', error);
-      alert('OCR 처리에 실패했습니다');
+      showValidationError('OCR 처리에 실패했습니다');
     } finally {
       setOcrLoading(false);
     }
@@ -96,28 +93,45 @@ export const VehicleRegisterStep1Page = () => {
   const handleSaveDraft = async () => {
     // TODO: 임시저장 API 호출 (status: 'draft')
     console.log('임시저장:', { vehicleData, registrationData });
-    alert('임시저장되었습니다.');
+    showSuccess('임시저장되었습니다.');
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterStep1Page:handleSaveDraft',message:'CTA_1 step1 임시저장',data:{to:'/vehicles?filter=draft'},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
     navigate('/vehicles?filter=draft');
   };
 
   const handleSubmit = () => {
     // TODO: 등록 제출 API 호출
     console.log('등록 제출:', { vehicleData, registrationData });
-    // 차량번호를 쿼리 파라미터로 전달
-    const params = new URLSearchParams();
-    if (plateNumber) params.set('plateNumber', plateNumber);
-    const queryString = params.toString();
-    navigate(`/vehicles/new/step2${queryString ? `?${queryString}` : ''}`);
+    const queryString = plateNumber ? `plateNumber=${encodeURIComponent(plateNumber)}` : '';
+    const to = `/vehicles/new/step2${queryString ? `?${queryString}` : ''}`;
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterStep1Page:handleSubmit',message:'CTA_1 step1→step2',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
+    navigate(to);
   };
 
   const handleDelete = () => {
-    if (confirm('정말 삭제하시겠습니까?')) {
-      navigate('/vehicles');
-    }
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = () => {
+    navigate('/vehicles');
+    setShowDeleteConfirm(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <MessageModal
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        title="삭제 확인"
+        message="정말 삭제하시겠습니까?"
+        confirmLabel="삭제"
+        cancelLabel="취소"
+        onConfirm={handleConfirmDelete}
+        variant="warning"
+      />
       <LandingHeader
         userName="홍길동"
         variant="main"
@@ -141,7 +155,7 @@ export const VehicleRegisterStep1Page = () => {
             </div>
           </div>
           <div className="flex-1 overflow-auto">
-            <ProgressSidebar steps={progressSteps} inline />
+            <ProgressSidebar steps={getRegisterFlowSteps('upload')} inline />
           </div>
         </aside>
 

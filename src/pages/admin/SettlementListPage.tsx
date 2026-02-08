@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, Calendar, DollarSign, Eye, CheckCircle2 } from 'lucide-react';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 
 interface Settlement {
@@ -87,11 +88,12 @@ export const SettlementListPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-fmax-surface flex flex-col">
+    <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="settlements" />
 
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <main className={`flex-grow p-4 sm:p-6 lg:px-8 ${LAYOUT_CLASSES.MAIN_LIST}`}>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <GnbMinimalSidebar sectionTitle="정산" />
+        <main className={`flex-1 min-w-0 p-8 ${LAYOUT_CLASSES.MAIN_LIST}`}>
           <div className="mx-auto space-y-4 max-w-7xl">
           {/* Filter */}
           <div className="bg-white rounded-lg p-4">

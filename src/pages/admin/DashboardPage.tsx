@@ -41,17 +41,12 @@ export const DashboardPage = () => {
     return filteredVehicles.slice(start, start + PAGE_SIZE);
   }, [filteredVehicles, currentPage]);
 
-  const handleRegister = () => {
-    navigate('/vehicles/new/step1');
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader
         userName="홍길동"
         variant="main"
         activeNav="vehicles"
-        onRegisterListing={handleRegister}
       />
 
       <div className={LAYOUT_CLASSES.CONTAINER}>

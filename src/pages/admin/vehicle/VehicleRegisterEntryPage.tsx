@@ -1,15 +1,17 @@
 /**
- * VehicleRegisterEntryPage Component
- * 매물등록 진입 (Figma 1418:20498 — §3.5 차량 등록·상세·경매)
- *
- * "빠르고 간편하게! 완벽한 비대면 차량등록"
- * 차량 번호 입력 후 다음 단계로 이동. 라우트: /vehicles/new
+ * 매물등록 CTA_1 진입. 차량번호 입력 후 step1으로 이동.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.9
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * 라우트: /vehicles/new. Figma 1418-20498 차량등록_비대면_랜딩.
  */
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { Button } from '@/shared/ui/Button';
 
 export const VehicleRegisterEntryPage = () => {
@@ -38,11 +40,11 @@ export const VehicleRegisterEntryPage = () => {
     // }
 
     // 다음 단계로 이동
-    navigate(`/vehicles/new/step1?plateNumber=${encodeURIComponent(plateNumber)}`);
-  };
-
-  const handleRegister = () => {
-    navigate('/vehicles/new/step1');
+    const to = `/vehicles/new/step1?plateNumber=${encodeURIComponent(plateNumber)}`;
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterEntryPage:handleNext',message:'CTA_1 랜딩→step1',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
+    navigate(to);
   };
 
   return (
@@ -51,11 +53,11 @@ export const VehicleRegisterEntryPage = () => {
         userName="홍길동"
         variant="main"
         activeNav="vehicles"
-        onRegisterListing={handleRegister}
       />
 
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <main className={`py-16 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <ProgressSidebar steps={getRegisterFlowSteps('upload')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline />
+        <main className={`flex-1 py-16 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
           <div className="mx-auto max-w-4xl text-center">
           {/* 제목 */}
           <h1 className="text-h1 font-bold text-gray-900 mb-12">

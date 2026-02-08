@@ -1,11 +1,12 @@
 /**
- * VehicleDetailPage (Figma 1418:24679, 1418:24463, 1418:21690 — §3.5 차량 등록·상세·경매)
- * 차량 상세(정보·판매방식 선택). 24679 기본 상세, 24463 일반판매 CTA 강조, 21690 경매 CTA/보관 확인 모달. 라우트: /vehicles/:id
+ * 차량 상세. 판매방식(일반/경매) 선택 후 CTA_3 플로우 진입.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.11
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * 라우트: /vehicles/:vehicleId. Figma 1418-24679, 1418-21690.
  */
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { useVehicle } from '@/features/vehicle/register-form/model/useVehicle';
 import { VehicleStatusBadge } from '@/entities/vehicle/ui/VehicleStatusBadge';
@@ -68,9 +69,7 @@ export const VehicleDetailPage = () => {
     <div className="min-h-screen bg-gray-50">
       <LandingHeader variant="main" activeNav="offers" />
       <div className={LAYOUT_CLASSES.CONTAINER}>
-        <div className="flex">
-          <MainLandingSidebar activeKey="all" />
-          <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
           <Button
             variant="secondary"
             size="sm"
@@ -143,7 +142,6 @@ export const VehicleDetailPage = () => {
             </div>
           </section>
         </main>
-        </div>
       </div>
     </div>
   );

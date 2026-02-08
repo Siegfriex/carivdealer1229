@@ -7,6 +7,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryProvider } from './providers/QueryProvider';
 import { ToastProvider } from './providers/ToastProvider';
+import { AuthProvider } from '@/shared/context/AuthContext';
 import { DevSkipProvider } from '@/shared/context/DevSkipContext';
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import { Router } from './router';
@@ -19,7 +20,9 @@ const App = () => {
         <QueryProvider>
           <ToastProvider>
             <DevSkipProvider>
-              <Router />
+              <AuthProvider>
+                <Router />
+              </AuthProvider>
             </DevSkipProvider>
           </ToastProvider>
         </QueryProvider>

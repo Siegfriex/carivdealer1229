@@ -3,7 +3,9 @@
  * Figma 1194-6054: 회원가입 승인 완료
  */
 
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/shared/context/AuthContext';
 import { StepProgress } from '@/shared/ui/StepProgress';
 import { Button } from '@/shared/ui/Button';
 import { PageLayout } from '@/shared/ui/PageLayout';
@@ -20,9 +22,14 @@ const SIGNUP_STEPS = [
 
 export const SignupCompletePage = () => {
   const navigate = useNavigate();
+  const { setAuthenticated } = useAuth();
   // TODO: 실제 사용자 정보로 대체
   const userName = '홍길동';
   const userId = 'user123';
+
+  useEffect(() => {
+    setAuthenticated(true);
+  }, [setAuthenticated]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -45,7 +52,7 @@ export const SignupCompletePage = () => {
           </p>
 
           {/* 버튼 */}
-          <Button size="lg" onClick={() => navigate('/dashboard')}>
+          <Button size="lg" onClick={() => navigate('/vehicles')}>
             매물 등록하러 가기
           </Button>
         </div>

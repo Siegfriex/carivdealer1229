@@ -4,9 +4,11 @@
  */
 
 import { useParams, useNavigate } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
@@ -17,8 +19,11 @@ export const AuctionDurationPage = () => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    if (vehicleId) navigate(`/vehicles/${vehicleId}/auction/complete`);
-    else navigate('/vehicles');
+    const to = vehicleId ? `/vehicles/${vehicleId}/auction/complete` : '/vehicles';
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuctionDurationPage:handleSubmit',message:'CTA_3 경매 기간→완료(CTA_4탁송연결없음)',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA3_auction',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
+    navigate(to);
   };
 
   const handleBack = () => {
@@ -29,10 +34,9 @@ export const AuctionDurationPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader variant="main" activeNav="vehicles" />
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <div className="flex">
-          <MainLandingSidebar activeKey="all" />
-          <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline />
+        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
           <h1 className="text-h1 font-bold text-gray-900 mb-2">경매 기간 설정</h1>
           <p className="text-body text-gray-600 mb-8">경매 종료 일시를 설정하세요.</p>
           <Card className="p-6 space-y-4">
@@ -56,7 +60,6 @@ export const AuctionDurationPage = () => {
             <DevSkipButton label="DEV:SKIP" subLabel="경매 완료로" onClick={handleSubmit} />
           )}
         </main>
-        </div>
       </div>
     </div>
   );

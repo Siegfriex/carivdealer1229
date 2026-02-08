@@ -6,22 +6,16 @@
 
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { useVehicle } from '@/features/vehicle/register-form/model/useVehicle';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
-
-const transactionProgressSteps: ProgressStep[] = [
-  { id: 'upload', label: '차량 업로드', status: 'completed' },
-  { id: 'inspection', label: '검차 진행', status: 'completed' },
-  { id: 'trade', label: '거래 진행중...', status: 'current' },
-  { id: 'logistics', label: '탁송', status: 'upcoming' },
-  { id: 'complete', label: '완료', status: 'upcoming' },
-];
 
 export const AuctionStartPricePage = () => {
   const { vehicleId } = useParams<{ vehicleId: string }>();
@@ -32,8 +26,11 @@ export const AuctionStartPricePage = () => {
   const [instantPrice, setInstantPrice] = useState('');
 
   const handleConfirm = () => {
-    if (vehicleId) navigate(`/vehicles/${vehicleId}/auction/duration`);
-    else navigate('/vehicles');
+    const to = vehicleId ? `/vehicles/${vehicleId}/auction/duration` : '/vehicles';
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuctionStartPricePage:handleConfirm',message:'CTA_3 경매 시작가→기간설정',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA3_auction',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
+    navigate(to);
   };
 
   const handleBack = () => {
@@ -67,7 +64,7 @@ export const AuctionStartPricePage = () => {
           <div className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT}`}>
             <div className="p-8">
               <h3 className="text-body font-bold text-gray-900 mb-6">현재 거래 진행상황</h3>
-              <ProgressSidebar steps={transactionProgressSteps} inline />
+              <ProgressSidebar steps={getRegisterFlowSteps('trade')} inline />
             </div>
           </div>
           <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>

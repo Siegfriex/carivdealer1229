@@ -303,7 +303,9 @@ export const apiClient = {
       {
         method: 'POST',
         body: JSON.stringify({ auction_id: auctionId, bid_amount: bidAmount }),
-      }
+      },
+      undefined,
+      () => mockResponses.auction.bid(auctionId, bidAmount)
     ),
 
     buyNow: (auctionId: string) => apiCall<{
@@ -315,7 +317,9 @@ export const apiClient = {
       {
         method: 'POST',
         body: JSON.stringify({ auction_id: auctionId }),
-      }
+      },
+      undefined,
+      () => mockResponses.auction.buyNow(auctionId)
     ),
   },
 

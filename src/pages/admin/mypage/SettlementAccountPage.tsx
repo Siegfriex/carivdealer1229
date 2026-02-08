@@ -1,7 +1,8 @@
 /**
- * SettlementAccountPage - 정산 계좌 등록/변경/조회 (조회 뷰)
- * Figma 1418:38264 (get_screenshot 기반 구현, design_context 미수신)
- * 라우트: /mypage/settlement-account
+ * 마이페이지 정산 계좌 등록/변경/조회. IA §4.14.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.14
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * 라우트: /mypage/settlement-account. Figma 1418-38264.
  */
 
 import { User, Plus, Check, Settings } from 'lucide-react';
@@ -11,16 +12,16 @@ import { Button } from '@/shared/ui/Button';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 
 export const SettlementAccountPage = () => {
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <LandingHeader userName="홍길동님" variant="main" />
+    <div className="min-h-screen bg-gray-50">
+      <LandingHeader userName="홍길동" variant="main" />
 
-      <div className={`flex flex-1 ${LAYOUT_CLASSES.CONTAINER}`}>
-        <MypageSidebar />
+      <div className={LAYOUT_CLASSES.CONTAINER}>
+        <div className="flex">
+          <MypageSidebar />
 
-        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT}`}>
-          <div className={`${LAYOUT_CLASSES.MAIN_DETAIL} mx-auto`}>
+          <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_LIST}`}>
+            <div className={LAYOUT_CLASSES.MAIN_DETAIL}>
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               {/* 제목 */}
               <div className="px-6 pt-6 pb-4 border-b border-gray-100">
@@ -99,6 +100,12 @@ export const SettlementAccountPage = () => {
             </div>
           </div>
         </main>
+        </div>
+      <footer className="py-6 border-t border-gray-200">
+        <p className="text-caption text-gray-500">
+          ForwardMax Cariv Domestic Seller 1.0 Prototype
+        </p>
+      </footer>
       </div>
     </div>
   );

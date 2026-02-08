@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Truck, CheckCircle2, SkipForward } from 'lucide-react';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
+import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { LogisticsSectionTabs } from '@/pages/admin/logistics/LogisticsSectionTabs';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { apiClient } from '@/shared/api/apiClient';
@@ -78,21 +78,35 @@ export const LogisticsSchedulePage = () => {
     return (
       <div className="min-h-screen bg-fmax-surface flex flex-col">
         <LandingHeader userName="홍길동" variant="main" activeNav="logistics" />
-        <div className={`flex flex-1 ${LAYOUT_CLASSES.CONTAINER}`}>
-          <MainLandingSidebar activeKey="logistics" />
-          <main className={`flex-grow flex flex-col items-center justify-center p-8 ${LAYOUT_CLASSES.MAIN_LIST}`}>
+        <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+          <GnbMinimalSidebar sectionTitle="탁송" />
+          <main className={`flex-1 min-w-0 flex flex-col items-center justify-center p-8 ${LAYOUT_CLASSES.MAIN_LIST}`}>
             <div className="w-full max-w-md flex flex-col items-center text-center">
               <div className="w-20 h-20 rounded-full bg-fmax-success/10 flex items-center justify-center mb-6">
                 <CheckCircle2 className="w-10 h-10 text-fmax-success" />
               </div>
               <h2 className="text-h2 font-medium text-fmax-text-main mb-2">탁송 예약이 완료되었습니다</h2>
               <p className="text-body text-fmax-text-sub mb-8">배차가 확정되면 알림을 통해 알려드려요!</p>
-              <button
-                onClick={() => navigate('/logistics/history')}
-                className="w-full px-4 py-3 bg-fmax-primary text-white rounded-lg hover:opacity-90 transition-opacity font-medium text-button"
-              >
-                탁송 내역 보기
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
+                <button
+                  onClick={() => navigate('/settlements')}
+                  className="flex-1 px-4 py-3 bg-fmax-primary text-white rounded-lg hover:opacity-90 transition-opacity font-medium text-button"
+                >
+                  정산으로
+                </button>
+                <button
+                  onClick={() => navigate('/vehicles')}
+                  className="flex-1 px-4 py-3 bg-white border border-fmax-border text-fmax-text-main rounded-lg hover:bg-gray-50 transition-colors font-medium text-button"
+                >
+                  차량 목록으로
+                </button>
+                <button
+                  onClick={() => navigate('/logistics/history')}
+                  className="flex-1 px-4 py-3 border border-fmax-border text-fmax-text-main rounded-lg hover:bg-gray-50 transition-colors font-medium text-button"
+                >
+                  탁송 내역 보기
+                </button>
+              </div>
             </div>
           </main>
         </div>
@@ -103,9 +117,9 @@ export const LogisticsSchedulePage = () => {
   return (
     <div className="min-h-screen bg-fmax-surface flex flex-col">
       <LandingHeader userName="홍길동" variant="main" activeNav="logistics" />
-      <div className={`flex flex-1 w-full ${LAYOUT_CLASSES.CONTAINER}`}>
-        <MainLandingSidebar activeKey="logistics" />
-        <main className={`flex-grow min-w-0 p-4 sm:p-6 lg:p-8 ${LAYOUT_CLASSES.MAIN_LIST}`}>
+      <div className={`flex w-full ${LAYOUT_CLASSES.CONTAINER}`}>
+        <GnbMinimalSidebar sectionTitle="탁송" />
+        <main className={`flex-1 min-w-0 p-8 ${LAYOUT_CLASSES.MAIN_LIST}`}>
           <div className="mx-auto max-w-7xl">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <h1 className="text-h1 font-medium text-fmax-text-main">탁송 예약/배차</h1>

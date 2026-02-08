@@ -6,13 +6,17 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { StepProgress, type Step } from '@/shared/ui/StepProgress';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
-import { Grid3x3, List, Star } from 'lucide-react';
+import { useFormFeedback } from '@/shared/lib/formFeedback';
+import { CheckCircle2, Grid3x3, List, Star } from 'lucide-react';
 
 const steps: Step[] = [
   { id: 'step1', label: '날짜/장소 선택', status: 'completed' },
@@ -30,8 +34,10 @@ const evaluators = [
 
 export const InspectionRequestStep2Page = () => {
   const navigate = useNavigate();
+  const { showValidationError } = useFormFeedback();
   const [viewMode, setViewMode] = useState<'list' | 'card'>('list');
   const [selectedId, setSelectedId] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   const handleDevSkip = () => {
     navigate('/inspections');
@@ -39,26 +45,54 @@ export const InspectionRequestStep2Page = () => {
 
   const handleSubmit = () => {
     if (!selectedId) {
-      alert('평가사를 선택해주세요.');
+      showValidationError('평가사를 선택해주세요.');
       return;
     }
 
     const selectedEvaluator = evaluators.find((e) => e.id === selectedId);
     console.log('검차 신청:', { evaluatorId: selectedId, evaluatorName: selectedEvaluator?.name });
 
-    alert('검차 신청이 완료되었습니다.');
-    navigate('/inspections');
+    // #region agent log
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionRequestStep2Page:handleSubmit',message:'검차신청 완료',data:{to:'/inspections'},timestamp:Date.now(),hypothesisId:'H_CTA2_end',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
+    setSubmitted(true);
   };
+
+  const handleGoToList = () => navigate('/inspections');
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
+      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
 
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <main className={`py-8 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <aside className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}>
+          <div className="p-4 border-b border-gray-200">
+            <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
+            <input
+              type="text"
+              placeholder="차량번호/모델명"
+              className="w-full pl-3 pr-10 py-2.5 border border-gray-200 rounded-md text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          <div className="flex-1 overflow-auto">
+            <ProgressSidebar steps={getRegisterFlowSteps('inspection')} inline />
+          </div>
+        </aside>
+        <main className={`flex-1 py-8 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
           <StepProgress steps={steps} className="mb-12" />
 
           <div className="mx-auto max-w-4xl">
+          {submitted ? (
+            <Card className="p-8 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                <CheckCircle2 className="h-8 w-8 text-primary" />
+              </div>
+              <h2 className="text-h2 font-bold text-gray-900 mb-2">검차 신청이 완료되었습니다</h2>
+              <p className="text-body text-gray-600 mb-6">검차 목록에서 진행 상황을 확인하세요.</p>
+              <Button onClick={handleGoToList}>검차 목록 보기</Button>
+            </Card>
+          ) : (
+          <>
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-h1 font-bold text-gray-900 mb-2">평가사를 선택해주세요</h1>
@@ -177,6 +211,8 @@ export const InspectionRequestStep2Page = () => {
               검차 신청 완료
             </Button>
           </div>
+          </>
+          )}
         </div>
         </main>
       </div>

@@ -1,13 +1,14 @@
 /**
- * LandingHeader
- * 첫 홈/랜딩 전용 GNB (Figma 1194-7481, §3.1 참조 스크린샷)
- * 로고, 차량목록·검차·거래·탁송·정산, 검색, 알림(벨)·유저, 매물등록하기
- * 1368:43715 — 알림 노출: 벨 클릭 시 "알림" 드롭다운 패널
+ * GNB. 랜딩/메인 공통. 차량목록·검차·거래·탁송·정산, 매물등록. IA §3.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §3
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.3
+ * Figma 1194-7481, 1368-43715(알림).
  */
 
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Search, ChevronDown, Car, FileText, Truck, Calculator, Bell, SearchCheck } from 'lucide-react';
+import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { User, ChevronDown, Car, FileText, Truck, Calculator, Bell, Search, SearchCheck, UserCircle } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { LoginModal } from '@/shared/ui/LoginModal';
 import { Z_INDEX } from '@/shared/config/zIndex';
@@ -61,6 +62,11 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
   };
 
   const handleRegister = () => {
+    // #region agent log
+    const hasCb = !!onRegisterListing;
+    const to = hasCb ? 'callback' : '/vehicles/new';
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LandingHeader:handleRegister',message:'매물등록하기',data:{hasCallback:hasCb,target:to},timestamp:Date.now(),hypothesisId:'H_진입',runId:'register-flow-check'})}).catch(()=>{});
+    // #endregion
     onRegisterListing?.();
     if (!onRegisterListing) navigate('/vehicles/new');
   };
@@ -70,7 +76,7 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
       className="sticky top-0 left-0 right-0 bg-white border-b border-gray-200 shadow-sm"
       style={{ zIndex: Z_INDEX.STICKY }}
     >
-      {/* 1단: 로고 + 우측(검색, 알림, 유저) — Figma 881-1581: 매물등록 버튼 제외 */}
+      {/* 1단: 로고 + 우측(마이페이지, 알림, 유저) — Figma 881-1581 */}
       <div className="container mx-auto max-w-[1440px] h-14 flex items-center justify-between gap-6 px-6">
         <Link to="/" className="flex items-center shrink-0">
           <span className="text-h3 font-bold text-gray-900 tracking-tight">
@@ -138,18 +144,27 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
                   className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-2"
                   style={{ zIndex: Z_INDEX.DROPDOWN }}
                 >
-                  <a
-                    href="/dashboard"
+                  <Link
+                    to="/vehicles"
                     className="block px-4 py-2 text-body text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsUserOpen(false)}
                   >
-                    대시보드
-                  </a>
-                  <a
-                    href="/login"
+                    차량 목록
+                  </Link>
+                  <Link
+                    to="/mypage"
                     className="block px-4 py-2 text-body text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsUserOpen(false)}
+                  >
+                    마이페이지
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="block px-4 py-2 text-body text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsUserOpen(false)}
                   >
                     로그아웃
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>

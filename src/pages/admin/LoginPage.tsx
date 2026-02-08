@@ -4,16 +4,23 @@
  */
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '@/shared/context/AuthContext';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/vehicles';
 
   const handleLogin = () => {
     // TODO: 실제 로그인 API 연동 (Firebase Auth signInWithEmailAndPassword 등)
+    setAuthenticated(true);
+    navigate(redirectTo.startsWith('/') ? redirectTo : `/${redirectTo}`, { replace: true });
   };
 
   return (

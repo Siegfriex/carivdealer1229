@@ -4,11 +4,11 @@
  * Layout: Header + Sidebar + Main (IA §3.10)
  */
 
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Truck, Calendar, MapPin, User, Lock } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Truck, Calendar, MapPin, User, Lock, List, LayoutGrid } from 'lucide-react';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
+import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { LogisticsSectionTabs } from '@/pages/admin/logistics/LogisticsSectionTabs';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { Z_INDEX } from '@/shared/config/zIndex';
@@ -28,8 +28,21 @@ interface LogisticsRecord {
   pin?: string;
 }
 
+type ViewMode = 'list' | 'grid';
+const VIEW_PARAM = 'view';
+
 export const LogisticsHistoryPage = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const viewMode: ViewMode = useMemo(
+    () => (searchParams.get(VIEW_PARAM) === 'grid' ? 'grid' : 'list'),
+    [searchParams]
+  );
+  const setViewMode = (mode: ViewMode) => {
+    if (mode === 'grid') setSearchParams({ [VIEW_PARAM]: 'grid' }, { replace: true });
+    else setSearchParams({}, { replace: true });
+  };
+
   const [logistics, setLogistics] = useState<LogisticsRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedLogistics, setSelectedLogistics] = useState<LogisticsRecord | null>(null);
@@ -122,13 +135,35 @@ export const LogisticsHistoryPage = () => {
     <div className="min-h-screen bg-fmax-surface flex flex-col">
       <LandingHeader userName="홍길동" variant="main" activeNav="logistics" />
 
-      <div className={`flex flex-1 w-full ${LAYOUT_CLASSES.CONTAINER}`}>
-        <MainLandingSidebar activeKey="logistics" />
-        <main className={`flex-grow min-w-0 p-4 sm:p-6 lg:p-8 ${LAYOUT_CLASSES.MAIN_LIST}`}>
+      <div className={`flex w-full ${LAYOUT_CLASSES.CONTAINER}`}>
+        <GnbMinimalSidebar sectionTitle="탁송" />
+        <main className={`flex-1 min-w-0 p-8 ${LAYOUT_CLASSES.MAIN_LIST}`}>
           <div className="mx-auto max-w-7xl space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <h1 className="text-h1 font-medium text-fmax-text-main">탁송 내역</h1>
             <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-md" role="group" aria-label="보기 방식">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('list')}
+                  aria-label="리스트 뷰"
+                  className={`p-2 rounded transition-fast ${
+                    viewMode === 'list' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'
+                  }`}
+                >
+                  <List className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('grid')}
+                  aria-label="그리드 뷰"
+                  className={`p-2 rounded transition-fast ${
+                    viewMode === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'
+                  }`}
+                >
+                  <LayoutGrid className="h-5 w-5" />
+                </button>
+              </div>
               <LogisticsSectionTabs />
               <button
                 onClick={() => navigate('/logistics/schedule')}
@@ -145,34 +180,32 @@ export const LogisticsHistoryPage = () => {
               <Truck className="w-12 h-12 mx-auto mb-4 text-gray-300" />
               <p className="text-body text-fmax-text-sub">탁송 내역이 없습니다</p>
             </div>
-          ) : (
-            logistics.map((log) => (
-              <div key={log.id} className="bg-white rounded-lg p-6 border border-fmax-border shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2">
-                      <Truck className="w-5 h-5 flex-shrink-0 text-fmax-primary" />
-                      <h3 className="text-h3 text-fmax-text-main">{log.plateNumber}</h3>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${statusColors[log.status]}`}>
-                        {statusLabels[log.status]}
-                      </span>
+          ) : viewMode === 'grid' ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {logistics.map((log) => (
+                <div key={log.id} className="bg-white rounded-lg p-6 border border-fmax-border shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Truck className="w-5 h-5 flex-shrink-0 text-fmax-primary" />
+                    <h3 className="text-h3 text-fmax-text-main truncate">{log.plateNumber}</h3>
+                    <span className={`px-2 py-1 rounded text-xs font-medium flex-shrink-0 ${statusColors[log.status]}`}>
+                      {statusLabels[log.status]}
+                    </span>
+                  </div>
+                  <div className="space-y-2 text-body text-fmax-text-sub flex-1">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 flex-shrink-0" />
+                      <span>{log.scheduleDate} {log.scheduleTime}</span>
                     </div>
-                    <div className="space-y-2 text-body text-fmax-text-sub">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        <span>{log.scheduleDate} {log.scheduleTime}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4" />
-                        <span>{log.address}</span>
-                      </div>
-                      {log.driverName && (
-                        <div className="flex items-center gap-2">
-                          <User className="w-4 h-4" />
-                          <span>{log.driverName} ({log.driverPhone})</span>
-                        </div>
-                      )}
+                    <div className="flex items-start gap-2">
+                      <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                      <span className="line-clamp-2">{log.address}</span>
                     </div>
+                    {log.driverName && (
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4 flex-shrink-0" />
+                        <span className="text-caption">{log.driverName}</span>
+                      </div>
+                    )}
                   </div>
                   {log.status === 'in_transit' && (
                     <button
@@ -180,15 +213,61 @@ export const LogisticsHistoryPage = () => {
                         setSelectedLogistics(log);
                         setShowPinModal(true);
                       }}
-                      className="px-4 py-2 bg-fmax-primary text-white rounded-lg hover:bg-primaryHover transition-colors text-sm font-medium flex items-center gap-2"
+                      className="mt-4 w-full px-4 py-2 bg-fmax-primary text-white rounded-lg hover:bg-primaryHover transition-colors text-sm font-medium flex items-center justify-center gap-2"
                     >
                       <Lock className="w-4 h-4" />
                       인계 승인
                     </button>
                   )}
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {logistics.map((log) => (
+                <div key={log.id} className="bg-white rounded-lg p-6 border border-fmax-border shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Truck className="w-5 h-5 flex-shrink-0 text-fmax-primary" />
+                        <h3 className="text-h3 text-fmax-text-main">{log.plateNumber}</h3>
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${statusColors[log.status]}`}>
+                          {statusLabels[log.status]}
+                        </span>
+                      </div>
+                      <div className="space-y-2 text-body text-fmax-text-sub">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          <span>{log.scheduleDate} {log.scheduleTime}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4" />
+                          <span>{log.address}</span>
+                        </div>
+                        {log.driverName && (
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4" />
+                            <span>{log.driverName} ({log.driverPhone})</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {log.status === 'in_transit' && (
+                      <button
+                        onClick={() => {
+                          setSelectedLogistics(log);
+                          setShowPinModal(true);
+                        }}
+                        className="px-4 py-2 bg-fmax-primary text-white rounded-lg hover:bg-primaryHover transition-colors text-sm font-medium flex items-center gap-2"
+                      >
+                        <Lock className="w-4 h-4" />
+                        인계 승인
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </main>

@@ -4,7 +4,7 @@
  * 로그인 모달에서 "회원가입" 클릭 시 진입
  */
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/shared/ui/Button';
 import { Typography } from '@/shared/ui/Typography';
 import { PageLayout } from '@/shared/ui/PageLayout';
@@ -30,9 +30,12 @@ const SIGNUP_CARDS = [
 
 export const SignupEntryPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get('redirect');
   const handleStartDealer = () => {
     navigate('/signup/step1');
   };
+  const loginPath = redirect ? `/login?redirect=${encodeURIComponent(redirect)}` : '/login';
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
@@ -73,15 +76,15 @@ export const SignupEntryPage = () => {
           딜러로 시작하기
         </Button>
 
-        {/* 로그인 링크 */}
+        {/* 로그인 링크 (보호된 라우트에서 온 경우 redirect 유지) */}
         <p className="text-body text-gray-600">
           이미 회원이라면?{' '}
           <a
-            href="/"
+            href={loginPath}
             className="text-primary font-medium hover:underline"
             onClick={(e) => {
               e.preventDefault();
-              navigate('/');
+              navigate(loginPath);
             }}
           >
             로그인

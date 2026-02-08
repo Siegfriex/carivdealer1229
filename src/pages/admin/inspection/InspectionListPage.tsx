@@ -1,17 +1,19 @@
 /**
- * InspectionListPage
- * 검차 신청목록 (Figma §3.6 nodeId: 1425:9445 리스트, 1425:9875 카드뷰)
- * 참조: FIGMASCR0208/§3.6_검차/§3.6_1425-9445_검차요청내역_리스트*.png, §3.6_1425-9875_검차요청내역_카드뷰.png
+ * GNB 검차 탭 랜딩. 검차요청내역 리스트/카드뷰. IA §4.4.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.4, §4.10
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * 라우트: /inspections. Figma 1425-9445, 1425-9875.
  */
 
 import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { InspectionStatusBadge } from '@/entities/inspection/ui/InspectionStatusBadge';
 import { Button } from '@/shared/ui/Button';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
-import { Search, ChevronDown, ChevronUp, LayoutList, LayoutGrid } from 'lucide-react';
+import { ChevronDown, ChevronUp, LayoutList, LayoutGrid } from 'lucide-react';
 import type { InspectionStatus } from '@/entities/inspection/model/types';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
 
@@ -117,46 +119,11 @@ export const InspectionListPage = () => {
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        {/* 좌측 사이드바 */}
-        <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-64px)]">
-          <div className="p-4 space-y-6">
-            <div>
-              <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="차량번호/모델명"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-3 pr-10 py-2.5 border border-gray-200 rounded-md text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
-            <div>
-              <h3 className="text-button font-medium text-gray-700 mb-2">목록</h3>
-              <ul className="space-y-1">
-                <li>
-                  <a
-                    href="/inspections"
-                    className="block px-3 py-2.5 rounded-md text-body font-medium text-primary bg-primary-light"
-                  >
-                    검차 신청 목록
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/inspections/history"
-                    className="block px-3 py-2.5 rounded-md text-body font-medium text-gray-700 hover:bg-gray-100"
-                  >
-                    검차내역
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </aside>
-
+        <GnbMinimalSidebar
+          sectionTitle="검차"
+          searchValue={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
         <main className="flex-1 p-8">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-h1 font-bold text-gray-900">검차 신청목록</h1>

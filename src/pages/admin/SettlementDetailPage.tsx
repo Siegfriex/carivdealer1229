@@ -7,7 +7,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreditCard, DollarSign, Percent, FileText, Download, Printer, Truck, Banknote } from 'lucide-react';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 
 interface SettlementDetail {
   id: string;
@@ -99,11 +101,12 @@ export const SettlementDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-fmax-surface flex flex-col">
+    <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="settlements" />
 
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <main className={`flex-grow p-4 sm:p-6 lg:px-8 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <GnbMinimalSidebar sectionTitle="정산" />
+        <main className={`flex-1 min-w-0 p-8 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
           <div className="mx-auto space-y-6">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-bold text-fmax-text-main">정산 상세</h1>

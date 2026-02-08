@@ -1,15 +1,21 @@
 /**
- * MypageSidebar
- * 마이페이지 전용 좌측 사이드바 (Figma 1418:36765 자식 화면 공통)
- * 프로필·인증, 계정 설정, 정산·금융 정보, 알림, 문의·지원, 계정 탈퇴, 로그아웃
+ * 마이페이지 좌측 사이드바. IA §4.14. 미구현 메뉴는 비활성+준비 중 표시로 404 방지.
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.14
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.3
+ * Figma 1418-36765. 구현 라우트: /mypage/settlement-account 만.
  */
 
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
-const MENU_ITEMS = [
-  { label: '프로필·인증 관리', href: '/mypage/profile', key: 'profile' },
-  { label: '계정 설정', href: '/mypage/account/password', key: 'account' },
+/** 라우트 미구현 시 비활성 처리(404 방지). 현재 구현: /mypage/settlement-account 만 */
+const MENU_ITEMS: Array<
+  | { label: string; href: string; key: string; comingSoon?: false }
+  | { label: string; key: string; comingSoon: true }
+  | { label: string; key: string; children: Array<{ label: string; href: string; key: string }> }
+> = [
+  { label: '프로필·인증 관리', key: 'profile', comingSoon: true },
+  { label: '계정 설정', key: 'account', comingSoon: true },
   {
     label: '정산·금융 정보',
     key: 'settlement',
@@ -17,9 +23,9 @@ const MENU_ITEMS = [
       { label: '정산 계좌 등록 / 변경 / 조회', href: '/mypage/settlement-account', key: 'settlement-account' },
     ],
   },
-  { label: '알림 센터', href: '/mypage/notifications', key: 'notifications' },
-  { label: '문의·지원', href: '/mypage/support', key: 'support' },
-] as const;
+  { label: '알림 센터', key: 'notifications', comingSoon: true },
+  { label: '문의·지원', key: 'support', comingSoon: true },
+];
 
 export function MypageSidebar() {
   const location = useLocation();
@@ -32,7 +38,7 @@ export function MypageSidebar() {
         {MENU_ITEMS.map((item) => {
           if ('children' in item && item.children) {
             const isExpanded = item.children.some(
-              (c) => c.href === location.pathname
+              (c) => 'href' in c && c.href === location.pathname
             );
             return (
               <div key={item.key} className="space-y-0.5">
@@ -62,7 +68,19 @@ export function MypageSidebar() {
               </div>
             );
           }
-          if ('href' in item) {
+          if ('comingSoon' in item && item.comingSoon) {
+            return (
+              <div
+                key={item.key}
+                title="준비 중"
+                className="block px-3 py-2.5 rounded-md text-body font-medium text-gray-400 cursor-not-allowed"
+              >
+                {item.label}
+                <span className="ml-2 text-caption text-gray-400">준비 중</span>
+              </div>
+            );
+          }
+          if ('href' in item && item.href) {
             const isActive = item.href === location.pathname;
             return (
               <Link
@@ -81,12 +99,13 @@ export function MypageSidebar() {
         })}
 
         <div className="border-t border-gray-200 mt-4 pt-4 space-y-0.5">
-          <Link
-            to="/mypage/withdraw"
-            className="block px-3 py-2.5 rounded-md text-body text-gray-600 hover:bg-gray-100"
+          <div
+            title="준비 중"
+            className="block px-3 py-2.5 rounded-md text-body text-gray-400 cursor-not-allowed"
           >
             계정 탈퇴
-          </Link>
+            <span className="ml-2 text-caption text-gray-400">준비 중</span>
+          </div>
           <button
             type="button"
             className="w-full text-left px-3 py-2.5 rounded-md text-body text-gray-600 hover:bg-gray-100"

@@ -28,7 +28,8 @@ import type { VehicleStatus } from '@/entities/vehicle/model/types';
 
 const PAGE_SIZE = 9;
 
-type FilterTab = 'all' | 'draft' | 'completed';
+/** 전체/임시저장/등록완료 + 사이드바 필터(차량상태·판매거래·탁송·정산) */
+type FilterTab = 'all' | 'draft' | 'completed' | 'status' | 'sale' | 'logistics' | 'settlement';
 
 const FILTER_PARAM = 'filter';
 const VIEW_PARAM = 'view';
@@ -39,7 +40,7 @@ export const VehicleListPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // URL을 소스 오브 트루스로 사용 (§3.4: 15487·15695·15903·15565·17357·20145·16327·16111)
+  // URL을 소스 오브 트루스로 사용. 사이드바 링크와 연동: ?filter=status|sale|logistics|settlement
   const filterTab = (searchParams.get(FILTER_PARAM) as FilterTab) || 'all';
   const viewMode = (searchParams.get(VIEW_PARAM) as 'grid' | 'list') || 'grid';
   const searchTerm = searchParams.get(Q_PARAM) ?? '';
@@ -54,6 +55,12 @@ export const VehicleListPage = () => {
     else next.set(FILTER_PARAM, value);
     setSearchParams(next, { replace: true });
   };
+
+  // 탭에 표시할 값: 사이드바 전용 필터(status/sale/logistics/settlement)일 땐 '전체'로 표시
+  const segmentValue: FilterTab =
+    filterTab === 'status' || filterTab === 'sale' || filterTab === 'logistics' || filterTab === 'settlement'
+      ? 'all'
+      : filterTab;
 
   const updateViewMode = (mode: 'grid' | 'list') => {
     const next = new URLSearchParams(searchParams);
@@ -81,10 +88,14 @@ export const VehicleListPage = () => {
   // 전체 차량 조회 (건수 계산용)
   const { data: allVehicles = [], isLoading: isLoadingAll } = useVehicles({});
   
-  // 필터별 차량 조회
+  // 필터별 차량 조회 (사이드바 필터 연동)
   const statusFilter: VehicleStatus[] | undefined = useMemo(() => {
     if (filterTab === 'draft') return ['draft'];
     if (filterTab === 'completed') return ['completed', 'active_sale', 'sold'];
+    if (filterTab === 'sale') return ['active_sale', 'bidding'];
+    if (filterTab === 'logistics') return ['sold'];
+    if (filterTab === 'settlement') return ['pending_settlement', 'completed'];
+    // 'all' | 'status' → 전체
     return undefined;
   }, [filterTab]);
 
@@ -92,10 +103,15 @@ export const VehicleListPage = () => {
     status: statusFilter,
   });
 
-  // 건수 계산
+  // 건수 계산 (사이드바/탭 필터용)
   const draftCount = allVehicles.filter((v) => v.status === 'draft').length;
-  const completedCount = allVehicles.filter((v) => 
+  const completedCount = allVehicles.filter((v) =>
     ['completed', 'active_sale', 'sold'].includes(v.status)
+  ).length;
+  const saleCount = allVehicles.filter((v) => ['active_sale', 'bidding'].includes(v.status)).length;
+  const logisticsCount = allVehicles.filter((v) => v.status === 'sold').length;
+  const settlementCount = allVehicles.filter((v) =>
+    ['pending_settlement', 'completed'].includes(v.status)
   ).length;
   const allCount = allVehicles.length;
 
@@ -126,16 +142,17 @@ export const VehicleListPage = () => {
     return attentionFilteredVehicles.slice(start, start + PAGE_SIZE);
   }, [attentionFilteredVehicles, currentPage]);
 
-  const handleRegister = () => {
-    navigate('/vehicles/new/step1');
-  };
-
-  // 필터 탭 옵션
+  // 필터 탭 옵션 (전체/임시저장/등록완료). 사이드바는 별도 링크로 filter=status|sale|logistics|settlement 적용됨
   const filterOptions: SegmentedControlOption<FilterTab>[] = [
     { value: 'all', label: '전체', count: allCount },
     { value: 'draft', label: '임시저장됨', count: draftCount },
     { value: 'completed', label: '등록완료', count: completedCount },
   ];
+
+  // 사이드바 활성 키: URL filter와 동기화
+  const sidebarActiveKey = filterTab === 'all' || filterTab === 'draft' || filterTab === 'completed'
+    ? 'all'
+    : filterTab;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -143,7 +160,6 @@ export const VehicleListPage = () => {
         userName="홍길동"
         variant="main"
         activeNav="vehicles"
-        onRegisterListing={handleRegister}
       />
 
       <div className={LAYOUT_CLASSES.CONTAINER}>
@@ -151,7 +167,7 @@ export const VehicleListPage = () => {
           <MainLandingSidebar
             searchValue={searchTerm}
             onSearchChange={updateSearchTerm}
-            activeKey="all"
+            activeKey={sidebarActiveKey}
           />
 
           <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_LIST}`}>
@@ -164,7 +180,7 @@ export const VehicleListPage = () => {
               {/* 필터 탭 (SegmentedControl) */}
               <SegmentedControl
                 options={filterOptions}
-                value={filterTab}
+                value={segmentValue}
                 onChange={(value) => updateFilter(value as FilterTab)}
               />
 

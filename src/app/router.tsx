@@ -1,9 +1,14 @@
 /**
  * Application Router
- * React Router 기반 라우팅 (URL 단일 진입점, 새로고침/딥링크/뒤로가기 지원)
+ * React Router 기반 라우팅 (URL 단일 진입점, 새로고침/딥링크/뒤로가기 지원).
+ * 경로 목록은 FSD_SPEC_BLUEPRINT §2.2와 일치. IA §4.2 비로그인 시 보호된 라우트는 /signup으로 리다이렉트.
+ * @file
+ * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4
  */
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ProtectedRoute } from '@/shared/context/AuthContext';
 import { LandingPage } from '@/pages/landing/LandingPage';
 import { SignupEntryPage } from '@/pages/auth/SignupEntryPage';
 import { SignupStep1Page } from '@/pages/auth/SignupStep1Page';
@@ -61,38 +66,44 @@ export const Router = () => {
         <Route path="/signup/step5" element={<SignupStep5Page />} />
         <Route path="/signup/pending" element={<SignupPendingPage />} />
         <Route path="/signup/complete" element={<SignupCompletePage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/vehicles" element={<VehicleListPage />} />
-        <Route path="/vehicles/new" element={<VehicleRegisterEntryPage />} />
-        <Route path="/vehicles/new/step1" element={<VehicleRegisterStep1Page />} />
-        <Route path="/vehicles/new/step2" element={<VehicleRegisterStep2Page />} />
-        <Route path="/vehicles/:vehicleId/complete" element={<VehicleRegistrationCompletePage />} />
-        <Route path="/vehicles/:vehicleId/sale/analyzing" element={<GeneralSaleAnalyzingPage />} />
-        <Route path="/vehicles/:vehicleId/sale/price" element={<GeneralSalePricePage />} />
-        <Route path="/vehicles/:vehicleId/sale/complete" element={<GeneralSaleCompletePage />} />
-        <Route path="/vehicles/:vehicleId/auction" element={<AuctionDetailPage />} />
-        <Route path="/vehicles/:vehicleId/auction/start-price" element={<AuctionStartPricePage />} />
-        <Route path="/vehicles/:vehicleId/auction/duration" element={<AuctionDurationPage />} />
-        <Route path="/vehicles/:vehicleId/auction/complete" element={<AuctionCompletePage />} />
-        <Route path="/vehicles/:vehicleId/trade" element={<TradeDetailPage />} />
-        <Route path="/vehicles/:vehicleId" element={<VehicleDetailPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/inspections" element={<InspectionListPage />} />
-        <Route path="/inspections/request" element={<InspectionRequestLandingPage />} />
-        <Route path="/inspections/request/step1" element={<InspectionRequestStep1Page />} />
-        <Route path="/inspections/request/step2" element={<InspectionRequestStep2Page />} />
-        <Route path="/inspections/history" element={<InspectionHistoryPage />} />
-        <Route path="/inspections/:inspectionId/progress" element={<InspectionProgressPage />} />
-        <Route path="/inspections/:inspectionId/complete" element={<InspectionCompletePage />} />
-        <Route path="/offers" element={<TradeListPage />} />
-        <Route path="/offers/proposals" element={<GeneralSaleOffersPage />} />
-        <Route path="/logistics/schedule" element={<LogisticsSchedulePage />} />
-        <Route path="/logistics/history" element={<LogisticsHistoryPage />} />
-        <Route path="/sales/history" element={<SalesHistoryPage />} />
-        <Route path="/settlements" element={<SettlementListPage />} />
-        <Route path="/settlements/:settlementId" element={<SettlementDetailPage />} />
-        <Route path="/mypage/settlement-account" element={<SettlementAccountPage />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+
+        {/* IA §4.2: 비로그인 시 회원가입 유도. 보호된 라우트는 인증 필요 */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/vehicles" element={<VehicleListPage />} />
+          <Route path="/vehicles/new" element={<VehicleRegisterEntryPage />} />
+          <Route path="/vehicles/new/step1" element={<VehicleRegisterStep1Page />} />
+          <Route path="/vehicles/new/step2" element={<VehicleRegisterStep2Page />} />
+          <Route path="/vehicles/:vehicleId/complete" element={<VehicleRegistrationCompletePage />} />
+          <Route path="/vehicles/:vehicleId/sale/analyzing" element={<GeneralSaleAnalyzingPage />} />
+          <Route path="/vehicles/:vehicleId/sale/price" element={<GeneralSalePricePage />} />
+          <Route path="/vehicles/:vehicleId/sale/complete" element={<GeneralSaleCompletePage />} />
+          <Route path="/vehicles/:vehicleId/auction" element={<AuctionDetailPage />} />
+          <Route path="/vehicles/:vehicleId/auction/start-price" element={<AuctionStartPricePage />} />
+          <Route path="/vehicles/:vehicleId/auction/duration" element={<AuctionDurationPage />} />
+          <Route path="/vehicles/:vehicleId/auction/complete" element={<AuctionCompletePage />} />
+          <Route path="/vehicles/:vehicleId/trade" element={<TradeDetailPage />} />
+          <Route path="/vehicles/:vehicleId" element={<VehicleDetailPage />} />
+          <Route path="/inspections" element={<InspectionListPage />} />
+          <Route path="/inspections/request" element={<InspectionRequestLandingPage />} />
+          <Route path="/inspections/request/step1" element={<InspectionRequestStep1Page />} />
+          <Route path="/inspections/request/step2" element={<InspectionRequestStep2Page />} />
+          <Route path="/inspections/history" element={<InspectionHistoryPage />} />
+          <Route path="/inspections/:inspectionId/progress" element={<InspectionProgressPage />} />
+          <Route path="/inspections/:inspectionId/complete" element={<InspectionCompletePage />} />
+          <Route path="/offers" element={<TradeListPage />} />
+          <Route path="/offers/proposals" element={<GeneralSaleOffersPage />} />
+          <Route path="/logistics/schedule" element={<LogisticsSchedulePage />} />
+          <Route path="/logistics/history" element={<LogisticsHistoryPage />} />
+          <Route path="/sales/history" element={<SalesHistoryPage />} />
+          <Route path="/settlements" element={<SettlementListPage />} />
+          <Route path="/settlements/:settlementId" element={<SettlementDetailPage />} />
+          <Route path="/mypage" element={<Navigate to="/mypage/settlement-account" replace />} />
+          <Route path="/mypage/settlement-account" element={<SettlementAccountPage />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/vehicles" replace />} />
       </Routes>
       {import.meta.env.DEV && <DevSkipFloatingButton />}
     </BrowserRouter>
