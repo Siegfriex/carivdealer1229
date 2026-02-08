@@ -106,7 +106,7 @@ export const InspectionListPage = () => {
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         {/* 좌측 사이드바 */}
-        <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)]">
+        <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-64px)]">
           <div className="p-4 space-y-6">
             <div>
               <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>

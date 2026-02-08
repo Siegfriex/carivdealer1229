@@ -1,7 +1,7 @@
 /**
  * VehicleRegistrationCompletePage Component
- * 차량 등록 완료 (Figma 915-998)
- * 그리드 레이아웃, "홈으로 돌아가기" + "검차 진행하기" 버튼
+ * 차량 등록 완료 (Figma 1418:22630 — §3.5 차량 등록·상세·경매)
+ * 라우트: /vehicles/:id/complete. 그리드 레이아웃, 홈/검차/경매·일반판매 CTA
  */
 
 import { useNavigate } from 'react-router-dom';

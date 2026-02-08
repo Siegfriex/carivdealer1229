@@ -1,6 +1,6 @@
 /**
- * VehicleDetailPage
- * 차량 상세 페이지. React Router :vehicleId로 조회.
+ * VehicleDetailPage (Figma 1418:24679, 1418:24463, 1418:21690 — §3.5 차량 등록·상세·경매)
+ * 차량 상세(정보·판매방식 선택). 24679 기본 상세, 24463 일반판매 CTA 강조, 21690 경매 CTA/보관 확인 모달. 라우트: /vehicles/:id
  */
 
 import { useParams, useNavigate } from 'react-router-dom';

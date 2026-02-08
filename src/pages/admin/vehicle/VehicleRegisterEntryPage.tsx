@@ -1,9 +1,9 @@
 /**
  * VehicleRegisterEntryPage Component
- * 매물등록 첫 화면 (Figma 1198-5843)
- * 
+ * 매물등록 진입 (Figma 1418:20498 — §3.5 차량 등록·상세·경매)
+ *
  * "빠르고 간편하게! 완벽한 비대면 차량등록"
- * 차량 번호 입력 후 다음 단계로 이동
+ * 차량 번호 입력 후 다음 단계로 이동. 라우트: /vehicles/new
  */
 
 import { useState } from 'react';
@@ -90,7 +90,7 @@ export const VehicleRegisterEntryPage = () => {
                       handleNext();
                     }
                   }}
-                  placeholder="123기 4567"
+                  placeholder="123가 4567"
                   className="flex-1 text-h3 font-medium text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent"
                 />
               </div>

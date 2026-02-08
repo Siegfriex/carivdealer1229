@@ -1,15 +1,18 @@
 /**
  * VehicleListPage Component
- * 매물 목록 페이지 (Figma 1198-6370)
- * 
- * 회원가입/로그인 후 진입하는 "나의 매물 목록" 화면
+ * 매물 목록 페이지 — §3.4 차량 목록
+ * Figma nodeId (동일 라우트 /vehicles 상태 변형):
+ * - 1418:15487(기본), 1418:15695(전체 탭), 1418:15903(임시저장 탭) — 사이클 6
+ * - 1418:15565(등록완료 탭), 1418:17357(그리드 뷰), 1418:20145(리스트 뷰) — 사이클 7
+ * URL: /vehicles?filter=all|draft|completed, ?view=grid|list
+ *
  * - GNB: LandingHeader (variant=main, activeNav='vehicles')
  * - 좌측 사이드바: MainLandingSidebar (검색)
- * - 메인: 필터 탭(전체/임시저장됨/등록완료), 그리드/리스트 토글, 확인 필요차량 체크박스, 차량 카드 그리드, 페이지네이션
+ * - 메인: 필터 탭(전체/임시저장됨/등록완료), 그리드/리스트 토글, 확인 필요차량 체크박스, 차량 카드/테이블, 페이지네이션
  */
 
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -26,13 +29,46 @@ const PAGE_SIZE = 9;
 
 type FilterTab = 'all' | 'draft' | 'completed';
 
+const FILTER_PARAM = 'filter';
+const VIEW_PARAM = 'view';
+
 export const VehicleListPage = () => {
   const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const filterFromUrl = (searchParams.get(FILTER_PARAM) as FilterTab) || 'all';
+  const viewFromUrl = (searchParams.get(VIEW_PARAM) as 'grid' | 'list') || 'grid';
+
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>(viewFromUrl);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterTab, setFilterTab] = useState<FilterTab>('all');
+  const [filterTab, setFilterTab] = useState<FilterTab>(filterFromUrl);
   const [needsAttention, setNeedsAttention] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // URL 쿼리와 필터/뷰 동기화 (§3.4: 15487 기본, 15695 전체 탭, 15903 임시저장 탭)
+  useEffect(() => {
+    const f = (searchParams.get(FILTER_PARAM) as FilterTab) || 'all';
+    const v = (searchParams.get(VIEW_PARAM) as 'grid' | 'list') || 'grid';
+    setFilterTab(f);
+    setViewMode(v);
+  }, [searchParams]);
+
+  const updateFilter = (value: FilterTab) => {
+    setFilterTab(value);
+    setCurrentPage(1);
+    const next = new URLSearchParams(searchParams);
+    if (value === 'all') next.delete(FILTER_PARAM);
+    else next.set(FILTER_PARAM, value);
+    setSearchParams(next, { replace: true });
+  };
+
+  const updateViewMode = (mode: 'grid' | 'list') => {
+    setViewMode(mode);
+    const next = new URLSearchParams(searchParams);
+    if (mode === 'grid') next.delete(VIEW_PARAM);
+    else next.set(VIEW_PARAM, mode);
+    setSearchParams(next, { replace: true });
+  };
 
   // 전체 차량 조회 (건수 계산용)
   const { data: allVehicles = [], isLoading: isLoadingAll } = useVehicles({});
@@ -121,16 +157,13 @@ export const VehicleListPage = () => {
               <SegmentedControl
                 options={filterOptions}
                 value={filterTab}
-                onChange={(value) => {
-                  setFilterTab(value as FilterTab);
-                  setCurrentPage(1); // 필터 변경 시 첫 페이지로
-                }}
+                onChange={(value) => updateFilter(value as FilterTab)}
               />
 
               {/* 뷰 토글 */}
               <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-md">
                 <button
-                  onClick={() => setViewMode('grid')}
+                  onClick={() => updateViewMode('grid')}
                   className={`p-2 rounded transition-fast ${
                     viewMode === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'
                   }`}
@@ -139,7 +172,7 @@ export const VehicleListPage = () => {
                   <Grid3x3 className="h-5 w-5" />
                 </button>
                 <button
-                  onClick={() => setViewMode('list')}
+                  onClick={() => updateViewMode('list')}
                   className={`p-2 rounded transition-fast ${
                     viewMode === 'list' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'
                   }`}

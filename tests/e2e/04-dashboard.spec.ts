@@ -32,15 +32,7 @@ test.describe('대시보드', () => {
       fullPage: true,
     });
 
-    // 매물 등록하기 버튼 확인
-    const registerButton = page.locator('text=매물 등록하기');
-    if (await registerButton.count() > 0) {
-      await expect(registerButton).toBeVisible();
-    }
-    // 또는 헤더의 "매물 등록하기" 버튼 확인
-    const headerRegisterButton = page.locator('header').locator('text=매물 등록하기');
-    if (await headerRegisterButton.count() > 0) {
-      await expect(headerRegisterButton).toBeVisible();
-    }
+    // 매물 등록하기 버튼 확인 (헤더·메인 둘 다 있을 수 있음 → 첫 번째만 검사)
+    await expect(page.getByRole('button', { name: '매물 등록하기' }).first()).toBeVisible();
   });
 });

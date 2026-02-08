@@ -1,10 +1,9 @@
 /**
  * VehicleRegisterStep1Page Component
- * 차량 원부 등록 (Figma 1198-5889)
- * 
+ * 차량 등록 Step1 (Figma 1418:23705, 1418:23880 — §3.5 차량 등록·상세·경매)
+ *
  * 좌측: ProgressSidebar (검색 + 스텝 진행)
- * 메인: 차량 정보 섹션 + 차량 등록원부 섹션
- * 하단: 삭제, 임시저장, 거래하기 버튼
+ * 메인: 차량 정보 섹션 + 차량 등록원부 섹션. 라우트: /vehicles/new/step1
  */
 
 import { useState, useEffect } from 'react';

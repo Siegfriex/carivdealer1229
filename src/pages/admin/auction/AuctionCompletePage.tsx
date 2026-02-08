@@ -1,6 +1,6 @@
 /**
- * AuctionCompletePage (SCR-0403-A)
- * 경매 - 완료
+ * AuctionCompletePage (Figma 1418:20576 — §3.5 판매 상태 전환 완료)
+ * 경매 등록 완료. 라우트: /vehicles/:id/auction/complete
  */
 
 import { useParams, useNavigate } from 'react-router-dom';

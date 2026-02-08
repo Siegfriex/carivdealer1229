@@ -1,6 +1,6 @@
 /**
- * AuctionDetailPage (SCR-0400)
- * 경매 상세 (즉시구매 포함)
+ * AuctionDetailPage (§3.5 경매 플로우 — 차량 상세 24679/24463/21690에서 경매 CTA 진입)
+ * 경매 상세·시작가 설정 진입. 라우트: /vehicles/:id/auction
  */
 
 import { useParams, useNavigate } from 'react-router-dom';

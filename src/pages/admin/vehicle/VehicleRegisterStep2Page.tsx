@@ -1,8 +1,7 @@
 /**
  * VehicleRegisterStep2Page Component
- * 차량 등록 Step 2 - 상세 정보 및 사진 업로드
- * 
- * 디자인: design/design_vehicle_input/vehicle_input_1/매물 등록 관리_차량 등록2.svg
+ * 차량 등록 Step2 (Figma 1418:20576, 1418:21868 — §3.5 차량 등록·상세·경매)
+ * 상세 정보·사진 업로드 및 확인. 라우트: /vehicles/new/step2
  */
 
 import { useState } from 'react';

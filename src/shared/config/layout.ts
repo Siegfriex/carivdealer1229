@@ -36,7 +36,7 @@ export const LAYOUT_CLASSES = {
   GNB: 'h-16',                       // 64px
   CONTAINER: 'max-w-[1440px] mx-auto',
   MAIN_PADDING: 'p-8',               // 32px
-  CONTENT_MIN_HEIGHT: 'min-h-[calc(100vh-4rem)]',  // 100vh - 64px
+  CONTENT_MIN_HEIGHT: 'min-h-[calc(100vh-64px)]',  // 100vh - GNB 64px (FIGMA_MCP_TO_CODE: px 정합)
   /** 목록 페이지: max-w-7xl */
   MAIN_LIST: 'max-w-7xl',
   /** 상세/스텝/완료: max-w-4xl */

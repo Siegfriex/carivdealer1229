@@ -1,6 +1,6 @@
 /**
- * AuctionStartPricePage (SCR-0401-A)
- * 경매 - 시작가 설정
+ * AuctionStartPricePage (Figma 1418:23705, 1418:23880 — §3.5 경매 시작가 설정)
+ * 경매 시작가·즉시구매가 입력. 라우트: /vehicles/:id/auction/start-price
  */
 
 import { useParams, useNavigate } from 'react-router-dom';

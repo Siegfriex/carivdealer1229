@@ -16,8 +16,8 @@ test.describe('로그인', () => {
       fullPage: true,
     });
     
-    // 요소 확인
-    await expect(page.locator('h1')).toContainText('ForwardMax');
+    // 요소 확인 (h1이 2개일 수 있음: MobileBlocker·본문 → 본문 heading으로 한정)
+    await expect(page.getByRole('heading', { name: 'ForwardMax' })).toBeVisible();
     await expect(page.locator('h2')).toContainText('로그인');
     await expect(page.locator('input[type="email"]')).toBeVisible();
     await expect(page.locator('input[type="password"]')).toBeVisible();
