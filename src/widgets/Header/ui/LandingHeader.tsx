@@ -1,15 +1,21 @@
 /**
  * LandingHeader
- * 첫 홈/랜딩 전용 GNB (Figma 1194-7481)
- * 로고, 차량목록·거래·탁송·정산, 검색, 유저, 매물등록하기
+ * 첫 홈/랜딩 전용 GNB (Figma 1194-7481, §3.1 참조 스크린샷)
+ * 로고, 차량목록·검차·거래·탁송·정산, 검색, 알림(벨)·유저, 매물등록하기
+ * 1368:43715 — 알림 노출: 벨 클릭 시 "알림" 드롭다운 패널
  */
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Search, ChevronDown, Car, FileText, Truck, Calculator, Bell, SearchCheck } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { LoginModal } from '@/shared/ui/LoginModal';
 import { Z_INDEX } from '@/shared/config/zIndex';
+
+const NOTIFICATION_MOCKS = [
+  { id: '1', text: '아반떼 CN7 검차가 완료되었습니다.', time: '10분 전' },
+  { id: '2', text: '그랜져 IG에 새로운 제안이 도착했습니다.', time: '30분 전' },
+];
 
 const NAV_ITEMS = [
   { label: '차량목록', href: '/vehicles', icon: Car },
@@ -36,7 +42,18 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
   const navigate = useNavigate();
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const notificationRef = useRef<HTMLDivElement>(null);
   const isMain = variant === 'main';
+
+  useEffect(() => {
+    if (!isNotificationOpen) return;
+    const close = (e: MouseEvent) => {
+      if (notificationRef.current && !notificationRef.current.contains(e.target as Node)) setIsNotificationOpen(false);
+    };
+    document.addEventListener('click', close);
+    return () => document.removeEventListener('click', close);
+  }, [isNotificationOpen]);
 
   const handleSignupFromModal = () => {
     setLoginModalOpen(false);
@@ -70,13 +87,39 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
             <Search className="h-5 w-5" />
           </button>
           {isMain && (
-            <button
-              type="button"
-              className="p-2 text-gray-600 hover:text-gray-900 rounded-md transition-fast"
-              aria-label="알림"
-            >
-              <Bell className="h-5 w-5" />
-            </button>
+            <div className="relative" ref={notificationRef}>
+              <button
+                type="button"
+                onClick={() => setIsNotificationOpen((v) => !v)}
+                className="p-2 text-gray-600 hover:text-gray-900 rounded-md transition-fast"
+                aria-label="알림"
+                aria-expanded={isNotificationOpen}
+              >
+                <Bell className="h-5 w-5" />
+              </button>
+              {isNotificationOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-[360px] bg-white rounded-[10px] border border-gray-200 shadow-[0_3px_10px_rgba(0,0,0,0.05)] py-3"
+                  style={{ zIndex: Z_INDEX.DROPDOWN }}
+                >
+                  <p className="px-4 pb-2 text-body font-medium text-gray-900" style={{ fontSize: '14px' }}>
+                    알림
+                  </p>
+                  <ul className="max-h-[320px] overflow-y-auto">
+                    {NOTIFICATION_MOCKS.map((n) => (
+                      <li
+                        key={n.id}
+                        className="px-4 py-3 border-t border-gray-100 hover:bg-gray-50 cursor-pointer"
+                        style={{ fontSize: '14px' }}
+                      >
+                        <p className="text-gray-900 font-normal">{n.text}</p>
+                        <p className="text-caption text-gray-500 mt-1">{n.time}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           )}
 
           {userName ? (

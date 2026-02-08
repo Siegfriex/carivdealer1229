@@ -5,6 +5,8 @@
 
 import { Card } from '@/shared/ui/Card';
 import { VehicleStatusBadge } from './VehicleStatusBadge';
+import { StatusBadge } from '@/shared/ui/StatusBadge';
+import { VEHICLE_STATUS_COLORS } from '@/entities/vehicle/model/constants';
 import type { Vehicle } from '@/entities/vehicle/model/types';
 
 interface VehicleCardProps {
@@ -13,6 +15,8 @@ interface VehicleCardProps {
   className?: string;
   /** Figma 스타일: 타임스탬프, 신차가, 태그 표시 */
   variant?: 'default' | 'mainLanding';
+  /** 거래 목록(§3.5 22630) 등에서 사용할 상태 라벨 오버라이드 */
+  statusLabelOverride?: string;
 }
 
 function formatTime(ts: { toDate?: () => Date } | Date): string {
@@ -28,9 +32,10 @@ function formatTime(ts: { toDate?: () => Date } | Date): string {
 
 const DEFAULT_TAGS = ['낙찰가', '단순교환부위', '기본정보', '성능점검'];
 
-export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'default' }: VehicleCardProps) => {
+export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'default', statusLabelOverride }: VehicleCardProps) => {
   const isMainLanding = variant === 'mainLanding';
   const showRedDot = vehicle.status === 'bidding' || vehicle.status === 'inspection';
+  const statusColor = VEHICLE_STATUS_COLORS[vehicle.status];
 
   return (
     <Card hover={!!onClick} onClick={onClick} className={className}>
@@ -40,7 +45,11 @@ export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'defau
           {isMainLanding && showRedDot && (
             <span className="w-2 h-2 rounded-full bg-error flex-shrink-0" aria-hidden />
           )}
-          <VehicleStatusBadge status={vehicle.status} size="sm" />
+          {statusLabelOverride != null ? (
+            <StatusBadge label={statusLabelOverride} color={statusColor} size="sm" />
+          ) : (
+            <VehicleStatusBadge status={vehicle.status} size="sm" />
+          )}
         </div>
         {isMainLanding && vehicle.updatedAt && (
           <span className="text-caption text-gray-500">

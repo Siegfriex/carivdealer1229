@@ -1,18 +1,17 @@
 /**
  * InspectionListPage
- * 검차 신청 목록 (Figma 1202-6685)
- * GNB "검차" 클릭 또는 검차신청 랜딩 임시저장 시 이동
- * 목록 행 클릭/벡터 아이콘으로 확장(4-1), 상태별로 5/5-1/5-2/6 이동
+ * 검차 신청목록 (Figma §3.6 nodeId: 1425:9445 리스트, 1425:9875 카드뷰)
+ * 참조: FIGMASCR0208/§3.6_검차/§3.6_1425-9445_검차요청내역_리스트*.png, §3.6_1425-9875_검차요청내역_카드뷰.png
  */
 
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { InspectionStatusBadge } from '@/entities/inspection/ui/InspectionStatusBadge';
 import { Button } from '@/shared/ui/Button';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
-import { Search, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, LayoutList, LayoutGrid } from 'lucide-react';
 import type { InspectionStatus } from '@/entities/inspection/model/types';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
 
@@ -23,44 +22,58 @@ const STATUS_LABELS: Record<InspectionStatus, string> = {
   completed: '검차 완료',
 };
 
-type StatusFilter = 'all' | 'pending' | 'assigned' | 'in_progress' | 'completed';
+type StatusFilter = 'all' | 'draft' | 'pending' | 'assigned' | 'in_progress' | 'completed' | 'storage';
+type ViewMode = 'list' | 'card';
+
+const PERIOD_OPTIONS = [
+  { value: '1m', label: '최근 1개월' },
+  { value: '3m', label: '최근 3개월' },
+  { value: '6m', label: '최근 6개월' },
+];
 
 export const InspectionListPage = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [period, setPeriod] = useState('1m');
 
-  // 상태별 건수 계산
-  const statusCounts = useMemo(() => {
-    const counts = {
-      all: MOCK_INSPECTIONS.length,
-      pending: MOCK_INSPECTIONS.filter((i) => i.status === 'pending').length,
-      assigned: MOCK_INSPECTIONS.filter((i) => i.status === 'assigned').length,
-      in_progress: MOCK_INSPECTIONS.filter((i) => i.status === 'in_progress').length,
-      completed: MOCK_INSPECTIONS.filter((i) => i.status === 'completed').length,
-    };
-    return counts;
-  }, []);
+  const viewMode: ViewMode = useMemo(() => {
+    return searchParams.get('view') === 'card' ? 'card' : 'list';
+  }, [searchParams]);
+  const setViewMode = (mode: ViewMode) => {
+    if (mode === 'card') setSearchParams({ view: 'card' }, { replace: true });
+    else setSearchParams({}, { replace: true });
+  };
 
-  // 필터 옵션
+  // 상태별 건수 (임시저장·차량보관은 mock 없음 → 0)
+  const statusCounts = useMemo(() => ({
+    all: MOCK_INSPECTIONS.length,
+    draft: 0,
+    pending: MOCK_INSPECTIONS.filter((i) => i.status === 'pending').length,
+    assigned: MOCK_INSPECTIONS.filter((i) => i.status === 'assigned').length,
+    in_progress: MOCK_INSPECTIONS.filter((i) => i.status === 'in_progress').length,
+    completed: MOCK_INSPECTIONS.filter((i) => i.status === 'completed').length,
+    storage: 0,
+  }), []);
+
   const filterOptions: SegmentedControlOption<StatusFilter>[] = [
     { value: 'all', label: '전체', count: statusCounts.all },
+    { value: 'draft', label: '임시저장', count: statusCounts.draft },
     { value: 'pending', label: '검차자 매칭중', count: statusCounts.pending },
     { value: 'assigned', label: '검차자 매칭완료', count: statusCounts.assigned },
-    { value: 'in_progress', label: '검차 진행중', count: statusCounts.in_progress },
-    { value: 'completed', label: '검차 완료', count: statusCounts.completed },
+    { value: 'in_progress', label: '검차중', count: statusCounts.in_progress },
+    { value: 'completed', label: '검차완료', count: statusCounts.completed },
+    { value: 'storage', label: '차량보관', count: statusCounts.storage },
   ];
 
   const inspections = useMemo(() => {
+    if (statusFilter === 'draft' || statusFilter === 'storage') return [];
     let filtered = MOCK_INSPECTIONS;
-
-    // 상태 필터
     if (statusFilter !== 'all') {
       filtered = filtered.filter((insp) => insp.status === statusFilter);
     }
-
-    // 검색 필터
     if (searchTerm.trim()) {
       const q = searchTerm.toLowerCase();
       filtered = filtered.filter(
@@ -69,7 +82,6 @@ export const InspectionListPage = () => {
           (insp.vehicleModelName && insp.vehicleModelName.toLowerCase().includes(q))
       );
     }
-
     return filtered;
   }, [searchTerm, statusFilter]);
 
@@ -147,13 +159,42 @@ export const InspectionListPage = () => {
 
         <main className="flex-1 p-8">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-h1 font-bold text-gray-900">검차 신청 목록</h1>
-            <Button size="md" onClick={() => (navigate('/inspections/request'))}>
-              검차 신청하기
-            </Button>
+            <h1 className="text-h1 font-bold text-gray-900">검차 신청목록</h1>
+            <div className="flex items-center gap-4">
+              <select
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+                className="px-3 py-2 border border-gray-200 rounded-md text-body text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+                aria-label="조회기간"
+              >
+                {PERIOD_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+              <div className="flex rounded-md border border-gray-200 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('list')}
+                  className={`flex items-center gap-2 px-4 py-2 text-body font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                  aria-pressed={viewMode === 'list'}
+                >
+                  <LayoutList className="h-5 w-5" /> 리스트
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('card')}
+                  className={`flex items-center gap-2 px-4 py-2 text-body font-medium transition-colors ${viewMode === 'card' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                  aria-pressed={viewMode === 'card'}
+                >
+                  <LayoutGrid className="h-5 w-5" /> 카드
+                </button>
+              </div>
+              <Button size="md" onClick={() => navigate('/inspections/request')}>
+                검차 신청하기
+              </Button>
+            </div>
           </div>
 
-          {/* 상태 필터 탭 */}
           <div className="mb-6">
             <SegmentedControl
               options={filterOptions}
@@ -162,13 +203,67 @@ export const InspectionListPage = () => {
             />
           </div>
 
-          {/* 리스트 컨테이너 */}
+          {viewMode === 'card' ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {inspections.length === 0 ? (
+                <div className="col-span-full p-12 text-center text-body text-gray-500 bg-white rounded-lg border border-gray-200">
+                  검차 신청 목록이 없습니다.
+                </div>
+              ) : (
+                inspections.map((insp) => (
+                  <div
+                    key={insp.id}
+                    className="bg-white rounded-lg border border-gray-200 p-6 shadow-md"
+                  >
+                    <div className="w-full h-32 bg-gray-100 rounded mb-4 flex items-center justify-center">
+                      <span className="text-caption text-gray-400">차량 이미지</span>
+                    </div>
+                    <p className="text-body font-medium text-gray-900 mb-1">{insp.vehiclePlateNumber}</p>
+                    <p className="text-body text-gray-600 mb-2">{insp.vehicleModelName} {insp.vehicleModelYear}</p>
+                    <p className="text-caption text-gray-500 mb-3">
+                      검차일정: {insp.preferredDate} {insp.preferredTime}
+                    </p>
+                    <p className="text-caption text-gray-500 mb-4">일련번호: {insp.id}</p>
+                    <InspectionStatusBadge status={insp.status} size="sm" className="mb-4" />
+                    <div className="flex flex-wrap gap-2">
+                      {insp.status === 'completed' && (
+                        <Button size="sm" variant="secondary" onClick={() => navigate(`/inspections/${insp.id}/complete`)}>
+                          검차내역 상세보기
+                        </Button>
+                      )}
+                      <Button size="sm" variant="secondary">거래하기</Button>
+                      <Button size="sm" variant="ghost">삭제</Button>
+                      <Button size="sm" variant="ghost">수정하기</Button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          ) : (
           <div className="bg-white rounded-lg shadow-md border border-gray-200 divide-y divide-gray-200">
+            {inspections.length === 0 ? (
+              <div className="text-center py-12 px-6">
+                <p className="text-body text-gray-600">검차 신청 목록이 없습니다.</p>
+                <Button className="mt-4" onClick={() => navigate('/inspections/request')}>
+                  검차 신청하기
+                </Button>
+              </div>
+            ) : (
+            <>
+            {/* 테이블 헤더 (참조 §3.6_1425-9445) */}
+            <div className="grid grid-cols-[auto_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 py-3 bg-gray-50 border-b border-gray-200 text-caption font-medium text-gray-500">
+              <input type="checkbox" className="rounded border-gray-300" aria-label="전체 선택" />
+              <span>상태</span>
+              <span>일련번호</span>
+              <span>차량번호</span>
+              <span>검차 일정</span>
+              <span>검차 장소</span>
+              <span className="w-8" aria-hidden />
+            </div>
             {inspections.map((insp) => {
               const isExpanded = expandedIds.has(insp.id);
               return (
                 <div key={insp.id} className="border-b border-gray-200 last:border-b-0">
-                  {/* 행: 클릭 시 확장 또는 진행 페이지 이동 */}
                   <div
                     role="button"
                     tabIndex={0}
@@ -184,19 +279,24 @@ export const InspectionListPage = () => {
                         else toggleExpand(insp.id);
                       }
                     }}
-                    className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 cursor-pointer transition-fast"
+                    className="grid grid-cols-[auto_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 py-4 hover:bg-gray-50 cursor-pointer transition-fast items-center"
                   >
-                    <div className="flex items-center gap-4">
-                      <div>
-                        <p className="text-body font-medium text-gray-900">
-                          {insp.vehiclePlateNumber} · {insp.vehicleModelName}
-                        </p>
-                        <p className="text-caption text-gray-500">
-                          {insp.preferredDate} {insp.preferredTime} · {insp.vehicleModelYear}년형
-                        </p>
-                      </div>
-                      <InspectionStatusBadge status={insp.status} size="sm" />
+                    <input
+                      type="checkbox"
+                      className="rounded border-gray-300"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label={`${insp.vehiclePlateNumber} 선택`}
+                    />
+                    <InspectionStatusBadge status={insp.status} size="sm" />
+                    <span className="text-caption text-gray-600">{insp.id}</span>
+                    <div>
+                      <p className="text-body font-medium text-gray-900">
+                        {insp.vehiclePlateNumber} · {insp.vehicleModelName}
+                      </p>
+                      <p className="text-caption text-gray-500">{insp.vehicleModelYear}년형</p>
                     </div>
+                    <span className="text-body text-gray-700">{insp.preferredDate} {insp.preferredTime}</span>
+                    <span className="text-caption text-gray-500">{insp.location?.address ?? '-'}</span>
                     <button
                       type="button"
                       onClick={(e) => {
@@ -253,15 +353,9 @@ export const InspectionListPage = () => {
                 </div>
               );
             })}
+            </>
+            )}
           </div>
-
-          {inspections.length === 0 && (
-            <div className="text-center py-12 bg-white rounded-lg shadow-md">
-              <p className="text-body text-gray-600">검차 신청 목록이 없습니다.</p>
-              <Button className="mt-4" onClick={() => (navigate('/inspections/request'))}>
-                검차 신청하기
-              </Button>
-            </div>
           )}
         </main>
       </div>

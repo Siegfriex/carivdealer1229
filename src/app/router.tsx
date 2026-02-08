@@ -29,6 +29,7 @@ import { VehicleDetailPage } from '@/pages/admin/vehicle/VehicleDetailPage';
 import { LoginPage } from '@/pages/admin/LoginPage';
 import { ForgotPasswordPage } from '@/pages/admin/ForgotPasswordPage';
 import { VehicleListPage } from '@/pages/admin/VehicleListPage';
+import { TradeListPage } from '@/pages/admin/TradeListPage';
 import { GeneralSaleOffersPage } from '@/pages/admin/GeneralSaleOffersPage';
 import { LogisticsSchedulePage } from '@/pages/admin/LogisticsSchedulePage';
 import { LogisticsHistoryPage } from '@/pages/admin/LogisticsHistoryPage';
@@ -42,6 +43,7 @@ import { AuctionDetailPage } from '@/pages/admin/auction/AuctionDetailPage';
 import { AuctionStartPricePage } from '@/pages/admin/auction/AuctionStartPricePage';
 import { AuctionDurationPage } from '@/pages/admin/auction/AuctionDurationPage';
 import { AuctionCompletePage } from '@/pages/admin/auction/AuctionCompletePage';
+import { TradeDetailPage } from '@/pages/admin/TradeDetailPage';
 import { SettlementAccountPage } from '@/pages/admin/mypage/SettlementAccountPage';
 import { DevSkipFloatingButton } from '@/shared/ui/DevSkipFloatingButton';
 
@@ -72,6 +74,7 @@ export const Router = () => {
         <Route path="/vehicles/:vehicleId/auction/start-price" element={<AuctionStartPricePage />} />
         <Route path="/vehicles/:vehicleId/auction/duration" element={<AuctionDurationPage />} />
         <Route path="/vehicles/:vehicleId/auction/complete" element={<AuctionCompletePage />} />
+        <Route path="/vehicles/:vehicleId/trade" element={<TradeDetailPage />} />
         <Route path="/vehicles/:vehicleId" element={<VehicleDetailPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/inspections" element={<InspectionListPage />} />
@@ -81,7 +84,8 @@ export const Router = () => {
         <Route path="/inspections/history" element={<InspectionHistoryPage />} />
         <Route path="/inspections/:inspectionId/progress" element={<InspectionProgressPage />} />
         <Route path="/inspections/:inspectionId/complete" element={<InspectionCompletePage />} />
-        <Route path="/offers" element={<GeneralSaleOffersPage />} />
+        <Route path="/offers" element={<TradeListPage />} />
+        <Route path="/offers/proposals" element={<GeneralSaleOffersPage />} />
         <Route path="/logistics/schedule" element={<LogisticsSchedulePage />} />
         <Route path="/logistics/history" element={<LogisticsHistoryPage />} />
         <Route path="/sales/history" element={<SalesHistoryPage />} />

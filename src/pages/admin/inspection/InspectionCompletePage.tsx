@@ -1,132 +1,248 @@
 /**
- * InspectionCompletePage Component
- * 검차 완료 / 검차 내역 결과 상세 (Figma 1193-9217)
- * 중단부 캐러셀(차량/검차 결과 이미지) + 검차 결과 카드 + 판매 방식 선택
+ * InspectionCompletePage
+ * 검차 완료·결과 요약·상세 (Figma §3.6 nodeId: 1425:10813, 1425:10285, 1425:10443)
+ * 참조: FIGMASCR0208/§3.6_검차/§3.6_1425-10285_검차결과요약*.png
+ * 라우트: /inspections/:inspectionId/complete
+ * 레이아웃: 검차내역 제목 + 차량정보·전체 피드백·검차자 카드 + 세부 검차내역(양호/경미/주의/불량) + 사진항목/영상항목 아코디언 + 판매 방식 선택
  */
 
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { StepProgress, type Step } from '@/shared/ui/StepProgress';
 import { Card } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
-import { Carousel, type CarouselSlide } from '@/shared/ui/Carousel';
-import { CheckCircle2, Star } from 'lucide-react';
+import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { User, ChevronDown, ChevronUp } from 'lucide-react';
+import { MOCK_INSPECTIONS } from './mockInspectionList';
 
-const DEFAULT_CAROUSEL_SLIDES: CarouselSlide[] = [
-  { id: '1', src: 'https://via.placeholder.com/800x450?text=차량+전면', alt: '차량 전면' },
-  { id: '2', src: 'https://via.placeholder.com/800x450?text=차량+후면', alt: '차량 후면' },
-  { id: '3', src: 'https://via.placeholder.com/800x450?text=검차+결과', alt: '검차 결과' },
+/** 검차 완료 페이지용 좌측 사이드바 (참조 10285) */
+function InspectionCompleteSidebar() {
+  return (
+    <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-64px)] p-4">
+      <div className="mb-6">
+        <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
+        <input
+          type="text"
+          placeholder="차량번호/모델명"
+          className="w-full pl-3 pr-10 py-2.5 border border-gray-200 rounded-md text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+      </div>
+      <div>
+        <h3 className="text-button font-medium text-gray-700 mb-2">현재 거래 진행상황</h3>
+        <ul className="space-y-1">
+          {['차량 업로드', '검차 진행', '거래', '탁송', '완료'].map((label, i) => (
+            <li key={label} className="flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${i <= 1 ? 'bg-primary' : 'bg-gray-300'}`} />
+              <span className={`text-body ${i === 1 ? 'font-medium text-primary' : 'text-gray-600'}`}>
+                {i === 1 ? '검차 진행 중...' : label}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  );
+}
+
+const FEEDBACK_COUNTS = { good: 95, minor: 12, caution: 3, defect: 1 };
+const SUMMARY_TEXT = '총 111개의 항목이 검사되었습니다. 전반적인 상태는 양호하며, 일부 부위에 경미한 스키레치가 확인되었습니다.';
+
+const PHOTO_CATEGORIES = [
+  { name: '차량 외관', count: 0 },
+  { name: '차량 내부', count: 14 },
+  { name: '타이어', count: 4 },
+  { name: '유리', count: 2 },
+  { name: '사이드미러', count: 2 },
+  { name: '트렁크', count: 2 },
+  { name: '범퍼', count: 2 },
+  { name: '보닛', count: 1 },
 ];
 
-const steps: Step[] = [
-  { id: 'step1', label: '날짜/장소 선택', status: 'completed' },
-  { id: 'step2', label: '평가사 선택', status: 'completed' },
-  { id: 'step3', label: '검차 진행', status: 'completed' },
-  { id: 'step4', label: '검차 완료', status: 'completed' },
+const VIDEO_CATEGORIES = [
+  { name: '보닛', duration: '10초/1' },
+  { name: '성능기록부', duration: '10초/1' },
+  { name: '외부 손상', duration: '10초/1' },
 ];
 
 export const InspectionCompletePage = () => {
   const navigate = useNavigate();
+  const { inspectionId } = useParams<{ inspectionId: string }>();
+  const [expandedPhoto, setExpandedPhoto] = useState<string | null>('차량 내부');
+  const [expandedVideo, setExpandedVideo] = useState<string | null>(null);
 
-  const handleAuctionSale = () => {
-    navigate('/offers?type=auction');
-  };
+  const inspection = useMemo(
+    () => MOCK_INSPECTIONS.find((i) => i.id === inspectionId),
+    [inspectionId]
+  );
 
-  const handleGeneralSale = () => {
-    navigate('/offers?type=general');
-  };
+  const vehicleNumber = inspection?.vehiclePlateNumber ?? '12바 1234';
+  const vehicleModel = inspection?.vehicleModelName ?? 'G70 3T 스포츠 엘리트';
+  const vehicleYear = inspection?.vehicleModelYear ?? '2018';
+  const locationDisplay = inspection?.location?.address ?? '인천광역시 서구 봉수대로 158';
+  const dateDisplay = inspection ? `${inspection.preferredDate} ${inspection.preferredTime}` : '2026년 1월 10일 (일) 오후 11:00';
+
+  const handleAuctionSale = () => navigate('/offers?type=auction');
+  const handleGeneralSale = () => navigate('/offers?type=general');
 
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <main className={`py-8 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
-          <StepProgress steps={steps} className="mb-12" />
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <InspectionCompleteSidebar />
 
-          <div className="mx-auto max-w-4xl">
-          <div className="text-center mb-8">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-success-light flex items-center justify-center">
-              <CheckCircle2 className="h-12 w-12 text-success" />
-            </div>
-            <h1 className="text-h1 font-bold text-gray-900 mb-4">검차가 완료되었습니다!</h1>
-            <p className="text-body text-gray-600">
-              평가사의 상세한 검차 리포트를 확인하세요
-            </p>
-          </div>
+        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING}`}>
+          <h1 className="text-h1 font-bold text-gray-900 mb-8">검차내역</h1>
 
-          {/* 중단부 캐러셀 — Figma 1193-9217 차량/검차 결과 이미지 슬라이드 */}
-          <div className="mb-8">
-            <Carousel slides={DEFAULT_CAROUSEL_SLIDES} aspectRatio="16/9" />
-          </div>
-
-          {/* 검차 결과 요약 */}
-          <Card className="mb-6">
-            <h2 className="text-h2 font-bold text-gray-900 mb-6">검차 결과</h2>
-
-            {/* 평가사 정보 */}
-            <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-200">
-              <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
-                <span className="text-h3 font-bold text-gray-600">김</span>
-              </div>
-              <div className="flex-1">
-                <h3 className="text-h4 font-bold text-gray-900">김평가</h3>
-                <div className="flex items-center gap-1 mt-1">
-                  <Star className="h-4 w-4 fill-warning text-warning" />
-                  <span className="text-body">4.8</span>
+          {/* 상단 2열: 차량정보 | 전체 피드백 (참조 10285) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <Card className="p-6">
+              <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">차량정보</h2>
+              <div className="flex gap-4">
+                <div>
+                  <p className="text-h3 font-bold text-gray-900 mb-2">{vehicleNumber}</p>
+                  <dl className="space-y-1.5 text-body text-gray-700">
+                    <div><dt className="inline font-medium">제조사 </dt><dd className="inline">Hyundai</dd></div>
+                    <div><dt className="inline font-medium">모델 </dt><dd className="inline">{vehicleModel}</dd></div>
+                    <div><dt className="inline font-medium">연식 </dt><dd className="inline">{vehicleYear}</dd></div>
+                    <div><dt className="inline font-medium">주행거리 </dt><dd className="inline">14.6만 km</dd></div>
+                    <div><dt className="inline font-medium">연료 </dt><dd className="inline">-</dd></div>
+                  </dl>
+                </div>
+                <div className="w-24 h-24 flex-shrink-0 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <span className="text-caption text-gray-400">차량</span>
                 </div>
               </div>
-            </div>
+            </Card>
 
-            {/* 종합 점수 */}
-            <div className="grid grid-cols-2 gap-6 mb-6">
-              <div>
-                <p className="text-caption text-gray-500 mb-1">종합 점수</p>
-                <p className="text-h1 font-bold text-primary">A</p>
+            <Card className="p-6">
+              <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">전체 피드백</h2>
+              <div className="flex gap-4 mb-4">
+                <div className="w-28 h-20 flex-shrink-0 bg-gray-200 rounded flex items-center justify-center">
+                  <span className="text-caption text-gray-400">이미지</span>
+                </div>
+                <div className="flex-1 flex flex-wrap gap-x-4 gap-y-1 text-body">
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" />양호 {FEEDBACK_COUNTS.good}개</span>
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-orange-400" />경미 {FEEDBACK_COUNTS.minor}개</span>
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-500" />주의 {FEEDBACK_COUNTS.caution}개</span>
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" />불량 {FEEDBACK_COUNTS.defect}개</span>
+                </div>
               </div>
-              <div>
-                <p className="text-caption text-gray-500 mb-1">시장 평가</p>
-                <p className="text-h4 font-medium text-gray-900">매우 우수</p>
-              </div>
-            </div>
+              <Button variant="secondary" size="sm" className="mb-3">세부 검차내역</Button>
+              <p className="text-caption text-gray-600">{SUMMARY_TEXT}</p>
+            </Card>
+          </div>
 
-            {/* 항목별 평가 */}
-            <div className="grid grid-cols-4 gap-4">
+          {/* 검차자 카드 (참조 10285) */}
+          <Card className="p-6 mb-8">
+            <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">검차자</h2>
+            <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
-                <p className="text-caption text-gray-500 mb-1">외장</p>
-                <p className="text-body font-medium text-gray-900">Good</p>
+                <p className="text-body text-gray-700 mb-1">{dateDisplay}</p>
+                <p className="text-body text-gray-700">{locationDisplay}</p>
               </div>
-              <div>
-                <p className="text-caption text-gray-500 mb-1">내장</p>
-                <p className="text-body font-medium text-gray-900">Excellent</p>
-              </div>
-              <div>
-                <p className="text-caption text-gray-500 mb-1">기계</p>
-                <p className="text-body font-medium text-gray-900">Good</p>
-              </div>
-              <div>
-                <p className="text-caption text-gray-500 mb-1">골격</p>
-                <p className="text-body font-medium text-gray-900">Good</p>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                  <User className="h-6 w-6 text-gray-500" />
+                </div>
+                <div>
+                  <p className="text-body font-medium text-gray-900">홍길동 검사원</p>
+                  <p className="text-caption text-gray-500">010-1234-5678</p>
+                </div>
               </div>
             </div>
           </Card>
 
-          {/* 다음 단계 */}
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-h3 font-bold text-gray-900 mb-6 text-center">
-              판매 방식을 선택하세요
-            </h2>
-            <div className="grid grid-cols-2 gap-6">
-              <Button size="lg" fullWidth onClick={handleAuctionSale}>
-                경매로 판매하기
-              </Button>
-              <Button size="lg" variant="secondary" fullWidth onClick={handleGeneralSale}>
-                일반 판매하기
-              </Button>
+          {/* 세부 검차내역 4칸 (참조 10285 변형) */}
+          <div className="mb-6">
+            <h2 className="text-h3 font-bold text-gray-900 mb-4">세부 검차내역</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {[
+                { label: '양호', value: FEEDBACK_COUNTS.good, color: 'bg-green-500' },
+                { label: '경미', value: FEEDBACK_COUNTS.minor, color: 'bg-yellow-500' },
+                { label: '주의', value: FEEDBACK_COUNTS.caution, color: 'bg-orange-400' },
+                { label: '불량', value: FEEDBACK_COUNTS.defect, color: 'bg-red-500' },
+              ].map(({ label, value, color }) => (
+                <Card key={label} className="p-4 flex items-center gap-3">
+                  <span className={`w-4 h-4 rounded-full flex-shrink-0 ${color}`} />
+                  <div>
+                    <p className="text-caption text-gray-500">{label}</p>
+                    <p className="text-h4 font-bold text-gray-900">{value}</p>
+                  </div>
+                </Card>
+              ))}
             </div>
           </div>
-        </div>
+
+          {/* 사진항목 아코디언 (참조 10285 변형) */}
+          <div className="mb-6">
+            <h2 className="text-h3 font-bold text-gray-900 mb-4">사진항목</h2>
+            <div className="border border-gray-200 rounded-lg divide-y divide-gray-200">
+              {PHOTO_CATEGORIES.map(({ name, count }) => {
+                const isOpen = expandedPhoto === name;
+                return (
+                  <div key={name}>
+                    <button
+                      type="button"
+                      onClick={() => setExpandedPhoto(isOpen ? null : name)}
+                      className="w-full flex items-center justify-between px-4 py-3 text-left text-body text-gray-900 hover:bg-gray-50"
+                    >
+                      <span>{name} {count}</span>
+                      {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                    </button>
+                    {isOpen && name === '차량 내부' && (
+                      <div className="px-4 pb-4 pt-0 flex gap-4 flex-wrap">
+                        {[1, 2, 3].map((i) => (
+                          <div key={i} className="w-24">
+                            <div className="aspect-square bg-gray-100 rounded flex items-center justify-center mb-1">
+                              <span className="text-caption text-gray-400">{i}</span>
+                            </div>
+                            <p className="text-caption text-gray-600 truncate">
+                              {i === 1 ? '운전석 전체 프레임' : i === 2 ? '계기판' : '시트'}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 영상항목 아코디언 */}
+          <div className="mb-8">
+            <h2 className="text-h3 font-bold text-gray-900 mb-4">영상항목</h2>
+            <div className="border border-gray-200 rounded-lg divide-y divide-gray-200">
+              {VIDEO_CATEGORIES.map(({ name, duration }) => {
+                const isOpen = expandedVideo === name;
+                return (
+                  <button
+                    key={name}
+                    type="button"
+                    onClick={() => setExpandedVideo(isOpen ? null : name)}
+                    className="w-full flex items-center justify-between px-4 py-3 text-left text-body text-gray-900 hover:bg-gray-50"
+                  >
+                    <span>{name} {duration}</span>
+                    {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 판매 방식 선택 */}
+          <Card className="p-8">
+            <h2 className="text-h3 font-bold text-gray-900 mb-6 text-center">판매 방식을 선택하세요</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Button size="lg" fullWidth onClick={handleAuctionSale}>경매로 판매하기</Button>
+              <Button size="lg" variant="secondary" fullWidth onClick={handleGeneralSale}>일반 판매하기</Button>
+            </div>
+            <div className="mt-4 flex justify-center gap-4">
+              <Button variant="ghost" onClick={() => navigate('/inspections')}>목록으로</Button>
+              <Button variant="secondary" onClick={() => navigate(`/inspections/${inspectionId}/progress?stage=complete`)}>검차 진행상황</Button>
+            </div>
+          </Card>
         </main>
       </div>
     </div>

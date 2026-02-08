@@ -29,7 +29,8 @@ describe('VehicleCard Component', () => {
     expect(screen.getByText('Carnival KA4')).toBeInTheDocument();
     expect(screen.getByText('Kia')).toBeInTheDocument();
     expect(screen.getByText(/2022년형/)).toBeInTheDocument();
-    expect(screen.getByText('50,000km')).toBeInTheDocument();
+    // 주행거리: UI는 "5.0만 km" 형식으로 표시
+    expect(screen.getByText(/5\.0\s*만\s*km/)).toBeInTheDocument();
   });
 
   test('가격 표시', () => {

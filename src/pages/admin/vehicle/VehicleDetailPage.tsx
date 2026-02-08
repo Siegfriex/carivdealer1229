@@ -12,7 +12,7 @@ import { VehicleStatusBadge } from '@/entities/vehicle/ui/VehicleStatusBadge';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { VEHICLE_STATUS_LABELS } from '@/entities/vehicle/model/constants';
-import { ArrowLeft, Gavel, TrendingUp } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Wallet } from 'lucide-react';
 
 export const VehicleDetailPage = () => {
   const { vehicleId } = useParams<{ vehicleId: string }>();
@@ -66,7 +66,7 @@ export const VehicleDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LandingHeader variant="main" activeNav="vehicles" />
+      <LandingHeader variant="main" activeNav="offers" />
       <div className={LAYOUT_CLASSES.CONTAINER}>
         <div className="flex">
           <MainLandingSidebar activeKey="all" />
@@ -114,30 +114,30 @@ export const VehicleDetailPage = () => {
             </div>
           </div>
 
-          {/* SCR-0300: 판매 방식 선택 */}
+          {/* §3.5 20498: 판매 방식 선택 — 참조 스크린샷 §3.5_1418-20498_판매방식선택.png */}
           <section className="mt-8">
-            <h2 className="text-h3 font-bold text-gray-900 mb-4">판매 방식을 선택하세요</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card hover className="cursor-pointer" onClick={handleAuctionSale}>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center">
-                    <Gavel className="h-6 w-6 text-primary" />
+            <h2 className="text-h3 font-bold text-gray-900 mb-6 text-center">판매 방식 선택</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <Card hover className="cursor-pointer" onClick={handleGeneralSale}>
+                <div className="p-6 flex flex-col items-center text-center">
+                  <div className="w-14 h-14 rounded-full bg-primary-light flex items-center justify-center mb-4">
+                    <ShoppingBag className="h-7 w-7 text-primary" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-h4 font-bold text-gray-900">경매로 판매하기</h3>
-                    <p className="text-body text-gray-600">경쟁 입찰로 최고가에 판매</p>
-                  </div>
+                  <h3 className="text-h4 font-bold text-gray-900 mb-2">일반 판매</h3>
+                  <p className="text-body text-gray-600">
+                    원하는 가격으로 판매를 진행합니다. 가격 제안을 받고, 조건에 맞는 경우에만 판매할 수 있습니다.
+                  </p>
                 </div>
               </Card>
-              <Card hover className="cursor-pointer" onClick={handleGeneralSale}>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-success-light flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-success" />
+              <Card hover className="cursor-pointer" onClick={handleAuctionSale}>
+                <div className="p-6 flex flex-col items-center text-center">
+                  <div className="w-14 h-14 rounded-full bg-primary-light flex items-center justify-center mb-4">
+                    <Wallet className="h-7 w-7 text-primary" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-h4 font-bold text-gray-900">일반 판매하기</h3>
-                    <p className="text-body text-gray-600">고정가로 바이어에게 제안받기</p>
-                  </div>
+                  <h3 className="text-h4 font-bold text-gray-900 mb-2">경매</h3>
+                  <p className="text-body text-gray-600">
+                    정해진 기간 동안 최고가로 판매됩니다. 입찰 결과에 따라 판매가 진행되며, 가격 변동 가능성이 있습니다.
+                  </p>
                 </div>
               </Card>
             </div>

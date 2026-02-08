@@ -20,6 +20,19 @@ export const VEHICLE_STATUS_LABELS: Record<VehicleStatus, string> = {
 };
 
 /**
+ * 거래 목록(§3.5 22630)용 상태 라벨
+ */
+export const TRADE_LIST_STATUS_LABELS: Record<VehicleStatus, string> = {
+  draft: '검차신청 임시저장',
+  inspection: '검차 진행중',
+  bidding: '거래중',
+  active_sale: '거래중',
+  sold: '거래완료',
+  pending_settlement: '정산중',
+  completed: '등록됨',
+};
+
+/**
  * 차량 상태 색상
  */
 export const VEHICLE_STATUS_COLORS: Record<VehicleStatus, string> = {

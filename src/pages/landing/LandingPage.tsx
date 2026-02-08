@@ -64,11 +64,10 @@ const FAQ_ITEMS = [
 
 const KAKAO_CHAT_URL = 'https://pf.kakao.com/_example'; // 실제 채널 URL로 교체
 
-/** §3.1 랜딩 3프레임: 37201(Hero), 37364(동일 구조), 43715(알림 노출 변형). 동일 라우트 `/` 의 다른 상태. */
+/** §3.1 랜딩 (플랜 B 참조 스크린샷: 1368-37201 Hero중심, 1368-43715 알림노출). 동일 라우트 `/`. */
 export const LandingPage = () => {
   const navigate = useNavigate();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-  const [showNotification, setShowNotification] = useState(true); // 1368:43715 알림 노출 변형
   const userName = '홍길동'; // TODO: auth context에서 가져오기
 
   const handleStartNow = () => {
@@ -77,27 +76,12 @@ export const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 1368:43715 — 알림 노출 변형: 같은 라우트의 알림 팝업 상태 */}
-      {showNotification && (
-        <div
-          className="fixed top-[80px] right-[24px] z-[600] flex items-center gap-3 rounded-[10px] border border-gray-200 bg-white px-5 py-4 shadow-[0_3px_10px_rgba(0,0,0,0.05)] max-w-[360px]"
-          style={{ fontSize: '14px' }}
-          role="alert"
-        >
-          <span className="flex-1 font-normal leading-normal text-gray-900">
-            새 알림이 도착했습니다. 확인해 보세요.
-          </span>
-          <button
-            type="button"
-            onClick={() => setShowNotification(false)}
-            className="shrink-0 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-            aria-label="알림 닫기"
-          >
-            ×
-          </button>
-        </div>
-      )}
-      <LandingHeader userName={userName} onRegisterListing={handleStartNow} />
+      <LandingHeader
+        userName={userName}
+        onRegisterListing={handleStartNow}
+        variant="main"
+        activeNav="vehicles"
+      />
 
       {/* Hero */}
       <section className="relative w-full min-h-[420px] flex items-center justify-center overflow-hidden">

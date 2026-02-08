@@ -34,38 +34,50 @@ const pages = [
   { path: '/logistics/history', name: '35-logistics-history' },
 ];
 
+// Firebase/React Query 등으로 networkidle이 안정되지 않는 페이지는 domcontentloaded + 대기 사용
+const STABLE_PATHS = ['/dashboard', '/vehicles', '/vehicles/v-001'];
+function waitStable(page: import('@playwright/test').Page) {
+  return page.waitForLoadState('domcontentloaded').then(() => page.waitForTimeout(2500));
+}
+
 test.describe('전체 화면 스크린샷', () => {
   for (const pageInfo of pages) {
     test(`${pageInfo.name} - 1440px`, async ({ page }) => {
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.goto(pageInfo.path);
-      await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(500);
-      
+      if (STABLE_PATHS.some((p) => pageInfo.path.startsWith(p))) {
+        await waitStable(page);
+      } else {
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+      }
       await page.screenshot({
         path: `tests/screenshots/${pageInfo.name}-1440px.png`,
         fullPage: true,
       });
     });
-    
+
     test(`${pageInfo.name} - 700px`, async ({ page }) => {
       await page.setViewportSize({ width: 700, height: 900 });
       await page.goto(pageInfo.path);
-      await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(500);
-      
+      if (STABLE_PATHS.some((p) => pageInfo.path.startsWith(p))) {
+        await waitStable(page);
+      } else {
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
+      }
       await page.screenshot({
         path: `tests/screenshots/${pageInfo.name}-700px.png`,
         fullPage: true,
       });
     });
   }
-  
+
   test('MobileBlocker - 699px', async ({ page }) => {
     await page.setViewportSize({ width: 699, height: 900 });
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForTimeout(500);
     await page.screenshot({
       path: 'tests/screenshots/99-mobile-blocker-699px.png',
       fullPage: false,
