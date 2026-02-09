@@ -1,15 +1,17 @@
 /**
- * Logistics Entity Zod Schemas
+ * 탁송 엔티티 Zod 스키마 (런타임 검증)
  */
 
 import { z } from 'zod';
 import { Timestamp } from 'firebase/firestore';
 
+/** Firestore Timestamp 검증용 */
 const timestampSchema = z.custom<Timestamp>(
   (val) => val instanceof Timestamp,
   { message: 'Invalid Timestamp' }
 );
 
+/** 탁송 상태 스키마 */
 export const logisticsStatusSchema = z.enum([
   'scheduled',
   'dispatched',
@@ -17,6 +19,7 @@ export const logisticsStatusSchema = z.enum([
   'completed',
 ]);
 
+/** 탁송 스키마 */
 export const logisticsSchema = z.object({
   id: z.string(),
   vehicleId: z.string(),
@@ -34,4 +37,5 @@ export const logisticsSchema = z.object({
   createdAt: timestampSchema,
 });
 
+/** logisticsSchema 추론 타입 */
 export type LogisticsSchemaType = z.infer<typeof logisticsSchema>;

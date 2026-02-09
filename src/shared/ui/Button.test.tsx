@@ -1,5 +1,6 @@
 /**
- * Button Component Tests
+ * Button 컴포넌트 테스트
+ * 렌더링·클릭·disabled·loading·variant 동작을 검증한다.
  */
 
 import { describe, test, expect, vi } from 'vitest';

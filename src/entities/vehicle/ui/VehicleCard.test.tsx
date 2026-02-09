@@ -1,5 +1,6 @@
 /**
- * VehicleCard Component Tests
+ * VehicleCard 컴포넌트 테스트
+ * 차량 정보 렌더링·클릭·variant·statusLabelOverride 동작을 검증한다.
  */
 
 import { describe, test, expect, vi } from 'vitest';

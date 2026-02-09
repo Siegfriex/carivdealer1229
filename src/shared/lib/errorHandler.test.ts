@@ -1,5 +1,6 @@
 /**
  * errorHandler 유틸리티 테스트
+ * analyzeError·handleError·isRetryableError 등 에러 분류 및 사용자 메시지 변환을 검증한다.
  */
 
 import { describe, test, expect } from 'vitest';

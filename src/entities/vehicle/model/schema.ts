@@ -8,9 +8,7 @@
 import { z } from 'zod';
 import { Timestamp } from 'firebase/firestore';
 
-/**
- * Firestore Timestamp Zod Schema
- */
+/** Firestore Timestamp 검증용 Zod 스키마 */
 const timestampSchema = z.custom<Timestamp>(
   (val) => val instanceof Timestamp,
   { message: 'Invalid Timestamp' }

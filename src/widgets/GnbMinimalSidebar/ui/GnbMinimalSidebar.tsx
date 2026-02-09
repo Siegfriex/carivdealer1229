@@ -16,6 +16,13 @@ export interface GnbMinimalSidebarProps {
   className?: string;
 }
 
+/**
+ * GNB 탭용 미니 사이드바 렌더링
+ * @description 검색(상단) + 구역명(하단) 표시
+ * @param props.sectionTitle - 구역명 (검차/거래/탁송/정산)
+ * @param props.searchValue - 검색 입력값
+ * @param props.onSearchChange - 검색 변경 핸들러
+ */
 export function GnbMinimalSidebar({
   sectionTitle,
   searchValue = '',

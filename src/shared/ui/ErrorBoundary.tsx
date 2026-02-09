@@ -1,22 +1,27 @@
 /**
- * ErrorBoundary
- * 런타임 에러 시 fallback UI 표시 및 로깅
+ * 에러 경계 컴포넌트
+ * 자식 트리에서 발생한 런타임 에러를 잡아 fallback UI 표시 및 logError로 로깅.
  */
 
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { logError, ErrorType } from '@/shared/lib/errorHandler';
 import type { ApiError } from '@/shared/lib/errorHandler';
 
+/** ErrorBoundary props (children, 선택 fallback) */
 interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
 }
 
+/** ErrorBoundary 내부 상태 */
 interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
 }
 
+/**
+ * 에러 경계. 자식에서 에러 발생 시 fallback 또는 기본 "문제가 발생했습니다" + 다시 시도 버튼 렌더.
+ */
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);

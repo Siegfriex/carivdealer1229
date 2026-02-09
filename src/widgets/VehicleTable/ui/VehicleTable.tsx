@@ -8,6 +8,7 @@ import { VehicleStatusBadge } from '@/entities/vehicle/ui/VehicleStatusBadge';
 import type { Vehicle } from '@/entities/vehicle/model/types';
 import { Eye, Edit2, Trash2 } from 'lucide-react';
 
+/** 차량 테이블 props */
 interface VehicleTableProps {
   vehicles: Vehicle[];
   onView?: (vehicle: Vehicle) => void;
@@ -16,6 +17,13 @@ interface VehicleTableProps {
   className?: string;
 }
 
+/**
+ * 차량 목록 테이블 (차량번호·모델·연식·주행·가격·상태·액션)
+ * @param props.vehicles - 차량 배열
+ * @param props.onView - 보기 클릭 콜백
+ * @param props.onEdit - 수정 클릭 콜백
+ * @param props.onDelete - 삭제 클릭 콜백
+ */
 export const VehicleTable = ({
   vehicles,
   onView,

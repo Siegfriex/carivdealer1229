@@ -27,6 +27,10 @@ const MENU_ITEMS: Array<
   { label: '문의·지원', key: 'support', comingSoon: true },
 ];
 
+/**
+ * 마이페이지 좌측 사이드바 (프로필·계정·정산·알림·문의 메뉴)
+ * @description 구현 라우트: /mypage/settlement-account. 미구현은 준비 중 표시.
+ */
 export function MypageSidebar() {
   const location = useLocation();
 

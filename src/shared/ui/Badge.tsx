@@ -1,15 +1,16 @@
 /**
- * Badge Component
  * 상태 배지 컴포넌트
- * 
- * 디자인: design/design_component/상태창.svg
+ * 변형(기본·primary·success·warning·error·info)·크기(sm/md/lg). 디자인: design/design_component/상태창.svg
  */
 
 import type { PropsWithChildren } from 'react';
 
+/** 배지 색상 변형 */
 type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
+/** 배지 크기 */
 type BadgeSize = 'sm' | 'md' | 'lg';
 
+/** Badge props */
 interface BadgeProps extends PropsWithChildren {
   variant?: BadgeVariant;
   size?: BadgeSize;
@@ -31,6 +32,11 @@ const sizeClasses: Record<BadgeSize, string> = {
   lg: 'px-6 py-3 text-body',
 };
 
+/**
+ * 배지. 상태·라벨 표시용.
+ * @param props.variant - 색상 변형 (기본 default)
+ * @param props.size - 크기 (기본 md)
+ */
 export const Badge = ({
   variant = 'default',
   size = 'md',

@@ -1,15 +1,15 @@
 /**
- * Responsive Utilities
- * 1440px 기준 반응형 계산 함수
+ * 반응형 유틸리티 (1440px 기준)
+ * vw/px 변환, SVG 좌표 변환, 그리드 간격, 브레이크포인트 상수.
  */
 
 const BASE_WIDTH = 1440;
 
 /**
- * vw 값을 px로 변환
+ * vw 값을 px로 변환.
  * @param vw - vw 단위 값
- * @param baseWidth - 기준 너비 (기본값: 1440px)
- * @returns px 값
+ * @param baseWidth - 기준 너비 (기본 1440px)
+ * @returns 픽셀 값
  */
 export const vwToPx = (vw: number, baseWidth = BASE_WIDTH): number => {
   return (vw / 100) * baseWidth;
@@ -68,18 +68,14 @@ export const gridColumnWidth = (columns: number, gap: number = 24): number => {
   return pxToVw(columnWidth);
 };
 
-/**
- * 반응형 브레이크포인트
- */
+/** 반응형 브레이크포인트 (픽셀). mobile 699 이하, desktop 700 이상, wide 1440) */
 export const BREAKPOINTS = {
   mobile: 699,
   desktop: 700,
   wide: 1440,
 } as const;
 
-/**
- * 미디어 쿼리 헬퍼
- */
+/** 미디어 쿼리 문자열 (mobile max 699px, desktop min 700px, wide min 1440px) */
 export const mediaQuery = {
   mobile: `@media (max-width: ${BREAKPOINTS.mobile}px)`,
   desktop: `@media (min-width: ${BREAKPOINTS.desktop}px)`,

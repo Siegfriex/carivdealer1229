@@ -1,12 +1,11 @@
 /**
- * Pagination Component
- * 페이지네이션
- * 
- * 디자인: design/design_component/이전\다음 페이지 전환.svg
+ * 페이지네이션 컴포넌트
+ * 이전/다음·페이지 번호 클릭으로 페이지 변경. 디자인: design/design_component/이전 다음 페이지 전환.svg
  */
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+/** Pagination props */
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -14,6 +13,12 @@ interface PaginationProps {
   className?: string;
 }
 
+/**
+ * 페이지네이션. 현재 페이지 주변·첫·끝 번호 노출.
+ * @param props.currentPage - 현재 페이지 (1 기준)
+ * @param props.totalPages - 전체 페이지 수
+ * @param props.onPageChange - 페이지 클릭 시 콜백
+ */
 export const Pagination = ({
   currentPage,
   totalPages,

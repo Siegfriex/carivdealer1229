@@ -1,10 +1,11 @@
 /**
- * Trade Entity Zod Schemas
+ * 거래 엔티티 Zod 스키마 (런타임 검증)
  */
 
 import { z } from 'zod';
 import { Timestamp } from 'firebase/firestore';
 
+/** Firestore Timestamp 검증용 */
 const timestampSchema = z.custom<Timestamp>(
   (val) => val instanceof Timestamp,
   { message: 'Invalid Timestamp' }

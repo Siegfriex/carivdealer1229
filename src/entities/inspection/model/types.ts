@@ -1,8 +1,6 @@
 /**
- * Inspection Entity Types
- * ERD 스키마 기반 타입 정의
- * 
- * 참조: docs/DATABASE_ERD_SCHEMA.md
+ * 검차(Inspection) 엔티티 타입
+ * ERD 스키마 기반. 참조: docs/DATABASE_ERD_SCHEMA.md
  */
 
 import { Timestamp } from 'firebase/firestore';

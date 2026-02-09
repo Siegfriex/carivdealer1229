@@ -1,5 +1,6 @@
 /**
- * Vehicle Schema Tests
+ * 차량(Vehicle) Zod 스키마 테스트
+ * vehicleSchema·vehicleStatusSchema 유효/무효 검증을 검증한다.
  */
 
 import { describe, test, expect } from 'vitest';

@@ -1,9 +1,10 @@
 /**
- * Member Entity Constants
+ * 회원 엔티티 상수 (역할·상태 라벨·색상·검증 정규식)
  */
 
 import type { MemberRole, MemberStatus } from './types';
 
+/** 회원 역할 한글 라벨 */
 export const MEMBER_ROLE_LABELS: Record<MemberRole, string> = {
   DEALER: '딜러',
   INSPECTOR: '평가사',

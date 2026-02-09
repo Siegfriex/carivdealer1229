@@ -1,11 +1,11 @@
 /**
- * Inspection Entity Zod Schemas
- * 런타임 데이터 검증
+ * 검차 엔티티 Zod 스키마 (런타임 검증)
  */
 
 import { z } from 'zod';
 import { Timestamp } from 'firebase/firestore';
 
+/** Firestore Timestamp 검증용 */
 const timestampSchema = z.custom<Timestamp>(
   (val) => val instanceof Timestamp,
   { message: 'Invalid Timestamp' }

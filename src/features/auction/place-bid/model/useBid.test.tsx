@@ -1,5 +1,6 @@
 /**
- * useBid Hook 테스트
+ * useBid 훅 테스트
+ * 경매 입찰 뮤테이션 호출·성공 시 쿼리 무효화를 검증한다.
  */
 
 import type { ReactNode } from 'react';

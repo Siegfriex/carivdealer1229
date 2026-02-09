@@ -25,6 +25,10 @@ const menuItems: MenuItem[] = [
   { id: 'sales', label: '판매 이력', icon: TrendingUp, href: '/sales/history' },
 ];
 
+/**
+ * 좌측 메뉴 사이드바 (대시보드·차량·탁송·정산·판매이력)
+ * @param props.currentPath - 현재 경로 (활성 링크 하이라이트)
+ */
 export const Sidebar = ({ currentPath = '/', className = '' }: SidebarProps) => {
   return (
     <aside className={`w-64 bg-white border-r border-gray-200 h-screen sticky top-0 ${className}`}>

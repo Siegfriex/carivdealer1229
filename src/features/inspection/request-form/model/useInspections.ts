@@ -9,12 +9,19 @@ import { db } from '@/shared/config/firebase';
 import { inspectionSchema } from '@/entities/inspection/model/schema';
 import type { Inspection, InspectionStatus } from '@/entities/inspection/model/types';
 
+/** 검차 목록 조회 옵션 */
 interface UseInspectionsOptions {
   vehicleId?: string;
   evaluatorId?: string;
   status?: InspectionStatus;
 }
 
+/**
+ * 검차 목록 조회 쿼리 훅
+ * @description Firestore inspections 컬렉션 조회, vehicleId/evaluatorId/status 필터, createdAt 내림차순
+ * @param options - vehicleId, evaluatorId, status (선택)
+ * @returns useQuery<Inspection[]>
+ */
 export const useInspections = (options: UseInspectionsOptions = {}) => {
   return useQuery({
     queryKey: ['inspections', options.vehicleId, options.evaluatorId, options.status],

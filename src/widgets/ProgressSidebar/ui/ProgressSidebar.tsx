@@ -13,6 +13,7 @@ import { Check } from 'lucide-react';
 import { Z_INDEX } from '@/shared/config/zIndex';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 
+/** 진행 단계 한 항목 */
 export interface ProgressStep {
   id: string;
   label: string;
@@ -27,6 +28,11 @@ interface ProgressSidebarProps {
   inline?: boolean;
 }
 
+/**
+ * 회원가입/차량등록 플로우 진행 표시 사이드바
+ * @param props.steps - 진행 단계 배열
+ * @param props.inline - true면 고정이 아닌 flex 배치
+ */
 export const ProgressSidebar = ({ steps, className = '', inline = false }: ProgressSidebarProps) => {
   const baseClasses = `${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200`;
   const positionClasses = inline

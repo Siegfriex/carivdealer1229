@@ -1,28 +1,33 @@
 /**
- * Toast Component
- * 알림 토스트
- * 
- * z-index: 800 (TOAST)
+ * 토스트 알림 (Context + Provider)
+ * success/error/info/warning 타입, 3초 후 자동 제거. z-index: Z_INDEX.TOAST(800).
  */
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { X, CheckCircle2, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 import { Z_INDEX } from '@/shared/config/zIndex';
 
+/** 토스트 타입 */
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 
+/** 단일 토스트 항목 */
 interface Toast {
   id: string;
   message: string;
   type: ToastType;
 }
 
+/** Context 값: showToast 함수 */
 interface ToastContextType {
   showToast: (message: string, type?: ToastType) => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
+/**
+ * 토스트 Provider. 자식에서 useToast()로 showToast 호출.
+ * @param children - 자식 노드
+ */
 export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
@@ -89,6 +94,10 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   );
 };
 
+/**
+ * 토스트 훅. ToastProvider 내부에서만 사용.
+ * @returns showToast(message, type?) — success/error/info/warning (기본 info)
+ */
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) {

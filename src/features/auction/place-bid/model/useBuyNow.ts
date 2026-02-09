@@ -6,16 +6,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api/client';
 
+/** 즉시구매 요청 입력 */
 interface BuyNowInput {
   auction_id: string;
 }
 
+/** 즉시구매 응답 */
 interface BuyNowResponse {
   success: boolean;
   contract_id: string;
   message: string;
 }
 
+/**
+ * 즉시구매 뮤테이션 훅
+ * @description apiClient.auction.buyNow 호출, 성공 시 auctions·vehicles 쿼리 무효화
+ * @returns useMutation (mutationFn: BuyNowInput → BuyNowResponse)
+ */
 export const useBuyNow = () => {
   const queryClient = useQueryClient();
 

@@ -1,5 +1,5 @@
 /**
- * Mock inspection list for InspectionListPage (Figma 1202-6685)
+ * 검차 목록 페이지용 목업 데이터 (Figma 1202-6685)
  * status별: pending(매칭중), assigned(이동중), in_progress(검차중), completed(완료)
  */
 

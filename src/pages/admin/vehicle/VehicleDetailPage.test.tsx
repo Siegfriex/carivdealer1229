@@ -1,7 +1,6 @@
 /**
- * VehicleDetailPage 테스트
- * - vehicleId 없음 또는 'new'일 때 잘못된 경로 메시지 및 [차량 목록으로] 버튼
- * - 로딩/에러 시 UI
+ * VehicleDetailPage 컴포넌트 테스트
+ * vehicleId 없음·new 시 잘못된 경로 메시지 및 [차량 목록으로] 버튼, 로딩/에러 UI를 검증한다.
  */
 
 import { describe, test, expect, vi, beforeEach } from 'vitest';

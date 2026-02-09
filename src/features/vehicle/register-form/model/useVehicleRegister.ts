@@ -9,6 +9,11 @@ import { db } from '@/shared/config/firebase';
 import { vehicleSchema } from '@/entities/vehicle/model/schema';
 import type { Vehicle, CreateVehicleInput } from '@/entities/vehicle/model/types';
 
+/**
+ * 차량 등록 뮤테이션 훅
+ * @description Firestore vehicles 컬렉션에 addDoc, 성공 시 vehicles 쿼리 무효화
+ * @returns useMutation (mutationFn: CreateVehicleInput → Vehicle)
+ */
 export const useVehicleRegister = () => {
   const queryClient = useQueryClient();
 

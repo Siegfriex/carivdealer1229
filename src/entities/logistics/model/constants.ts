@@ -1,9 +1,10 @@
 /**
- * Logistics Entity Constants
+ * 탁송 엔티티 상수 (상태 라벨·색상·전이 규칙)
  */
 
 import type { LogisticsStatus } from './types';
 
+/** 탁송 상태 한글 라벨 */
 export const LOGISTICS_STATUS_LABELS: Record<LogisticsStatus, string> = {
   scheduled: '일정 조율 완료',
   dispatched: '배차 확정',
@@ -25,6 +26,12 @@ export const LOGISTICS_STATUS_TRANSITIONS: Record<LogisticsStatus, LogisticsStat
   completed: [],
 };
 
+/**
+ * 탁송 상태 전이 가능 여부
+ * @param currentStatus - 현재 탁송 상태
+ * @param nextStatus - 다음 상태
+ * @returns 전이 가능하면 true
+ */
 export const canTransitionTo = (
   currentStatus: LogisticsStatus,
   nextStatus: LogisticsStatus

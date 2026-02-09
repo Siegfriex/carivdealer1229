@@ -18,6 +18,12 @@ interface HeaderProps {
   onLogout?: () => void;
 }
 
+/**
+ * 상단 GNB 헤더 (로고·대시보드·차량관리·탁송·정산·사용자 메뉴)
+ * @param props.userName - 표시 딜러명
+ * @param props.onMenuClick - 모바일 메뉴 클릭
+ * @param props.onLogout - 로그아웃 핸들러
+ */
 export const Header = ({ userName = '딜러명', onMenuClick, onLogout }: HeaderProps) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 

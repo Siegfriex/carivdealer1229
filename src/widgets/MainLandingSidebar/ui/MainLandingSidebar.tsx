@@ -26,6 +26,12 @@ interface MainLandingSidebarProps {
   className?: string;
 }
 
+/**
+ * 메인 랜딩 좌측 사이드바 (차량목록 필터: 전체·상태·판매·탁송·정산)
+ * @param props.searchValue - 검색 입력값
+ * @param props.onSearchChange - 검색 변경 핸들러
+ * @param props.activeKey - 활성 필터 키 (all|status|sale|logistics|settlement)
+ */
 export function MainLandingSidebar({
   searchValue = '',
   onSearchChange,

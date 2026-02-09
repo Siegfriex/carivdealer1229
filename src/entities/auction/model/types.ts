@@ -22,5 +22,7 @@ export interface Auction {
   endedAt?: Timestamp;
 }
 
+/** 경매 생성 입력 (id·타임스탬프 제외) */
 export type CreateAuctionInput = Omit<Auction, 'id' | 'createdAt' | 'updatedAt' | 'endedAt'>;
+/** 경매 수정 입력 (id·createdAt 제외, 부분) */
 export type UpdateAuctionInput = Partial<Omit<Auction, 'id' | 'createdAt'>>;

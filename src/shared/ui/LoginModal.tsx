@@ -1,7 +1,6 @@
 /**
- * LoginModal
- * GNB 로그인 클릭 시 표시되는 로그인 창 (기본 로그인)
- * 회원가입 클릭 시 회원가입 1단계(진입) 페이지로 이동
+ * 로그인 모달
+ * GNB 로그인 클릭 시 표시. 회원가입 링크 클릭 시 모달 닫고 /signup(회원가입 진입)으로 이동.
  */
 
 import { useState } from 'react';
@@ -10,6 +9,7 @@ import { Modal } from '@/shared/ui/Modal';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 
+/** LoginModal props */
 export interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -17,6 +17,12 @@ export interface LoginModalProps {
   onSignupClick?: () => void;
 }
 
+/**
+ * 로그인 모달. 이메일·비밀번호 입력 폼, 로그인·회원가입 버튼.
+ * @param props.isOpen - 표시 여부
+ * @param props.onClose - 닫기 콜백
+ * @param props.onSignupClick - 회원가입 클릭 시 (없으면 내부에서 navigate /signup)
+ */
 export function LoginModal({ isOpen, onClose, onSignupClick }: LoginModalProps) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');

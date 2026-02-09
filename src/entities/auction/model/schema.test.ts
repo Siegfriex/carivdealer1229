@@ -1,5 +1,6 @@
 /**
- * Auction Schema Tests
+ * 경매(Auction) Zod 스키마 테스트
+ * auctionSchema 유효/무효·즉시구매가 검증을 검증한다.
  */
 
 import { describe, test, expect } from 'vitest';

@@ -1,6 +1,6 @@
 /**
- * LoginPage Component
  * 로그인 페이지
+ * 라우트: /login. 이메일·비밀번호 입력, redirect 쿼리 지원.
  */
 
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import { useAuth } from '@/shared/context/AuthContext';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 
+/** 로그인 폼 및 리다이렉트 처리 */
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

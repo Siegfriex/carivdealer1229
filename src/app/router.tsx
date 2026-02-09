@@ -52,10 +52,15 @@ import { TradeDetailPage } from '@/pages/admin/TradeDetailPage';
 import { SettlementAccountPage } from '@/pages/admin/mypage/SettlementAccountPage';
 import { DevSkipFloatingButton } from '@/shared/ui/DevSkipFloatingButton';
 
+/**
+ * 앱 라우터 (공개·보호·폴백 라우트)
+ * @description FSD_SPEC_BLUEPRINT §2.2·IA §4.2. 비로그인 시 보호 라우트는 /signup 리다이렉트.
+ */
 export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* --- 공개: 랜딩·로그인·회원가입·비밀번호 찾기 --- */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupEntryPage />} />
@@ -103,6 +108,7 @@ export const Router = () => {
           <Route path="/mypage/settlement-account" element={<SettlementAccountPage />} />
         </Route>
 
+        {/* --- 폴백: 미매칭 경로 → /vehicles --- */}
         <Route path="*" element={<Navigate to="/vehicles" replace />} />
       </Routes>
       {import.meta.env.DEV && <DevSkipFloatingButton />}

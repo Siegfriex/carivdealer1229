@@ -1,7 +1,5 @@
 /**
- * StatusBadge Component
- * 상태 표시 배지
- * 
+ * 상태 표시 배지 (라벨·색·filled/outlined·크기)
  * 디자인: design/design_component/상태창.svg
  */
 

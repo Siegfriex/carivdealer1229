@@ -6,6 +6,7 @@
 
 import type { ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 
+/** 매물등록 플로우 단계 식별자 (차량 업로드 → 검차 → 거래 → 탁송 → 완료) */
 export type RegisterFlowStepId = 'upload' | 'inspection' | 'trade' | 'logistics' | 'complete';
 
 const STEP_IDS: RegisterFlowStepId[] = ['upload', 'inspection', 'trade', 'logistics', 'complete'];
@@ -17,6 +18,11 @@ const STEP_LABELS: Record<RegisterFlowStepId, string> = {
   complete: '완료',
 };
 
+/**
+ * 현재 단계 기준으로 ProgressSidebar용 단계 목록 반환.
+ * @param currentStep - 현재 플로우 단계
+ * @returns completed/current/upcoming 상태가 붙은 ProgressStep 배열
+ */
 export function getRegisterFlowSteps(currentStep: RegisterFlowStepId): ProgressStep[] {
   const currentIndex = STEP_IDS.indexOf(currentStep);
   return STEP_IDS.map((id, index) => ({

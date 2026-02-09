@@ -37,6 +37,12 @@ export const INSPECTION_GRADES = ['A', 'B', 'C', 'D', 'F'] as const;
 
 export type InspectionGrade = (typeof INSPECTION_GRADES)[number];
 
+/**
+ * 검차 상태 전이 가능 여부
+ * @param currentStatus - 현재 검차 상태
+ * @param nextStatus - 다음 상태
+ * @returns 전이 가능하면 true
+ */
 export const canTransitionTo = (
   currentStatus: InspectionStatus,
   nextStatus: InspectionStatus

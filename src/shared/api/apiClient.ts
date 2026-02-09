@@ -1,16 +1,23 @@
+/**
+ * API 클라이언트 (Firebase Functions 연동)
+ * 회원·차량·검차·경매·거래·탁송·정산·리포트 등 백엔드 API 호출 및 타임아웃/네트워크 실패 시 Mock 폴백 처리.
+ * 참조: docs/CarivDealer_api_v1.md
+ */
+
 import { mockResponses } from './mockData';
 import { analyzeError } from '@/shared/lib/errorHandler';
 import { API_ENDPOINTS } from '@/shared/config/apiEndpoints';
 
-// API Base URL - Firebase Functions v2 endpoint
+/** API Base URL - Firebase Functions v2 엔드포인트 */
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
   'https://asia-northeast3-carivdealer.cloudfunctions.net';
 
-// API 타임아웃 (밀리초)
-const API_TIMEOUT = 30000; // 일반 API: 30초
-const OCR_TIMEOUT = 90000; // OCR 전용: 90초 (이미지 처리 시간이 오래 걸릴 수 있음)
+/** 일반 API 타임아웃 (밀리초) */
+const API_TIMEOUT = 30000;
+/** OCR 전용 타임아웃 (밀리초) - 이미지 처리 시간 고려 */
+const OCR_TIMEOUT = 90000;
 
-// 개발 환경에서만 로그 출력
+/** 개발 환경에서만 Mock 호출 로그 출력 */
 const isDev = import.meta.env.DEV;
 const logMockCall = (message: string, ...args: unknown[]) => {
   if (isDev) {
@@ -18,7 +25,14 @@ const logMockCall = (message: string, ...args: unknown[]) => {
   }
 };
 
-// 타임아웃을 포함한 fetch 래퍼
+/**
+ * 타임아웃을 적용한 fetch 래퍼.
+ * @description 지정 시간 내 응답 없으면 AbortController로 중단 후 AbortError 발생.
+ * @param url - 요청 URL
+ * @param options - fetch RequestInit 옵션
+ * @param timeout - 타임아웃 밀리초 (기본 API_TIMEOUT)
+ * @returns Response
+ */
 async function fetchWithTimeout(
   url: string,
   options: RequestInit = {},
@@ -43,7 +57,15 @@ async function fetchWithTimeout(
   }
 }
 
-// Helper function for API calls with timeout and fallback
+/**
+ * API 호출 공통 함수 (타임아웃·에러 분석·Mock 폴백 지원).
+ * @description GET/POST 등 JSON API 호출 후 실패 시 analyzeError로 메시지 변환, 타임아웃/네트워크 에러 시 mockFallback 있으면 Mock 반환.
+ * @param endpoint - API_ENDPOINTS 상대 경로
+ * @param options - fetch options (method, body, headers 등)
+ * @param queryString - 쿼리 문자열 (앞에 ? 포함 가능)
+ * @param mockFallback - 타임아웃/네트워크 실패 시 호출할 Mock 반환 함수
+ * @returns API 응답 JSON을 파싱한 T
+ */
 async function apiCall<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -115,9 +137,12 @@ async function apiCall<T>(
   }
 }
 
-// API Client
+/**
+ * 통합 API 클라이언트 객체.
+ * @description 회원·차량·검차·경매·거래·탁송·정산·리포트·설정 API 및 공용 post/upload 메서드 제공.
+ */
 export const apiClient = {
-  // Member APIs
+  /** 회원 가입·사업자 인증 API */
   member: {
     register: (data: {
       email: string;
@@ -155,7 +180,7 @@ export const apiClient = {
     },
   },
 
-  // Vehicle APIs
+  /** 차량 OCR·검차 신청 API */
   vehicle: {
     ocrRegistration: async (file: File) => {
       const formData = new FormData();
@@ -232,7 +257,7 @@ export const apiClient = {
     },
   },
 
-  // Inspection APIs
+  /** 검차 배정·결과 업로드·결과 조회 API */
   inspection: {
     assign: (inspectionId: string) => apiCall<{
       success: boolean;
@@ -293,7 +318,7 @@ export const apiClient = {
     ),
   },
 
-  // Auction APIs
+  /** 경매 입찰·즉시 구매 API */
   auction: {
     bid: (auctionId: string, bidAmount: number) => apiCall<{
       success: boolean;
@@ -323,7 +348,7 @@ export const apiClient = {
     ),
   },
 
-  // Trade APIs
+  /** 거래(판매방식 변경·제안 수락/거절·확인) API */
   trade: {
     changeSaleMethod: (vehicleId: string, auctionSettings: {
       start_price: number;
@@ -358,7 +383,7 @@ export const apiClient = {
     },
   },
 
-  // Logistics APIs
+  /** 탁송 예약·배차 요청/확정·인계 승인 API */
   logistics: {
     schedule: (data: {
       schedule_date: string;
@@ -434,7 +459,7 @@ export const apiClient = {
     ),
   },
 
-  // Settlement APIs
+  /** 정산 알림 API */
   settlement: {
     notify: (settlementId: string) => apiCall<{
       success: boolean;
@@ -451,7 +476,7 @@ export const apiClient = {
     ),
   },
 
-  // Report APIs
+  /** 차량 상태 리포트 생성·저장 API */
   report: {
     generateReport: async (vehicleInfo: {
       plateNumber?: string;
@@ -525,7 +550,7 @@ export const apiClient = {
     ),
   },
 
-  // Config APIs
+  /** 설정(Google Maps API 키 등) API */
   config: {
     getGoogleMapsApiKey: () => apiCall<{ success: boolean; apiKey: string }>(
       API_ENDPOINTS.CONFIG.GOOGLE_MAPS_API_KEY,
@@ -533,13 +558,14 @@ export const apiClient = {
     ),
   },
 
-  // Generic methods for direct API calls
+  /** 공용 POST 호출 (엔드포인트 경로, JSON body) */
   post: <T = unknown>(endpoint: string, data?: unknown): Promise<T> =>
     apiCall<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     }),
 
+  /** 공용 multipart 업로드 (엔드포인트 경로, FormData) */
   upload: async <T = unknown>(endpoint: string, formData: FormData): Promise<T> => {
     const response = await fetchWithTimeout(
       `${API_BASE_URL}/${endpoint}`,

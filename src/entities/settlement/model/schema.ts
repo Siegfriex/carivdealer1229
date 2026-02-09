@@ -1,19 +1,23 @@
 /**
- * Settlement Entity Zod Schemas
+ * 정산 엔티티 Zod 스키마 (런타임 검증)
  */
 
 import { z } from 'zod';
 import { Timestamp } from 'firebase/firestore';
 
+/** Firestore Timestamp 검증용 */
 const timestampSchema = z.custom<Timestamp>(
   (val) => val instanceof Timestamp,
   { message: 'Invalid Timestamp' }
 );
 
+/** 정산 상태 스키마 */
 export const settlementStatusSchema = z.enum(['pending', 'completed', 'paid']);
 
+/** 판매 방식 스키마 */
 export const saleMethodSchema = z.enum(['auction', 'general']);
 
+/** 정산 스키마 */
 export const settlementSchema = z.object({
   id: z.string(),
   vehicleId: z.string(),
@@ -37,4 +41,6 @@ export const settlementSchema = z.object({
   createdAt: timestampSchema,
 });
 
+/** settlementSchema 추론 타입 */
+/** settlementSchema 추론 타입 */
 export type SettlementSchemaType = z.infer<typeof settlementSchema>;

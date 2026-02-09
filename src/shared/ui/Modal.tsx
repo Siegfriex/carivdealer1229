@@ -1,12 +1,13 @@
 /**
- * Modal Component
  * 모달 다이얼로그 컴포넌트
+ * 배경 클릭·ESC로 닫기, 제목·크기(sm/md/lg/xl) 지원.
  */
 
 import { useEffect, type PropsWithChildren } from 'react';
 import { X } from 'lucide-react';
 import { Z_INDEX } from '@/shared/config/zIndex';
 
+/** Modal props */
 interface ModalProps extends PropsWithChildren {
   isOpen: boolean;
   onClose: () => void;
@@ -22,6 +23,14 @@ const sizeClasses = {
   xl: 'max-w-4xl',
 };
 
+/**
+ * 모달. 열림 시 body 스크롤 잠금, ESC·배경 클릭으로 닫기.
+ * @param props.isOpen - 표시 여부
+ * @param props.onClose - 닫을 때 콜백
+ * @param props.title - 상단 제목 (선택)
+ * @param props.size - 최대 너비 sm/md/lg/xl (기본 md)
+ * @param props.closeOnBackdropClick - 배경 클릭 시 닫기 (기본 true)
+ */
 export const Modal = ({
   isOpen,
   onClose,

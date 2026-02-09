@@ -1,6 +1,6 @@
 /**
- * Application Entry Point
- * 프로바이더 래핑 및 앱 초기화
+ * 앱 진입점
+ * 프로바이더 래핑(Query·Toast·Auth·DevSkip)·라우터·전역 스타일 로드.
  */
 
 import React from 'react';
@@ -13,6 +13,7 @@ import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import { Router } from './router';
 import './styles/globals.css';
 
+/** 루트 앱 컴포넌트 (StrictMode·ErrorBoundary·프로바이더·Router) */
 const App = () => {
   return (
     <React.StrictMode>
@@ -31,7 +32,7 @@ const App = () => {
   );
 };
 
-// Mount app
+// #root에 React 앱 마운트
 const container = document.getElementById('root');
 if (container) {
   const root = createRoot(container);

@@ -1,18 +1,22 @@
 /**
- * Checkbox Component
  * 체크박스 컴포넌트
- * 
- * 디자인: design/design_component/체크박스.svg, 체크박스2.svg
+ * 라벨·에러 메시지 지원. 디자인: design/design_component/체크박스.svg
  */
 
 import { InputHTMLAttributes, forwardRef } from 'react';
 import { Check } from 'lucide-react';
 
+/** Checkbox props (label, error + input 속성, type 제외) */
 interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
   error?: string;
 }
 
+/**
+ * 체크박스. ref 전달 가능.
+ * @param props.label - 옆에 표시할 라벨
+ * @param props.error - 에러 시 라벨 아래 메시지·테두리 색
+ */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, error, className = '', ...props }, ref) => {
     return (

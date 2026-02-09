@@ -1,14 +1,17 @@
 /**
- * Button Component
- * 기본 버튼 컴포넌트
+ * 버튼 컴포넌트
+ * 기본 스타일 변형(primary/secondary/ghost/danger)·크기(sm/md/lg)·로딩·전체 너비 지원.
  */
 
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 import { Loader2 } from 'lucide-react';
 
+/** 버튼 스타일 변형 */
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+/** 버튼 크기 */
 type ButtonSize = 'sm' | 'md' | 'lg';
 
+/** Button props (variant, size, loading, fullWidth + HTML button 속성) */
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
@@ -29,6 +32,13 @@ const sizeClasses: Record<ButtonSize, string> = {
   lg: 'px-8 py-4 text-body',
 };
 
+/**
+ * 버튼. ref 전달 가능.
+ * @param props.variant - 스타일 (기본 primary)
+ * @param props.size - 크기 (기본 md)
+ * @param props.loading - 로딩 스피너 표시 시 비활성
+ * @param props.fullWidth - 너비 100%
+ */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {

@@ -1,6 +1,6 @@
 /**
- * Table Component
- * 재사용 가능한 테이블 컴포넌트
+ * 재사용 테이블 컴포넌트
+ * Table, TableHead, TableBody, TableRow, TableHeader, TableCell 조합으로 사용.
  */
 
 import type { PropsWithChildren, ThHTMLAttributes, TdHTMLAttributes } from 'react';

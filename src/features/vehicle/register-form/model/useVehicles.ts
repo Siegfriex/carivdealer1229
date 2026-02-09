@@ -9,6 +9,7 @@ import { db } from '@/shared/config/firebase';
 import { vehicleSchema } from '@/entities/vehicle/model/schema';
 import type { Vehicle, VehicleStatus } from '@/entities/vehicle/model/types';
 
+/** 차량 목록 조회 옵션 */
 interface UseVehiclesOptions {
   ownerId?: string;
   status?: VehicleStatus[];
@@ -29,6 +30,12 @@ function getMockVehicles(): Vehicle[] {
   ];
 }
 
+/**
+ * 차량 목록 조회 쿼리 훅
+ * @description Firestore vehicles 컬렉션 조회, ownerId/status 필터, updatedAt 내림차순. DEV에서 비어 있으면 목업 반환
+ * @param options - ownerId, status (선택)
+ * @returns useQuery<Vehicle[]>
+ */
 export const useVehicles = (options: UseVehiclesOptions = {}) => {
   return useQuery({
     queryKey: ['vehicles', options.ownerId, options.status],

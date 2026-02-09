@@ -1,6 +1,6 @@
 /**
- * Firebase Configuration
- * 환경 변수가 없어도 앱이 실행되도록 optional 처리
+ * Firebase 초기화 및 App·Firestore·Storage·Auth export
+ * 환경 변수 없으면 demo 값으로 앱이 동작하도록 optional 처리. 초기화 실패 시 콘솔 경고만 출력.
  */
 
 import { initializeApp, FirebaseApp } from 'firebase/app';
@@ -31,8 +31,9 @@ try {
   auth = getAuth(app);
 } catch (error) {
   console.warn('Firebase initialization failed. Running in demo mode.', error);
-  // 에러 발생 시에도 export를 위해 더미 값 필요 없음 (try에서 항상 초기화됨)
 }
 
+/** Firebase App 인스턴스 */
 export { app, db, storage, auth };
+/** Firebase App 기본 export */
 export default app;

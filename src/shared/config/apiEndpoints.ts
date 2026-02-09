@@ -1,26 +1,25 @@
 /**
- * API 엔드포인트 중앙 관리
- * 프론트엔드-백엔드 엔드포인트 일관성 보장 (SSOT)
- *
- * 이 파일은 Firebase Functions v2에서 export된 함수 이름과 일치해야 합니다.
- * Functions의 export 이름 변경 시 이 파일도 함께 업데이트해야 합니다.
+ * API 엔드포인트 중앙 관리 (SSOT)
+ * 프론트엔드-백엔드 엔드포인트 일관성 보장. Firebase Functions v2 export 함수명과 일치해야 함.
+ * 참조: docs/CarivDealer_api_v1.md
  */
 
+/** 회원·차량·검차·거래·경매·탁송·정산·리포트·설정·주문·결제·주소·리뷰·딜러서류 엔드포인트 상수 */
 export const API_ENDPOINTS = {
-  // Member APIs
+  /** 회원 가입·사업자 인증 */
   MEMBER: {
     REGISTER: 'member/dealer/register',
     VERIFY_BUSINESS: 'verifyBusinessAPI',
   },
 
-  // Vehicle APIs
+  /** 차량 OCR·검차 신청·통계 */
   VEHICLE: {
     OCR_REGISTRATION: 'ocrRegistrationAPI',
     INSPECTION_REQUEST: 'inspectionRequestAPI',
     GET_STATISTICS: 'getVehicleStatisticsAPI',
   },
 
-  // Inspection APIs
+  /** 검차 배정·결과 업로드/조회 */
   INSPECTION: {
     ASSIGN: 'inspectionAssignAPI',
     UPLOAD_RESULT: 'inspectionUploadResultAPI',
@@ -28,20 +27,20 @@ export const API_ENDPOINTS = {
     ASSIGN_EVALUATOR: 'assignEvaluatorAPI',
   },
 
-  // Trade APIs
+  /** 거래(판매방식·제안 수락·TTL) */
   TRADE: {
     CHANGE_SALE_METHOD: 'changeSaleMethodAPI',
     ACCEPT_PROPOSAL: 'acceptProposalAPI',
     MANAGE_PROPOSAL_TTL: 'manageProposalTTLAPI',
   },
 
-  // Auction APIs
+  /** 경매 입찰·즉시구매 */
   AUCTION: {
     BID: 'bidAPI',
     BUY_NOW: 'buyNowAPI',
   },
 
-  // Logistics APIs
+  /** 탁송 예약·배차·인계 승인 */
   LOGISTICS: {
     SCHEDULE: 'logisticsScheduleAPI',
     DISPATCH_REQUEST: 'logisticsDispatchRequestAPI',
@@ -49,37 +48,37 @@ export const API_ENDPOINTS = {
     HANDOVER_APPROVE: 'handoverApproveAPI',
   },
 
-  // Settlement APIs
+  /** 정산 알림 */
   SETTLEMENT: {
     NOTIFY: 'settlementNotifyAPI',
   },
 
-  // Report APIs
+  /** 차량 상태 리포트 생성·저장 */
   REPORT: {
     GENERATE: 'generateReportAPI',
     SAVE: 'saveReportAPI',
   },
 
-  // Config APIs
+  /** 설정(Google Maps API 키 등) */
   CONFIG: {
     GOOGLE_MAPS_API_KEY: 'getGoogleMapsApiKeyAPI',
   },
 
-  // Order APIs (Phase 1.3)
+  /** 주문 생성·조회·상태 변경 (Phase 1.3) */
   ORDER: {
     CREATE: 'createOrderAPI',
     GET: 'getOrderAPI',
     UPDATE_STATUS: 'updateOrderStatusAPI',
   },
 
-  // Payment APIs (Phase 1.3)
+  /** 결제 생성·조회·환불 (Phase 1.3) */
   PAYMENT: {
     CREATE: 'createPaymentAPI',
     GET: 'getPaymentAPI',
     REFUND: 'refundPaymentAPI',
   },
 
-  // Address APIs (Phase 2.2)
+  /** 주소 CRUD (Phase 2.2) */
   ADDRESS: {
     CREATE: 'createAddressAPI',
     GET: 'getAddressAPI',
@@ -88,13 +87,13 @@ export const API_ENDPOINTS = {
     DELETE: 'deleteAddressAPI',
   },
 
-  // Review APIs (Phase 3.1)
+  /** 리뷰 작성·목록 (Phase 3.1) */
   REVIEW: {
     CREATE: 'createReviewAPI',
     LIST: 'listReviewsAPI',
   },
 
-  // Seller Docs APIs (Phase 3.2)
+  /** 딜러 서류 업로드·승인·목록 (Phase 3.2) */
   SELLER_DOCS: {
     UPLOAD: 'uploadDocAPI',
     APPROVE: 'approveDocAPI',
@@ -102,9 +101,7 @@ export const API_ENDPOINTS = {
   },
 } as const;
 
-/**
- * 모든 엔드포인트 타입 (타입 안전성 보장)
- */
+/** API_ENDPOINTS에 정의된 모든 엔드포인트 경로 문자열 유니온 타입 (타입 안전성 보장) */
 export type ApiEndpoint =
   | typeof API_ENDPOINTS.MEMBER[keyof typeof API_ENDPOINTS.MEMBER]
   | typeof API_ENDPOINTS.VEHICLE[keyof typeof API_ENDPOINTS.VEHICLE]
@@ -122,7 +119,9 @@ export type ApiEndpoint =
   | typeof API_ENDPOINTS.SELLER_DOCS[keyof typeof API_ENDPOINTS.SELLER_DOCS];
 
 /**
- * 엔드포인트 유효성 검증 함수
+ * 문자열이 정의된 API 엔드포인트인지 검증.
+ * @param endpoint - 검사할 경로 문자열
+ * @returns ApiEndpoint이면 true
  */
 export function isValidEndpoint(endpoint: string): endpoint is ApiEndpoint {
   const allEndpoints = Object.values(API_ENDPOINTS).flatMap(category =>

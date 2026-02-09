@@ -1,5 +1,6 @@
 /**
- * Inspection Schema Tests
+ * 검차(Inspection) Zod 스키마 테스트
+ * inspectionSchema·inspectionStatusSchema 유효/무효·날짜 형식 검증을 검증한다.
  */
 
 import { describe, test, expect } from 'vitest';

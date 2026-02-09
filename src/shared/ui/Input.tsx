@@ -1,11 +1,12 @@
 /**
- * Input Component
- * 기본 입력 컴포넌트
+ * 기본 텍스트 입력 컴포넌트
+ * 라벨·에러·도움말·전체 너비 옵션.
  */
 
 import { InputHTMLAttributes, forwardRef } from 'react';
 import { AlertCircle } from 'lucide-react';
 
+/** Input props (label, error, helperText, fullWidth + input 속성) */
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
@@ -13,6 +14,13 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   fullWidth?: boolean;
 }
 
+/**
+ * 입력 필드. ref 전달 가능.
+ * @param props.label - 상단 라벨
+ * @param props.error - 에러 메시지·테두리
+ * @param props.helperText - 하단 도움말
+ * @param props.fullWidth - 너비 100%
+ */
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, helperText, fullWidth = false, className = '', ...props }, ref) => {
     const widthClass = fullWidth ? 'w-full' : '';

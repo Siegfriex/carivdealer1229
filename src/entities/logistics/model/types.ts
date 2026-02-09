@@ -25,8 +25,10 @@ export interface Logistics {
   createdAt: Timestamp;
 }
 
+/** 탁송 생성 입력 */
 export type CreateLogisticsInput = Omit<
   Logistics,
   'id' | 'createdAt' | 'dispatchedAt' | 'handoverTimestamp'
 >;
+/** 탁송 수정 입력 (부분) */
 export type UpdateLogisticsInput = Partial<Omit<Logistics, 'id' | 'createdAt'>>;

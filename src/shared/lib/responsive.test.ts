@@ -1,5 +1,6 @@
 /**
- * Responsive Utilities Tests
+ * 반응형 유틸리티 테스트
+ * pxToVw·vwToPx·svgToVw·svgToClamp·gridColumnWidth 변환 결과를 검증한다.
  */
 
 import { describe, test, expect } from 'vitest';

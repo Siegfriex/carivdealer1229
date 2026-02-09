@@ -1,9 +1,10 @@
 /**
- * Settlement Entity Constants
+ * 정산 엔티티 상수 (상태·판매방식 라벨·색상·전이·정산 계산)
  */
 
 import type { SettlementStatus, SaleMethod } from './types';
 
+/** 정산 상태 한글 라벨 */
 export const SETTLEMENT_STATUS_LABELS: Record<SettlementStatus, string> = {
   pending: '정산 대기',
   completed: '정산 완료',
@@ -28,7 +29,9 @@ export const SETTLEMENT_STATUS_TRANSITIONS: Record<SettlementStatus, SettlementS
 };
 
 /**
- * 정산 금액 계산 함수
+ * 정산 금액 계산 (수수료·부가세 환급·최종 금액)
+ * @param params - salePrice, platformFeeRate, vatRefundRate, logisticsFee, inspectionFee
+ * @returns settlementAmount, platformFee, vatRefund, totalRefund, finalAmount
  */
 export const calculateSettlement = (params: {
   salePrice: number;
@@ -55,6 +58,12 @@ export const calculateSettlement = (params: {
   };
 };
 
+/**
+ * 정산 상태 전이 가능 여부
+ * @param currentStatus - 현재 정산 상태
+ * @param nextStatus - 다음 상태
+ * @returns 전이 가능하면 true
+ */
 export const canTransitionTo = (
   currentStatus: SettlementStatus,
   nextStatus: SettlementStatus

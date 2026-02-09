@@ -1,9 +1,9 @@
 /**
  * 통합 에러 처리 유틸리티
- *
- * API 호출 실패 시 사용자 친화적인 에러 메시지를 제공합니다.
+ * API 호출 실패 시 에러 분류(네트워크·타임아웃·인증·서버 등) 및 사용자 친화 메시지·로깅·재시도 제공.
  */
 
+/** 에러 분류 타입 (네트워크·타임아웃·검증·인증·서버·알수없음) */
 export enum ErrorType {
   NETWORK_ERROR = 'NETWORK_ERROR',
   TIMEOUT_ERROR = 'TIMEOUT_ERROR',
@@ -13,6 +13,7 @@ export enum ErrorType {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
+/** API 에러 객체: 분류·메시지·원본 에러·HTTP 상태코드 */
 export interface ApiError {
   type: ErrorType;
   message: string;
@@ -20,21 +21,27 @@ export interface ApiError {
   statusCode?: number;
 }
 
+/** message 문자열 존재 여부 타입 가드 */
 function hasMessage(e: unknown): e is { message: string } {
   return typeof e === 'object' && e !== null && 'message' in e && typeof (e as { message: unknown }).message === 'string';
 }
+/** code 문자열 존재 여부 타입 가드 */
 function hasCode(e: unknown): e is { code: string } {
   return typeof e === 'object' && e !== null && 'code' in e && typeof (e as { code: unknown }).code === 'string';
 }
+/** name 문자열 존재 여부 타입 가드 */
 function hasName(e: unknown): e is { name: string } {
   return typeof e === 'object' && e !== null && 'name' in e && typeof (e as { name: unknown }).name === 'string';
 }
+/** statusCode 또는 status 존재 여부 타입 가드 */
 function hasStatus(e: unknown): e is { statusCode?: number; status?: number; message?: string } {
   return typeof e === 'object' && e !== null && (('statusCode' in e) || ('status' in e));
 }
 
 /**
- * 에러를 분석하여 타입을 결정합니다.
+ * unknown 에러를 분류하여 ApiError로 반환.
+ * @param error - catch된 에러 (unknown)
+ * @returns ErrorType·message·originalError·statusCode가 채워진 ApiError
  */
 export const analyzeError = (error: unknown): ApiError => {
   // 네트워크 에러 감지
@@ -129,14 +136,18 @@ export const analyzeError = (error: unknown): ApiError => {
 };
 
 /**
- * 에러를 사용자 친화적인 메시지로 변환합니다.
+ * ApiError에서 사용자에게 보여줄 메시지 문자열 반환.
+ * @param error - analyzeError로 변환된 에러
+ * @returns 한글 등 사용자 친화 메시지
  */
 export const getUserFriendlyMessage = (error: ApiError): string => {
   return error.message;
 };
 
 /**
- * 에러를 로깅합니다.
+ * 에러를 콘솔에 로깅. context로 출처 표시 가능.
+ * @param error - 로깅할 ApiError
+ * @param context - 로그 접두사 (예: 'ErrorBoundary')
  */
 export const logError = (error: ApiError, context?: string) => {
   const logContext = context ? `[${context}]` : '';
@@ -149,7 +160,10 @@ export const logError = (error: ApiError, context?: string) => {
 };
 
 /**
- * 에러 처리 헬퍼 함수
+ * unknown 에러를 분석·로깅 후 사용자 메시지 문자열 반환.
+ * @param error - catch된 에러
+ * @param context - logError에 전달할 컨텍스트
+ * @returns 사용자에게 보여줄 메시지
  */
 export const handleError = (error: unknown, context?: string): string => {
   const apiError = analyzeError(error);
@@ -158,7 +172,9 @@ export const handleError = (error: unknown, context?: string): string => {
 };
 
 /**
- * 재시도 가능한 에러인지 확인합니다.
+ * 재시도 가능한 에러 타입인지 여부.
+ * @param error - ApiError
+ * @returns 네트워크·타임아웃·서버 에러이면 true
  */
 export const isRetryableError = (error: ApiError): boolean => {
   return (
@@ -169,7 +185,11 @@ export const isRetryableError = (error: ApiError): boolean => {
 };
 
 /**
- * 에러 복구 메커니즘 (재시도)
+ * 지수 백오프 재시도. 재시도 불가 에러면 즉시 throw.
+ * @param fn - 실행할 비동기 함수
+ * @param maxRetries - 최대 재시도 횟수 (기본 3)
+ * @param initialDelay - 첫 대기 시간 밀리초 (기본 1000)
+ * @returns fn의 반환값
  */
 export const retryWithBackoff = async <T>(
   fn: () => Promise<T>,

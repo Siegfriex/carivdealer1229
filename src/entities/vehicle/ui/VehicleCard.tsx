@@ -1,6 +1,6 @@
 /**
- * VehicleCard Component
- * 차량 정보 카드 (Figma 1194-7664: 상태·타임스탬프·가격·태그)
+ * 차량 정보 카드 (상태·타임스탬프·가격·태그)
+ * Figma 1194-7664. variant: default | mainLanding, statusLabelOverride 지원.
  */
 
 import { Card } from '@/shared/ui/Card';
@@ -9,6 +9,7 @@ import { StatusBadge } from '@/shared/ui/StatusBadge';
 import { VEHICLE_STATUS_COLORS } from '@/entities/vehicle/model/constants';
 import type { Vehicle } from '@/entities/vehicle/model/types';
 
+/** 차량 카드 props */
 interface VehicleCardProps {
   vehicle: Vehicle;
   onClick?: () => void;
@@ -32,6 +33,14 @@ function formatTime(ts: { toDate?: () => Date } | Date): string {
 
 const DEFAULT_TAGS = ['낙찰가', '단순교환부위', '기본정보', '성능점검'];
 
+/**
+ * 차량 카드 렌더링
+ * @description 상태 배지·타임스탬프·가격·태그 표시, 클릭 시 onClick 호출
+ * @param props.vehicle - 차량 엔티티
+ * @param props.onClick - 카드 클릭 핸들러 (선택)
+ * @param props.variant - default | mainLanding
+ * @param props.statusLabelOverride - 상태 라벨 오버라이드 (선택)
+ */
 export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'default', statusLabelOverride }: VehicleCardProps) => {
   const isMainLanding = variant === 'mainLanding';
   const showRedDot = vehicle.status === 'bidding' || vehicle.status === 'inspection';

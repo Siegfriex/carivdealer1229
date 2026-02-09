@@ -39,6 +39,13 @@ interface LandingHeaderProps {
 
 const NAV_KEYS: NavKey[] = ['vehicles', 'inspections', 'offers', 'logistics', 'settlements'];
 
+/**
+ * 랜딩/메인 GNB 헤더 (차량목록·검차·거래·탁송·정산·매물등록·알림)
+ * @param props.userName - 로그인 사용자명
+ * @param props.onRegisterListing - 매물 등록하기 클릭 핸들러
+ * @param props.variant - landing | main
+ * @param props.activeNav - 메인에서 활성 네비 키
+ */
 export function LandingHeader({ userName, onRegisterListing, variant = 'landing', activeNav }: LandingHeaderProps) {
   const navigate = useNavigate();
   const [isUserOpen, setIsUserOpen] = useState(false);

@@ -9,6 +9,12 @@ import { db } from '@/shared/config/firebase';
 import { vehicleSchema } from '@/entities/vehicle/model/schema';
 import type { Vehicle } from '@/entities/vehicle/model/types';
 
+/**
+ * 차량 단건 조회 쿼리 훅
+ * @description Firestore vehicles/{vehicleId} 문서 조회, vehicleSchema로 검증
+ * @param vehicleId - 차량 ID (undefined면 비활성)
+ * @returns useQuery<Vehicle>
+ */
 export const useVehicle = (vehicleId: string | undefined) => {
   return useQuery({
     queryKey: ['vehicles', vehicleId],

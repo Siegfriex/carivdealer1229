@@ -1,6 +1,6 @@
 /**
- * Select Component
- * 선택 컴포넌트
+ * 선택(select) 드롭다운 컴포넌트
+ * 라벨·options·placeholder·에러·fullWidth. ref 전달 가능.
  */
 
 import { SelectHTMLAttributes, forwardRef } from 'react';

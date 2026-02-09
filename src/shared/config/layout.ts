@@ -1,13 +1,10 @@
 /**
- * Layout Constants
- * 레이아웃 관련 통일된 상수 정의
- *
- * 메인 max-width 규칙 (역할별) — ReNew/ADMIN_LAYOUT_ISSUES.md §7
- * - 목록 페이지: max-w-7xl (또는 full)
- * - 상세/스텝/완료: max-w-4xl (또는 3xl)
- * - 모달/드로어: 기존 유지
+ * 레이아웃 상수 (픽셀·클래스)
+ * 사이드바·GNB·컨테이너·패딩·브레이크포인트 및 Tailwind 클래스 매핑.
+ * 참조: ReNew/ADMIN_LAYOUT_ISSUES.md §7 — 목록 max-w-7xl, 상세/스텝 max-w-4xl.
  */
 
+/** 픽셀 단위 레이아웃 값 (사이드바 너비, GNB 높이, 컨테이너 최대 너비 등) */
 export const LAYOUT = {
   /** Sidebar 너비 (px) - w-64 = 256px */
   SIDEBAR_WIDTH: 256,
@@ -28,9 +25,7 @@ export const LAYOUT = {
   BREAKPOINT_DESKTOP: 700,
 } as const;
 
-/**
- * Tailwind CSS 클래스로 변환된 레이아웃 값
- */
+/** Tailwind CSS 클래스로 변환된 레이아웃 값 (컨테이너·메인 패딩·목록/상세 max-width 등) */
 export const LAYOUT_CLASSES = {
   SIDEBAR: 'w-64',                    // 256px
   GNB: 'h-16',                       // 64px
