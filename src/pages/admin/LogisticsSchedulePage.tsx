@@ -63,7 +63,9 @@ export const LogisticsSchedulePage = () => {
 
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [postalCode, setPostalCode] = useState('');
   const [departureAddress, setDepartureAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
   const [destination] = useState(DESTINATION_ADDRESS);
   const [specialNotes, setSpecialNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -111,6 +113,9 @@ export const LogisticsSchedulePage = () => {
     setViewMode('list');
     setSelectedDate('');
     setSelectedTime('');
+    setPostalCode('');
+    setDepartureAddress('');
+    setDetailAddress('');
     setSelectedId(null);
   };
   const isHandoverConfirmed = true; // 실제로는 해당 건 인계확정 여부
@@ -149,7 +154,7 @@ export const LogisticsSchedulePage = () => {
     );
   }
 
-  // ——— 기사배정 진행중 (1272-15049): metadata 1272:15133 381×324.96, 1272:15135 "잠시만 기다려 주세요" ———
+  // ——— 기사배정 진행중 (1272-15049): metadata 1272:15133 381×324.96, 1272:15135 "탁송 기사 배정 중", 1272:15136 "잠시만 기다려 주세요" ———
   if (viewMode === 'driver_assigning') {
     return (
       <div className="min-h-screen bg-[#f8f9fa] flex flex-col" data-node-id="1272:15049">
@@ -157,12 +162,19 @@ export const LogisticsSchedulePage = () => {
         <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
           <GnbMinimalSidebar sectionTitle="탁송" className="!w-[249px]" />
           <main className="flex-1 min-w-0 flex flex-col items-center justify-center p-8">
-            <div className="w-full max-w-[381px] flex flex-col items-center text-center" data-node-id="1272:15133">
+            <div
+              className="w-[381px] min-h-[324.96px] flex flex-col items-center text-center"
+              data-node-id="1272:15133"
+            >
               <div className="w-[157px] h-[157px] rounded-full bg-primary/10 flex items-center justify-center mb-8" data-node-id="1272:15137">
                 <MapPin className="w-12 h-12 text-primary animate-pulse" />
               </div>
-              <h2 className="text-h2 font-medium text-gray-900 mb-3" data-node-id="1272:15135">잠시만 기다려 주세요</h2>
-              <p className="text-body text-gray-600 mb-8">기사님 배정이 진행 중입니다. 배차가 확정되면 알려드려요!</p>
+              <h2 className="text-[32px] leading-[61px] font-extrabold text-primary mb-0" data-node-id="1272:15135">
+                탁송 기사 배정 중
+              </h2>
+              <p className="text-[20px] leading-[48px] text-black mt-3 mb-8" data-node-id="1272:15136">
+                잠시만 기다려 주세요
+              </p>
               <Button onClick={handleCompleteDriverAssigning} variant="primary">
                 완료 (테스트)
               </Button>
@@ -203,23 +215,37 @@ export const LogisticsSchedulePage = () => {
                       className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary"
                     />
                   </div>
-                  <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                  <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm" data-node-id="1272:13294">
                     <h2 className="text-h3 text-gray-900 mb-4 flex items-center gap-2">
                       <MapPin className="w-5 h-5 text-primary" />
                       출발지 (우편번호·주소)
                     </h2>
-                    <div className="flex gap-2">
-                      <Button variant="secondary" size="sm" onClick={() => setAddressModalOpen(true)}>
-                        우편번호
-                      </Button>
+                    <div className="flex gap-2 flex-wrap">
                       <input
                         type="text"
-                        value={departureAddress}
-                        onChange={(e) => setDepartureAddress(e.target.value)}
-                        placeholder="주소 검색"
-                        className="flex-1 px-4 py-3 border border-gray-200 rounded-lg"
+                        value={postalCode}
+                        onChange={(e) => setPostalCode(e.target.value)}
+                        placeholder="우편번호를 입력해 주세요"
+                        className="flex-1 min-w-[200px] px-4 py-3 border border-gray-200 rounded-lg"
                       />
+                      <Button variant="secondary" size="sm" onClick={() => setAddressModalOpen(true)}>
+                        우편번호 찾기
+                      </Button>
                     </div>
+                    <input
+                      type="text"
+                      value={departureAddress}
+                      onChange={(e) => setDepartureAddress(e.target.value)}
+                      placeholder="주소지를 입력해 주세요"
+                      className="mt-3 w-full px-4 py-3 border border-gray-200 rounded-lg"
+                    />
+                    <input
+                      type="text"
+                      value={detailAddress}
+                      onChange={(e) => setDetailAddress(e.target.value)}
+                      placeholder="상세주소를 입력해 주세요"
+                      className="mt-3 w-full px-4 py-3 border border-gray-200 rounded-lg"
+                    />
                     {addressModalOpen && (
                       <>
                         <div className="fixed inset-0 bg-black/30 z-40" aria-hidden onClick={() => setAddressModalOpen(false)} />
@@ -227,22 +253,22 @@ export const LogisticsSchedulePage = () => {
                           className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[514px] h-[640px] overflow-auto bg-white rounded-2xl shadow-xl flex flex-col"
                           data-node-id="1272:14540"
                         >
-                          <div className="p-6 flex-1">
+                          <div className="p-6 flex-1 flex flex-col" data-node-id="1272:14749">
                             <div className="flex justify-end mb-2">
-                              <button type="button" onClick={() => setAddressModalOpen(false)} className="p-1 text-gray-500 hover:text-gray-700" aria-label="닫기">
+                              <button type="button" onClick={() => setAddressModalOpen(false)} className="p-1 text-gray-500 hover:text-gray-700" aria-label="X 닫기">
                                 <span className="text-lg leading-none">×</span>
                               </button>
                             </div>
-                            <h3 className="text-h3 text-gray-900 mb-1">주소를 검색해 주세요</h3>
-                            <p className="text-body text-gray-600 mb-6">이렇게 검색해 보세요!</p>
-                            <div className="flex gap-2 mb-4">
+                            <h3 className="text-h3 text-gray-900 mb-1" data-node-id="1272:14757">주소를 검색해 주세요</h3>
+                            <p className="text-body text-gray-600 mb-6" data-node-id="1272:14758">이렇게 검색해 보세요!</p>
+                            <div className="flex gap-2 mb-4" data-node-id="1272:14763">
                               <input
                                 type="text"
                                 placeholder="도로명, 지번, 건물명 검색"
                                 className="flex-1 px-4 py-3 border border-gray-200 rounded-lg text-body"
-                                aria-label="주소 검색"
+                                aria-label="도로명, 지번, 건물명 검색"
                               />
-                              <Button type="button" variant="primary" size="sm" className="shrink-0">
+                              <Button type="button" variant="primary" size="sm" className="shrink-0" data-node-id="1272:14770">
                                 검색
                               </Button>
                             </div>
