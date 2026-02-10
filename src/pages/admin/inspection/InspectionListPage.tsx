@@ -155,7 +155,7 @@ export const InspectionListPage = () => {
                     <LayoutGrid className="h-4 w-4" /> 카드
                   </button>
                 </div>
-                <Button size="sm" className="h-9 min-h-0 !py-2 flex items-center text-caption" onClick={() => navigate('/inspections/request')}>
+                <Button size="sm" className="h-9 min-h-0 !py-2 flex items-center !text-body !font-medium !leading-normal" onClick={() => navigate('/inspections/request')}>
                   검차 신청하기
                 </Button>
               </div>

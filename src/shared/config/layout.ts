@@ -51,6 +51,10 @@ export const LAYOUT_CLASSES = {
   MAIN_GNB: 'max-w-[974px]',
   /** CTA_3 스텝/상세 메인 영역 — Figma 794:3705 971.707px → 972px */
   MAIN_GNB_STEP: 'max-w-[972px]',
+  /** 탁송 예약 폼 메인 — 1272:13402 970.8×539 */
+  FORM_MAIN: 'max-w-[971px] min-h-[539px]',
+  /** 주소 검색 모달 — 1272:14749 514×640 */
+  ADDRESS_MODAL: 'w-[514px] h-[640px]',
   /** 상세/스텝/완료: max-w-4xl (비-CTA_3용) */
   MAIN_DETAIL: 'max-w-4xl',
 
@@ -105,4 +109,10 @@ export const LAYOUT_CLASSES = {
   LANDING_SECTION3_TITLE_MAX_W: 'max-w-[322px]',
   /** 랜딩 Section3 본문 최대 너비 (1444:7961) */
   LANDING_SECTION3_BODY_MAX_W: 'max-w-[506px]',
+
+  // 폼·모달 공통 (탁송·검차 design_context)
+  /** 폼 섹션 카드 — rounded 20px, shadow location inner */
+  FORM_SECTION_CARD: 'bg-white rounded-lg border border-gray-200 shadow-[var(--shadow-figma-location-inner)] p-6',
+  /** 입력 필드 기본 — design_context #f4f4f4 #d9d9d9, rounded-md */
+  INPUT_FIELD: 'bg-form-field-bg border border-form-field-border rounded-md',
 } as const;

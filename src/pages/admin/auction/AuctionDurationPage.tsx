@@ -1,6 +1,7 @@
 /**
- * AuctionDurationPage (SCR-0402-A)
- * 경매 - 기간 설정
+ * AuctionDurationPage (Figma 1123-20023, 1123-20699, 1123-13763 — 경매 기간/연월일시)
+ * 1123:20090 경매 기간 카드, 1123:20094 경매 시작일, 1123:20097 경매 종료일.
+ * 라우트: /vehicles/:id/auction/duration
  */
 
 import { useParams, useNavigate } from 'react-router-dom';
@@ -10,7 +11,6 @@ import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { Button } from '@/shared/ui/Button';
-import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
 import { isRunDev } from '@/shared/config/runDev';
@@ -36,20 +36,31 @@ export const AuctionDurationPage = () => {
     <div className="min-h-screen bg-gray-50">
       <LandingHeader variant="main" activeNav="offers" />
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline />
-        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
-          <h1 className="text-h1 font-bold text-gray-900 mb-2">경매 기간 설정</h1>
-          <p className="text-body text-gray-600 mb-8">경매 종료 일시를 설정하세요.</p>
-          <Card className="p-6 space-y-4">
-            <div>
-              <label className="block text-body font-medium text-gray-700 mb-2">경매 종료일</label>
-              <Input type="date" className="w-full" />
+        <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline widthClass={LAYOUT_CLASSES.GNB_SIDEBAR} />
+        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_GNB_STEP}`} data-node-id="1123:20023">
+          {/* 1123:20090 — 경매 기간 카드 971×336, 1123:20091~20097 */}
+          <div
+            className="bg-white rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] w-full max-w-[971px] min-h-[336px] p-6"
+            data-node-id="1123:20090"
+          >
+            <p className="text-[26px] font-extrabold text-black mb-8" data-node-id="1123:20091">
+              경매 기간
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="bg-[#f4f4f4] rounded-[30px] min-h-[180px] p-6 flex flex-col" data-node-id="1123:20092">
+                <p className="text-[22px] font-bold text-black/70 mb-4" data-node-id="1123:20094">
+                  경매 시작일
+                </p>
+                <Input type="date" className="w-full text-[38px] font-bold text-black/30" aria-label="경매 시작일" />
+              </div>
+              <div className="bg-[#f4f4f4] rounded-[30px] min-h-[180px] p-6 flex flex-col" data-node-id="1123:20093">
+                <p className="text-[22px] font-bold text-black/70 mb-4" data-node-id="1123:20097">
+                  경매 종료일
+                </p>
+                <Input type="date" className="w-full text-[38px] font-bold text-black/30" aria-label="경매 종료일" />
+              </div>
             </div>
-            <div>
-              <label className="block text-body font-medium text-gray-700 mb-2">경매 종료 시간</label>
-              <Input type="time" className="w-full" />
-            </div>
-          </Card>
+          </div>
           <div className="flex gap-4 mt-8">
             <Button variant="secondary" onClick={handleBack}>
               이전

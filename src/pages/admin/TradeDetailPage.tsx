@@ -75,15 +75,14 @@ export const TradeDetailPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader variant="main" activeNav="offers" />
-      <div className={LAYOUT_CLASSES.CONTAINER}>
-        <div className="flex">
-          <div className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT}`}>
-            <div className="p-8">
-              <h3 className="text-body font-bold text-gray-900 mb-6">현재 거래 진행상황</h3>
-              <ProgressSidebar steps={transactionProgressSteps} inline />
-            </div>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+        <aside className={`${LAYOUT_CLASSES.GNB_SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT}`}>
+          <div className="p-4">
+            <h3 className="text-body font-bold text-gray-900 mb-6">현재 거래 진행상황</h3>
+            <ProgressSidebar steps={transactionProgressSteps} inline widthClass="w-full" />
           </div>
-          <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+        </aside>
+        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_GNB_STEP}`}>
             <h1 className="text-h1 font-bold text-gray-900 mb-6">거래 상세 보기</h1>
 
             {/* 794-4708 / 1123-14112: 거래상세 변형 — 컨테이너 클릭 시 아래 펼침 (794-4542 / 1123-13946) */}
@@ -271,7 +270,6 @@ export const TradeDetailPage = () => {
               <Button variant="secondary" size="sm" onClick={() => navigate('/logistics/schedule')}>탁송 목록으로</Button>
             </div>
           </main>
-        </div>
       </div>
 
       {/* 21512: 삭제 확인 모달 */}

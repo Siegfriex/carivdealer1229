@@ -62,6 +62,9 @@ export default {
         sold: '#F97316',
         'pending-settlement': '#F59E0B',
         completed: '#14B8A6',
+        /* Form field (design_context SSOT — 탁송·검차 폼 입력) */
+        'form-field-bg': 'var(--color-form-field-bg)',
+        'form-field-border': 'var(--color-form-field-border)',
       },
       fontFamily: {
         sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'sans-serif'],

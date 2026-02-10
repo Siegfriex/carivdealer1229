@@ -11,7 +11,6 @@ import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { useVehicle } from '@/features/vehicle/register-form/model/useVehicle';
 import { Button } from '@/shared/ui/Button';
-import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
 import { isRunDev } from '@/shared/config/runDev';
@@ -69,8 +68,8 @@ export const GeneralSalePricePage = () => {
     <div className="min-h-screen bg-gray-50">
       <LandingHeader variant="main" activeNav="offers" />
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline />
-        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL} flex gap-6 flex-wrap`}>
+        <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline widthClass={LAYOUT_CLASSES.GNB_SIDEBAR} />
+        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_GNB_STEP} flex gap-6 flex-wrap`}>
           {/* 794-4200: 좌측 차량정보 패널 320×420 rounded-[30px] shadow, 행 51px, 라벨 rgba(0,0,0,0.4) 값 0.8 */}
           <div
             className="bg-white rounded-card shadow-figma-card w-[320px] h-[420px] overflow-hidden flex flex-col p-6 box-border shrink-0"
@@ -100,16 +99,102 @@ export const GeneralSalePricePage = () => {
             </div>
           </div>
 
-          <div className="flex-1 min-w-[280px]">
-            <h1 className="text-h1 font-bold text-gray-900 mb-2">판매 가격 설정</h1>
-            <p className="text-body text-gray-600 mb-8">희망 판매가를 입력하세요.</p>
-            <Card className="p-6 space-y-4">
-              <div>
-                <label className="block text-body font-medium text-gray-700 mb-2">희망가 (만원)</label>
-                <Input type="number" placeholder="예: 2850" className="w-full" />
+          {/* 794-4200/4371 SSOT: 우측 628×420 영역 794:4225 전체 피드백 + 내차 예상 시세(794:4253) + 판매 가격(794:4257) */}
+          <div className="flex-1 min-w-[280px] max-w-[628px] flex flex-col gap-6">
+            {/* 794:4225 — 전체 피드백 블록: 라벨, 양호/경미/주의/불량, 검차 상세내용 확인, 본문 */}
+            <div
+              className="bg-white rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] w-full max-w-[628px] min-h-[320px] p-6 box-border flex flex-col"
+              data-node-id="794:4225"
+            >
+              <div className="flex items-center justify-center self-start border border-black/20 rounded-[5px] px-2 py-1.5 h-[27px]" data-node-id="794:4226">
+                <p className="text-[15px] font-extrabold text-black/50 tracking-[0.15px]" data-node-id="794:4227">
+                  전체 피드백
+                </p>
               </div>
-            </Card>
-            <div className="flex gap-4 mt-8">
+              <div className="flex flex-wrap gap-x-6 gap-y-3 mt-4">
+                <div className="flex items-center gap-2" data-node-id="794:4229">
+                  <span className="w-2 h-2 rounded-full bg-[#4ade80]" data-node-id="794:4230" />
+                  <div className="flex items-center gap-1.5 text-[16px]">
+                    <span className="font-medium text-black/40" data-node-id="794:4232">양호</span>
+                    <span className="text-black/80" data-node-id="794:4233">95개</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2" data-node-id="794:4244">
+                  <span className="w-2 h-2 rounded-full bg-[#facc15]" data-node-id="794:4245" />
+                  <div className="flex items-center gap-1.5 text-[16px]">
+                    <span className="font-medium text-black/40" data-node-id="794:4247">경미</span>
+                    <span className="text-black/80" data-node-id="794:4248">12개</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2" data-node-id="794:4234">
+                  <span className="w-2 h-2 rounded-full bg-[#fb923c]" data-node-id="794:4235" />
+                  <div className="flex items-center gap-1.5 text-[16px]">
+                    <span className="font-medium text-black/40" data-node-id="794:4237">주의</span>
+                    <span className="text-black/80" data-node-id="794:4238">3개</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2" data-node-id="794:4239">
+                  <span className="w-2 h-2 rounded-full bg-[#f87171]" data-node-id="794:4240" />
+                  <div className="flex items-center gap-1.5 text-[16px]">
+                    <span className="font-medium text-black/40" data-node-id="794:4242">불량</span>
+                    <span className="text-black/80" data-node-id="794:4243">1개</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="self-start mt-4 bg-[#eef5fe] text-[#2048e5] text-[16px] font-semibold rounded-[10px] px-6 py-3 hover:opacity-90"
+                data-node-id="794:4250"
+              >
+                <span data-node-id="794:4251">검차 상세내용 확인</span>
+              </button>
+              <div className="mt-6 pt-4 border-t border-gray-200" data-node-id="794:4252">
+                <p className="text-[18px] text-black leading-[26px]">
+                  <span className="font-semibold">총 111개</span>
+                  <span>의 항목이 검사되었습니다.</span>
+                </p>
+                <p className="text-[18px] text-black leading-[26px] mt-1">
+                  전반적인 상태는 양호하며, 일부 부위에 경미한 스키레치가 확인되었습니다.
+                </p>
+              </div>
+            </div>
+
+            {/* 794:4253 — 내차 예상 시세는 26px, 910~1,010 48px primary, 만원이에요 28px */}
+            <div
+              className="bg-white rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] p-6 min-h-[224px] flex flex-col justify-center"
+              data-node-id="794:4253"
+            >
+              <p className="text-[26px] font-extrabold text-black mb-2" data-node-id="794:4254">
+                내차 예상 시세는
+              </p>
+              <p className="text-[48px] font-extrabold text-[#2048e5] leading-tight" data-node-id="794:4255">
+                910 ~ 1,010
+              </p>
+              <p className="text-[28px] font-extrabold text-[#2048e5]" data-node-id="794:4256">
+                만원이에요.
+              </p>
+            </div>
+            {/* 794:4257 — 판매 가격은 / [입력] 만원으로 설정할게요. */}
+            <div
+              className="bg-white rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] p-6 min-h-[224px]"
+              data-node-id="794:4257"
+            >
+              <p className="text-[26px] font-extrabold text-black mb-4" data-node-id="794:4258">
+                판매 가격은
+              </p>
+              <div className="flex flex-wrap items-baseline gap-2">
+                <Input
+                  type="number"
+                  placeholder=""
+                  className="w-24 text-[28px] font-extrabold text-black"
+                  aria-label="희망가 만원"
+                />
+                <span className="text-[28px] font-extrabold text-black" data-node-id="794:4259">
+                  만원으로 설정할게요.
+                </span>
+              </div>
+            </div>
+            <div className="flex gap-4">
               <Button variant="secondary" onClick={handleBack}>
                 이전
               </Button>

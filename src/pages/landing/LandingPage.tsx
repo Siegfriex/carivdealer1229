@@ -43,10 +43,15 @@ export const LandingPage = () => {
   /** 로그인 시 표시명(추후 프로필 연동) */
   const userName = isAuthenticated ? '홍길동' : null;
 
-  /** 매물등록 flow 진입 → /vehicles/new */
+  /** 매물등록 flow 진입 → /vehicles/new (비로그인 Section2 CTA) */
   const handleStartNow = () => {
     fetch(LOG_INGEST_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'LandingPage:handleStartNow', message: '지금 시작하기', data: { to: '/vehicles/new' }, timestamp: Date.now(), hypothesisId: 'H_진입', runId: 'register-flow-check' }) }).catch(() => {});
     navigate('/vehicles/new');
+  };
+
+  /** 로그인 후 Hero "지금 시작하기" → 로그인 페이지 */
+  const handleGoLogin = () => {
+    navigate('/login');
   };
 
   /** 회원가입 진입 (Figma 1444-7928 Hero CTA) */
@@ -65,37 +70,35 @@ export const LandingPage = () => {
       {!isAuthenticated ? (
         <LandingHeroUnauth email={email} onEmailChange={setEmail} onSignup={handleSignup} />
       ) : (
-        <LandingHeroAuth userName={userName ?? '홍길동'} onStartNow={handleStartNow} />
+        <LandingHeroAuth userName={userName ?? '홍길동'} onStartNow={handleGoLogin} />
       )}
 
-      {/* Section 2 — Figma 1444-7949: 0,819 1440×555 */}
+      {/* Section 2 — Figma 1444-7949: 좌정렬, 디자인 컨텍스트 문구 */}
       {!isAuthenticated && (
         <section className={`${LAYOUT_CLASSES.LANDING_SECTION} ${LAYOUT_CLASSES.LANDING_SECTION2_MIN_H} flex items-center py-16 md:py-20 bg-[var(--color-gray-100)]`} data-node-id="1444:7949">
-          <div className={`${LAYOUT_CLASSES.LANDING_CONTENT} px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-8`}>
-            <div className={`${LAYOUT_CLASSES.LANDING_LEAD_MAX_W} md:text-right`}>
-              <h2 className="font-extrabold text-[45px] leading-[61px] text-black mb-4" data-node-id="1444:7952">
-                언제 어디서든 빠르고 간편하게.
-              </h2>
-              <p className="text-[16px] leading-[22px] text-[var(--color-gray-500)] whitespace-pre-wrap" data-node-id="1444:7951">
-                판매를 희망하는 차량을 등록하고, 거래해보세요. 경매진행부터 정산 대기까지의 과정을 실시간으로 확인하고, 빠르게 확인할 수 있습니다.
-              </p>
-              <Button size="lg" onClick={handleStartNow} className="mt-6 gap-2 rounded-[39px] md:ml-auto" type="button" data-node-id="1444:7953">
-                차량 업로드하기
-                <ChevronRight className="h-5 w-5" aria-hidden />
-              </Button>
-            </div>
+          <div className={`${LAYOUT_CLASSES.LANDING_CONTENT} px-6 text-left md:pl-[260px] md:pr-6`}>
+            <h2 className="font-extrabold text-[45px] leading-[61px] text-black mb-4" data-node-id="1444:7952">
+              언제 어디서든 빠르고 간편하게.
+            </h2>
+            <p className={`${LAYOUT_CLASSES.LANDING_LEAD_MAX_W} text-[16px] leading-[22px] text-[#909090] whitespace-pre-wrap mb-6`} data-node-id="1444:7951">
+              판매를 희망하는 차량을 등록하고, 거래해보세요. 경매진행부터 정산 대기까지의 과정을 실시간으로 확인하고, 빠르게 확인할 수 있습니다.
+            </p>
+            <Button size="lg" onClick={handleStartNow} className="gap-2 rounded-[39px]" type="button" data-node-id="1444:7953">
+              차량 업로드하기
+              <ChevronRight className="h-5 w-5" aria-hidden />
+            </Button>
           </div>
         </section>
       )}
 
-      {/* Section 3 — Figma 1444-7958: 0,1381 1440×673 */}
+      {/* Section 3 — Figma 1444-7958: 좌정렬, 디자인 컨텍스트 문구 */}
       {!isAuthenticated && (
         <section className={`${LAYOUT_CLASSES.LANDING_SECTION} ${LAYOUT_CLASSES.LANDING_SECTION3_MIN_H} py-16 md:py-20 bg-[var(--color-gray-100)]`} data-node-id="1444:7958">
-          <div className={`${LAYOUT_CLASSES.LANDING_CONTENT} px-6`}>
+          <div className={`${LAYOUT_CLASSES.LANDING_CONTENT} px-6 text-left md:pl-[260px] md:pr-6`}>
             <h2 className={`font-extrabold text-[45px] leading-[61px] text-black mb-4 ${LAYOUT_CLASSES.LANDING_SECTION3_TITLE_MAX_W}`} data-node-id="1444:7962">
               간소화된 인증과정
             </h2>
-            <p className={`${LAYOUT_CLASSES.LANDING_SECTION3_BODY_MAX_W} text-[16px] leading-[21px] text-[var(--color-gray-500)] whitespace-pre-wrap`} data-node-id="1444:7961">
+            <p className={`${LAYOUT_CLASSES.LANDING_SECTION3_BODY_MAX_W} text-[16px] leading-[21px] text-[#909090] whitespace-pre-wrap`} data-node-id="1444:7961">
               기존의 복잡한 행정처리와 발품팔이를 스킵하고, 빠른 정보등록과 OCR스캔을 통해 전산처리 과정을 신속하고 빠르게 처리하여 원활한 거래를 가능하게 합니다.
             </p>
           </div>
@@ -108,10 +111,10 @@ export const LandingPage = () => {
 
       <LandingInquiry kakaoChatUrl={KAKAO_CHAT_URL} withImage={isAuthenticated} />
 
-      {/* Footer — Figma 1368:37365 / 1444:7965 (0,2066 1440×327) */}
+      {/* Footer — 로고·GNB와 같은 컬럼(px-6) 정렬 */}
       <footer className={`border-t border-gray-200 ${LAYOUT_CLASSES.LANDING_FOOTER_MIN_H} ${isAuthenticated ? 'bg-[var(--color-gray-100)] flex items-start' : 'bg-gray-50'}`} data-node-id={isAuthenticated ? '1368:37365' : '1444:7965'}>
-        <div className={`${LAYOUT_CLASSES.LANDING_CONTENT} ${LAYOUT_CLASSES.LANDING_FOOTER_INNER}`}>
-          <p className="text-[16px] leading-[21px] text-[var(--color-gray-500)]" data-node-id={isAuthenticated ? '1368:37366' : undefined}>
+        <div className={`${LAYOUT_CLASSES.LANDING_CONTENT} px-6 py-3 md:pt-[58px]`}>
+          <p className="text-[12px] leading-[16px] text-[var(--color-gray-500)]" data-node-id={isAuthenticated ? '1368:37366' : undefined}>
             ForwardMax Cariv Domestic Seller 1.0 Prototype
           </p>
         </div>

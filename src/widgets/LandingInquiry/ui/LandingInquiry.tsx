@@ -15,7 +15,8 @@ export interface LandingInquiryProps {
 export function LandingInquiry({ kakaoChatUrl, withImage = false }: LandingInquiryProps) {
   return (
     <section className="bg-gray-50 py-16 md:py-24" data-node-id={withImage ? '1368:37482' : undefined}>
-      <div className="container max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+      {/* 좌측 W-149부터, 좌우 149px 패딩으로 균형 있게 */}
+      <div className="w-full max-w-[1440px] mx-auto px-6 md:pl-[149px] md:pr-[149px] flex flex-col md:flex-row md:items-center md:justify-between gap-8">
         <div>
           <Typography variant="h2" className={withImage ? 'text-[38px] font-extrabold leading-[61px] text-black/80 mb-2' : 'text-gray-900 mb-2 font-bold'}>
             다른 궁금증이 있으시다면

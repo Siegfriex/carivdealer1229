@@ -1,15 +1,12 @@
 /**
  * GNB 직속 탭 목록 페이지 공통 레이아웃.
- * 사이드바 249px, 메인 972px, 배지 + 제목 + children.
- * 에셋(briefcase)은 이 위젯에서만 import.
+ * 사이드바 249px, 메인 972px, 제목·children. 메인 좌측 W-149. 배지 제거.
  */
 
 import type { ReactNode } from 'react';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { PlatformBadge } from '@/shared/ui/PlatformBadge';
 import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
-import iconBriefcase from '@/shared/figma_image/1425-8153_배지_briefcase.png';
 
 export type GnbListSidebarType = 'vehicles' | 'minimal';
 
@@ -33,8 +30,6 @@ export type GnbListLayoutSidebar = GnbListLayoutVehiclesSidebar | GnbListLayoutM
 export interface GnbListLayoutProps {
   /** 사이드바 종류 및 props */
   sidebar: GnbListLayoutSidebar;
-  /** 배지 문구 (기본: 한국 수출차량 전문 플랫폼) */
-  badgeText?: string;
   /** 페이지 제목 */
   title: string;
   /** 메인 본문 (탭·그리드·테이블·페이지네이션 등) */
@@ -43,10 +38,8 @@ export interface GnbListLayoutProps {
   footer?: ReactNode;
   /** data-node-id for main (선택) */
   mainNodeId?: string;
-  /** data-node-id for title (선택, 예: 1042:4754) */
+  /** data-node-id for title (선택) */
   titleNodeId?: string;
-  /** data-node-id for badge (선택, 예: 1714:22887) */
-  badgeNodeId?: string;
 }
 
 function renderSidebar(sidebar: GnbListLayoutSidebar) {
@@ -74,27 +67,19 @@ function renderSidebar(sidebar: GnbListLayoutSidebar) {
 
 export function GnbListLayout({
   sidebar,
-  badgeText = '한국 수출차량 전문 플랫폼',
   title,
   children,
   footer,
   mainNodeId,
   titleNodeId,
-  badgeNodeId,
 }: GnbListLayoutProps) {
-  const badgeEl = (
-    <PlatformBadge icon={<img src={iconBriefcase} alt="" className="h-[18px] w-[18px] object-contain" aria-hidden />} className="mb-4">
-      {badgeText}
-    </PlatformBadge>
-  );
   return (
     <>
       {renderSidebar(sidebar)}
       <main
-        className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_GNB}`}
+        className={`flex-1 p-8 md:pl-[149px] ${LAYOUT_CLASSES.MAIN_GNB}`}
         data-node-id={mainNodeId}
       >
-        {badgeNodeId ? <div data-node-id={badgeNodeId}>{badgeEl}</div> : badgeEl}
         <h1 className={`${LAYOUT_CLASSES.GNB_TITLE} font-bold text-gray-900 mb-4`} data-node-id={titleNodeId}>{title}</h1>
         {children}
       </main>

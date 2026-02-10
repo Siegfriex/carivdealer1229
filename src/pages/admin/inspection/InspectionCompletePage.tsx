@@ -67,14 +67,10 @@ export const InspectionCompletePage = () => {
 
   const vehicleId = inspection?.vehicleId;
 
-  const handleAuctionSale = () => {
-    const to = vehicleId ? `/vehicles/${vehicleId}/sale/analyzing?type=auction` : '/offers?type=auction';
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleAuctionSale',message:'검차완료→CTA_3 판매방식(경매)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
-    navigate(to);
-  };
-  const handleGeneralSale = () => {
-    const to = vehicleId ? `/vehicles/${vehicleId}/sale/analyzing` : '/offers?type=general';
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleGeneralSale',message:'검차완료→CTA_3 판매방식선택(일반)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
+  /** 판매하기: sale/analyzing으로 이동 후 해당 페이지에서 일반/경매 분기 */
+  const handleSale = () => {
+    const to = vehicleId ? `/vehicles/${vehicleId}/sale/analyzing` : '/offers';
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleSale',message:'검차완료→CTA_3 판매방식선택(sale/analyzing)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
     navigate(to);
   };
 
@@ -249,14 +245,12 @@ export const InspectionCompletePage = () => {
             </div>
           </div>
 
-          {/* 판매 방식 선택: 검차 완료된 경우에만 표시 */}
+          {/* 판매하기: 검차 완료 시 한 개 버튼 → sale/analyzing에서 일반/경매 분기 */}
           <Card className="p-8">
             {inspection?.status === 'completed' ? (
               <>
-                <h2 className="text-h3 font-bold text-gray-900 mb-6 text-center">판매 방식을 선택하세요</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Button size="lg" fullWidth onClick={handleAuctionSale}>경매로 판매하기</Button>
-                  <Button size="lg" variant="secondary" fullWidth onClick={handleGeneralSale}>일반 판매하기</Button>
+                <div className="flex justify-center mb-6">
+                  <Button size="lg" onClick={handleSale}>판매하기</Button>
                 </div>
                 <div className="mt-4 flex justify-center gap-4">
                   <Button variant="ghost" onClick={() => navigate('/inspections')}>목록으로</Button>

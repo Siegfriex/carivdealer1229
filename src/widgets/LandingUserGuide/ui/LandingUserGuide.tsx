@@ -43,10 +43,11 @@ export function LandingUserGuide({ withImages = false }: LandingUserGuideProps) 
 
   return (
     <section
-      className={withImages ? `bg-[var(--color-primary-light)] min-h-[592px] pt-16 pb-24 rounded-t-[40px] ${LAYOUT_CLASSES.LANDING_SECTION}` : `bg-gray-50 py-16 md:py-24 ${LAYOUT_CLASSES.LANDING_SECTION}`}
+      className={withImages ? `min-h-[592px] pt-16 pb-24 rounded-t-[40px] ${LAYOUT_CLASSES.LANDING_SECTION} bg-gradient-to-b from-[var(--color-primary-light)] to-white` : `bg-gray-50 py-16 md:py-24 ${LAYOUT_CLASSES.LANDING_SECTION}`}
       data-node-id={withImages ? '1368:37382' : undefined}
     >
-      <div className={`${LAYOUT_CLASSES.LANDING_CONTENT} px-6`}>
+      {/* 좌측 149px부터 시작, 좌우 폭 확대 (랜딩 하단 섹션 통일) */}
+      <div className="w-full max-w-[1440px] mx-auto px-6 md:pl-[149px] md:pr-[149px]">
         <h2 className={withImages ? 'text-[34px] font-extrabold leading-[61px] text-black/80 mb-1' : 'text-h2 font-medium leading-tight tracking-tight text-gray-900 mb-2'}>
           사용 가이드
         </h2>

@@ -83,12 +83,12 @@ export const GeneralSaleAnalyzingPage = () => {
     <div className="min-h-screen bg-[var(--color-background,#f8f9fa)]">
       <LandingHeader variant="main" activeNav="offers" />
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline />
-        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+        <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline widthClass={LAYOUT_CLASSES.GNB_SIDEBAR} />
+        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_GNB_STEP}`}>
           {step === 'choice' && (
             <>
               {/* 794-3704: 판매 방식 선택 (Figma 794:3706 38px) */}
-              <h1 className="text-[38px] font-extrabold leading-tight text-[rgba(0,0,0,0.8)] mb-12" data-node-id="794:3706">
+              <h1 className="text-[38px] font-extrabold leading-tight text-[rgba(0,0,0,0.8)] mb-12" style={{ fontFamily: 'var(--font-primary)' }} data-node-id="794:3706">
                 판매 방식 선택
               </h1>
               <div className="flex flex-wrap justify-center gap-8 max-w-[620px] mx-auto">

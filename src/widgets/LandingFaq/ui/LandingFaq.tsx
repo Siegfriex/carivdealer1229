@@ -23,7 +23,8 @@ export interface LandingFaqProps {
 export function LandingFaq({ items, openIndex, onToggle, withImage = false }: LandingFaqProps) {
   return (
     <section className="bg-gray-50 py-16 md:py-24" data-node-id={withImage ? '1368:37417' : undefined}>
-      <div className="container max-w-3xl mx-auto px-6">
+      {/* 좌측 149px부터 시작, 좌우 폭 확대 */}
+      <div className="w-full max-w-[1440px] mx-auto pl-6 pr-6 md:pl-[149px] md:pr-[149px]">
         <Typography variant="h2" className={withImage ? 'text-[38px] font-extrabold leading-[61px] text-black/80 mb-1' : 'text-gray-900 mb-2 font-bold'}>
           자주 묻는 질문이에요
         </Typography>

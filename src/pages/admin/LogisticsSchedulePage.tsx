@@ -154,7 +154,7 @@ export const LogisticsSchedulePage = () => {
   // ——— 탁송완료 (1272-13099): metadata 1272:13152 972×473, 제목 2줄, 버튼 영역 ———
   if (viewMode === 'complete') {
     return (
-      <div className="min-h-screen bg-[#f8f9fa] flex flex-col" data-node-id="1272:13099">
+      <div className="min-h-screen bg-gray-50 flex flex-col" data-node-id="1272:13099">
         <LandingHeader userName="홍길동" variant="main" activeNav="logistics" />
         <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
           <GnbMinimalSidebar sectionTitle="탁송" className={LAYOUT_CLASSES.GNB_SIDEBAR} />
@@ -188,7 +188,7 @@ export const LogisticsSchedulePage = () => {
   // ——— 기사배정 진행중 (1272-15049): metadata 1272:15133 381×324.96, 1272:15135 "탁송 기사 배정 중", 1272:15136 "잠시만 기다려 주세요" ———
   if (viewMode === 'driver_assigning') {
     return (
-      <div className="min-h-screen bg-[#f8f9fa] flex flex-col" data-node-id="1272:15049">
+      <div className="min-h-screen bg-gray-50 flex flex-col" data-node-id="1272:15049">
         <LandingHeader userName="홍길동" variant="main" activeNav="logistics" />
         <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
           <GnbMinimalSidebar sectionTitle="탁송" className={LAYOUT_CLASSES.GNB_SIDEBAR} />
@@ -200,10 +200,10 @@ export const LogisticsSchedulePage = () => {
               <div className="w-[157px] h-[157px] rounded-full bg-primary/10 flex items-center justify-center mb-8" data-node-id="1272:15137">
                 <MapPin className="w-12 h-12 text-primary animate-pulse" />
               </div>
-              <h2 className="text-[32px] leading-[61px] font-extrabold text-primary mb-0" data-node-id="1272:15135">
+              <h2 className="text-h1 leading-tight font-extrabold text-primary mb-0" data-node-id="1272:15135">
                 탁송 기사 배정 중
               </h2>
-              <p className="text-[20px] leading-[48px] text-black mt-3 mb-8" data-node-id="1272:15136">
+              <p className="text-form-label leading-relaxed text-black mt-3 mb-8" data-node-id="1272:15136">
                 잠시만 기다려 주세요
               </p>
               <Button onClick={handleCompleteDriverAssigning} variant="primary">
@@ -224,7 +224,7 @@ export const LogisticsSchedulePage = () => {
         <div className={`flex w-full ${LAYOUT_CLASSES.CONTAINER}`}>
           <GnbMinimalSidebar sectionTitle="탁송" className={LAYOUT_CLASSES.GNB_SIDEBAR} />
           <main className="flex-1 min-w-0 p-8">
-            <div className="mx-auto max-w-[971px] min-h-[539px]">
+            <div className={`mx-auto ${LAYOUT_CLASSES.FORM_MAIN}`}>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h1 className="text-h1 font-medium text-gray-900">새 탁송 예약</h1>
                 <Button variant="secondary" size="sm" onClick={handleBackToList}>
@@ -234,7 +234,7 @@ export const LogisticsSchedulePage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-6">
                   {/* 1272:13433 design_context — "탁송 일정": 날짜 선택 * (위), 시간 선택 * (아래), 표기 "2026년 1월 25일 일요일" / "오후 12:00" */}
-                  <div className="bg-white rounded-[20px] p-6 border border-gray-200 shadow-[2px_2px_21.3px_rgba(0,0,0,0.08)]" data-node-id="1272:13433">
+                  <div className={`${LAYOUT_CLASSES.FORM_SECTION_CARD} rounded-lg`} data-node-id="1272:13433">
                     <h2 className="text-section-title font-bold text-gray-900 mb-4 flex items-center gap-2" data-node-id="1272:13438">
                       <Calendar className="w-5 h-5 text-primary" />
                       탁송 일정
@@ -247,7 +247,7 @@ export const LogisticsSchedulePage = () => {
                             <button
                               type="button"
                               onClick={() => setDatePickerStep('year')}
-                              className="w-full px-5 py-3 bg-[#f4f4f4] border border-[#d9d9d9] rounded-[10px] text-left text-form-input text-black/40 hover:bg-gray-100 focus:outline-none focus:border-primary"
+                              className={`w-full px-5 py-3 ${LAYOUT_CLASSES.INPUT_FIELD} text-left text-form-input text-black/40 hover:bg-gray-100 focus:outline-none focus:border-primary`}
                             >
                               {selectedDate ? formatDateLabel(selectedDate) : '날짜를 선택하세요'}
                             </button>
@@ -256,7 +256,7 @@ export const LogisticsSchedulePage = () => {
                               value={selectedDate}
                               onChange={(e) => setSelectedDate(e.target.value)}
                               min={new Date().toISOString().split('T')[0]}
-                              className="mt-2 w-full px-5 py-3 bg-[#f4f4f4] border border-[#d9d9d9] rounded-[10px] text-form-input focus:outline-none focus:border-primary"
+                              className={`mt-2 w-full px-5 py-3 ${LAYOUT_CLASSES.INPUT_FIELD} text-form-input focus:outline-none focus:border-primary`}
                               aria-label="날짜 직접 입력"
                             />
                           </>
@@ -270,8 +270,8 @@ export const LogisticsSchedulePage = () => {
                                   key={y}
                                   type="button"
                                   onClick={() => handleYearSelect(y)}
-                                  className={`px-5 py-2.5 rounded-[10px] border text-form-input font-medium transition-colors ${
-                                    selectedYear === String(y) ? 'bg-primary text-white border-primary' : 'bg-white border-[#d9d9d9] text-gray-900 hover:bg-gray-50'
+                                  className={`px-5 py-2.5 rounded-md border text-form-input font-medium transition-colors ${
+                                    selectedYear === String(y) ? 'bg-primary text-white border-primary' : 'bg-white border-form-field-border text-gray-900 hover:bg-gray-50'
                                   }`}
                                 >
                                   {y}년
@@ -290,7 +290,7 @@ export const LogisticsSchedulePage = () => {
                                   key={label}
                                   type="button"
                                   onClick={() => handleMonthSelect(i + 1)}
-                                  className="px-4 py-3 rounded-[10px] border border-[#d9d9d9] bg-white text-gray-900 hover:bg-gray-50 focus:outline-none focus:border-primary text-form-input font-medium"
+                                  className={`px-4 py-3 rounded-md border border-form-field-border bg-white text-gray-900 hover:bg-gray-50 focus:outline-none focus:border-primary text-form-input font-medium`}
                                 >
                                   {label}
                                 </button>
@@ -308,8 +308,8 @@ export const LogisticsSchedulePage = () => {
                               key={time}
                               type="button"
                               onClick={() => setSelectedTime(time)}
-                              className={`px-4 py-3 rounded-[10px] border text-form-input transition-colors ${
-                                selectedTime === time ? 'bg-primary text-white border-primary' : 'bg-[#f4f4f4] border-[#d9d9d9] text-gray-900 hover:bg-gray-100'
+                              className={`px-4 py-3 rounded-md border text-form-input transition-colors ${
+                                selectedTime === time ? 'bg-primary text-white border-primary' : 'bg-form-field-bg border-form-field-border text-gray-900 hover:bg-gray-100'
                               }`}
                             >
                               {formatTimeLabel(time)}
@@ -319,8 +319,7 @@ export const LogisticsSchedulePage = () => {
                       </div>
                     </div>
                   </div>
-                  {/* 1272:13402 design_context — "탁송 장소", 우편/주소/상세, bg #f4f4f4 border #d9d9d9 rounded-[10px] */}
-                  <div className="bg-white rounded-[20px] p-6 border border-gray-200 shadow-[2px_2px_21.3px_rgba(0,0,0,0.08)]" data-node-id="1272:13402">
+                  <div className={`${LAYOUT_CLASSES.FORM_SECTION_CARD} rounded-lg`} data-node-id="1272:13402">
                     <h2 className="text-section-title font-bold text-gray-900 mb-4 flex items-center gap-2" data-node-id="1272:13407">
                       <MapPin className="w-5 h-5 text-primary" />
                       탁송 장소
@@ -334,9 +333,9 @@ export const LogisticsSchedulePage = () => {
                             value={postalCode}
                             onChange={(e) => setPostalCode(e.target.value)}
                             placeholder="우편번호를 입력해 주세요"
-                            className="flex-1 min-w-[200px] px-5 py-3 bg-[#f4f4f4] border border-[#d9d9d9] rounded-[10px] text-form-input placeholder:text-black/40"
+                            className={`flex-1 min-w-[200px] px-5 py-3 ${LAYOUT_CLASSES.INPUT_FIELD} text-form-input placeholder:text-black/40`}
                           />
-                          <Button variant="primary" size="sm" onClick={() => setAddressModalOpen(true)} className="h-[64px] px-5 text-form-input rounded-[10px]">
+                          <Button variant="primary" size="sm" onClick={() => setAddressModalOpen(true)} className="h-[64px] px-5 text-form-input rounded-md">
                             우편번호 찾기
                           </Button>
                         </div>
@@ -348,7 +347,7 @@ export const LogisticsSchedulePage = () => {
                           value={departureAddress}
                           onChange={(e) => setDepartureAddress(e.target.value)}
                           placeholder="주소지를 입력해 주세요"
-                          className="w-full px-5 py-3 bg-[#f4f4f4] border border-[#d9d9d9] rounded-[10px] text-form-input placeholder:text-black/40"
+                          className={`w-full px-5 py-3 ${LAYOUT_CLASSES.INPUT_FIELD} text-form-input placeholder:text-black/40`}
                         />
                       </div>
                       <div>
@@ -358,7 +357,7 @@ export const LogisticsSchedulePage = () => {
                           value={detailAddress}
                           onChange={(e) => setDetailAddress(e.target.value)}
                           placeholder="상세주소를 입력해 주세요"
-                          className="w-full px-5 py-3 bg-[#f4f4f4] border border-[#d9d9d9] rounded-[10px] text-form-input placeholder:text-black/40"
+                          className={`w-full px-5 py-3 ${LAYOUT_CLASSES.INPUT_FIELD} text-form-input placeholder:text-black/40`}
                         />
                       </div>
                     </div>
@@ -366,7 +365,7 @@ export const LogisticsSchedulePage = () => {
                       <>
                         <div className="fixed inset-0 bg-black/30 z-40" aria-hidden onClick={() => setAddressModalOpen(false)} />
                         <div
-                          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[514px] h-[640px] overflow-auto bg-white rounded-2xl shadow-xl flex flex-col"
+                          className={`fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 overflow-auto bg-white rounded-2xl shadow-xl flex flex-col ${LAYOUT_CLASSES.ADDRESS_MODAL}`}
                           data-node-id="1272:14540"
                         >
                           <div className="p-6 flex-1 flex flex-col" data-node-id="1272:14749">
@@ -448,14 +447,13 @@ export const LogisticsSchedulePage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex flex-col" data-node-id="1714:22874">
+    <div className={`min-h-screen bg-gray-50 flex flex-col`} data-node-id="1714:22874">
       <LandingHeader userName="홍길동" variant="main" activeNav="logistics" />
       <div className={`flex w-full ${LAYOUT_CLASSES.CONTAINER}`}>
         <GnbListLayout
           sidebar={{ type: 'minimal', sectionTitle: '탁송' }}
           title="탁송 목록"
           mainNodeId="1714:22921"
-          badgeNodeId="1714:22887"
           titleNodeId="1714:22893"
           footer={listFooter}
         >
@@ -482,20 +480,20 @@ export const LogisticsSchedulePage = () => {
                     }`}
                     data-node-id="1714:22923"
                   >
-                    <div className="h-[174px] w-full bg-[#eef5fe] shrink-0" data-node-id="1714:22924" />
-                    <div className="flex-1 min-h-0 pl-[23px] pr-[23px] pt-[23px] pb-3 border-t border-gray-200 flex flex-col">
+                    <div className="h-[174px] w-full bg-primary-light shrink-0" data-node-id="1714:22924" />
+                    <div className="flex-1 min-h-0 p-6 pb-3 border-t border-gray-200 flex flex-col">
                       <p className={`text-[12px] font-semibold ${stateInfo?.color ?? 'text-gray-500'} mb-1`} data-node-id="1714:22936">
                         {stateInfo?.label ?? item.state}
                       </p>
-                      <p className="text-[15.627px] font-bold text-black leading-tight" data-node-id="1714:22926">{item.modelName}</p>
-                      <p className="text-[7.814px] text-[#707070] font-bold leading-tight" data-node-id="1714:22927">
+                      <p className="text-body font-bold text-black leading-tight" data-node-id="1714:22926">{item.modelName}</p>
+                      <p className="text-caption text-gray-600 font-bold leading-tight" data-node-id="1714:22927">
                         {item.modelYear}년형 · {item.mileage} 만 km
                       </p>
-                      <p className="text-[15.627px] font-extrabold text-primary leading-tight" data-node-id="1714:22929">--- 만원</p>
-                      <p className="text-[9.376px] text-black/30 font-bold leading-tight" data-node-id="1714:22928">신차 4,600만원</p>
+                      <p className="text-body font-extrabold text-primary leading-tight" data-node-id="1714:22929">--- 만원</p>
+                      <p className="text-caption text-black/30 font-bold leading-tight" data-node-id="1714:22928">신차 4,600만원</p>
                       <div className="mt-auto flex flex-wrap gap-1 pt-1" data-node-id="1714:22931">
-                        <span className="inline-block rounded-[2.859px] bg-[#f0f0f1] px-1.5 py-0.5 text-[7.623px] font-bold text-[#404043]">1년보증</span>
-                        <span className="inline-block rounded-[2.859px] bg-[#f0f0f1] px-1.5 py-0.5 text-[7.623px] font-bold text-[#404043]">단순교환무사고</span>
+                        <span className="inline-block rounded-sm bg-gray-100 px-1.5 py-0.5 text-caption font-bold text-gray-700">1년보증</span>
+                        <span className="inline-block rounded-sm bg-gray-100 px-1.5 py-0.5 text-caption font-bold text-gray-700">단순교환무사고</span>
                       </div>
                     </div>
                   </button>
@@ -520,8 +518,8 @@ export const LogisticsSchedulePage = () => {
                 data-node-id="1272:12926"
               >
                 <div className={`bg-white ${LAYOUT_CLASSES.DETAIL_PANEL}`} data-node-id="1272:12927">
-                  <p className="text-[15px] text-black/50 tracking-[0.15px] font-extrabold mb-1" data-node-id="1272:12930">차량정보</p>
-                  <p className="text-[28px] leading-[44px] font-extrabold text-primary mb-6" data-node-id="1272:12929">{selectedItem.plateNumber}</p>
+                  <p className="text-body text-black/50 tracking-wide font-extrabold mb-1" data-node-id="1272:12930">차량정보</p>
+                  <p className="text-h2 leading-[44px] font-extrabold text-primary mb-6" data-node-id="1272:12929">{selectedItem.plateNumber}</p>
                   <div className="flex flex-col flex-1 min-h-0">
                     {[
                       { label: '제조사', value: 'Hyundai' },
@@ -531,8 +529,8 @@ export const LogisticsSchedulePage = () => {
                       { label: '연료', value: '-' },
                     ].map(({ label, value }) => (
                       <div key={label} className={LAYOUT_CLASSES.DETAIL_PANEL_ROW}>
-                        <span className="text-[16px] text-black/40 font-medium">{label}</span>
-                        <span className="text-[16px] text-black/80">{value}</span>
+                        <span className="text-h4 text-black/40 font-medium">{label}</span>
+                        <span className="text-h4 text-black/80">{value}</span>
                       </div>
                     ))}
                   </div>

@@ -17,6 +17,7 @@ import { Z_INDEX } from '@/shared/config/zIndex';
 import iconSearch from '@/shared/figma_image/1444-7928_검색_search.png';
 import iconTruck from '@/shared/figma_image/1444-7928_탁송_cil-truck.png';
 import iconCoins from '@/shared/figma_image/1444-7928_정산_coins-stacked-03.png';
+import logoForwardMax from '@img/logo_FOWARDMAX.svg';
 
 const NOTIFICATION_MOCKS = [
   { id: '1', text: '아반떼 CN7 검차가 완료되었습니다.', time: '10분 전' },
@@ -93,9 +94,7 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
       {/* 1단: 로고(1444:7968) + 우측 검색(1444:8014)·로그인/회원가입(1444:8005) — Figma 1444-7928 */}
       <div className="container mx-auto max-w-[1440px] h-14 flex items-center justify-between gap-6 px-6">
         <Link to="/" className="flex items-center shrink-0" data-node-id="1444:7968">
-          <span className="text-h3 font-bold text-gray-900 tracking-tight">
-            FORWARD<span className="text-primary">MAX</span>
-          </span>
+          <img src={logoForwardMax} alt="ForwardMax" className="h-[14px] w-auto" />
         </Link>
 
         <div className="flex items-center gap-4 shrink-0">

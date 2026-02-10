@@ -26,15 +26,19 @@ interface ProgressSidebarProps {
   className?: string;
   /** true면 fixed가 아닌 일반 배치 (flex 레이아웃용) */
   inline?: boolean;
+  /** CTA_3 거래 플로우 등에서 249px 사용 시 LAYOUT_CLASSES.GNB_SIDEBAR 전달 */
+  widthClass?: string;
 }
 
 /**
  * 회원가입/차량등록 플로우 진행 표시 사이드바
  * @param props.steps - 진행 단계 배열
  * @param props.inline - true면 고정이 아닌 flex 배치
+ * @param props.widthClass - 미지정 시 256px(SIDEBAR), CTA_3에서는 GNB_SIDEBAR(249px) 권장
  */
-export const ProgressSidebar = ({ steps, className = '', inline = false }: ProgressSidebarProps) => {
-  const baseClasses = `${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200`;
+export const ProgressSidebar = ({ steps, className = '', inline = false, widthClass }: ProgressSidebarProps) => {
+  const width = widthClass ?? LAYOUT_CLASSES.SIDEBAR;
+  const baseClasses = `${width} flex-shrink-0 bg-white border-r border-gray-200`;
   const positionClasses = inline
     ? LAYOUT_CLASSES.CONTENT_MIN_HEIGHT
     : 'fixed left-0 top-0 bottom-0';

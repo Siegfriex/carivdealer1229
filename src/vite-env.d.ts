@@ -1,5 +1,14 @@
 /// <reference types="vite/client" />
 
+declare module '@img/*.svg' {
+  const url: string;
+  export default url;
+}
+declare module '@img/*.png' {
+  const url: string;
+  export default url;
+}
+
 interface ImportMetaEnv {
   readonly VITE_FIREBASE_API_KEY: string;
   readonly VITE_FIREBASE_AUTH_DOMAIN: string;

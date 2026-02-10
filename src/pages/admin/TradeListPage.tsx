@@ -108,6 +108,7 @@ export const TradeListPage = () => {
           }}
           title="거래 목록"
           mainNodeId="1714:22378"
+          titleNodeId="1714:22351"
           footer={footer}
         >
           <div className="flex items-center justify-between mb-6">
