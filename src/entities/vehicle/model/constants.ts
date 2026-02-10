@@ -45,6 +45,17 @@ export const VEHICLE_STATUS_COLORS: Record<VehicleStatus, string> = {
   completed: '#14B8A6',           // Teal
 };
 
+/** Figma 1636-10115 전체 차량목록 카드용 상태 색상 (상태 점·라벨) */
+export const VEHICLE_STATUS_COLORS_1636: Record<VehicleStatus, string> = {
+  draft: '#f59e0b',              // 검차신청 임시저장
+  inspection: '#10b981',         // 검차 진행중
+  bidding: '#ff7575',             // 거래중
+  active_sale: '#ff7575',        // 거래중
+  sold: '#8b5cf6',                // 탁송중
+  pending_settlement: '#64748b',  // 정산중
+  completed: '#3b82f6',           // 등록됨
+};
+
 /**
  * 차량 상태 전이 규칙
  * key: 현재 상태 → value: 가능한 다음 상태들

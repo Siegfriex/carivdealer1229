@@ -1,1 +1,531 @@
-C:\Users\RYUzFAM\.cursor\projects\c-carivdealer\agent-tools\79220b87-7bbf-4eb9-a3a5-933f7a8d7858.txt (42637 bytes, 531 lines)
+const imgIcon = "https://www.figma.com/api/mcp/asset/78a97ea0-352c-495f-a7f3-31d3a7817f86";
+const imgSearch = "https://www.figma.com/api/mcp/asset/e0aaeed3-5ad7-4f26-8065-d7b9406f44ba";
+const imgIcon1 = "https://www.figma.com/api/mcp/asset/6104c190-af21-43e3-90ed-4a373c35ab6d";
+const imgCilTruck = "https://www.figma.com/api/mcp/asset/531026b1-fa09-4f1a-a730-5e0fa18e76e7";
+const imgIcon2 = "https://www.figma.com/api/mcp/asset/90310dd9-ab72-4e1b-a9e4-41814edb1bff";
+const imgLine76 = "https://www.figma.com/api/mcp/asset/9800eafb-d90e-49b7-9d2e-9c624ed1602f";
+const imgFCard = "https://www.figma.com/api/mcp/asset/0be659ff-e241-4ef4-8f63-94175a6c4bf8";
+const imgImage119 = "https://www.figma.com/api/mcp/asset/13709229-8525-4f5e-9e3d-ccc7f5684187";
+const imgImage120 = "https://www.figma.com/api/mcp/asset/76fbed7a-12ac-4a52-afc9-499450d5b9ea";
+const imgImage121 = "https://www.figma.com/api/mcp/asset/7da6ab91-952d-4d35-b89d-b083d4685294";
+const imgImage122 = "https://www.figma.com/api/mcp/asset/2b0fec2a-23ed-4105-8072-f81bf2de3882";
+const imgImage116 = "https://www.figma.com/api/mcp/asset/6ddbb419-ae63-4b82-8f9c-b22d4bb862fc";
+const imgImage117 = "https://www.figma.com/api/mcp/asset/f1263dfb-6573-4d81-afb0-87f85802ac6c";
+const imgFLink = "https://www.figma.com/api/mcp/asset/8b74f01d-e564-419f-8e25-0d66ed53768f";
+const imgFSettings = "https://www.figma.com/api/mcp/asset/162823e6-853b-4028-b138-eb060dbc3a00";
+const imgStickMan1181741 = "https://www.figma.com/api/mcp/asset/a6e40d3d-12d0-4b6f-847d-8a3562d7c344";
+const imgBriefcase = "https://www.figma.com/api/mcp/asset/b3663ed8-e094-45ff-b24a-f86c08487499";
+const imgGroup2085666147 = "https://www.figma.com/api/mcp/asset/d55d2124-7039-4e7f-a707-2dc30fa1bef1";
+const imgHelpCircle = "https://www.figma.com/api/mcp/asset/d5c625ab-40c4-4d31-a45a-fc8faf129469";
+const imgFrame2087328312 = "https://www.figma.com/api/mcp/asset/10310157-fdb3-457e-9bc1-504512354c7c";
+const imgCheck = "https://www.figma.com/api/mcp/asset/73513f61-89de-4680-9643-8f3bd28de5bd";
+const imgLine78 = "https://www.figma.com/api/mcp/asset/72c73340-f497-44a7-9108-0373b1cbb47c";
+const imgGroup2085666051 = "https://www.figma.com/api/mcp/asset/235ebd41-eaa7-4e72-bdb8-4cac675ac220";
+const imgGroup2085666053 = "https://www.figma.com/api/mcp/asset/e34849ee-3815-449f-a3e7-34bc34bc5df3";
+const imgCheck1 = "https://www.figma.com/api/mcp/asset/e8321cdf-d631-4c30-8214-d40183f1b038";
+const imgFrame2087328313 = "https://www.figma.com/api/mcp/asset/9fa5fb72-91db-4bda-be0e-d0cbcd8e204d";
+const imgEllipse48 = "https://www.figma.com/api/mcp/asset/eb077661-fdc3-4db6-8e5b-8f6f68f19cec";
+const imgGroup140 = "https://www.figma.com/api/mcp/asset/b70a82d5-3d1a-4ffd-b130-27f1b40edba0";
+const imgGroup2085666007 = "https://www.figma.com/api/mcp/asset/d5636f8c-5912-46ce-affa-86ac2573bba8";
+const imgSearch1 = "https://www.figma.com/api/mcp/asset/1cfff4fc-5248-48e6-bd4c-fabc7ad285bd";
+const imgIcon3 = "https://www.figma.com/api/mcp/asset/fc60e07c-051e-4921-ba01-8ecf990dee2f";
+
+function Gnb({ className }: { className?: string }) {
+  return (
+    <div className={className || ""} data-name="GNB(상단 네비게이션 메뉴)" data-node-id="650:1034">
+      <div className="h-[31px] relative w-[398px]" data-name="state=탁송" data-node-id="650:1067">
+        <div className="absolute content-stretch flex gap-[30px] inset-[0_0_22.43%_0] items-center" data-node-id="650:1068">
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1069">
+            <div className="overflow-clip relative shrink-0 size-[24px]" data-name="file-search-01" data-node-id="650:1070">
+              <div className="absolute inset-[8.33%_8.33%_8.33%_16.67%]" data-name="Icon" data-node-id="I650:1070;1007:11689">
+                <div className="absolute inset-[-4.74%_-5.26%]">
+                  <img alt="" className="block max-w-none size-full" src={imgIcon} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1071">
+              차량목록
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="1193:5605">
+            <div className="relative shrink-0 size-[19px]" data-name="search" data-node-id="1193:5606">
+              <img alt="" className="block max-w-none size-full" src={imgSearch} />
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="1193:5609">
+              검차
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1072">
+            <div className="overflow-clip relative shrink-0 size-[24px]" data-name="bar-chart-12" data-node-id="650:1073">
+              <div className="absolute inset-[12.5%]" data-name="Icon" data-node-id="I650:1073;1007:8716">
+                <div className="absolute inset-[-5.26%]">
+                  <img alt="" className="block max-w-none size-full" src={imgIcon1} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1074">
+              거래
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1075">
+            <div className="relative shrink-0 size-[19px]" data-name="Cil Truck" data-node-id="650:1076">
+              <img alt="" className="block max-w-none size-full" src={imgCilTruck} />
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[16px] text-black" data-node-id="650:1078">
+              탁송
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1079">
+            <div className="overflow-clip relative shrink-0 size-[24px]" data-name="coins-stacked-03" data-node-id="650:1080">
+              <div className="absolute inset-[12.5%_8.33%]" data-name="Icon" data-node-id="I650:1080;1007:9529">
+                <div className="absolute inset-[-5.26%_-4.74%]">
+                  <img alt="" className="block max-w-none size-full" src={imgIcon2} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1081">
+              정산
+            </p>
+          </div>
+        </div>
+        <div className="absolute inset-[100.57%_15.83%_-0.57%_64.82%]" data-node-id="650:1082">
+          <div className="absolute inset-[-2px_0_0_0]">
+            <img alt="" className="block max-w-none size-full" src={imgLine76} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Component() {
+  return (
+    <div className="bg-[#f8f9fa] relative size-full" data-name="매물 목록 - 차량목록 페이지 랜딩페이지" data-node-id="1272:13294">
+      <div className="absolute bg-[#eef5fe] border border-[#d9e7fc] border-solid h-[37px] left-[calc(8.33%+140px)] overflow-clip rounded-[39px] top-[106px] w-[203px]" data-node-id="1272:13295">
+        <div className="-translate-x-1/2 -translate-y-1/2 absolute content-stretch flex gap-[5px] items-center left-[calc(50%-21px)] top-[calc(50%+0.5px)] w-[119px]" data-node-id="1272:13296">
+          <div className="relative shrink-0 size-[18px]" data-name="briefcase" data-node-id="1272:13297">
+            <img alt="" className="block max-w-none size-full" src={imgBriefcase} />
+          </div>
+          <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#2048e5] text-[14px] w-[147px] whitespace-pre-wrap" data-node-id="1272:13300">
+            한국 수출차량 전문 플랫폼
+          </p>
+        </div>
+      </div>
+      <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[44px] left-[calc(20.83%-4.68px)] not-italic text-[28px] text-black top-[207.65px]" data-node-id="1272:13334">
+        새 탁송 예약
+      </p>
+      <div className="absolute content-stretch flex flex-col gap-[17px] items-start left-[calc(8.33%+175.93px)] top-[1331.21px] w-[971.195px]" data-node-id="1272:13335">
+        <div className="content-stretch flex gap-[10px] items-center relative shrink-0" data-node-id="1272:13336">
+          <div className="relative shrink-0 size-[25.109px]" data-node-id="1272:13337">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666147} />
+          </div>
+          <p className="font-['Pretendard:Bold',sans-serif] leading-[44px] not-italic relative shrink-0 text-[24px] text-black" data-node-id="1272:13340">{`탁송비 결제 `}</p>
+        </div>
+        <div className="bg-white h-[595px] overflow-clip relative rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] shrink-0 w-full" data-node-id="1272:13341">
+          <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[18.753px] left-[68px] not-italic text-[#909090] text-[14px] top-[155.13px] w-[270px] whitespace-pre-wrap" data-node-id="1272:13342">
+            국내결제
+          </p>
+          <div className="absolute bg-white border border-[#eee] border-solid h-[87px] left-[64.5px] overflow-clip rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[180.63px] w-[351px]" data-node-id="1272:13343">
+            <div className="-translate-y-1/2 absolute h-[60px] left-[19.82px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25),0px_60px_100px_0px_rgba(16,45,97,0.08)] top-1/2 w-[63px]" data-name="F-Card" data-node-id="1272:13344">
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgFCard} />
+            </div>
+            <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[18.753px] left-[106.29px] not-italic text-[18px] text-black top-[21px]" data-node-id="1272:13345">
+              국내 전자 결제
+            </p>
+            <p className="absolute font-['Pretendard:Regular',sans-serif] leading-[18.753px] left-[106.29px] not-italic text-[#9c9c9c] text-[16px] top-[45px]" data-node-id="1272:13346">
+              신청하기
+            </p>
+          </div>
+          <div className="absolute bg-white border border-[#eee] border-solid h-[511px] left-[441.41px] overflow-clip rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[41.87px] w-[461px]" data-node-id="1272:13347">
+            <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[18.753px] left-[34px] not-italic text-[16px] text-black top-[35px] w-[270px] whitespace-pre-wrap" data-node-id="1272:13348">
+              공통 설정
+            </p>
+            <p className="absolute font-['Pretendard:SemiBold',sans-serif] leading-[18.753px] left-[34px] not-italic text-[#909090] text-[16px] top-[102px] w-[270px] whitespace-pre-wrap" data-node-id="1272:13349">
+              국내 결제설정
+            </p>
+            <p className="absolute font-['Pretendard:SemiBold',sans-serif] leading-[18.753px] left-[34px] not-italic text-[#909090] text-[16px] top-[327px] w-[270px] whitespace-pre-wrap" data-node-id="1272:13350">
+              휴대폰 결제
+            </p>
+            <div className="absolute contents left-[34px] top-[141px]" data-node-id="1272:13351">
+              <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[67px] not-italic text-[16px] text-black top-[144px] w-[123px] whitespace-pre-wrap" data-node-id="1272:13352">
+                신용카드
+              </p>
+              <button className="absolute block border border-[#909090] border-solid cursor-pointer left-[35px] rounded-[5px] size-[24px] top-[142px]" data-name="체크박스2" data-node-id="1272:13353" />
+            </div>
+            <div className="absolute contents left-[269px] top-[141px]" data-node-id="1272:13354">
+              <button className="absolute block border border-[#909090] border-solid cursor-pointer left-[270px] rounded-[5px] size-[24px] top-[142px]" data-name="체크박스2" data-node-id="1272:13355" />
+            </div>
+            <div className="absolute contents left-[34px] top-[179px]" data-node-id="1272:13356">
+              <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[67px] not-italic text-[16px] text-black top-[182px] w-[123px] whitespace-pre-wrap" data-node-id="1272:13357">
+                실시간계좌이체
+              </p>
+              <button className="absolute block border border-[#909090] border-solid cursor-pointer left-[35px] rounded-[5px] size-[24px] top-[180px]" data-name="체크박스2" data-node-id="1272:13358" />
+            </div>
+            <div className="absolute contents left-[269px] top-[179px]" data-node-id="1272:13359">
+              <button className="absolute block border border-[#909090] border-solid cursor-pointer left-[270px] rounded-[5px] size-[24px] top-[180px]" data-name="체크박스2" data-node-id="1272:13360" />
+            </div>
+            <div className="absolute contents left-[34px] top-[217px]" data-node-id="1272:13361">
+              <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[67px] not-italic text-[16px] text-black top-[220px] w-[123px] whitespace-pre-wrap" data-node-id="1272:13362">
+                가상계좌
+              </p>
+              <button className="absolute block border border-[#909090] border-solid cursor-pointer left-[35px] rounded-[5px] size-[24px] top-[218px]" data-name="체크박스2" data-node-id="1272:13363" />
+            </div>
+            <div className="absolute contents left-[269px] top-[217px]" data-node-id="1272:13364">
+              <button className="absolute block border border-[#909090] border-solid cursor-pointer left-[270px] rounded-[5px] size-[24px] top-[218px]" data-name="체크박스2" data-node-id="1272:13365" />
+            </div>
+            <div className="absolute contents left-[34px] top-[255px]" data-node-id="1272:13366">
+              <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[67px] not-italic text-[16px] text-black top-[258px] w-[123px] whitespace-pre-wrap" data-node-id="1272:13367">
+                무통장입금금
+              </p>
+              <button className="absolute block border border-[#909090] border-solid cursor-pointer left-[35px] rounded-[5px] size-[24px] top-[256px]" data-name="체크박스2" data-node-id="1272:13368" />
+            </div>
+            <div className="absolute contents left-[269px] top-[255px]" data-node-id="1272:13369">
+              <button className="absolute block border border-[#909090] border-solid cursor-pointer left-[270px] rounded-[5px] size-[24px] top-[256px]" data-name="체크박스2" data-node-id="1272:13370" />
+            </div>
+            <div className="absolute left-[127px] size-[24px] top-[99px]" data-name="help-circle" data-node-id="1272:13371">
+              <img alt="" className="block max-w-none size-full" src={imgHelpCircle} />
+            </div>
+            <div className="absolute h-[39px] left-[475px] top-[225px] w-[116px]" data-name="image 118" data-node-id="1272:13375" />
+            <div className="absolute h-[21px] left-[300px] top-[180px] w-[54px]" data-name="image 119" data-node-id="1272:13376">
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <img alt="" className="absolute h-[212.35%] left-[-3.87%] max-w-none top-[-54.32%] w-[108.69%]" src={imgImage119} />
+              </div>
+            </div>
+            <div className="absolute h-[10px] left-[300px] top-[262px] w-[42px]" data-name="image 120" data-node-id="1272:13377">
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <img alt="" className="absolute h-[238.98%] left-[-12%] max-w-none top-[-66.71%] w-[122.67%]" src={imgImage120} />
+              </div>
+            </div>
+            <div className="absolute h-[21px] left-[300px] top-[143px] w-[54px]" data-name="image 121" data-node-id="1272:13378">
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <img alt="" className="absolute h-full left-[0.3%] max-w-none top-0 w-[99.39%]" src={imgImage121} />
+              </div>
+            </div>
+            <div className="absolute h-[12px] left-[300px] top-[224px] w-[85px]" data-name="image 122" data-node-id="1272:13379">
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <img alt="" className="absolute h-full left-[0.55%] max-w-none top-0 w-[98.89%]" src={imgImage122} />
+              </div>
+            </div>
+            <div className="absolute contents left-[61px] top-[368px]" data-node-id="1272:13380">
+              <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[62px] not-italic text-[16px] text-black top-[369px] w-[123px] whitespace-pre-wrap" data-node-id="1272:13381">
+                사용안함
+              </p>
+            </div>
+            <div className="absolute contents left-[61px] top-[406px]" data-node-id="1272:13382">
+              <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[62px] not-italic text-[16px] text-black top-[407px] w-[123px] whitespace-pre-wrap" data-node-id="1272:13383">
+                휴대폰결제
+              </p>
+            </div>
+            <div className="absolute left-[34px] size-[19px] top-[368px]" data-node-id="1272:13384">
+              <img alt="" className="block max-w-none size-full" src={imgFrame2087328312} />
+            </div>
+            <div className="absolute border border-[#2048e5] border-solid left-[34px] rounded-[13.599px] size-[19px] top-[406px]" data-node-id="1272:13386" />
+          </div>
+          <div className="absolute bg-white border border-[#eee] border-solid h-[87px] left-[68px] overflow-clip rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[276.13px] w-[351px]" data-node-id="1272:13387">
+            <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[18.753px] left-[102.79px] not-italic text-[18px] text-black top-[21.5px]" data-node-id="1272:13388">
+              네이버페이
+            </p>
+            <p className="absolute font-['Pretendard:Regular',sans-serif] leading-[18.753px] left-[102.79px] not-italic text-[#9c9c9c] text-[16px] top-[45.5px]" data-node-id="1272:13389">
+              신청하기
+            </p>
+            <div className="-translate-y-1/2 absolute left-[22.43px] rounded-[10px] size-[50px] top-[calc(50%+0.5px)]" data-name="image 116" data-node-id="1272:13390">
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[10px] size-full" src={imgImage116} />
+            </div>
+          </div>
+          <div className="absolute bg-white border border-[#eee] border-solid h-[87px] left-[68px] overflow-clip rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[371.13px] w-[351px]" data-node-id="1272:13391">
+            <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[18.753px] left-[102.79px] not-italic text-[18px] text-black top-[21px]" data-node-id="1272:13392">
+              톡체크아웃 (카카오페이 구매)
+            </p>
+            <p className="absolute font-['Pretendard:Regular',sans-serif] leading-[18.753px] left-[102.79px] not-italic text-[#9c9c9c] text-[16px] top-[45px]" data-node-id="1272:13393">
+              신청하기
+            </p>
+            <div className="absolute left-[22.43px] rounded-[10px] size-[50px] top-[17px]" data-name="image 117" data-node-id="1272:13394">
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[10px] size-full" src={imgImage117} />
+            </div>
+          </div>
+          <div className="absolute bg-white border border-[#eee] border-solid h-[87px] left-[68px] overflow-clip rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[466.13px] w-[351px]" data-node-id="1272:13395">
+            <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[18.753px] left-[102.79px] not-italic text-[18px] text-black top-[21.5px]" data-node-id="1272:13396">
+              자동결제
+            </p>
+            <p className="absolute font-['Pretendard:Regular',sans-serif] leading-[18.753px] left-[102.79px] not-italic text-[#9c9c9c] text-[16px] top-[45.5px]" data-node-id="1272:13397">
+              신청하기
+            </p>
+            <div className="-translate-y-1/2 absolute h-[62px] left-[15.6px] shadow-[0px_60px_100px_0px_rgba(16,45,97,0.08)] top-[calc(50%+0.5px)] w-[63px]" data-name="F-Link" data-node-id="1272:13398">
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgFLink} />
+            </div>
+          </div>
+          <div className="absolute bg-white border border-[#eee] border-solid h-[87px] left-[68px] overflow-clip rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[42.13px] w-[351px]" data-node-id="1272:13399">
+            <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[18.753px] left-[102.79px] not-italic text-[18px] text-black top-[calc(50%-9.5px)]" data-node-id="1272:13400">
+              공통 결제 설정
+            </p>
+            <div className="absolute left-[14.17px] shadow-[0px_60px_100px_0px_rgba(16,45,97,0.08)] size-[66px] top-[10px]" data-name="F-Settings" data-node-id="1272:13401">
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgFSettings} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute content-stretch flex flex-col gap-[17px] items-start left-[calc(8.33%+175.73px)] top-[309.21px] w-[970.797px]" data-node-id="1272:13402">
+        <div className="content-stretch flex gap-[10px] items-center relative shrink-0" data-node-id="1272:13403">
+          <div className="relative shrink-0 size-[25.109px]" data-node-id="1272:13404">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666147} />
+          </div>
+          <p className="font-['Pretendard:Bold',sans-serif] leading-[44px] not-italic relative shrink-0 text-[24px] text-black" data-node-id="1272:13407">
+            탁송 장소
+          </p>
+        </div>
+        <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0" data-node-id="1272:13408">
+          <div className="col-1 h-[478px] ml-0 mt-0 relative row-1 w-[969px]" data-node-id="1272:13409">
+            <div className="absolute bg-white h-[478px] left-0 rounded-[20px] shadow-[2px_2px_21.3px_0px_rgba(0,0,0,0.08)] top-0 w-[969.031px]" data-node-id="1272:13410" />
+            <div className="absolute content-stretch flex gap-[8px] items-center justify-center left-[46.9px] top-[417.37px]" data-node-id="1362:36330">
+              <div className="bg-[#2048e5] content-stretch flex items-center p-[5.211px] relative rounded-[13.048px] shrink-0 size-[26.096px]" data-node-id="1362:36323">
+                <div className="relative shrink-0 size-[15.634px]" data-name="Check" data-node-id="1362:36324">
+                  <img alt="" className="block max-w-none size-full" src={imgCheck} />
+                </div>
+              </div>
+              <div className="content-stretch flex h-[21px] items-center relative shrink-0 w-[129px]" data-node-id="1362:36327">
+                <p className="font-['SUITE_Variable:Medium',sans-serif] leading-[15px] not-italic relative shrink-0 text-[24px] text-[rgba(0,0,0,0.6)]" data-node-id="1362:36328">
+                  기본 주소지 설정
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-1 content-stretch flex flex-col gap-[12px] h-[100.495px] items-start ml-[46.71px] mt-[160.89px] relative row-1 w-[874.84px]" data-node-id="1272:13411">
+            <div className="content-stretch flex h-[20.81px] items-center not-italic relative shrink-0 w-[64px]" data-node-id="1272:13412">
+              <p className="font-['SUITE_Variable:Medium',sans-serif] leading-[15px] relative shrink-0 text-[20px] text-[rgba(0,0,0,0.6)]" data-node-id="1272:13413">
+                주소지
+              </p>
+              <p className="font-['Pretendard:Bold',sans-serif] leading-[18.753px] relative shrink-0 text-[#f21824] text-[22px]" data-node-id="1272:13414">
+                *
+              </p>
+            </div>
+            <div className="bg-[#f4f4f4] border border-[#d9d9d9] border-solid content-stretch flex h-[64.129px] items-center px-[22px] py-[8px] relative rounded-[10px] shrink-0 w-full" data-node-id="1272:13415">
+              <p className="font-['Pretendard:Regular',sans-serif] leading-[45.364px] not-italic relative shrink-0 text-[22px] text-[rgba(0,0,0,0.4)]" data-node-id="1272:13416">
+                주소지를 입력해 주세요
+              </p>
+            </div>
+          </div>
+          <div className="col-1 content-stretch flex flex-col gap-[12px] h-[100.495px] items-start ml-[46.71px] mt-[279.49px] relative row-1 w-[874.84px]" data-node-id="1272:13417">
+            <div className="content-stretch flex h-[20.81px] items-center not-italic relative shrink-0 w-[81px]" data-node-id="1272:13418">
+              <p className="font-['SUITE_Variable:Medium',sans-serif] leading-[15px] relative shrink-0 text-[20px] text-[rgba(0,0,0,0.6)]" data-node-id="1272:13419">
+                상세주소
+              </p>
+              <p className="font-['Pretendard:Bold',sans-serif] leading-[18.753px] relative shrink-0 text-[#f21824] text-[22px]" data-node-id="1272:13420">
+                *
+              </p>
+            </div>
+            <div className="bg-[#f4f4f4] border border-[#d9d9d9] border-solid content-stretch flex h-[64.129px] items-center px-[22px] py-[8px] relative rounded-[10px] shrink-0 w-full" data-node-id="1272:13421">
+              <p className="font-['Pretendard:Regular',sans-serif] leading-[45.364px] not-italic relative shrink-0 text-[22px] text-[rgba(0,0,0,0.4)]" data-node-id="1272:13422">
+                상세주소를 입력해 주세요
+              </p>
+            </div>
+          </div>
+          <div className="col-1 content-stretch flex flex-col gap-[12px] items-start ml-[46.71px] mt-[44.26px] relative row-1 w-[874.055px]" data-node-id="1272:13423">
+            <div className="content-stretch flex h-[20.81px] items-center not-italic relative shrink-0 w-[81px]" data-node-id="1272:13424">
+              <p className="font-['SUITE_Variable:Medium',sans-serif] leading-[15px] relative shrink-0 text-[20px] text-[rgba(0,0,0,0.6)]" data-node-id="1272:13425">
+                우편번호
+              </p>
+              <p className="font-['Pretendard:Bold',sans-serif] leading-[18.753px] relative shrink-0 text-[#f21824] text-[22px]" data-node-id="1272:13426">
+                *
+              </p>
+            </div>
+            <div className="content-stretch flex gap-[12px] items-center relative shrink-0 w-full" data-node-id="1272:13427">
+              <div className="bg-[#f4f4f4] border border-[#d9d9d9] border-solid content-stretch flex h-[61.633px] items-center px-[22px] py-[8px] relative rounded-[10px] shrink-0 w-[648.055px]" data-node-id="1272:13428">
+                <p className="font-['Pretendard:Regular',sans-serif] leading-[45.364px] not-italic relative shrink-0 text-[22px] text-[rgba(0,0,0,0.4)]" data-node-id="1272:13429">
+                  우편번호를 입력해 주세요
+                </p>
+              </div>
+              <div className="bg-[#2048e5] content-stretch flex h-[64.511px] items-center justify-center px-[17.483px] py-[5.379px] relative rounded-[10px] shrink-0 w-[214px]" data-node-id="1272:13430">
+                <div className="content-stretch flex items-center justify-center relative shrink-0" data-node-id="1272:13431">
+                  <p className="font-['Pretendard:Medium',sans-serif] leading-[26.897px] not-italic relative shrink-0 text-[22px] text-white" data-node-id="1272:13432">
+                    우편번호 찾기
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute content-stretch flex flex-col gap-[17px] items-start left-[calc(8.33%+175.73px)] top-[905.21px] w-[971.195px]" data-node-id="1272:13433">
+        <div className="content-stretch flex gap-[10px] items-center relative shrink-0" data-node-id="1272:13434">
+          <div className="relative shrink-0 size-[25.109px]" data-node-id="1272:13435">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666147} />
+          </div>
+          <p className="font-['Pretendard:Bold',sans-serif] leading-[44px] not-italic relative shrink-0 text-[24px] text-black" data-node-id="1272:13438">
+            탁송 일정
+          </p>
+        </div>
+        <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0" data-node-id="1272:13439">
+          <div className="col-1 h-[308px] ml-0 mt-0 relative row-1 w-[969px]" data-node-id="1272:13440">
+            <div className="absolute bg-white h-[308.164px] left-0 rounded-[20px] shadow-[2px_2px_21.3px_0px_rgba(0,0,0,0.08)] top-0 w-[969.031px]" data-node-id="1272:13441" />
+          </div>
+          <div className="col-1 content-stretch flex flex-col gap-[12px] h-[100.495px] items-start ml-[46.67px] mt-[161.35px] relative row-1 w-[874.84px]" data-node-id="1272:13442">
+            <div className="content-stretch flex h-[20.81px] items-center not-italic relative shrink-0 w-[64px]" data-node-id="1272:13443">
+              <p className="font-['SUITE_Variable:Medium',sans-serif] leading-[15px] relative shrink-0 text-[20px] text-[rgba(0,0,0,0.6)]" data-node-id="1272:13444">
+                시간 선택
+              </p>
+              <p className="font-['Pretendard:Bold',sans-serif] leading-[18.753px] relative shrink-0 text-[#f21824] text-[22px]" data-node-id="1272:13445">
+                *
+              </p>
+            </div>
+            <div className="bg-[#f4f4f4] border border-[#d9d9d9] border-solid content-stretch flex h-[64.129px] items-center px-[22px] py-[8px] relative rounded-[10px] shrink-0 w-full" data-node-id="1272:13446">
+              <p className="font-['Pretendard:Regular',sans-serif] leading-[45.364px] not-italic relative shrink-0 text-[22px] text-[rgba(0,0,0,0.4)]" data-node-id="1272:13447">
+                오후 12:00
+              </p>
+            </div>
+          </div>
+          <div className="col-1 content-stretch flex flex-col gap-[12px] items-start ml-[46.67px] mt-[44.73px] relative row-1 w-[874.055px]" data-node-id="1272:13448">
+            <div className="content-stretch flex h-[20.81px] items-center not-italic relative shrink-0 w-[81px]" data-node-id="1272:13449">
+              <p className="font-['SUITE_Variable:Medium',sans-serif] leading-[15px] relative shrink-0 text-[20px] text-[rgba(0,0,0,0.6)]" data-node-id="1272:13450">
+                날짜 선택
+              </p>
+              <p className="font-['Pretendard:Bold',sans-serif] leading-[18.753px] relative shrink-0 text-[#f21824] text-[22px]" data-node-id="1272:13451">
+                *
+              </p>
+            </div>
+            <div className="content-stretch flex items-center relative shrink-0 w-full" data-node-id="1272:13452">
+              <div className="bg-[#f4f4f4] border border-[#d9d9d9] border-solid content-stretch flex h-[61px] items-center px-[22px] py-[8px] relative rounded-[10px] shrink-0 w-[874px]" data-node-id="1272:13453">
+                <p className="font-['Pretendard:Regular',sans-serif] leading-[45.364px] not-italic relative shrink-0 text-[22px] text-[rgba(0,0,0,0.4)]" data-node-id="1272:13454">
+                  2026년 1월 25일 일요일
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute bg-white h-[1986px] left-[-0.07px] overflow-clip top-[155px] w-[249px]" data-node-id="1272:13457">
+        <div className="absolute flex h-[1508.256px] items-center justify-center right-[-0.5px] top-[-0.17px] w-0">
+          <div className="flex-none rotate-90">
+            <div className="h-0 relative w-[1508.256px]" data-node-id="1272:13458">
+              <div className="absolute inset-[-2px_0_0_0]">
+                <img alt="" className="block max-w-none size-full" src={imgLine78} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="absolute font-['SUITE_Variable:Heavy',sans-serif] leading-[20px] left-[calc(50%-100.42px)] not-italic text-[14px] text-[rgba(144,144,144,0.6)] top-[29.65px]" data-node-id="1272:13459">
+          현재 거래 진행상황
+        </p>
+        <div className="absolute contents left-[24.08px] top-[69.65px]" data-node-id="1272:13460">
+          <div className="absolute h-[14.301px] left-[30.28px] top-[96.67px] w-[2.5px]" data-node-id="1272:13461">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666051} />
+          </div>
+          <div className="absolute h-[14.301px] left-[30.28px] top-[145.81px] w-[2.5px]" data-node-id="1272:13465">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666051} />
+          </div>
+          <div className="absolute h-[14.301px] left-[30.28px] top-[195.03px] w-[2.5px]" data-node-id="1272:13469">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666053} />
+          </div>
+          <div className="absolute h-[14.301px] left-[30.28px] top-[244.33px] w-[2.5px]" data-node-id="1272:13473">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666053} />
+          </div>
+          <div className="absolute content-stretch flex gap-[7px] items-center left-[24.08px] top-[69.65px]" data-node-id="1272:13477">
+            <div className="bg-[#2048e5] content-stretch flex items-center p-[2.976px] relative rounded-[7.451px] shrink-0 size-[14.902px]" data-node-id="1272:13478">
+              <div className="relative shrink-0 size-[8.928px]" data-name="Check" data-node-id="1272:13479">
+                <img alt="" className="block max-w-none size-full" src={imgCheck1} />
+              </div>
+            </div>
+            <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)] w-[72px] whitespace-pre-wrap" data-node-id="1272:13481">
+              차량 업로드
+            </p>
+          </div>
+          <div className="absolute content-stretch flex gap-[7px] items-center left-[24.08px] top-[118.89px]" data-node-id="1272:13482">
+            <div className="bg-[#2048e5] content-stretch flex items-center p-[2.976px] relative rounded-[7.451px] shrink-0 size-[14.902px]" data-node-id="1272:13483">
+              <div className="relative shrink-0 size-[8.928px]" data-name="Check" data-node-id="1272:13484">
+                <img alt="" className="block max-w-none size-full" src={imgCheck1} />
+              </div>
+            </div>
+            <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)] w-[72px] whitespace-pre-wrap" data-node-id="1272:13486">
+              검차 진행
+            </p>
+          </div>
+          <div className="absolute content-stretch flex gap-[6px] items-center left-[24.08px] top-[168.11px]" data-node-id="1272:13487">
+            <div className="bg-[#2048e5] content-stretch flex items-center p-[2.976px] relative rounded-[7.451px] shrink-0 size-[14.902px]" data-node-id="1272:13488">
+              <div className="relative shrink-0 size-[8.928px]" data-name="Check" data-node-id="1272:13489">
+                <img alt="" className="block max-w-none size-full" src={imgCheck1} />
+              </div>
+            </div>
+            <div className="content-stretch flex items-center relative shrink-0" data-node-id="1272:13491">
+              <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1272:13492">
+                거래
+              </p>
+            </div>
+          </div>
+          <div className="absolute content-stretch flex gap-[6px] items-center left-[24.08px] top-[217.33px]" data-node-id="1272:13493">
+            <div className="content-stretch flex gap-[7px] items-center relative shrink-0" data-node-id="1272:13494">
+              <div className="h-[14.474px] relative shrink-0 w-[14.9px]" data-node-id="1272:13495">
+                <img alt="" className="block max-w-none size-full" src={imgFrame2087328313} />
+              </div>
+              <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1272:13497">
+                탁송
+              </p>
+            </div>
+            <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[11px] text-[rgba(32,72,229,0.8)]" data-node-id="1272:13498">
+              진행 중...
+            </p>
+          </div>
+          <div className="absolute content-stretch flex items-center left-[24.08px] top-[266.55px]" data-node-id="1272:13499">
+            <div className="content-stretch flex gap-[7px] items-center relative shrink-0" data-node-id="1272:13500">
+              <div className="h-[14.474px] relative shrink-0 w-[14.9px]" data-node-id="1272:13501">
+                <img alt="" className="block max-w-none size-full" src={imgEllipse48} />
+              </div>
+              <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1272:13502">
+                완료
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute bg-[#2048e5] bottom-[141.79px] h-[60px] overflow-clip right-[173.21px] rounded-[10px] w-[971px]" data-name="loading" data-node-id="1362:36331">
+        <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[22px] left-[calc(50%-17.5px)] not-italic text-[20px] text-white top-[calc(50%-11px)]" data-node-id="1362:36332">
+          완료
+        </p>
+      </div>
+      <div className="-translate-x-1/2 absolute bg-white h-[155px] left-[calc(50%-0.21px)] overflow-clip shadow-[0px_-3px_23.8px_0px_rgba(0,0,0,0.05)] top-[0.01px] w-[1440px]" data-name="top bar" data-node-id="1371:45492">
+        <div className="absolute h-[13.674px] left-[170.01px] top-[41.16px] w-[254.76px]" data-node-id="1371:45493">
+          <img alt="" className="block max-w-none size-full" src={imgGroup140} />
+        </div>
+        <div className="absolute border border-[rgba(0,0,0,0.1)] border-solid content-stretch flex flex-col h-[30px] items-center justify-center left-[1172px] px-[11px] py-[3px] rounded-[100px] top-[33px] w-[98px]" data-node-id="1371:45512">
+          <div className="content-stretch flex gap-[6px] items-center relative shrink-0" data-node-id="1371:45513">
+            <div className="flex items-center justify-center relative shrink-0">
+              <div className="-scale-y-100 flex-none rotate-180">
+                <div className="relative size-[14.243px]" data-name="stick-man_118174 1" data-node-id="1371:45514">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgStickMan1181741} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['SUITE_Variable:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[14px] text-black" data-node-id="1371:45515">
+              홍길동님
+            </p>
+          </div>
+        </div>
+        <div className="absolute h-[18px] left-[1138.24px] top-[40.88px] w-[16px]" data-node-id="1371:45516">
+          <div className="absolute contents inset-0" data-node-id="1371:45517">
+            <div className="absolute inset-[-4.17%_-4.69%]">
+              <img alt="" className="block max-w-none size-full" src={imgGroup2085666007} />
+            </div>
+          </div>
+        </div>
+        <div className="absolute h-[22px] left-[1102px] top-[39px] w-[21px]" data-node-id="1371:45520">
+          <div className="-translate-y-1/2 absolute h-[22px] left-0 top-1/2 w-[21px]" data-name="search" data-node-id="1371:45521">
+            <img alt="" className="block max-w-none size-full" src={imgSearch1} />
+          </div>
+        </div>
+        <div className="absolute bg-[#2048e5] content-stretch flex flex-col items-start left-[1120.37px] overflow-clip px-[19.983px] py-[6.661px] rounded-[43.297px] top-[84.06px] w-[149.707px]" data-node-id="1371:45524">
+          <div className="content-stretch flex gap-[4.537px] items-center justify-center relative shrink-0 w-full" data-node-id="1371:45525">
+            <div className="overflow-clip relative shrink-0 size-[26.644px]" data-name="clipboard-plus" data-node-id="1371:45526">
+              <div className="absolute inset-[8.33%_16.67%]" data-name="Icon" data-node-id="I1371:45526;1007:11746">
+                <div className="absolute inset-[-4.74%_-5.92%]">
+                  <img alt="" className="block max-w-none size-full" src={imgIcon3} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[26.644px] not-italic relative shrink-0 text-[15.542px] text-white" data-node-id="1371:45527">
+              매물 등록하기
+            </p>
+          </div>
+        </div>
+        <Gnb className="absolute h-[31px] left-[170.01px] top-[94.25px] w-[398px]" />
+      </div>
+    </div>
+  );
+}

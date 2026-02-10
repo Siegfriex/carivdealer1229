@@ -79,11 +79,11 @@ export const InspectionCompletePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f8f9fa]" data-node-id="1425:10285">
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        <aside className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}>
+        <aside className={`${LAYOUT_CLASSES.GNB_SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`} data-node-id="1425:10325">
           <div className="p-4 border-b border-gray-200">
             <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
             <input
@@ -111,8 +111,8 @@ export const InspectionCompletePage = () => {
             className="cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg mb-6"
             aria-label="아래 세부 검차내역으로 이동"
           >
-          {/* 상단 2열: 차량정보 | 전체 피드백 (참조 10285) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* 상단 2열: 차량정보 | 전체 피드백 — 1425:10376 972×266 (1425-10285) */}
+          <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 ${LAYOUT_CLASSES.GNB_CARD_972_266}`} data-node-id="1425:10376">
             <Card className="p-6">
               <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">차량정보</h2>
               <div className="flex gap-4">
@@ -150,8 +150,8 @@ export const InspectionCompletePage = () => {
             </Card>
           </div>
 
-          {/* 검차자 카드 (참조 10285) */}
-          <Card className="p-6 mb-8">
+          {/* 검차자 카드 — 1425:10378 400×160 (1425-10285) */}
+          <Card className={`p-6 mb-8 ${LAYOUT_CLASSES.GNB_PANEL_400_160}`} data-node-id="1425:10378">
             <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">검차자</h2>
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div>

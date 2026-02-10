@@ -13,6 +13,15 @@
 
 /* Base Styles */
 @layer base {
+  /* SUITE Variable (mcp_outputs SSOT: 디스플레이/차량번호용) */
+  @font-face {
+    font-family: 'SUITE Variable';
+    src: url('https://cdn.jsdelivr.net/gh/sun-typeface/SUITE/fonts/variable/woff2/SUITE-Variable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
   /* Pretendard Font */
   @font-face {
     font-family: 'Pretendard';
@@ -50,8 +59,10 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* 폰트: 전역 Pretendard만 사용. 페이지/컴포넌트에서 font-family·@font-face 추가 금지. */
   body {
-    @apply font-sans text-gray-900 bg-gray-50;
+    font-family: var(--font-primary);
+    @apply text-gray-900 bg-gray-50;
     margin: 0;
     padding: 0;
   }
@@ -150,6 +161,31 @@
 
   .transition-slow {
     transition-duration: var(--transition-slow);
+  }
+
+  /* Figma SSOT shadow (mcp_outputs 기본 dropshadow) */
+  .shadow-figma-card {
+    box-shadow: var(--shadow-figma-card);
+  }
+  .shadow-figma-topbar {
+    box-shadow: var(--shadow-figma-topbar);
+  }
+
+  /* SSOT: 1033-4903 design_context_raw.txt (검차 신청 Step1) */
+  .inspection-step1-root {
+    background-color: var(--color-bg-primary);
+  }
+  .inspection-step1-section-card {
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-figma-card);
+  }
+  .inspection-step1-vehicle-card {
+    border-radius: var(--radius-card-sm);
+    box-shadow: var(--shadow-figma-card);
+  }
+  .inspection-step1-location-inner {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-figma-location-inner);
   }
 
   /* Truncate Text */

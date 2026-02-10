@@ -21,7 +21,6 @@ import { SignupCompletePage } from '@/pages/auth/SignupCompletePage';
 import { DashboardPage } from '@/pages/admin/DashboardPage';
 import { VehicleRegisterEntryPage } from '@/pages/admin/vehicle/VehicleRegisterEntryPage';
 import { VehicleRegisterStep1Page } from '@/pages/admin/vehicle/VehicleRegisterStep1Page';
-import { VehicleRegisterStep2Page } from '@/pages/admin/vehicle/VehicleRegisterStep2Page';
 import { InspectionListPage } from '@/pages/admin/inspection/InspectionListPage';
 import { InspectionRequestLandingPage } from '@/pages/admin/inspection/InspectionRequestLandingPage';
 import { InspectionRequestStep1Page } from '@/pages/admin/inspection/InspectionRequestStep1Page';
@@ -80,7 +79,6 @@ export const Router = () => {
           <Route path="/vehicles" element={<VehicleListPage />} />
           <Route path="/vehicles/new" element={<VehicleRegisterEntryPage />} />
           <Route path="/vehicles/new/step1" element={<VehicleRegisterStep1Page />} />
-          <Route path="/vehicles/new/step2" element={<VehicleRegisterStep2Page />} />
           <Route path="/vehicles/:vehicleId/complete" element={<VehicleRegistrationCompletePage />} />
           <Route path="/vehicles/:vehicleId/sale/analyzing" element={<GeneralSaleAnalyzingPage />} />
           <Route path="/vehicles/:vehicleId/sale/price" element={<GeneralSalePricePage />} />

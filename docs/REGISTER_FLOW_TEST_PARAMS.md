@@ -33,9 +33,8 @@
 |------|-----|
 | 매물등록 랜딩 | `/vehicles/new` |
 | 원부 step1 (차량번호 전달) | `/vehicles/new/step1?plateNumber=122%EA%B0%80%202122` |
-| 원부 step2 | `/vehicles/new/step2?plateNumber=...` |
-| 등록 완료 | `/vehicles/new/complete` (또는 `/vehicles/:id/complete`) |
-| 검차 신청 랜딩 | `/inspections/request` |
+| 검차 신청 랜딩 (원부 다음) | `/inspections/request` 또는 `/inspections/request?plateNumber=...` |
+| 등록 완료 | `/vehicles/:id/complete` |
 | 검차 step1/2 | `/inspections/request/step1`, `/inspections/request/step2` |
 | 검차 완료(판매방식 선택) | `/inspections/insp-4/complete` |
 | 일반 판매 시세분석 | `/vehicles/v-4/sale/analyzing` |

@@ -6,6 +6,7 @@
 export * from './model/types';
 export * from './model/constants';
 export * from './model/schema';
+export * from './model/figma-assets';
 
 // UI
 export { VehicleCard } from './ui/VehicleCard';

@@ -12,9 +12,8 @@ import { Card } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
 import { User, Check, CheckCircle2 } from 'lucide-react';
-import imgClock from '@/shared/figma_image/1121-5308_검차일정_clock.png';
-import imgMap from '@/shared/figma_image/1121-5308_검차장소_map.png';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { InspectionScheduleBlock } from '@/widgets/InspectionScheduleBlock';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
 import { isRunDev } from '@/shared/config/runDev';
 
@@ -45,7 +44,7 @@ function useSetStageInUrl() {
 /** 차량 업로드|검차 진행|거래|탁송|완료 사이드바 (Figma 1121:5350 — 레이아웃 스펙 width 249px) */
 function InspectionProgressSidebar() {
   return (
-    <aside className="w-[249px] flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-64px)] p-4" data-node-id="1121:5350">
+    <aside className={`${LAYOUT_CLASSES.GNB_SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} p-4`} data-node-id="1121:5350">
       <div className="mb-6">
         <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
         <input
@@ -194,11 +193,11 @@ export const InspectionProgressPage = () => {
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <InspectionProgressSidebar />
 
-        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} max-w-[972px]`}>
+        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_GNB}`}>
           <h1 className="text-h1 font-bold text-gray-900 mb-8" data-node-id="1121:5381">검차 진행상황</h1>
 
           {/* 카드 1: 검차 차량 정보 (Figma 1193:9066 — 974×243, 레이아웃 스펙) */}
-          <Card className="mb-6 p-6 w-full max-w-[972px]" data-node-id="1193:9066">
+          <Card className={`mb-6 p-6 w-full ${LAYOUT_CLASSES.MAIN_GNB}`} data-node-id="1193:9066">
             <div className="flex gap-6">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-4">
@@ -227,14 +226,7 @@ export const InspectionProgressPage = () => {
                 <p className="text-body font-bold text-gray-900 mb-1">{vehicle?.vehiclePlateNumber}</p>
                 <p className="text-body text-gray-700 mb-1">{vehicle?.vehicleModelName}</p>
                 <p className="text-caption text-gray-500 mb-3">{vehicle?.vehicleModelYear}년형</p>
-                <div className="flex items-center gap-2 text-body text-gray-700 mb-2">
-                  <img src={imgClock} alt="" className="h-4 w-4 shrink-0" aria-hidden />
-                  <span>검차 일정: {dateDisplay}</span>
-                </div>
-                <div className="flex items-center gap-2 text-body text-gray-700 mb-4">
-                  <img src={imgMap} alt="" className="h-4 w-4 shrink-0" aria-hidden />
-                  <span>검차 장소: {locationDisplay}</span>
-                </div>
+                <InspectionScheduleBlock dateDisplay={dateDisplay} locationDisplay={locationDisplay} />
                 <Button variant="secondary" size="sm" className="mt-auto" onClick={handleGoToComplete}>
                   검차내역 상세보기
                 </Button>
@@ -245,7 +237,7 @@ export const InspectionProgressPage = () => {
           {/* 5: 검차자 매칭중 (Figma 1425:10227 972×473, 1425:10230 400×160 SSOT) */}
           {localStage === 'matching' && (
             <Card
-              className="mb-6 p-0 w-full max-w-[972px] min-h-[473px] overflow-hidden rounded-[30px] shadow-[2.344px_3.125px_11.017px_rgba(0,0,0,0.05)]"
+              className={`mb-6 p-0 w-full ${LAYOUT_CLASSES.MAIN_GNB} ${LAYOUT_CLASSES.GNB_CARD_PANEL_MIN_H} overflow-hidden rounded-card shadow-figma-card`}
               data-node-id="1425:10227"
             >
               <div className="p-6 flex flex-col sm:flex-row sm:items-start gap-6">
@@ -280,7 +272,7 @@ export const InspectionProgressPage = () => {
           {/* 5-1: 검차자 이동중 (Figma 1193-8343, 1425-10813 레이아웃 972×473, 400×160 SSOT) */}
           {localStage === 'en_route' && (
             <Card
-              className="mb-6 p-0 w-full max-w-[972px] min-h-[473px] overflow-hidden rounded-[30px] shadow-[2.344px_3.125px_11.017px_rgba(0,0,0,0.05)]"
+              className={`mb-6 p-0 w-full ${LAYOUT_CLASSES.MAIN_GNB} ${LAYOUT_CLASSES.GNB_CARD_PANEL_MIN_H} overflow-hidden rounded-card shadow-figma-card`}
               data-node-id="1425:10227"
             >
               <div className="p-6 flex flex-col sm:flex-row sm:items-start gap-6">
@@ -315,7 +307,7 @@ export const InspectionProgressPage = () => {
           {/* 5-2: 검차완료 */}
           {localStage === 'complete' && (
             <>
-              <Card className="mb-6 p-6 w-full max-w-[972px]">
+              <Card className={`mb-6 p-6 w-full ${LAYOUT_CLASSES.MAIN_GNB}`}>
                 <h2 className="text-h3 font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-600" />
                   검차완료

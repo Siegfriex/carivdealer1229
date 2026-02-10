@@ -30,7 +30,7 @@
 | 1425-7496 | 승인 대기 | `/signup/pending` | SignupPendingPage | 08_회원가입 | §3.2_1425-7496_승인대기.png |
 | 1418-20498 | 차량등록 비대면 랜딩 | `/vehicles/new` | VehicleRegisterEntryPage | 09_매물등록_CTA_1_차량원부등록 | §3.5_1418-20498_차량등록_비대면_랜딩.png |
 | 1425-7638 | 매물등록버튼 클릭 시 첫화면 (CTA_1 진입) | `/vehicles/new` | VehicleRegisterEntryPage | 09_매물등록_CTA_1_차량원부등록 | §3.5_1418-20498_차량등록_비대면_랜딩 1 |
-| 1418-20498 | 차량등록 원부등록 | `/vehicles/new/step1`, `step2` | VehicleRegisterStep1Page, Step2Page | 09_매물등록_CTA_1_차량원부등록 | §3.5_1418-20498_차량등록_원부등록-2.png |
+| 1418-20498 | 차량등록 원부등록 | `/vehicles/new/step1` (step2 제거, 원부 다음→검차신청) | VehicleRegisterStep1Page | 09_매물등록_CTA_1_차량원부등록 | §3.5_1418-20498_차량등록_원부등록-2.png |
 | 1425-7684 | 차량 원부등록 (2단계 화면) | `/vehicles/new/step1` | VehicleRegisterStep1Page | 09_매물등록_CTA_1_차량원부등록 | §3.5_1418-20498_차량등록_원부등록-2 1 |
 | 1418-20576 | 차량등록완료 확인 | `/vehicles/:vehicleId/complete` | VehicleRegistrationCompletePage | 09_매물등록_CTA_1_차량원부등록 | §3.5_1418-20576_차량등록완료_확인.png |
 | 1444-8198 | 검차신청 Step1 | `/inspections/request`, `request/step1` | InspectionRequestLandingPage, Step1Page | 10_매물등록_CTA_2_검차 | §3.6_1444-8198_검차신청_Step1_변형.png |

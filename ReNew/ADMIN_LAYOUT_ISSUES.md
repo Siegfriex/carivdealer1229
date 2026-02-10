@@ -25,32 +25,31 @@
 | 3 | `VehicleDetailPage.tsx` | 1440px/레이아웃 대상 |
 | 4 | `VehicleRegisterEntryPage.tsx` | 1440px/레이아웃 대상 |
 | 5 | `VehicleRegisterStep1Page.tsx` | 1440px/레이아웃 대상 (이미 LAYOUT_CLASSES 사용) |
-| 6 | `VehicleRegisterStep2Page.tsx` | 1440px/레이아웃 대상 |
-| 7 | `VehicleRegistrationCompletePage.tsx` | 1440px/레이아웃 대상 |
-| 8 | `InspectionListPage.tsx` | 1440px 적용됨, 레이아웃 정책 정합 대상 |
-| 9 | `InspectionRequestLandingPage.tsx` | 1440px 적용됨 |
-| 10 | `InspectionRequestStep1Page.tsx` | 1440px/레이아웃 대상 |
-| 11 | `InspectionRequestStep2Page.tsx` | 1440px/레이아웃 대상 |
-| 12 | `InspectionProgressPage.tsx` | 1440px/레이아웃 대상 (이미 LAYOUT_CLASSES 사용) |
-| 13 | `InspectionCompletePage.tsx` | 1440px/레이아웃 대상 |
-| 14 | `InspectionHistoryPage.tsx` | 1440px 적용됨 |
-| 15 | `GeneralSaleOffersPage.tsx` | 1440px/레이아웃 대상 |
-| 16 | `SalesHistoryPage.tsx` | 1440px/레이아웃 대상 |
-| 17 | `SettlementListPage.tsx` | 1440px/레이아웃 대상 |
-| 18 | `SettlementDetailPage.tsx` | 1440px/레이아웃 대상 |
-| 19 | `LogisticsSchedulePage.tsx` | 1440px/레이아웃 대상 |
-| 20 | `LogisticsHistoryPage.tsx` | 1440px/레이아웃 대상 |
-| 21 | `GeneralSaleAnalyzingPage.tsx` | 1440px/레이아웃 대상 |
-| 22 | `GeneralSalePricePage.tsx` | 1440px/레이아웃 대상 |
-| 23 | `GeneralSaleCompletePage.tsx` | 1440px/레이아웃 대상 |
-| 24 | `AuctionDetailPage.tsx` | 1440px/레이아웃 대상 |
-| 25 | `AuctionStartPricePage.tsx` | 1440px/레이아웃 대상 |
-| 26 | `AuctionDurationPage.tsx` | 1440px/레이아웃 대상 |
-| 27 | `AuctionCompletePage.tsx` | 1440px/레이아웃 대상 |
-| 28 | `LoginPage.tsx` | 레이아웃 정책 제외 가능 |
-| 29 | `ForgotPasswordPage.tsx` | 레이아웃 정책 제외 가능 |
+| 6 | `VehicleRegistrationCompletePage.tsx` | 1440px/레이아웃 대상 |
+| 7 | `InspectionListPage.tsx` | 1440px 적용됨, 레이아웃 정책 정합 대상 |
+| 8 | `InspectionRequestLandingPage.tsx` | 1440px 적용됨 |
+| 9 | `InspectionRequestStep1Page.tsx` | 1440px/레이아웃 대상 |
+| 10 | `InspectionRequestStep2Page.tsx` | 1440px/레이아웃 대상 |
+| 11 | `InspectionProgressPage.tsx` | 1440px/레이아웃 대상 (이미 LAYOUT_CLASSES 사용) |
+| 12 | `InspectionCompletePage.tsx` | 1440px/레이아웃 대상 |
+| 13 | `InspectionHistoryPage.tsx` | 1440px 적용됨 |
+| 14 | `GeneralSaleOffersPage.tsx` | 1440px/레이아웃 대상 |
+| 15 | `SalesHistoryPage.tsx` | 1440px/레이아웃 대상 |
+| 16 | `SettlementListPage.tsx` | 1440px/레이아웃 대상 |
+| 17 | `SettlementDetailPage.tsx` | 1440px/레이아웃 대상 |
+| 18 | `LogisticsSchedulePage.tsx` | 1440px/레이아웃 대상 |
+| 19 | `LogisticsHistoryPage.tsx` | 1440px/레이아웃 대상 |
+| 20 | `GeneralSaleAnalyzingPage.tsx` | 1440px/레이아웃 대상 |
+| 21 | `GeneralSalePricePage.tsx` | 1440px/레이아웃 대상 |
+| 22 | `GeneralSaleCompletePage.tsx` | 1440px/레이아웃 대상 |
+| 23 | `AuctionDetailPage.tsx` | 1440px/레이아웃 대상 |
+| 24 | `AuctionStartPricePage.tsx` | 1440px/레이아웃 대상 |
+| 25 | `AuctionDurationPage.tsx` | 1440px/레이아웃 대상 |
+| 26 | `AuctionCompletePage.tsx` | 1440px/레이아웃 대상 |
+| 27 | `LoginPage.tsx` | 레이아웃 정책 제외 가능 |
+| 28 | `ForgotPasswordPage.tsx` | 레이아웃 정책 제외 가능 |
 
-**총 29개** (레이아웃 작업 대상 **27개**, Auth 제외 **2개**).
+**총 28개** (레이아웃 작업 대상 **27개**, Auth 제외 **2개**).
 
 ---
 

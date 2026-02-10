@@ -159,7 +159,10 @@ export const VehicleListPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50" data-node-id="1425:8153">
+    <div
+      className="min-h-screen bg-gray-50"
+      data-node-id={filterTab === 'logistics' ? '1362:36169' : '1425:8153'}
+    >
       <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
       <div className={LAYOUT_CLASSES.CONTAINER}>
         <div className="flex">
@@ -200,14 +203,18 @@ export const VehicleListPage = () => {
               </div>
             ) : viewMode === 'grid' ? (
               <>
-                <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${LAYOUT_CLASSES.GNB_GRID} mb-8`} data-node-id="1425:8237">
+                {/* Figma 1636-10115: 전체 차량목록 그리드 — 3컬럼, 972px, gap 15/36, 카드 314×291 */}
+                <div
+                  className={`grid grid-cols-3 ${LAYOUT_CLASSES.GNB_GRID} max-w-[972px] w-full mb-8`}
+                  data-node-id="1636:10115"
+                >
                   {paginatedVehicles.map((vehicle) => (
-                    <div key={vehicle.id} className={`h-full ${LAYOUT_CLASSES.GNB_CARD_WRAPPER}`} data-node-id="1425:8239">
+                    <div key={vehicle.id} className={LAYOUT_CLASSES.GNB_CARD_WRAPPER} data-node-id="1636:10116">
                       <VehicleCard
                         vehicle={vehicle}
                         variant="mainLanding"
                         onClick={() => navigate(`/vehicles/${vehicle.id}`)}
-                        className={`h-full min-h-[291px] w-full ${LAYOUT_CLASSES.GNB_CARD}`}
+                        className={LAYOUT_CLASSES.GNB_CARD}
                       />
                     </div>
                   ))}

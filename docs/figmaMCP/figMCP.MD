@@ -1,7 +1,7 @@
 # Figma MCP 작업 로그 (6하원칙)
 
 **목적**: MCP 기반 페이지 디벨롭 작업 이력을 누적하여, 향후 동일/유사 작업 시 참고.  
-**최종 업데이트**: 2025-02-10 (CTA_3 미흡사항 보완·디자인 충실도 반영)
+**최종 업데이트**: 2025-02-10 (mcp_outputs SSOT 전역 리빌딩·리팩토링)
 
 **6하원칙**  
 | 누가 | 무엇을 | 언제 | 어디서 | 왜 | 어떻게 |
@@ -39,6 +39,7 @@
 | 에이전트 | 규칙 7·8(1444-7928): Figma 에셋 연동·레이아웃 스펙·검증 체크리스트 | 2025-02-10 | mcp_outputs/1444-7928(metadata_raw·design_context_raw), FIGMA_ASSET_TRACEABILITY.md, impl_plans/1444-7928_구현계획.md, LandingHeader.tsx | 규칙 7·8 필수 이행 | **규칙 7**: 다운로드한 Figma 에셋(검색_search, 탁송_cil-truck, 정산_coins-stacked-03)을 LandingHeader에 적용함 — 이미 import·JSX 연동 완료. FIGMA_ASSET_TRACEABILITY에 "실제 import 경로"(widgets/Header/ui/LandingHeader.tsx)·용도(검색 버튼 img, NAV_ITEMS 탁송/정산 imgSrc) 명시·참조용 보관 행 정리. **규칙 8**: metadata_raw.txt 파싱해 노드별 (x,y,width,height) 테이블을 impl_plans/1444-7928_구현계획.md "6. 레이아웃 스펙"에 추가; "7. Phase 6 검증 체크리스트"에 위치·크기 반영 여부 표 추가. LandingHeader에 data-node-id(1444:7967 top bar, 1444:7968 로고, 1444:7991 GNB, 1444:7987 매물등록, 1444:8013/8014 검색) 부여. npm run build 성공 후 완료 보고. |
 | 에이전트 | CTA_2 전 노드 반영·갭 문서 갱신(1193-8343 design_context SSOT) | 2025-02-10 | mcp_outputs/1193-8343(design_context_raw), InspectionProgressPage.tsx, CTA_2_노드_디자인_반영_갭.md, 미반영_전체_목록.md | 노드 하나만 하고 완료한 것 아님 → 전 노드 적용 | 1193-8343: design_context 기준 스테퍼·사이드바·카드 제목 반영. 사이드바 "검차 진행"+"진행 중..."(1193:8433), 카드 제목 "검차자 이동중 🛻"(1193:8436), data-node-id 부여. CTA_2 갭 문서 1425-10137·1425-10813·1121-5308·1193-8343 ✅ 반영 완료로 갱신. 미반영_전체_목록 CTA_2 0건·총 13건으로 수정. npm run build 예정. |
 | 에이전트 | 라우트·평가사·CTA_1~CTA_4 일괄 반영·최종 검토 | 2025-02-10 | router.tsx, InspectionRequestStep1Page, GeneralSaleCompletePage, TradeDetailPage, AuctionStartPricePage, AuctionDurationPage, AuctionCompletePage, LogisticsSchedulePage, 미반영_전체_목록.md, figMCP.MD | CTA_1부터 끝내기·CTA_3/4 미반영 전부 반영 | **라우트**: Figma CTA_2에 Step2(평가사 선택) 노드 없음(1033-4903 Step1만 존재) → Step1 완료 시 `/inspections/request/step2` 대신 **`/inspections`(목록)**으로 이동. 평가사 화면은 URL 직접 접근 시에만 노출. **CTA_1**: 1425-7638·7684·8153 갭 문서 기준 이미 반영 완료 검증. **CTA_3**: 794-4107 activeNav "offers"; 1302-27093 TradeDetailPage 좌측 320×420 data-node-id 1302:27096; 1123-13580 AuctionStartPricePage 좌측 320×420 data-node-id 1123:13582; AuctionDurationPage·AuctionCompletePage activeNav "offers". **CTA_4**: 1272-12926 320×420·1272:12927 이미 적용 확인. 미반영_전체_목록 CTA_3·CTA_4 반영 완료로 갱신. npm run build 성공. |
+| 에이전트 | mcp_outputs SSOT 전역 업데이트·리빌딩·리팩토링 | 2025-02-10 | mcp_outputs, design-tokens.css, tailwind.config.js, globals.css, SSOT_DESIGN_TOKENS.md, 다수 페이지·위젯 | mcp_outputs를 SSOT로 전역 일치 | design-tokens: SSOT 주석·--font-display(SUITE)·radius(section/card/card-sm/badge 등)·shadow-figma-card/topbar/location·색·opacity 토큰. tailwind: shadow-figma-card·rounded-card/section/card-sm 연동. globals: SUITE @font-face·.shadow-figma-card. 페이지·위젯: 인라인 shadow/rounded → shadow-figma-card·rounded-card/section/card-sm 교체. npm run build 성공. |
 
 ---
 

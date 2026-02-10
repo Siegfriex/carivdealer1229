@@ -73,7 +73,7 @@ export const GeneralSalePricePage = () => {
         <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_DETAIL} flex gap-6 flex-wrap`}>
           {/* 794-4200: 좌측 차량정보 패널 320×420 rounded-[30px] shadow, 행 51px, 라벨 rgba(0,0,0,0.4) 값 0.8 */}
           <div
-            className="bg-white rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] w-[320px] h-[420px] overflow-hidden flex flex-col p-6 box-border shrink-0"
+            className="bg-white rounded-card shadow-figma-card w-[320px] h-[420px] overflow-hidden flex flex-col p-6 box-border shrink-0"
             data-node-id="794:4201"
           >
             <p className="text-[15px] text-black/50 tracking-[0.15px] font-extrabold mb-1" data-node-id="794:4204">

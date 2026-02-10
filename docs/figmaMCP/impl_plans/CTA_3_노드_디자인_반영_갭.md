@@ -11,7 +11,7 @@
 | nodeId | 화면/역할 | 라우트 | 페이지 | 반영됨 | 미반영·보완 (디버깅 대상) |
 |--------|-----------|--------|--------|--------|---------------------------|
 | **794-3704** | 판매방식선택 | `/vehicles/:id/sale/analyzing` | GeneralSaleAnalyzingPage | ✅ 제목 "판매 방식 선택" 38px, 카드 297×280 rounded-[15px] shadow, "일반 판매"/"경매" 26px primary, 본문 SSOT 문구 | — |
-| **794-4015** | 시세분석중 (일반/경매 공통) | `/vehicles/:id/sale/analyzing` | GeneralSaleAnalyzingPage | ✅ analyzing 단계·자동 이동 | ⚠️ 디자인 문구·로딩 UI: "시세 분석 중" 등 SSOT 문구·스피너/레이아웃 반영 |
+| **794-4015** | 시세분석중 (일반/경매 공통) | `/vehicles/:id/sale/analyzing` | GeneralSaleAnalyzingPage | ✅ analyzing 단계·자동 이동, 794:4102 "홍길동님의 차량 시세를 분석 중입니다 ...", data-node-id 794:4015 | ✅ 반영 완료 (2025-02-10) |
 | **794-4200** | 경매 시작가설정 보정 (일반) | `/vehicles/:id/sale/price` | GeneralSalePricePage | ✅ 좌측 **320×420** 차량정보 패널(794:4201), rounded-[30px] shadow, 행 51px, 라벨 0.4·값 0.8, 우측 폼 | — |
 | **794-4371** | 경매 시작가설정 보정-1 (일반) | `/vehicles/:id/sale/price` | GeneralSalePricePage | (794-4200과 동일) | — |
 | **794-4107** | 판매전환완료 (일반) | `/vehicles/:id/sale/complete` | GeneralSaleCompletePage | ✅ "판매 상태로 전환되었습니다", "구매제안이 오면 알람을 통해 알려드려요!" | ⚠️ GNB activeNav "offers", 배지 203×37·배경 #eef5fe 등 CTA_4와 동일 톤 선택 |
@@ -19,7 +19,7 @@
 | **794-4542** | 거래상세 경매 (펼쳐지는 뷰) | `/vehicles/:id/trade` | TradeDetailPage | ✅ detailExpanded 뷰, 794:4542 | — |
 | **1302-27093** | 판매방식 변경·판매가 수정 컨테이너 | `/vehicles/:id/trade` | TradeDetailPage | ✅ 카드 2개 (판매방식 변경, 판매가 수정) | ⚠️ metadata 1302:27096 **320×420** 좌측 패널·행 51px·라벨 0.4·값 0.8 (거래상세 좌측 패널 동일 스펙일 수 있음) |
 | **1302-27289** | 검차 상세내역 모달 | TradeDetailPage 모달 | TradeDetailPage | ✅ "세부 검차내역" 26px, 사진항목/영상항목 24px, 행 h-14 border #e6e6e6, 12px #707070 | — |
-| **1123-13580** | 경매 시작가설정 (경매 방식) | `/vehicles/:id/auction/start-price` | AuctionStartPricePage | ✅ 시작가·즉시가 입력·다음 | ⚠️ 좌측 **320×420** 차량정보 패널(794/1302와 동일 스펙)·문구 SSOT |
+| **1123-13580** | 경매 시작가설정 (경매 방식) | `/vehicles/:id/auction/start-price` | AuctionStartPricePage | ✅ 시작가·즉시가 입력·다음, 좌측 320×420 LAYOUT_CLASSES.DETAIL_PANEL, data-node-id 1123:13580·13582 | ✅ 반영 완료 (2025-02-10) |
 | **1123-20023** | 경매시작가 값입력·연월일시 | `/vehicles/:id/auction/duration` | AuctionDurationPage | ✅ 종료일·종료시간 입력 | ⚠️ 디자인: 연월일시 플로우·문구·레이아웃 SSOT |
 | **1123-20699** | 경매 연월일시 입력 | `/vehicles/:id/auction/duration` | AuctionDurationPage | (1123-20023과 동일) | 동일 |
 | **1123-13763** | 경매 모두 입력 완료 화면 | `/vehicles/:id/auction/duration` | AuctionDurationPage | (제출 전 확인 뷰) | ⚠️ "모두 입력 완료" 문구·확인 UI |

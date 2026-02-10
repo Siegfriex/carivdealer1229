@@ -7,6 +7,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Button } from '@/shared/ui/Button';
@@ -66,7 +67,7 @@ export const VehicleRegisterEntryPage = () => {
         data-node-id="1425:7639"
       >
         <div
-          className="inline-flex h-[37px] w-[203px] items-center justify-center gap-1.5 rounded-[39px] border border-[var(--color-primary-border)] bg-[var(--color-primary-light)] px-3"
+          className={`inline-flex items-center justify-center gap-1.5 px-3 ${LAYOUT_CLASSES.GNB_BADGE} border-[var(--color-primary-border)] bg-[var(--color-primary-light)]`}
           data-node-id="1425:7640"
         >
           <Briefcase className="h-[18px] w-[18px] shrink-0 text-[var(--color-primary)]" data-node-id="1425:7641" />

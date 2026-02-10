@@ -1,20 +1,20 @@
 /**
  * ForwardMax Design System - Design Tokens
+ * SSOT: docs/figmaMCP/mcp_outputs (design_context_raw.txt, metadata_raw.txt)
  * 모든 가로(레이아웃·타이포) 기준: 1440px
  *
- * 참조:
- * - Figma Domestic Seller 1.0, Typography (node 1194-7425)
- * - design/design_typhography/Typography.png
+ * 참조: Figma Domestic Seller 1.0, mcp_outputs design_context 추출값
  */
 
 :root {
   /* ===== Layout Base (가로 기준) ===== */
   --layout-base-width: 1440px;
 
-  /* ===== Typography System (Figma 1194-7425, 1440px 기준) ===== */
+  /* ===== Typography System (mcp_outputs SSOT) ===== */
   
-  /* Font Family: Pretendard. 혼용 시 영문/숫자는 Roboto 권장, Baseline 정렬 */
+  /* Font: Pretendard 본문, SUITE_Variable 디스플레이(차량번호·타이틀) — design_context 반영 */
   --font-primary: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-display: 'SUITE Variable', 'Pretendard', var(--font-primary);
   
   /* Type Scale @ 1440px (Figma SSOT, px 정합) */
   --text-h1: 36px;   /* H1: Medium */
@@ -24,6 +24,10 @@
   --text-body: 14px; /* Body: Regular */
   --text-button: 12px;  /* Button: Regular */
   --text-caption: 10px;  /* Caption (Figma 외 확장) */
+  /* Form/Section (mcp_outputs design_context 공통 — 탁송·검차·거래 등) */
+  --text-section-title: 24px;   /* 섹션 제목 Bold */
+  --text-form-label: 20px;     /* 라벨 Medium, gray-500 */
+  --text-form-input: 22px;     /* 입력 필드·버튼 Regular */
   
   /* Font Weights per Figma Typography */
   --font-weight-regular: 400;
@@ -70,10 +74,17 @@
   --space-20: 80px;
   --space-24: 96px;
   
-  /* Border Radius */
+  /* Border Radius (mcp_outputs: 5, 10, 16, 20, 23, 30, 39, 100px) */
+  --radius-xs: 5px;
   --radius-sm: 4px;
   --radius-md: 10px;
   --radius-lg: 20px;
+  --radius-card-sm: 23px;
+  --radius-section: 15px;
+  --radius-card: 30px;
+  --radius-badge: 39px;
+  --radius-cta: 43px;
+  --radius-pill: 100px;
   --radius-full: 9999px;
 
   /* ===== Color System ===== */
@@ -90,7 +101,7 @@
   --color-accent-hover: #7229CC;
   --color-accent-active: #5A1FA3;
   
-  /* Neutral Colors */
+  /* Neutral Colors (mcp_outputs SSOT) */
   --color-white: #FFFFFF;
   --color-gray-50: #F8F9FA;
   --color-gray-100: #F3F4F6;
@@ -98,11 +109,26 @@
   --color-gray-300: #D1D5DB;
   --color-gray-400: #9CA3AF;
   --color-gray-500: #909090;
+  --color-gray-550: #707070;
   --color-gray-600: #727272;
   --color-gray-700: #4B5563;
   --color-gray-800: #1F2937;
   --color-gray-900: #111827;
   --color-black: #000000;
+  /* mcp_outputs 전용 */
+  --color-gray-caption: #9b9b9b;
+  --color-bg-block: #f3f3f3;
+  --color-gnb-step: #334155;
+  --color-border-input: #ccc;
+  /* Opacity (design_context rgba 반영) */
+  --color-black-10: rgba(0, 0, 0, 0.1);
+  --color-black-20: rgba(0, 0, 0, 0.2);
+  --color-black-40: rgba(0, 0, 0, 0.4);
+  --color-black-50: rgba(0, 0, 0, 0.5);
+  --color-black-60: rgba(0, 0, 0, 0.6);
+  --color-black-80: rgba(0, 0, 0, 0.8);
+  --color-primary-80: rgba(32, 72, 229, 0.8);
+  --color-gray-60: rgba(144, 144, 144, 0.6);
   
   /* Semantic Colors */
   --color-success: #10B981;
@@ -160,17 +186,25 @@
   /* GNB (Header) - 1440px 기준 px */
   --gnb-height: 64px;
 
-  /* Progress Sidebar - 1440px 기준 px */
+  /* Progress Sidebar - 1440px 기준 px (mcp_outputs 1425:8154, 1714:22333) */
   --sidebar-width: 249px;
   --progress-step-gap: 105px;
   --progress-circle-size: 27.2px;
 
+  /* Detail Panel (좌측 차량정보/탁송 패널) — 1272:12927, 1123:13582, 1302:27096, 794:4201 */
+  --detail-panel-width: 320px;
+  --detail-panel-height: 420px;
+  /* 패널 내 행 높이 — 1272:12931, 1123:13585 */
+  --row-height-detail: 51px;
+  /* 구분선 너비 — design_context 1272-12926 Line 87 */
+  --detail-panel-divider-width: 256.87px;
+
   /* Step Progress (검차단계 프로그래스바) */
   --step-progress-height: 60px;
   
-  /* Cards */
-  --card-border-radius: 10px;
-  --card-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  /* Cards (mcp_outputs 기본 dropshadow: 2.344px 3.125px 11.017px 0 rgba(0,0,0,0.05)) */
+  --card-border-radius: var(--radius-card);
+  --card-shadow: var(--shadow-figma-card);
   --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.08);
   
   /* Status Badge */
@@ -193,8 +227,14 @@
   --transition-base: 250ms ease-in-out;
   --transition-slow: 400ms ease-in-out;
   
-  /* ===== Shadows ===== */
+  /* ===== Shadows (mcp_outputs SSOT) ===== */
   
+  /* Figma 기본 DROP_SHADOW: offset (2.344, 3.125), radius 11.017, color #0000000D */
+  --shadow-figma-card: 2.344px 3.125px 11.017px 0 rgba(0, 0, 0, 0.05);
+  --shadow-figma-topbar: 0 -3px 23.8px 0 rgba(0, 0, 0, 0.05);
+  --shadow-figma-location: 0 60px 100px 0 rgba(16, 45, 97, 0.08);
+  /* 1033-4903 검차 신청 Step1 검차 장소 내부 카드 */
+  --shadow-figma-location-inner: 2px 2px 21.3px 0 rgba(0, 0, 0, 0.08);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 3px 10px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);

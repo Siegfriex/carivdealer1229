@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
@@ -28,7 +29,7 @@ const LEFT_FIELDS: { id: string; label: string; placeholder: string }[] = [
   { id: 'vin', label: '차대번호', placeholder: 'xxxx' },
   { id: 'engineSpec', label: '원동기명식', placeholder: 'xxxx' },
   { id: 'use', label: '용도', placeholder: 'xxxx' },
-  { id: 'modelYear', label: '연식( 모델면도)', placeholder: 'xxxx' },
+  { id: 'modelYear', label: '연식(모델년도)', placeholder: 'xxxx' },
   { id: 'color', label: '색상', placeholder: 'xxxx' },
   { id: 'sourceType', label: '출처구분', placeholder: 'xxxx' },
 ];
@@ -48,7 +49,7 @@ const RIGHT_FIELDS: { id: string; label: string; placeholder: string }[] = [
   { id: 'sourceTypeRight', label: '출처구분', placeholder: 'xxxx' },
 ];
 
-/** 원부등록 행: 라벨 + 입력 + 수정 버튼 (Figma 행 높이 68px, 입력 286×40, 수정 68×40) */
+/** 원부등록 행: 라벨 + 입력 + 수정 버튼 (Figma 행 높이 68px). 텍스트 튀어나오지 않도록 overflow·min-w-0 적용. 선택자: data-testid="form-row" */
 function FormRow({
   label,
   placeholder,
@@ -65,8 +66,13 @@ function FormRow({
   dataNodeId?: string;
 }) {
   return (
-    <div className="grid grid-cols-[145px_286px_68px] gap-0 items-start" style={{ minHeight: 68 }} data-node-id={dataNodeId}>
-      <label className="text-[16px] font-bold text-black pt-0.5" style={{ width: 145 }}>
+    <div
+      className="grid min-w-0 max-w-full grid-cols-[minmax(0,145px)_minmax(0,1fr)_68px] gap-0 items-start overflow-hidden"
+      style={{ minHeight: 68 }}
+      data-node-id={dataNodeId}
+      data-testid="form-row"
+    >
+      <label className="min-w-0 truncate text-[16px] font-bold text-black pt-0.5">
         {label}
       </label>
       <input
@@ -74,12 +80,12 @@ function FormRow({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-[28px] h-10 w-[286px] rounded-[5px] border-0 bg-[var(--color-gray-100)] px-3 text-[14px] text-gray-900 placeholder-[#a5abb6] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        className="min-w-0 max-w-full truncate mt-[28px] h-10 rounded-[5px] border-0 bg-[var(--color-gray-100)] px-3 text-[14px] text-gray-900 placeholder-[#a5abb6] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
       />
       <button
         type="button"
         onClick={onEdit}
-        className="mt-[28px] h-10 w-[68px] rounded-[5px] bg-[var(--color-gray-100)] text-[14px] text-[#a5abb6] hover:bg-gray-200 hover:text-gray-700"
+        className="shrink-0 mt-[28px] h-10 w-[68px] rounded-[5px] bg-[var(--color-gray-100)] text-[14px] text-[#a5abb6] hover:bg-gray-200 hover:text-gray-700"
       >
         수정
       </button>
@@ -149,13 +155,13 @@ export const VehicleRegisterStep1Page = () => {
 
   const handleSubmit = () => {
     const queryString = plateNumber ? `plateNumber=${encodeURIComponent(plateNumber)}` : '';
-    const to = `/vehicles/new/step2${queryString ? `?${queryString}` : ''}`;
+    const to = `/inspections/request${queryString ? `?${queryString}` : ''}`;
     fetch(LOG_INGEST_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         location: 'VehicleRegisterStep1Page:handleSubmit',
-        message: 'CTA_1 step1→step2',
+        message: 'CTA_1 step1→검차신청',
         data: { to },
         timestamp: Date.now(),
         hypothesisId: 'H_CTA1',
@@ -188,7 +194,7 @@ export const VehicleRegisterStep1Page = () => {
       <div className="flex max-w-[1440px] mx-auto">
         {/* 좌측 사이드바: Figma 1425:7867 — 249×2151 */}
         <aside
-          className="flex-shrink-0 w-[249px] bg-white border-r border-gray-200 min-h-[calc(100vh-64px)] flex flex-col"
+          className={`flex-shrink-0 ${LAYOUT_CLASSES.GNB_SIDEBAR} bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}
           data-node-id="1425:7867"
         >
           <div className="p-4 border-b border-gray-200">
@@ -213,15 +219,14 @@ export const VehicleRegisterStep1Page = () => {
         <main className="flex-1 p-8 pl-10">
           <h1
             className="text-[28px] font-bold text-black mb-6"
-            style={{ fontFamily: 'var(--font-primary)' }}
-            data-node-id="1425:7914"
+            data-node-id="1425:7685"
           >
             차량 원부 등록
           </h1>
 
           {/* 상단 카드: 차량 등록 원부 + * + 스크린샷 영역 (Figma 1425:7824) */}
           <div
-            className="mb-6 rounded-[30px] bg-white p-6 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] max-w-[971px]"
+            className="mb-6 rounded-card bg-white p-6 shadow-figma-card max-w-[971px]"
             data-node-id="1425:7824"
           >
             <div className="flex items-center gap-2 mb-4">
@@ -235,7 +240,7 @@ export const VehicleRegisterStep1Page = () => {
 
           {/* 메인 폼 카드: 차량 등록 원부 (1/2) + 2단 폼 (Figma 1425:7685, 7686, 7687, 7754) */}
           <div
-            className="rounded-[30px] bg-white p-8 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] max-w-[971px]"
+            className="rounded-card bg-white p-8 shadow-figma-card max-w-[971px]"
             data-node-id="1425:7685"
           >
             <p
@@ -245,9 +250,9 @@ export const VehicleRegisterStep1Page = () => {
               차량 등록 원부 (1/2)
             </p>
 
-            <div className="flex gap-[106px]" data-node-id="1425:7686">
-              {/* 좌측 열 358px, 행 간격 31px */}
-              <div className="flex flex-col gap-[31px] w-[358px]" data-node-id="1425:7687">
+            <div className="flex min-w-0 gap-[106px]" data-node-id="1425:7686">
+              {/* 좌측 열 358px, 행 간격 31px — 선택자: [data-form-column="left"] 또는 [data-node-id="1425:7687"] */}
+              <div className="flex w-[358px] min-w-0 flex-col gap-[31px] overflow-hidden" data-node-id="1425:7687" data-form-column="left">
                 {LEFT_FIELDS.map((f) => (
                   <FormRow
                     key={f.id}
@@ -259,8 +264,8 @@ export const VehicleRegisterStep1Page = () => {
                   />
                 ))}
               </div>
-              {/* 우측 열 358px */}
-              <div className="flex flex-col gap-[31px] w-[358px]" data-node-id="1425:7754">
+              {/* 우측 열 358px — 선택자: [data-form-column="right"] 또는 [data-node-id="1425:7754"] */}
+              <div className="flex w-[358px] min-w-0 flex-col gap-[31px] overflow-hidden" data-node-id="1425:7754" data-form-column="right">
                 {RIGHT_FIELDS.map((f) => (
                   <FormRow
                     key={f.id}
@@ -292,7 +297,7 @@ export const VehicleRegisterStep1Page = () => {
             </div>
           </div>
 
-          {/* 하단 액션: 삭제, 저장(임시저장), 다음(step2) — Figma 1425:7915, 7916, 7822 */}
+          {/* 하단 액션: 삭제, 저장(임시저장), 다음(검차신청) — Figma 1425:7915, 7916, 7822 */}
           <div className="flex items-center justify-between mt-8 max-w-[971px]">
             <div className="flex gap-6">
               <button

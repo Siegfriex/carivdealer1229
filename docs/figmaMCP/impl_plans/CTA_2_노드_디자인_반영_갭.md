@@ -17,7 +17,7 @@
 | **1042-4681** | 검차요청내역 (상태3) | `/inspections` | InspectionListPage | ✅ 카드뷰·상태 배지 | ✅ **반영 완료** — 카드 좌 397×243 #eef5fe (1193:8820), rounded-[23.441px], data-node-id 1193:8819 (2025-02-10) |
 | **1425-10137** | 검차진행 매칭중 | `/inspections/:id/progress?stage=matching` | InspectionProgressPage | ✅ 249px 사이드바, 972×473 메인·400×160 패널, 스테퍼 | ✅ **반영 완료** (2025-02-10) |
 | **1425-10813** | 검차진행 (검차자 이동중) | `/inspections/:id/progress?stage=en_route` | InspectionProgressPage | ✅ 972×473·400×160, 제목 "검차자 이동중 🛻" | ✅ **반영 완료** (2025-02-10) |
-| **1425-10285** | 검차결과요약 (검차완료! 내역 확인) | `/inspections/:id/complete` | InspectionCompletePage | ✅ 2열 차량정보·전체 피드백, 검차자 카드, 세부 검차내역 | ✅ **1193-8120** 제목/부제 반영 완료. 1425:10376 972×266, 1425:10378 400×160 추후 적용 가능 |
+| **1425-10285** | 검차결과요약 (검차완료! 내역 확인) | `/inspections/:id/complete` | InspectionCompletePage | ✅ 2열 차량정보·전체 피드백, 검차자 카드, 세부 검차내역 | ✅ **반영 완료** — 1193-8120 제목/부제, 1425:10376 972×266(GNB_CARD_972_266), 1425:10378 400×160(GNB_PANEL_400_160), data-node-id 1425:10285·10325·10376·10378 (2025-02-10) |
 | **1121-5308** | 검차자 매칭중 (Figma 디자인) | `/inspections/:id/progress?stage=matching` | InspectionProgressPage | ✅ 1121:5350 249px, 972×473 메인, 검차일정/검차장소 아이콘 | ✅ **반영 완료** (2025-02-10) |
 | **1193-8343** | 검차자 이동중 (Figma 디자인) | `/inspections/:id/progress?stage=en_route` | InspectionProgressPage | ✅ 스테퍼 문구(검차자 매칭중·매칭 완료·검차중·검차완료), 사이드바 "검차 진행"+"진행 중...", 카드 제목 "검차자 이동중 🛻" | ✅ **반영 완료** (2025-02-10) |
 | **1193-8120** | 검차완료! 내역을 확인하세요 | `/inspections/:id/complete` | InspectionCompletePage | ✅ 완료 뷰·차량/피드백/검차자 | ✅ **반영 완료** — h1 "검차완료!", 부제 "내역을 확인하세요" (2025-02-10) |

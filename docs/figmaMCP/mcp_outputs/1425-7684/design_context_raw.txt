@@ -1,1 +1,587 @@
-C:\Users\RYUzFAM\.cursor\projects\c-carivdealer\agent-tools\0d2a4c8d-2519-4a1d-b072-69c7318d5ff2.txt (47153 bytes, 587 lines)
+const imgIcon = "https://www.figma.com/api/mcp/asset/711aa835-d4a1-4551-a43d-2ae02acbfd2f";
+const imgSearch = "https://www.figma.com/api/mcp/asset/17cb7c70-efbb-482e-bcc3-dd18f1cc40de";
+const imgIcon1 = "https://www.figma.com/api/mcp/asset/c7c206a2-085d-439d-b7ca-c289162fcbd3";
+const imgCilTruck = "https://www.figma.com/api/mcp/asset/a939e6df-3eeb-4974-a593-e7ebd4838219";
+const imgIcon2 = "https://www.figma.com/api/mcp/asset/d74b450d-a81e-4b36-854f-d06f526f3bb7";
+const imgLine76 = "https://www.figma.com/api/mcp/asset/41ae2310-f531-441a-bfd6-5193d36adafd";
+const img20260130448551 = "https://www.figma.com/api/mcp/asset/002b49f3-4fbf-4a94-ac27-20f7545459dc";
+const imgStickMan1181741 = "https://www.figma.com/api/mcp/asset/6eca29cb-0da3-4f2e-b16b-a63456294254";
+const imgBriefcase = "https://www.figma.com/api/mcp/asset/c7fb565c-50cb-4e74-99c6-ad2a23adf59d";
+const imgGroup140 = "https://www.figma.com/api/mcp/asset/0194bd78-9365-4555-a79a-7e2f5fdb0d29";
+const imgGroup2085666007 = "https://www.figma.com/api/mcp/asset/d2206aa2-cfa6-4d70-8317-78dd806f0362";
+const imgSearch1 = "https://www.figma.com/api/mcp/asset/a69046ce-8e70-4480-87ee-9e784e73dc04";
+const imgLine78 = "https://www.figma.com/api/mcp/asset/acda2730-b428-4190-be9e-b813d47ef9a1";
+const imgSearch2 = "https://www.figma.com/api/mcp/asset/f320f31e-e1f8-4689-aed4-3daef96e5cc4";
+const imgGroup2085666051 = "https://www.figma.com/api/mcp/asset/156e2278-d52a-414e-be2e-c83c0f68a212";
+const imgGroup2085666052 = "https://www.figma.com/api/mcp/asset/c096db8c-aa37-4e2c-8a14-6e14874cce88";
+const imgGroup2085666053 = "https://www.figma.com/api/mcp/asset/a8d0fda6-9cdf-4518-a5a7-76b5b7723cc3";
+const imgCheck = "https://www.figma.com/api/mcp/asset/54e0754b-2923-4f4b-864a-46049c33b09a";
+const imgEllipse48 = "https://www.figma.com/api/mcp/asset/1c120a23-6f8a-4eca-8c33-5c3100ba4da5";
+
+function Gnb({ className }: { className?: string }) {
+  return (
+    <div className={className || ""} data-name="GNB(상단 네비게이션 메뉴)" data-node-id="650:1034">
+      <div className="h-[31px] relative w-[398px]" data-name="state=차량목록" data-node-id="650:1035">
+        <div className="absolute content-stretch flex gap-[30px] inset-[0_0_22.43%_0] items-center" data-node-id="650:1036">
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1037">
+            <div className="overflow-clip relative shrink-0 size-[24px]" data-name="file-search-01" data-node-id="650:1038">
+              <div className="absolute inset-[8.33%_8.33%_8.33%_16.67%]" data-name="Icon" data-node-id="I650:1038;1007:11689">
+                <div className="absolute inset-[-4.74%_-5.26%]">
+                  <img alt="" className="block max-w-none size-full" src={imgIcon} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[16px] text-black" data-node-id="650:1039">
+              차량목록
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="1121:7144">
+            <div className="relative shrink-0 size-[19px]" data-name="search" data-node-id="1193:5450">
+              <img alt="" className="block max-w-none size-full" src={imgSearch} />
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="1121:7146">
+              검차
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1040">
+            <div className="overflow-clip relative shrink-0 size-[24px]" data-name="bar-chart-12" data-node-id="650:1041">
+              <div className="absolute inset-[12.5%]" data-name="Icon" data-node-id="I650:1041;1007:8716">
+                <div className="absolute inset-[-5.26%]">
+                  <img alt="" className="block max-w-none size-full" src={imgIcon1} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1042">
+              거래
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1043">
+            <div className="relative shrink-0 size-[19px]" data-name="Cil Truck" data-node-id="650:1044">
+              <img alt="" className="block max-w-none size-full" src={imgCilTruck} />
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1046">
+              탁송
+            </p>
+          </div>
+          <div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1047">
+            <div className="overflow-clip relative shrink-0 size-[24px]" data-name="coins-stacked-03" data-node-id="650:1048">
+              <div className="absolute inset-[12.5%_8.33%]" data-name="Icon" data-node-id="I650:1048;1007:9529">
+                <div className="absolute inset-[-5.26%_-4.74%]">
+                  <img alt="" className="block max-w-none size-full" src={imgIcon2} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1049">
+              정산
+            </p>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-[78.14%] top-full" data-node-id="650:1050">
+          <div className="absolute inset-[-2px_0_0_0]">
+            <img alt="" className="block max-w-none size-full" src={imgLine76} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Component() {
+  return (
+    <div className="bg-[#f8f9fa] relative size-full" data-name="등록됨" data-node-id="1425:7684">
+      <div className="absolute bg-white h-[1313px] left-[calc(8.33%+176px)] overflow-clip rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[769px] w-[971px]" data-node-id="1425:7685">
+        <div className="absolute contents leading-[0] left-[59px] top-[122px]" data-node-id="1425:7686">
+          <div className="absolute content-stretch flex flex-col gap-[31px] items-start left-[59px] top-[122px] w-[358px]" data-node-id="1425:7687">
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7688">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7689">
+                일련번호
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7690">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7691">{`계좌번호 '-'를 제외하고 입력`}</p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7692">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7693">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7694">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7695">
+                제원관리번호
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7696">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7697">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7698">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7699">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7700">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7701">
+                말소등쪽일
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7702">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7703">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7704">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7705">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7706">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7707">
+                차명
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7708">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7709">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7710">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7711">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7712">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7713">
+                치종
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7714">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7715">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7716">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7717">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7718">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7719">
+                차대번호
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7720">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7721">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7722">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7723">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7724">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7725">
+                원동기명식
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7726">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7727">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7728">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7729">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7730">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7731">
+                용도
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7732">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7733">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7734">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7735">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7736">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7737">
+                연식( 모델면도)
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7738">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7739">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7740">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7741">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7742">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7743">
+                색상
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7744">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7745">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7746">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7747">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7748">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7749">
+                출처구분
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7750">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7751">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7752">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7753">
+                  수정
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="absolute content-stretch flex flex-col gap-[31px] items-start left-[523px] top-[122px] w-[358px]" data-node-id="1425:7754">
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7755">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7756">
+                최초등록일
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7757">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7758">{`계좌번호 '-'를 제외하고 입력`}</p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7759">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7760">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7761">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[281px] whitespace-pre-wrap" data-node-id="1425:7762">
+                세부유형(사업용 자동차만 해당합니다.)
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7763">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7764">
+                  예) 하나은행, 삼성증권 등
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7765">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7766">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7767">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7768">
+                제작연월일
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7769">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7770">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7771">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7772">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7773">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7774">
+                최종소유자
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7775">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7776">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7777">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7778">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7779">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7780">
+                주민(법인)등록번호
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7781">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7782">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7783">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7784">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7785">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[210px] whitespace-pre-wrap" data-node-id="1425:7786">
+                사용본거지(차고지)
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7787">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7788">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7789">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7790">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7791">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7792">
+                검사유효기간
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7793">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7794">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7795">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7796">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7797">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7798">
+                등록사항 확인일
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7799">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7800">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7801">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7802">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7803">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7804">
+                폐쇠일
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7805">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7806">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7807">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7808">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7809">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7810">
+                색상
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7811">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7812">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7813">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7814">
+                  수정
+                </p>
+              </div>
+            </div>
+            <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid place-items-start relative shrink-0" data-node-id="1425:7815">
+              <p className="col-1 font-['Pretendard:Bold',sans-serif] leading-[18.753px] ml-0 mt-0 not-italic relative row-1 text-[16px] text-black w-[145px] whitespace-pre-wrap" data-node-id="1425:7816">
+                출처구분
+              </p>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-0 mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[286px]" data-node-id="1425:7817">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[11px] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7818">
+                  xxxx
+                </p>
+              </div>
+              <div className="bg-[#f3f4f6] col-1 h-[40px] ml-[297px] mt-[28px] overflow-clip relative rounded-[5px] row-1 w-[68px]" data-node-id="1425:7819">
+                <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[18.753px] left-[calc(50%-13px)] not-italic text-[#a5abb6] text-[14px] top-[calc(50%-9px)]" data-node-id="1425:7820">
+                  수정
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[61px] left-[calc(50%-426.5px)] not-italic text-[22px] text-black top-[40px]" data-node-id="1425:7821">{`차량 등록 원부 (1/2) `}</p>
+        <div className="-translate-x-1/2 -translate-y-1/2 absolute bg-[#2048e5] border border-[#e6e6e6] border-solid content-stretch flex h-[37px] items-center justify-center left-[calc(50%+302.5px)] overflow-clip px-[25px] py-[6px] rounded-[10px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[calc(50%+585px)] w-[222px]" data-name="loading" data-node-id="1425:7822">
+          <p className="font-['Pretendard:Medium',sans-serif] leading-[22px] not-italic relative shrink-0 text-[12px] text-white" data-node-id="1425:7823">
+            다음
+          </p>
+        </div>
+      </div>
+      <div className="absolute bg-white h-[464px] left-[calc(8.33%+176px)] overflow-clip rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[287px] w-[971px]" data-node-id="1425:7824">
+        <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[61px] left-[calc(50%-426.5px)] not-italic text-[22px] text-black top-[40px]" data-node-id="1425:7825">{`차량 등록 원부 `}</p>
+        <div className="absolute flex h-[32px] items-center justify-center left-[159px] top-[54px] w-[37px]">
+          <div className="-scale-y-100 flex-none rotate-180">
+            <p className="font-['Pretendard:Bold',sans-serif] h-[32px] leading-[18.753px] not-italic relative text-[#f21824] text-[22px] w-[37px] whitespace-pre-wrap" data-node-id="1425:7826">
+              *
+            </p>
+          </div>
+        </div>
+        <div className="absolute h-[300px] left-[27px] top-[117px] w-[921px]" data-name="스크린샷 2026-01-30 오후 4.48.55 1" data-node-id="1425:7827">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <img alt="" className="absolute h-[117.76%] left-0 max-w-none top-[-17.76%] w-full" src={img20260130448551} />
+          </div>
+        </div>
+      </div>
+      <div className="absolute bg-[#eef5fe] border border-[#d9e7fc] border-solid h-[37px] left-[calc(8.33%+140px)] overflow-clip rounded-[39px] top-[106px] w-[203px]" data-node-id="1425:7828">
+        <div className="-translate-x-1/2 -translate-y-1/2 absolute content-stretch flex gap-[5px] items-center left-[calc(50%-21px)] top-[calc(50%+0.5px)] w-[119px]" data-node-id="1425:7829">
+          <div className="relative shrink-0 size-[18px]" data-name="briefcase" data-node-id="1425:7830">
+            <img alt="" className="block max-w-none size-full" src={imgBriefcase} />
+          </div>
+          <p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#2048e5] text-[14px] w-[147px] whitespace-pre-wrap" data-node-id="1425:7833">
+            한국 수출차량 전문 플랫폼
+          </p>
+        </div>
+      </div>
+      <div className="-translate-x-1/2 absolute bg-white h-[155px] left-1/2 overflow-clip shadow-[0px_-3px_23.8px_0px_rgba(0,0,0,0.05)] top-0 w-[1440px]" data-name="top bar" data-node-id="1425:7834">
+        <div className="absolute h-[13.674px] left-[170.01px] top-[41.16px] w-[254.761px]" data-node-id="1425:7835">
+          <img alt="" className="block max-w-none size-full" src={imgGroup140} />
+        </div>
+        <div className="absolute border border-[rgba(0,0,0,0.1)] border-solid content-stretch flex flex-col h-[30px] items-center justify-center left-[1172px] px-[11px] py-[3px] rounded-[100px] top-[33px] w-[98px]" data-node-id="1425:7854">
+          <div className="content-stretch flex gap-[6px] items-center relative shrink-0" data-node-id="1425:7855">
+            <div className="flex items-center justify-center relative shrink-0">
+              <div className="-scale-y-100 flex-none rotate-180">
+                <div className="relative size-[14.243px]" data-name="stick-man_118174 1" data-node-id="1425:7856">
+                  <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgStickMan1181741} />
+                </div>
+              </div>
+            </div>
+            <p className="font-['SUITE_Variable:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[14px] text-black" data-node-id="1425:7857">
+              홍길동님
+            </p>
+          </div>
+        </div>
+        <div className="absolute h-[18px] left-[1138.24px] top-[40.88px] w-[16px]" data-node-id="1425:7858">
+          <div className="absolute contents inset-0" data-node-id="1425:7859">
+            <div className="absolute inset-[-4.17%_-4.69%]">
+              <img alt="" className="block max-w-none size-full" src={imgGroup2085666007} />
+            </div>
+          </div>
+        </div>
+        <div className="absolute h-[22px] left-[1102px] top-[39px] w-[21px]" data-node-id="1425:7862">
+          <div className="-translate-y-1/2 absolute h-[22px] left-0 top-1/2 w-[21px]" data-name="search" data-node-id="1425:7863">
+            <img alt="" className="block max-w-none size-full" src={imgSearch1} />
+          </div>
+        </div>
+        <Gnb className="absolute h-[31px] left-[170.01px] top-[94.25px] w-[398px]" />
+      </div>
+      <div className="absolute bg-white h-[2151px] left-0 overflow-clip top-[155px] w-[249px]" data-node-id="1425:7867">
+        <div className="absolute flex h-[1508.256px] items-center justify-center right-0 top-0 w-0">
+          <div className="flex-none rotate-90">
+            <div className="h-0 relative w-[1508.256px]" data-node-id="1425:7868">
+              <div className="absolute inset-[-2px_0_0_0]">
+                <img alt="" className="block max-w-none size-full" src={imgLine78} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="absolute font-['SUITE_Variable:Heavy',sans-serif] leading-[20px] left-[calc(50%-100.92px)] not-italic text-[14px] text-[rgba(144,144,144,0.6)] top-[29.81px]" data-node-id="1425:7869">
+          검색
+        </p>
+        <div className="absolute bg-white border-[1.5px] border-[rgba(0,0,0,0.1)] border-solid h-[40.121px] left-[23.58px] rounded-[20px] top-[54.59px] w-[210.562px]" data-node-id="1425:7870" />
+        <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[21.496px] left-[39.58px] not-italic text-[#909090] text-[13.757px] top-[63.65px]" data-node-id="1425:7871">
+          차량번호/모델명
+        </p>
+        <div className="absolute h-[22px] left-[200px] top-[63.65px] w-[21px]" data-node-id="1425:7872">
+          <div className="-translate-y-1/2 absolute h-[22px] left-0 top-1/2 w-[21px]" data-name="search" data-node-id="1425:7873">
+            <img alt="" className="block max-w-none size-full" src={imgSearch2} />
+          </div>
+        </div>
+        <div className="absolute contents left-[23.58px] top-[132px]" data-node-id="1425:7877">
+          <div className="absolute h-[14.301px] left-[29.78px] top-[159.02px] w-[2.5px]" data-node-id="1425:7878">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666051} />
+          </div>
+          <div className="absolute h-[14.301px] left-[29.78px] top-[208.16px] w-[2.5px]" data-node-id="1425:7882">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666052} />
+          </div>
+          <div className="absolute h-[14.301px] left-[29.78px] top-[257.38px] w-[2.5px]" data-node-id="1425:7886">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666053} />
+          </div>
+          <div className="absolute h-[14.301px] left-[29.78px] top-[306.68px] w-[2.5px]" data-node-id="1425:7890">
+            <img alt="" className="block max-w-none size-full" src={imgGroup2085666053} />
+          </div>
+          <div className="absolute content-stretch flex gap-[7px] items-center left-[23.58px] top-[132px]" data-node-id="1425:7894">
+            <div className="bg-[#2048e5] content-stretch flex items-center p-[2.976px] relative rounded-[7.451px] shrink-0 size-[14.902px]" data-node-id="1425:7895">
+              <div className="relative shrink-0 size-[8.928px]" data-name="Check" data-node-id="1425:7896">
+                <img alt="" className="block max-w-none size-full" src={imgCheck} />
+              </div>
+            </div>
+            <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)] w-[72px] whitespace-pre-wrap" data-node-id="1425:7898">
+              차량 업로드
+            </p>
+          </div>
+          <div className="absolute content-stretch flex gap-[7px] items-center left-[23.58px] top-[181.24px]" data-node-id="1425:7899">
+            <div className="h-[14.474px] relative shrink-0 w-[14.9px]" data-node-id="1425:7900">
+              <img alt="" className="block max-w-none size-full" src={imgEllipse48} />
+            </div>
+            <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)] w-[72px] whitespace-pre-wrap" data-node-id="1425:7901">
+              검차 진행
+            </p>
+          </div>
+          <div className="absolute content-stretch flex gap-[6px] items-center left-[23.58px] top-[230.46px]" data-node-id="1425:7902">
+            <div className="h-[14.474px] relative shrink-0 w-[14.9px]" data-node-id="1425:7903">
+              <img alt="" className="block max-w-none size-full" src={imgEllipse48} />
+            </div>
+            <div className="content-stretch flex items-center relative shrink-0" data-node-id="1425:7904">
+              <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1425:7905">
+                거래
+              </p>
+            </div>
+          </div>
+          <div className="absolute content-stretch flex items-center left-[23.58px] top-[279.68px]" data-node-id="1425:7906">
+            <div className="content-stretch flex gap-[7px] items-center relative shrink-0" data-node-id="1425:7907">
+              <div className="h-[14.474px] relative shrink-0 w-[14.9px]" data-node-id="1425:7908">
+                <img alt="" className="block max-w-none size-full" src={imgEllipse48} />
+              </div>
+              <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1425:7909">
+                탁송
+              </p>
+            </div>
+          </div>
+          <div className="absolute content-stretch flex items-center left-[23.58px] top-[328.9px]" data-node-id="1425:7910">
+            <div className="content-stretch flex gap-[7px] items-center relative shrink-0" data-node-id="1425:7911">
+              <div className="h-[14.474px] relative shrink-0 w-[14.9px]" data-node-id="1425:7912">
+                <img alt="" className="block max-w-none size-full" src={imgEllipse48} />
+              </div>
+              <p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1425:7913">
+                완료
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p className="absolute font-['Pretendard:Bold',sans-serif] leading-[44px] left-[calc(20.83%-4.68px)] not-italic text-[28px] text-black top-[207.65px]" data-node-id="1425:7914">
+        차량 원부 등록
+      </p>
+      <p className="absolute font-['Pretendard:Medium',sans-serif] leading-[22px] left-[calc(8.33%+202px)] not-italic text-[#161616] text-[12px] top-[2098px]" data-node-id="1425:7915">
+        삭제
+      </p>
+      <div className="-translate-x-1/2 -translate-y-1/2 absolute bg-[#2048e5] border border-[#e6e6e6] border-solid content-stretch flex h-[37px] items-center justify-center left-[calc(95.83%-172px)] overflow-clip px-[25px] py-[6px] rounded-[10px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[calc(50%+991px)] w-[118px]" data-name="loading" data-node-id="1425:7916">
+        <p className="font-['Pretendard:Medium',sans-serif] leading-[22px] not-italic relative shrink-0 text-[12px] text-white" data-node-id="1425:7917">
+          저장
+        </p>
+      </div>
+    </div>
+  );
+}

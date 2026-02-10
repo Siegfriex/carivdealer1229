@@ -9,13 +9,14 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
+import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { InspectionStatusBadge } from '@/entities/inspection/ui/InspectionStatusBadge';
 import { Button } from '@/shared/ui/Button';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { ChevronDown, ChevronUp, LayoutList, LayoutGrid, Clock, MapPin } from 'lucide-react';
 import { INSPECTION_STATUS_LABELS } from '@/entities/inspection/model/constants';
+import { InspectionListCard } from '@/widgets/InspectionListCard';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
 
 type StatusFilter = 'all' | 'draft' | 'pending' | 'assigned' | 'in_progress' | 'completed' | 'storage';
@@ -111,121 +112,89 @@ export const InspectionListPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
-
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        <GnbMinimalSidebar
-          className="!w-[249px]"
-          sectionTitle="검차"
-          searchValue={searchTerm}
-          onSearchChange={setSearchTerm}
-        />
-        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_GNB}`}>
-          {/* 배지: GNB 공통 203×37 */}
-          <div className="flex items-center gap-1.5 w-[203px] h-[37px] rounded-[39px] border border-[#d9e7fc] bg-[#eef5fe] px-5 py-2 mb-4">
-            <span className="text-body font-semibold text-primary">한국 수출차량 전문 플랫폼</span>
-          </div>
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-[28px] leading-[44px] font-bold text-gray-900">검차 신청목록</h1>
-            <div className="flex items-center gap-4">
+        <GnbListLayout
+          sidebar={{
+            type: 'minimal',
+            sectionTitle: '검차',
+            searchValue: searchTerm,
+            onSearchChange: setSearchTerm,
+          }}
+          title="검차 신청목록"
+          titleNodeId="1042:4754"
+        >
+          <div className={`${LAYOUT_CLASSES.MAIN_GNB} w-full ml-auto`}>
+            {/* 1행: 좌측 최근 1개월, 우측 리스트/카드 토글 + 검차 신청하기 */}
+            <div className="flex items-center justify-between mb-6" data-node-id="1300:6039">
               <select
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
-                className="px-3 py-2 border border-gray-200 rounded-md text-body text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="px-3 py-2 border border-gray-200 rounded-[10px] text-body text-gray-700 bg-white shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-primary"
                 aria-label="조회기간"
               >
                 {PERIOD_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
                 ))}
               </select>
-              <div className="flex rounded-md border border-gray-200 overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setViewMode('list')}
-                  className={`flex items-center gap-2 px-4 py-2 text-body font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                  aria-pressed={viewMode === 'list'}
-                >
-                  <LayoutList className="h-5 w-5" /> 리스트
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode('card')}
-                  className={`flex items-center gap-2 px-4 py-2 text-body font-medium transition-colors ${viewMode === 'card' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                  aria-pressed={viewMode === 'card'}
-                >
-                  <LayoutGrid className="h-5 w-5" /> 카드
-                </button>
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 rounded-[10px] border border-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('list')}
+                    className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                    aria-pressed={viewMode === 'list'}
+                  >
+                    <LayoutList className="h-4 w-4" /> 리스트
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('card')}
+                    className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'card' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                    aria-pressed={viewMode === 'card'}
+                  >
+                    <LayoutGrid className="h-4 w-4" /> 카드
+                  </button>
+                </div>
+                <Button size="sm" className="h-9 min-h-0 !py-2 flex items-center text-caption" onClick={() => navigate('/inspections/request')}>
+                  검차 신청하기
+                </Button>
               </div>
-              <Button size="md" onClick={() => navigate('/inspections/request')}>
-                검차 신청하기
-              </Button>
             </div>
-          </div>
 
-          <div className="mb-6">
-            <SegmentedControl
-              options={filterOptions}
-              value={statusFilter}
-              onChange={(value) => setStatusFilter(value as StatusFilter)}
-            />
-          </div>
+            {/* 상태 필터 */}
+            <div className="mb-6" data-node-id="1367:9463">
+              <SegmentedControl
+                options={filterOptions}
+                value={statusFilter}
+                onChange={(value) => setStatusFilter(value as StatusFilter)}
+              />
+            </div>
 
           {viewMode === 'card' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[15px] gap-y-[36px]">
+            <div
+              className={`grid grid-cols-3 ${LAYOUT_CLASSES.GNB_GRID} max-w-[972px] w-full mb-8`}
+              data-node-id="1042:4681"
+            >
               {inspections.length === 0 ? (
-                <div className="col-span-full p-12 text-center text-body text-gray-500 bg-white rounded-lg border border-gray-200">
+                <div className="col-span-3 p-12 text-center text-[15.627px] text-gray-500 bg-white rounded-[23.441px] border border-gray-200 shadow-[2.34px_3.13px_11.02px_rgba(0,0,0,0.05)]">
                   검차 신청 목록이 없습니다.
                 </div>
               ) : (
                 inspections.map((insp) => (
-                  <div
+                  <InspectionListCard
                     key={insp.id}
-                    className="bg-white rounded-[23px] border border-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] min-h-[243px] flex flex-col sm:flex-row"
-                  >
-                    {/* Figma 1042: 좌측 차량 이미지 영역 ~397px */}
-                    <div className="w-full sm:w-[min(100%,397px)] min-h-[160px] sm:min-h-[243px] bg-[#eef5fe] flex items-center justify-center flex-shrink-0">
-                      <span className="text-caption text-gray-400">차량 이미지</span>
-                    </div>
-                    {/* 우측: 차량번호·모델·일련번호·상태·검차일정/장소·버튼 */}
-                    <div className="flex-1 p-5 flex flex-col justify-between min-w-0">
-                      <div>
-                        <p className="text-body font-bold text-gray-900 mb-0.5">{insp.vehiclePlateNumber}</p>
-                        <p className="text-body font-medium text-gray-900 mb-0.5">{insp.vehicleModelName}</p>
-                        <p className="text-caption text-gray-500 mb-2">{insp.vehicleModelYear}년형</p>
-                        <p className="text-caption text-gray-500 mb-2">일련번호 {insp.serialNumber ?? insp.id}</p>
-                        <InspectionStatusBadge status={insp.status} size="sm" className="mb-3" />
-                        <p className="text-caption text-gray-500 flex items-center gap-1">
-                          <Clock className="h-3.5 w-3.5" />
-                          검차일정 : {insp.preferredDate} {insp.preferredTime}
-                        </p>
-                        <p className="text-caption text-gray-500 flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5" />
-                          검차장소 : {insp.location?.address ?? '-'}
-                        </p>
-                      </div>
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {insp.status === 'completed' && (
-                          <Button size="sm" className="bg-primary text-white" onClick={() => navigate(`/inspections/${insp.id}/complete`)}>
-                            검차내역 상세보기
-                          </Button>
-                        )}
-                        {insp.status !== 'completed' && (
-                          <Button size="sm" onClick={() => handleRowClick(insp)}>
-                            진행하기
-                          </Button>
-                        )}
-                        <Button size="sm" variant="secondary">거래하기</Button>
-                        <Button size="sm" variant="ghost">삭제</Button>
-                        <Button size="sm" variant="ghost">수정하기</Button>
-                      </div>
-                    </div>
-                  </div>
+                    inspection={insp}
+                    onProgress={() => handleRowClick(insp)}
+                    onComplete={() => navigate(`/inspections/${insp.id}/complete`)}
+                    onTrade={() => {}}
+                  />
                 ))
               )}
             </div>
           ) : (
-          <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
+          <div className={`w-full ${LAYOUT_CLASSES.MAIN_GNB} flex flex-col`} data-node-id="1037:5126">
             {inspections.length === 0 ? (
-              <div className="text-center py-12 px-6">
+              <div className="text-center py-12 px-6 bg-white rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
                 <p className="text-body text-gray-600">검차 신청 목록이 없습니다.</p>
                 <Button className="mt-4" onClick={() => navigate('/inspections/request')}>
                   검차 신청하기
@@ -233,8 +202,11 @@ export const InspectionListPage = () => {
               </div>
             ) : (
             <>
-            {/* 테이블 헤더 Figma 1193:8810: h-44, 상태·일련번호·차량번호·검차 일정·검차 장소 */}
-            <div className="grid grid-cols-[auto_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 h-11 items-center bg-white border-b border-gray-200 text-caption font-semibold text-gray-900">
+            {/* 테이블 헤더 Figma 1193:8810: 974×44, sticky — 스크롤 시 컬럼 의미 유지 */}
+            <div
+              className={`sticky top-0 z-10 grid grid-cols-[28px_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 h-11 items-center bg-white rounded-[15px] text-caption font-semibold text-gray-900 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] ${LAYOUT_CLASSES.MAIN_GNB}`}
+              data-node-id="1193:8810"
+            >
               <input type="checkbox" className="rounded border-gray-300" aria-label="전체 선택" />
               <span>상태</span>
               <span>일련번호</span>
@@ -243,10 +215,15 @@ export const InspectionListPage = () => {
               <span>검차 장소</span>
               <span className="w-8" aria-hidden />
             </div>
+            <div className="flex flex-col gap-y-2 mt-2 w-full max-w-[974px]">
             {inspections.map((insp) => {
               const isExpanded = expandedIds.has(insp.id);
               return (
-                <div key={insp.id} className="border-b border-gray-200 last:border-b-0">
+                <div
+                  key={insp.id}
+                  className={`w-full ${LAYOUT_CLASSES.GNB_LIST_ROW_CARD} overflow-hidden`}
+                  data-node-id="1037:5391"
+                >
                   <div
                     role="button"
                     tabIndex={0}
@@ -262,7 +239,7 @@ export const InspectionListPage = () => {
                         else toggleExpand(insp.id);
                       }
                     }}
-                    className="grid grid-cols-[auto_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 min-h-[56px] py-3 items-center hover:bg-gray-50 cursor-pointer transition-fast"
+                    className="grid grid-cols-[28px_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 min-h-[56px] py-3 items-center hover:bg-gray-50/80 cursor-pointer transition-fast"
                   >
                     <input
                       type="checkbox"
@@ -326,11 +303,13 @@ export const InspectionListPage = () => {
                 </div>
               );
             })}
+            </div>
             </>
             )}
           </div>
           )}
-        </main>
+          </div>
+        </GnbListLayout>
       </div>
     </div>
   );

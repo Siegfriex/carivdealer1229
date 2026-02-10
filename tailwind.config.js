@@ -65,8 +65,9 @@ export default {
       },
       fontFamily: {
         sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'sans-serif'],
+        display: ['SUITE Variable', 'Pretendard', 'sans-serif'],
       },
-      /* Figma SSOT 1440px 기준 px 정합 (rem/vw 제거) */
+      /* Figma SSOT 1440px 기준 px 정합 (mcp_outputs) */
       fontSize: {
         'h1': ['36px', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
         'h2': ['24px', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
@@ -75,6 +76,10 @@ export default {
         'body': ['14px', { lineHeight: '1.5' }],
         'button': ['12px', { lineHeight: '1.5' }],
         'caption': ['10px', { lineHeight: '1.5' }],
+        /* Form/Section — design_context 공통, 페이지별 px 하드코딩 대체 */
+        'section-title': ['var(--text-section-title)', { lineHeight: '1.2' }],
+        'form-label': ['var(--text-form-label)', { lineHeight: '1.25' }],
+        'form-input': ['var(--text-form-input)', { lineHeight: '1.2' }],
       },
       spacing: {
         '1': '4px',
@@ -91,11 +96,21 @@ export default {
         '24': '96px',
       },
       borderRadius: {
+        'xs': 'var(--radius-xs)',
         'sm': '4px',
-        'md': '10px',
-        'lg': '20px',
+        'md': 'var(--radius-md)',
+        'lg': 'var(--radius-lg)',
+        'card-sm': 'var(--radius-card-sm)',
+        'section': 'var(--radius-section)',
+        'card': 'var(--radius-card)',
+        'badge': 'var(--radius-badge)',
+        'cta': 'var(--radius-cta)',
+        'pill': 'var(--radius-pill)',
       },
       boxShadow: {
+        'figma-card': 'var(--shadow-figma-card)',
+        'figma-topbar': 'var(--shadow-figma-topbar)',
+        'figma-location': 'var(--shadow-figma-location)',
         'sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
         'md': '0 3px 10px rgba(0, 0, 0, 0.05)',
         'lg': '0 10px 25px rgba(0, 0, 0, 0.1)',

@@ -43,6 +43,10 @@ export interface GnbListLayoutProps {
   footer?: ReactNode;
   /** data-node-id for main (선택) */
   mainNodeId?: string;
+  /** data-node-id for title (선택, 예: 1042:4754) */
+  titleNodeId?: string;
+  /** data-node-id for badge (선택, 예: 1714:22887) */
+  badgeNodeId?: string;
 }
 
 function renderSidebar(sidebar: GnbListLayoutSidebar) {
@@ -75,7 +79,14 @@ export function GnbListLayout({
   children,
   footer,
   mainNodeId,
+  titleNodeId,
+  badgeNodeId,
 }: GnbListLayoutProps) {
+  const badgeEl = (
+    <PlatformBadge icon={<img src={iconBriefcase} alt="" className="h-[18px] w-[18px] object-contain" aria-hidden />} className="mb-4">
+      {badgeText}
+    </PlatformBadge>
+  );
   return (
     <>
       {renderSidebar(sidebar)}
@@ -83,10 +94,8 @@ export function GnbListLayout({
         className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_GNB}`}
         data-node-id={mainNodeId}
       >
-        <PlatformBadge icon={<img src={iconBriefcase} alt="" className="h-[18px] w-[18px] object-contain" aria-hidden />} className="mb-4">
-          {badgeText}
-        </PlatformBadge>
-        <h1 className={`${LAYOUT_CLASSES.GNB_TITLE} font-bold text-gray-900 mb-4`}>{title}</h1>
+        {badgeNodeId ? <div data-node-id={badgeNodeId}>{badgeEl}</div> : badgeEl}
+        <h1 className={`${LAYOUT_CLASSES.GNB_TITLE} font-bold text-gray-900 mb-4`} data-node-id={titleNodeId}>{title}</h1>
         {children}
       </main>
       {footer != null && footer}

@@ -6,6 +6,19 @@
 
 ---
 
+## Figma 에셋 URL 다운로드 불가
+
+**Figma 에셋 URL**(`https://www.figma.com/api/mcp/asset/...`)은 **인증이 필요해** 스크립트/CI에서 직접 다운로드할 수 없습니다.  
+실제 이미지 파일이 필요하면 **[Figma 이미지 다운로드 방법](FIGMA_IMAGE_DOWNLOAD.md)**(수동 Export 또는 REST API + `scripts/figma-download-images.mjs`)을 사용하세요.  
+구현 시 다음 원칙을 따릅니다.
+
+- **구분선**: Figma Line 에셋 대신 **CSS `border`** 로 구현.
+- **상태 점**: Figma Ellipse 에셋 대신 **`rounded-full` + 색상** 으로 구현.
+- **이미지 URL**: 코드에서 사용할 Figma 에셋 URL은 **상수 파일**에 두어, 나중에 CDN/Storage URL로 **교체 가능**하게 둠.
+  - 예: `src/entities/vehicle/model/figma-assets.ts` (VehicleCard 1636-10115)
+
+---
+
 ## 추적성 테이블
 
 | 로컬 파일명 | 원본 nodeId (MCP 콜링 페이지) | 용도 | import 경로 (파일 또는 컴포넌트) |
@@ -30,6 +43,9 @@
 | 1425-8153_리스트_list.png | 1425:8153 (나의매물목록) | 리스트 뷰 토글 아이콘 | pages/admin/VehicleListPage.tsx |
 | 1121-5308_검차일정_clock.png | 1121:5308 (검차자 매칭중) | 검차 일정 아이콘 | pages/admin/inspection/InspectionProgressPage.tsx |
 | 1121-5308_검차장소_map.png | 1121:5308 (검차자 매칭중) | 검차 장소 아이콘 | pages/admin/inspection/InspectionProgressPage.tsx |
+
+**에셋 미사용(구현 대체)**  
+| (로컬 파일 없음) | 1636:10115 (VehicleCard) | 구분선 → border, 상태 점 → rounded-full+색상. URL만 상수: `entities/vehicle/model/figma-assets.ts` | entities/vehicle/ui/VehicleCard.tsx |
 
 **추가 시**: 위 컬럼 규칙으로 한 행씩 추가. 로컬 파일명은 `src/shared/figma_image/` 기준 상대 경로 또는 파일명만 기입.
 

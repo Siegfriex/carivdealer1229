@@ -264,7 +264,7 @@ flowchart TD
 | **O** | 화면: §3.5_1418-20498_차량등록_비대면_랜딩 → 원부등록-2/-1 → §3.5_1418-20576_차량등록완료_확인. |
 | **E** | lookup 중복 시 에러 메시지. OCR 실패 시 수동 입력. |
 
-**FSD**: `pages` / slice: `vehicle` (VehicleRegisterEntryPage, VehicleRegisterStep1Page, VehicleRegisterStep2Page, VehicleRegistrationCompletePage); `features`: vehicle/register-form; `entities`: vehicle.
+**FSD**: `pages` / slice: `vehicle` (VehicleRegisterEntryPage, VehicleRegisterStep1Page, VehicleRegistrationCompletePage); `features`: vehicle/register-form; `entities`: vehicle. (차량원부 다음→검차신청 직행, Step2 페이지 제거)
 
 **참조 이미지(전체 노드)**
 
