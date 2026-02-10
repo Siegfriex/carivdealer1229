@@ -1,8 +1,8 @@
 /**
  * InspectionProgressPage
- * 검차 진행 상황 (Figma §3.6 nodeId: 1425:10137 매칭중, 1425:10663 픽업/이동중, 1425:10813 완료)
- * 참조: FIGMASCR0208/§3.6_검차/§3.6_1425-10137_검차진행_매칭중*.png
- * 레이아웃: 사이드바(검색·차량 업로드|검차 진행|거래|탁송|완료) + 차량 카드 + 검차자 매칭/이동 카드 + 4단계 스테퍼
+ * 검차 진행 상황 (Figma §3.6 nodeId: 1121-5308 매칭중, 1193-8343 이동중, 1425-10813 완료)
+ * 참조: impl_plans/1121-5308_구현계획.md, 1193-8343_구현계획.md
+ * 레이아웃: 사이드바 249px(1121:5350) + 메인 제목(1121:5381) + 차량 카드 972×243(1193:9066) + 검차 카드 972×473(1193:7871) + 4단계 스테퍼
  */
 
 import { useState, useEffect, useMemo } from 'react';
@@ -11,19 +11,18 @@ import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Card } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
-import { User, MapPin, Clock, Check, Truck, CheckCircle2 } from 'lucide-react';
+import { User, Check, Truck, CheckCircle2 } from 'lucide-react';
+import imgClock from '@/shared/figma_image/1121-5308_검차일정_clock.png';
+import imgMap from '@/shared/figma_image/1121-5308_검차장소_map.png';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
+import { isRunDev } from '@/shared/config/runDev';
 
 type ProgressStage = 'matching' | 'en_route' | 'complete';
 
-const STAGE_LABELS: Record<ProgressStage, string> = {
-  matching: '검차자 매칭중',
-  en_route: '검차자 이동중',
-  complete: '검차완료',
-};
-
 const STEPPER_LABELS = ['검차자 매칭중', '검차자 매칭 완료', '검차중', '검차완료'];
+
+const FALLBACK_TIMESTAMP = { seconds: 0, toDate: () => new Date() } as unknown as import('firebase/firestore').Timestamp;
 
 function useProgressStage(): { inspectionId: string; stage: ProgressStage } {
   const { inspectionId: paramId } = useParams<{ inspectionId: string }>();
@@ -43,10 +42,10 @@ function useSetStageInUrl() {
   };
 }
 
-/** 차량 업로드|검차 진행|거래|탁송|완료 사이드바 (참조 10137) */
+/** 차량 업로드|검차 진행|거래|탁송|완료 사이드바 (Figma 1121:5350 — 레이아웃 스펙 width 249px) */
 function InspectionProgressSidebar() {
   return (
-    <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-64px)] p-4">
+    <aside className="w-[249px] flex-shrink-0 bg-white border-r border-gray-200 min-h-[calc(100vh-64px)] p-4" data-node-id="1121:5350">
       <div className="mb-6">
         <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
         <input
@@ -131,7 +130,7 @@ export const InspectionProgressPage = () => {
     [inspectionId]
   );
 
-  const vehicle = useMemo((): InspectionWithVehicle | null => {
+  const vehicle = useMemo((): InspectionWithVehicle => {
     if (inspection) return inspection;
     return {
       id: inspectionId || 'insp-1',
@@ -142,9 +141,9 @@ export const InspectionProgressPage = () => {
       vehiclePlateNumber: '123가 4567',
       vehicleModelName: 'G70 3T 스포츠 엘리트',
       vehicleModelYear: '2020',
-      createdAt: inspection?.createdAt ?? ({} as InspectionWithVehicle['createdAt']),
-      updatedAt: inspection?.updatedAt ?? ({} as InspectionWithVehicle['updatedAt']),
-    } as InspectionWithVehicle;
+      createdAt: FALLBACK_TIMESTAMP,
+      updatedAt: FALLBACK_TIMESTAMP,
+    };
   }, [inspection, inspectionId]);
 
   const locationDisplay = vehicle?.location?.address ?? '인천광역시 서구 봉수대로 158';
@@ -164,6 +163,22 @@ export const InspectionProgressPage = () => {
     setStageInUrl('complete');
   };
 
+  /** 다음단계: 개발 모드에서는 필수 입력 없이 다음 플로우로 이동 (Figma 1121-5308, 1193-8343 요구) */
+  const handleNextStage = () => {
+    if (localStage === 'matching') {
+      setLocalStage('en_route');
+      setStageInUrl('en_route');
+    } else if (localStage === 'en_route') {
+      setLocalStage('complete');
+      setStageInUrl('complete');
+    }
+  };
+
+  /** 임시저장: 매칭중/이동중 단계에서 목록으로 저장 후 이동 (Figma 요구) */
+  const handleSaveDraft = () => {
+    navigate('/inspections');
+  };
+
   const handleGoToHistory = () => navigate('/inspections/history');
   const handleGoToComplete = () => inspectionId && navigate(`/inspections/${inspectionId}/complete`);
 
@@ -174,11 +189,11 @@ export const InspectionProgressPage = () => {
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <InspectionProgressSidebar />
 
-        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING}`}>
-          <h1 className="text-h1 font-bold text-gray-900 mb-8">검차 진행상황</h1>
+        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} max-w-[972px]`}>
+          <h1 className="text-h1 font-bold text-gray-900 mb-8" data-node-id="1121:5381">검차 진행상황</h1>
 
-          {/* 카드 1: 검차 차량 정보 (10137 공통) */}
-          <Card className="mb-6 p-6">
+          {/* 카드 1: 검차 차량 정보 (Figma 1193:9066 — 974×243, 레이아웃 스펙) */}
+          <Card className="mb-6 p-6 w-full max-w-[972px]" data-node-id="1193:9066">
             <div className="flex gap-6">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-4">
@@ -208,11 +223,11 @@ export const InspectionProgressPage = () => {
                 <p className="text-body text-gray-700 mb-1">{vehicle?.vehicleModelName}</p>
                 <p className="text-caption text-gray-500 mb-3">{vehicle?.vehicleModelYear}년형</p>
                 <div className="flex items-center gap-2 text-body text-gray-700 mb-2">
-                  <Clock className="h-4 w-4 text-gray-400 shrink-0" />
+                  <img src={imgClock} alt="" className="h-4 w-4 shrink-0" aria-hidden />
                   <span>검차 일정: {dateDisplay}</span>
                 </div>
                 <div className="flex items-center gap-2 text-body text-gray-700 mb-4">
-                  <MapPin className="h-4 w-4 text-gray-400 shrink-0" />
+                  <img src={imgMap} alt="" className="h-4 w-4 shrink-0" aria-hidden />
                   <span>검차 장소: {locationDisplay}</span>
                 </div>
                 <Button variant="secondary" size="sm" className="mt-auto" onClick={handleGoToComplete}>
@@ -222,10 +237,10 @@ export const InspectionProgressPage = () => {
             </div>
           </Card>
 
-          {/* 5: 검차자 매칭중 */}
+          {/* 5: 검차자 매칭중 (Figma 1193:7871 — 972×473) */}
           {localStage === 'matching' && (
-            <Card className="mb-6 p-6">
-              <h2 className="text-h3 font-bold text-gray-900 mb-4">검차자 매칭중</h2>
+            <Card className="mb-6 p-6 w-full max-w-[972px]" data-node-id="1193:7871">
+              <h2 className="text-h3 font-bold text-gray-900 mb-4" data-node-id="1193:7872">검차자 매칭중</h2>
               <p className="text-body text-gray-700 mb-2">
                 2026년 1월 10일 (일) 오후 11:00
               </p>
@@ -243,9 +258,9 @@ export const InspectionProgressPage = () => {
             </Card>
           )}
 
-          {/* 5-1: 검차자 이동중 */}
+          {/* 5-1: 검차자 이동중 (Figma 1193-8343, 동일 카드 스펙 972×473) */}
           {localStage === 'en_route' && (
-            <Card className="mb-6 p-6">
+            <Card className="mb-6 p-6 w-full max-w-[972px]" data-node-id="1193:7871">
               <h2 className="text-h3 font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Truck className="h-5 w-5 text-green-600" />
                 검차자 이동중
@@ -268,7 +283,7 @@ export const InspectionProgressPage = () => {
           {/* 5-2: 검차완료 */}
           {localStage === 'complete' && (
             <>
-              <Card className="mb-6 p-6">
+              <Card className="mb-6 p-6 w-full max-w-[972px]">
                 <h2 className="text-h3 font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-600" />
                   검차완료
@@ -289,23 +304,31 @@ export const InspectionProgressPage = () => {
           )}
 
           {(localStage === 'matching' || localStage === 'en_route') && (
-            <div className="flex gap-4">
+            <div className="flex flex-wrap items-center gap-4">
               <Button variant="secondary" onClick={() => navigate('/inspections')}>
                 목록으로
               </Button>
+              <Button variant="secondary" onClick={handleSaveDraft}>
+                임시저장
+              </Button>
+              {isRunDev() && (
+                <Button onClick={handleNextStage}>
+                  다음단계
+                </Button>
+              )}
             </div>
           )}
         </main>
       </div>
 
-      {localStage === 'matching' && (
+      {isRunDev() && localStage === 'matching' && (
         <DevSkipButton
           label="DEV:SKIP"
           subLabel="검차자 이동중으로"
           onClick={handleDevSkipToEnRoute}
         />
       )}
-      {localStage === 'en_route' && (
+      {isRunDev() && localStage === 'en_route' && (
         <DevSkipButton
           label="스킵"
           subLabel="검차완료로"

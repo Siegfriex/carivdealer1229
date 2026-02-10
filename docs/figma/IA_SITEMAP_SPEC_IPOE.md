@@ -110,7 +110,7 @@ flowchart TD
 - **API**: [CarivDealer_api_v1.md](../CarivDealer_api_v1.md) 공통(응답 포맷·인증·Base URL).
 - **ERD**: 해당 없음.
 
----
+--- 
 
 ### 4.2 회원가입 이전 GNB
 

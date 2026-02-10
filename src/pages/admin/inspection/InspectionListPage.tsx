@@ -1,8 +1,9 @@
 /**
  * GNB 검차 탭 랜딩. 검차요청내역 리스트/카드뷰. IA §4.4.
+ * Figma 1037-5126(리스트), 1037-5673(선택 카드+상세), 1042-4681(헤더+카드) 레이아웃 반영.
  * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.4, §4.10
- * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
- * 라우트: /inspections. Figma 1425-9445, 1425-9875.
+ * @see docs/figmaMCP/impl_plans/1037-5126_1037-5673_1042-4681_구현계획.md
+ * 라우트: /inspections.
  */
 
 import { useState, useMemo } from 'react';
@@ -13,16 +14,10 @@ import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { InspectionStatusBadge } from '@/entities/inspection/ui/InspectionStatusBadge';
 import { Button } from '@/shared/ui/Button';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
-import { ChevronDown, ChevronUp, LayoutList, LayoutGrid } from 'lucide-react';
+import { ChevronDown, ChevronUp, LayoutList, LayoutGrid, Clock, MapPin } from 'lucide-react';
 import type { InspectionStatus } from '@/entities/inspection/model/types';
+import { INSPECTION_STATUS_LABELS } from '@/entities/inspection/model/constants';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
-
-const STATUS_LABELS: Record<InspectionStatus, string> = {
-  pending: '검차자 매칭중',
-  assigned: '검차자 매칭완료',
-  in_progress: '검차 진행중',
-  completed: '검차 완료',
-};
 
 type StatusFilter = 'all' | 'draft' | 'pending' | 'assigned' | 'in_progress' | 'completed' | 'storage';
 type ViewMode = 'list' | 'card';
@@ -180,34 +175,51 @@ export const InspectionListPage = () => {
                 inspections.map((insp) => (
                   <div
                     key={insp.id}
-                    className="bg-white rounded-lg border border-gray-200 p-6 shadow-md"
+                    className="bg-white rounded-[23px] border border-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] min-h-[243px] flex flex-col sm:flex-row"
                   >
-                    <div className="w-full h-32 bg-gray-100 rounded mb-4 flex items-center justify-center">
+                    {/* Figma 1042: 좌측 차량 이미지 영역 ~397px */}
+                    <div className="w-full sm:w-[min(100%,397px)] min-h-[160px] sm:min-h-[243px] bg-[#eef5fe] flex items-center justify-center flex-shrink-0">
                       <span className="text-caption text-gray-400">차량 이미지</span>
                     </div>
-                    <p className="text-body font-medium text-gray-900 mb-1">{insp.vehiclePlateNumber}</p>
-                    <p className="text-body text-gray-600 mb-2">{insp.vehicleModelName} {insp.vehicleModelYear}</p>
-                    <p className="text-caption text-gray-500 mb-3">
-                      검차일정: {insp.preferredDate} {insp.preferredTime}
-                    </p>
-                    <p className="text-caption text-gray-500 mb-4">일련번호: {insp.id}</p>
-                    <InspectionStatusBadge status={insp.status} size="sm" className="mb-4" />
-                    <div className="flex flex-wrap gap-2">
-                      {insp.status === 'completed' && (
-                        <Button size="sm" variant="secondary" onClick={() => navigate(`/inspections/${insp.id}/complete`)}>
-                          검차내역 상세보기
-                        </Button>
-                      )}
-                      <Button size="sm" variant="secondary">거래하기</Button>
-                      <Button size="sm" variant="ghost">삭제</Button>
-                      <Button size="sm" variant="ghost">수정하기</Button>
+                    {/* 우측: 차량번호·모델·일련번호·상태·검차일정/장소·버튼 */}
+                    <div className="flex-1 p-5 flex flex-col justify-between min-w-0">
+                      <div>
+                        <p className="text-body font-bold text-gray-900 mb-0.5">{insp.vehiclePlateNumber}</p>
+                        <p className="text-body font-medium text-gray-900 mb-0.5">{insp.vehicleModelName}</p>
+                        <p className="text-caption text-gray-500 mb-2">{insp.vehicleModelYear}년형</p>
+                        <p className="text-caption text-gray-500 mb-2">일련번호 {insp.serialNumber ?? insp.id}</p>
+                        <InspectionStatusBadge status={insp.status} size="sm" className="mb-3" />
+                        <p className="text-caption text-gray-500 flex items-center gap-1">
+                          <Clock className="h-3.5 w-3.5" />
+                          검차일정 : {insp.preferredDate} {insp.preferredTime}
+                        </p>
+                        <p className="text-caption text-gray-500 flex items-center gap-1">
+                          <MapPin className="h-3.5 w-3.5" />
+                          검차장소 : {insp.location?.address ?? '-'}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {insp.status === 'completed' && (
+                          <Button size="sm" className="bg-primary text-white" onClick={() => navigate(`/inspections/${insp.id}/complete`)}>
+                            검차내역 상세보기
+                          </Button>
+                        )}
+                        {insp.status !== 'completed' && (
+                          <Button size="sm" onClick={() => handleRowClick(insp)}>
+                            진행하기
+                          </Button>
+                        )}
+                        <Button size="sm" variant="secondary">거래하기</Button>
+                        <Button size="sm" variant="ghost">삭제</Button>
+                        <Button size="sm" variant="ghost">수정하기</Button>
+                      </div>
                     </div>
                   </div>
                 ))
               )}
             </div>
           ) : (
-          <div className="bg-white rounded-lg shadow-md border border-gray-200 divide-y divide-gray-200">
+          <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
             {inspections.length === 0 ? (
               <div className="text-center py-12 px-6">
                 <p className="text-body text-gray-600">검차 신청 목록이 없습니다.</p>
@@ -217,8 +229,8 @@ export const InspectionListPage = () => {
               </div>
             ) : (
             <>
-            {/* 테이블 헤더 (참조 §3.6_1425-9445) */}
-            <div className="grid grid-cols-[auto_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 py-3 bg-gray-50 border-b border-gray-200 text-caption font-medium text-gray-500">
+            {/* 테이블 헤더 Figma 1193:8810: h-44, 상태·일련번호·차량번호·검차 일정·검차 장소 */}
+            <div className="grid grid-cols-[auto_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 h-11 items-center bg-white border-b border-gray-200 text-caption font-semibold text-gray-900">
               <input type="checkbox" className="rounded border-gray-300" aria-label="전체 선택" />
               <span>상태</span>
               <span>일련번호</span>
@@ -246,7 +258,7 @@ export const InspectionListPage = () => {
                         else toggleExpand(insp.id);
                       }
                     }}
-                    className="grid grid-cols-[auto_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 py-4 hover:bg-gray-50 cursor-pointer transition-fast items-center"
+                    className="grid grid-cols-[auto_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 min-h-[56px] py-3 items-center hover:bg-gray-50 cursor-pointer transition-fast"
                   >
                     <input
                       type="checkbox"
@@ -255,7 +267,7 @@ export const InspectionListPage = () => {
                       aria-label={`${insp.vehiclePlateNumber} 선택`}
                     />
                     <InspectionStatusBadge status={insp.status} size="sm" />
-                    <span className="text-caption text-gray-600">{insp.id}</span>
+                    <span className="text-caption text-gray-600">{insp.serialNumber ?? insp.id}</span>
                     <div>
                       <p className="text-body font-medium text-gray-900">
                         {insp.vehiclePlateNumber} · {insp.vehicleModelName}
@@ -281,38 +293,28 @@ export const InspectionListPage = () => {
                     </button>
                   </div>
 
-                  {/* 확장 영역: 상세 (4-1) */}
+                  {/* 확장 영역: Figma 1037-5673 선택 카드 상세 — 검차일정·검차장소·검차내역 상세보기 */}
                   {isExpanded && (
-                    <div className="px-6 pb-4 pt-0 bg-gray-50 border-t border-gray-100">
-                      <div className="grid grid-cols-2 gap-4 text-body text-gray-700">
-                        <div>
-                          <span className="text-caption text-gray-500">희망일시</span>
-                          <p>{insp.preferredDate} {insp.preferredTime}</p>
-                        </div>
-                        <div>
-                          <span className="text-caption text-gray-500">평가사</span>
-                          <p>{insp.evaluatorName || '-'}</p>
-                        </div>
-                        <div>
-                          <span className="text-caption text-gray-500">상태</span>
-                          <p>{STATUS_LABELS[insp.status]}</p>
-                        </div>
+                    <div className="px-6 pb-4 pt-2 bg-[#eef5fe]/30 border-t border-gray-100">
+                      <p className={`text-caption font-semibold mb-2 ${insp.status === 'in_progress' ? 'text-[#10b981]' : 'text-gray-900'}`}>{INSPECTION_STATUS_LABELS[insp.status]}</p>
+                      <div className="flex flex-col gap-1 text-body text-gray-700">
+                        <p className="flex items-center gap-2 text-caption">
+                          <Clock className="h-4 w-4 text-gray-500" />
+                          검차일정 : {insp.preferredDate} {insp.preferredTime}
+                        </p>
+                        <p className="flex items-center gap-2 text-caption">
+                          <MapPin className="h-4 w-4 text-gray-500" />
+                          검차장소 : {insp.location?.address ?? '-'}
+                        </p>
                       </div>
-                      {insp.status !== 'completed' && (
-                        <Button
-                          size="sm"
-                          className="mt-4"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRowClick(insp);
-                          }}
-                        >
-                          진행하기
+                      {insp.status === 'completed' && (
+                        <Button size="sm" className="mt-4" onClick={(e) => { e.stopPropagation(); navigate(`/inspections/${insp.id}/complete`); }}>
+                          검차내역 상세보기
                         </Button>
                       )}
-                      {insp.status === 'completed' && (
-                        <Button size="sm" variant="secondary" className="mt-4" onClick={goToHistory}>
-                          검차내역 보기
+                      {insp.status !== 'completed' && (
+                        <Button size="sm" className="mt-4" onClick={(e) => { e.stopPropagation(); handleRowClick(insp); }}>
+                          진행하기
                         </Button>
                       )}
                     </div>

@@ -62,3 +62,10 @@
    - 위 진입 URL대로 클릭 또는 직접 이동.
 5. **로그 확인**  
    - `.cursor/register-flow.log` 열어 location/message/runId 확인.
+
+## 6. 배포 빌드에서 런데브(DEV 스킵) 활성화
+
+- **호스팅 등 배포 빌드**에서도 DEV 스킵 버튼·목업을 쓰려면 빌드 시 환경 변수 설정.
+- 예 (PowerShell): `$env:VITE_RUN_DEV='true'; npm run build`
+- 또는 `.env.production`에 `VITE_RUN_DEV=true` 추가 후 `npm run build`.
+- 그러면 `npm run dev`와 동일하게 좌하단 DEV:SKIP, 페이지별 스킵 버튼, 차량 목록 목업 등이 노출됨.

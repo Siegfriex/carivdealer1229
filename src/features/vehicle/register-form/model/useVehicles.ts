@@ -6,6 +6,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Timestamp, collection, query, where, orderBy, getDocs, Query } from 'firebase/firestore';
 import { db } from '@/shared/config/firebase';
+import { isRunDev } from '@/shared/config/runDev';
 import { vehicleSchema } from '@/entities/vehicle/model/schema';
 import type { Vehicle, VehicleStatus } from '@/entities/vehicle/model/types';
 
@@ -58,7 +59,7 @@ export const useVehicles = (options: UseVehiclesOptions = {}) => {
         return vehicleSchema.parse(data);
       });
 
-      if (import.meta.env.DEV && vehicles.length === 0) {
+      if (isRunDev() && vehicles.length === 0) {
         const mock = getMockVehicles();
         vehicles = options.status && options.status.length > 0
           ? mock.filter((v) => options.status!.includes(v.status))

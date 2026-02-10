@@ -62,7 +62,7 @@ export const InspectionRequestStep2Page = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
+      <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <aside className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}>

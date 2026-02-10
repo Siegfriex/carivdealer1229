@@ -1,0 +1,97 @@
+<frame id="1123:13487" name="F_2_판매상태 전환" x="7847" y="290.755859375" width="1440" height="1024">
+<frame id="1123:13488" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="1123:13489" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="1123:13490" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="1123:13493" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<frame id="1123:13494" name="top bar" x="0.00048828125" y="0" width="1440" height="155">
+<frame id="1123:13495" name="Group 140" x="170.00814819335938" y="41.163143157958984" width="254.76016235351562" height="13.673710823059082" />
+<frame id="1123:13514" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="1123:13515" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="1123:13516" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1123:13517" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="1123:13518" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1123:13522" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="1123:13523" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<frame id="1123:13526" name="Frame 2087328240" x="1120.3746337890625" y="84.056640625" width="149.70703125" height="40.322059631347656">
+<frame id="1123:13527" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="109.74085235595703" height="27">
+<instance id="1123:13528" name="clipboard-plus" x="-0.44449329376220703" y="2.953369140625" width="21.09326171875" height="21.09326171875" />
+<text id="1123:13529" name="tab" x="25.185346603393555" y="0" width="85" height="27" />
+</frame>
+</frame>
+<frame id="1123:13530" name="Frame 2087328238" x="170.0078125" y="94.2470703125" width="318" height="24">
+<frame id="1123:13531" name="Frame 2087328235" x="0" y="0" width="78" height="24">
+<instance id="1123:13532" name="file-search-01" x="0" y="2.5" width="19" height="19" />
+<text id="1123:13533" name="tab" x="22" y="0" width="56" height="24" />
+</frame>
+<frame id="1123:13534" name="Frame 2087328237" x="108" y="0" width="50" height="24">
+<instance id="1123:13535" name="bar-chart-12" x="0" y="2.5" width="19" height="19" />
+<text id="1123:13536" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="1123:13537" name="Frame 2087328236" x="188" y="0" width="50" height="24">
+<frame id="1123:13538" name="Cil Truck" x="0" y="2.5" width="19" height="19" />
+<text id="1123:13540" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="1123:13541" name="Frame 2087328238" x="268" y="0" width="50" height="24">
+<instance id="1123:13542" name="coins-stacked-03" x="0" y="2.5" width="19" height="19" />
+<text id="1123:13543" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+</frame>
+<line id="1123:13544" name="Line 76" x="280.2265625" y="125.1875" width="46.84765625" height="0" />
+</frame>
+<frame id="1123:13545" name="페이지" x="296.5048828125" y="1301" width="970" height="114">
+<frame id="1123:13546" name="chevron-right" x="345.1708984375" y="61.23828125" width="11.14453125" height="11.14453125" />
+<frame id="1123:13547" name="Group 2085666031" x="356.0576171875" y="40.9765625" width="257.884765625" height="32.046875">
+<frame id="1123:13548" name="Check Box Fill" x="397.4765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1123:13549" name="Check Box" x="0" y="0" width="32.046875" height="32.046875">
+<frame id="1123:13550" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1123:13551" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1123:13552" name="1" x="13.0234375" y="-1.146484375" width="6" height="29" />
+</frame>
+</frame>
+<frame id="1123:13553" name="Check Box" x="434.4765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1123:13554" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1123:13555" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1123:13556" name="2" x="12.3837890625" y="-1.146484375" width="7.2802734375" height="29" />
+</frame>
+<frame id="1123:13557" name="Check Box" x="471.4765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1123:13558" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1123:13559" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1123:13560" name="3" x="12.3837890625" y="-1.146484375" width="7.2802734375" height="29" />
+</frame>
+<frame id="1123:13561" name="Check Box" x="540.4765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1123:13562" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1123:13563" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1123:13564" name="10" x="9.274491310119629" y="-1.146484375" width="13.498046875" height="29" />
+</frame>
+<vector id="1123:13565" name="Vector" x="356.0576171875" y="42.3125" width="24.03515625" height="24.03515625" />
+<vector id="1123:13566" name="Vector" x="613.9423828125" y="42.3125" width="24.03515625" height="24.03515625" />
+<vector id="1123:13567" name="Vector" x="369.880859375" y="57.94140625" width="3.6118149757385254" height="7.223629951477051" />
+<frame id="1123:13568" name="Three Dots" x="514" y="47.6640625" width="16" height="16" />
+<vector id="1123:13570" name="Vector" x="600.119140625" y="57.94140625" width="3.6118149757385254" height="7.223629951477051" />
+</frame>
+</frame>
+<frame id="1123:13571" name="Frame 2087328320" x="529.5" y="543" width="381" height="61">
+<text id="1123:13572" name="title" x="16.5" y="0" width="348" height="61" />
+</frame>
+<frame id="1123:13573" name="Group 2085666050" x="641.20703125" y="346.328125" width="157.5859375" height="157.5859375">
+<ellipse id="1123:13574" name="Ellipse 50" x="676.599609375" y="381.720703125" width="86.80075073242188" height="86.80075073242188" />
+<ellipse id="1123:13575" name="Ellipse 51" x="641.20703125" y="346.328125" width="157.5859375" height="157.5859375" />
+<rounded-rectangle id="1123:13576" name="R-Shoppingmode" x="681.85546875" y="388.6953125" width="72.8515625" height="72.8515625" />
+</frame>
+<frame id="1123:13577" name="loading" x="570.28125" y="712" width="296" height="60">
+<text id="1123:13578" name="✏ Designing..." x="130.5" y="19" width="35" height="22" />
+</frame>
+<text id="1123:13579" name="구매제안이 오면 알람을 통해 알려드려요!" x="529.5" y="594" width="381" height="48" />
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.
+
++51

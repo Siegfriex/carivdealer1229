@@ -1,0 +1,85 @@
+<frame id="1444:7928" name="로그인 전 랜딩페이지" x="404" y="375.83203125" width="1440" height="2359">
+<frame id="1444:7929" name="Frame 2087328241" x="0" y="171" width="1440" height="641">
+<rounded-rectangle id="1444:7930" name="Mac Studio" x="686" y="211" width="653" height="490" />
+<text id="1444:7931" name="title" x="260" y="162" width="536" height="100" />
+<text id="1444:7932" name="title" x="260" y="278" width="460" height="63" />
+<frame id="1444:7933" name="Frame 2087328239" x="260" y="360.16796875" width="389" height="47">
+<text id="1444:7934" name="이메일 주소 입력" x="17" y="6" width="105" height="36" />
+<frame id="1444:7935" name="Frame 2087328240" x="235" y="4" width="149.70703125" height="40.322059631347656">
+<frame id="1444:7936" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="109.74085235595703" height="27">
+<text id="1444:7937" name="tab" x="2.602137804031372" y="0" width="85" height="27" />
+<frame id="1444:7938" name="chevron-right" x="92.13871002197266" y="6" width="15" height="15" />
+</frame>
+</frame>
+</frame>
+<frame id="1444:7940" name="chevron-right" x="484" y="490.16796875" width="15" height="15" />
+<frame id="1444:7942" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="1444:7943" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="1444:7944" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="1444:7947" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<text id="1444:7948" name="title" x="390" y="222" width="201" height="50" />
+</frame>
+<frame id="1444:7949" name="Frame 2087328242" x="0" y="819" width="1440" height="555">
+<frame id="1444:7950" name="Group 2085665986" x="716" y="137" width="549" height="117">
+<text id="1444:7951" name="title" x="773" y="210" width="492" height="44" />
+<text id="1444:7952" name="title" x="716" y="137" width="549" height="61" />
+</frame>
+<frame id="1444:7953" name="Frame 2087328240" x="1092" y="271" width="173" height="40">
+<text id="1444:7954" name="차량 업로드하기" x="26" y="11" width="115" height="18" />
+<frame id="1444:7955" name="chevron-right" x="144" y="11" width="19" height="19" />
+</frame>
+<rounded-rectangle id="1444:7957" name="MacBook Air (15 inch)" x="-139" y="-44" width="1099" height="825" />
+</frame>
+<frame id="1444:7958" name="Frame 2087328243" x="0" y="1381" width="1440" height="673">
+<rounded-rectangle id="1444:7959" name="11 1" x="-35" y="274" width="607" height="442" />
+<frame id="1444:7960" name="Group 2085665987" x="169" y="156" width="506" height="115">
+<text id="1444:7961" name="title" x="169" y="229" width="506" height="42" />
+<text id="1444:7962" name="title" x="169" y="156" width="322" height="61" />
+</frame>
+<rounded-rectangle id="1444:7963" name="image 15" x="866" y="38" width="474" height="383" />
+<rounded-rectangle id="1444:7964" name="image 12" x="606" y="337" width="475" height="306" />
+</frame>
+<frame id="1444:7965" name="Frame 2087328244" x="0" y="2066" width="1440" height="327">
+<text id="1444:7966" name="title" x="171" y="108" width="506" height="21" />
+</frame>
+<frame id="1444:7967" name="top bar" x="0.49609375" y="0" width="1440" height="155">
+<frame id="1444:7968" name="Group 140" x="170.00717163085938" y="41.161800384521484" width="254.76113891601562" height="13.673710823059082" />
+<frame id="1444:7987" name="Frame 2087328240" x="1120.3746337890625" y="84.056640625" width="149.70703125" height="40.322059631347656">
+<frame id="1444:7988" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="109.74085235595703" height="27">
+<instance id="1444:7989" name="clipboard-plus" x="-0.44449329376220703" y="2.953369140625" width="21.09326171875" height="21.09326171875" />
+<text id="1444:7990" name="tab" x="25.185346603393555" y="0" width="85" height="27" />
+</frame>
+</frame>
+<frame id="1444:7991" name="Frame 2087328238" x="170.0078125" y="94.2470703125" width="318" height="24">
+<frame id="1444:7992" name="Frame 2087328235" x="0" y="0" width="78" height="24">
+<instance id="1444:7993" name="file-search-01" x="0" y="2.5" width="19" height="19" />
+<text id="1444:7994" name="tab" x="22" y="0" width="56" height="24" />
+</frame>
+<frame id="1444:7995" name="Frame 2087328237" x="108" y="0" width="50" height="24">
+<instance id="1444:7996" name="bar-chart-12" x="0" y="2.5" width="19" height="19" />
+<text id="1444:7997" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="1444:7998" name="Frame 2087328236" x="188" y="0" width="50" height="24">
+<frame id="1444:7999" name="Cil Truck" x="0" y="2.5" width="19" height="19" />
+<text id="1444:8001" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="1444:8002" name="Frame 2087328238" x="268" y="0" width="50" height="24">
+<instance id="1444:8003" name="coins-stacked-03" x="0" y="2.5" width="19" height="19" />
+<text id="1444:8004" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+</frame>
+<frame id="1444:8005" name="Frame 2087328270" x="1120.50390625" y="33.16796875" width="149" height="30">
+<frame id="1444:8006" name="Frame 2087328269" x="19.37841796875" y="3" width="110.2431640625" height="24">
+<rounded-rectangle id="1444:8007" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1444:8008" name="로그인/회원가입" x="20.2431640625" y="0" width="90" height="24" />
+</frame>
+</frame>
+<frame id="1444:8009" name="Frame 2087328272" x="1090.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1444:8013" name="Frame 2087328271" x="1054" y="39" width="21" height="22">
+<frame id="1444:8014" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+</frame>
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.

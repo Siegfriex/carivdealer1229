@@ -7,6 +7,7 @@
 import { mockResponses } from './mockData';
 import { analyzeError } from '@/shared/lib/errorHandler';
 import { API_ENDPOINTS } from '@/shared/config/apiEndpoints';
+import { isRunDev } from '@/shared/config/runDev';
 
 /** API Base URL - Firebase Functions v2 엔드포인트 */
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
@@ -17,8 +18,8 @@ const API_TIMEOUT = 30000;
 /** OCR 전용 타임아웃 (밀리초) - 이미지 처리 시간 고려 */
 const OCR_TIMEOUT = 90000;
 
-/** 개발 환경에서만 Mock 호출 로그 출력 */
-const isDev = import.meta.env.DEV;
+/** 개발 또는 런데브(VITE_RUN_DEV) 환경에서만 Mock 호출 로그 출력 */
+const isDev = isRunDev();
 const logMockCall = (message: string, ...args: unknown[]) => {
   if (isDev) {
     console.warn(`[프로토타입] ${message}`, ...args);

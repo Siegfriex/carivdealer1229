@@ -1,0 +1,216 @@
+<frame id="1368:37364" name="로그인 후 랜딩페이지_첫 사용자" x="2750" y="589" width="1440" height="2844">
+<frame id="1368:37365" name="푸터" x="0" y="2517" width="1440" height="327">
+<text id="1368:37366" name="title" x="171" y="108" width="506" height="21" />
+</frame>
+<frame id="1368:37367" name="Frame 2087328274" x="-1.9775390625" y="144.853515625" width="1448.1298828125" height="627.71484375">
+<rounded-rectangle id="1368:37368" name="Rectangle 4188" x="1.9775390625" y="9.541015625" width="1441.7861328125" height="618.173828125" />
+<rounded-rectangle id="1368:37369" name="Rectangle 4189" x="0" y="0" width="1448.1298828125" height="625.568359375" />
+<frame id="1368:37370" name="Frame 2087328241" x="173.9775390625" y="363.146484375" width="149" height="41">
+<frame id="1368:37371" name="Frame 2087328273" x="21" y="2.5" width="107" height="36">
+<text id="1368:37372" name="지금 시작하기" x="0" y="0" width="87" height="36" />
+<frame id="1368:37373" name="chevron-right" x="92" y="10.5" width="15" height="15" />
+</frame>
+</frame>
+<text id="1368:37375" name="title" x="175.15234375" y="150.626953125" width="508" height="183" />
+</frame>
+<frame id="1368:37376" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="1368:37377" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="1368:37378" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="1368:37381" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<frame id="1368:37382" name="사용 가이드" x="0" y="737" width="1440" height="592">
+<rounded-rectangle id="1368:37383" name="Rectangle 4190" x="0" y="0" width="1440" height="592" />
+<text id="1368:37384" name="title" x="169.03515625" y="82.70703125" width="156" height="61" />
+<text id="1368:37385" name="title" x="169.0341796875" y="125.70703125" width="319" height="61" />
+<frame id="1368:37386" name="Group 2085666009" x="169.0341796875" y="221.26953125" width="213.8125" height="253.71871948242188">
+<rounded-rectangle id="1368:37387" name="Rectangle 4191" x="169.0341796875" y="221.26953125" width="208.50990295410156" height="253.71871948242188" />
+<text id="1368:37388" name="title" x="187.7361068725586" y="257.88905334472656" width="95" height="53" />
+<text id="1368:37389" name="title" x="187.37376022338867" y="238.1127414703369" width="47" height="40" />
+<text id="1368:37390" name="title" x="187.3740234375" y="305.115234375" width="195.47265625" height="108" />
+<rounded-rectangle id="1368:37391" name="L-Up Arrow" x="299.31785583496094" y="363.5838165283203" width="105.38508429608032" height="105.3850842960801" />
+</frame>
+<frame id="1368:37392" name="Group 2085666010" x="391.30126953125" y="221.273193359375" width="208.50990295410156" height="253.71871948242188">
+<rounded-rectangle id="1368:37393" name="Rectangle 4191" x="391.3012953659636" y="221.2731456726906" width="208.50990295410156" height="253.71871948242188" />
+<text id="1368:37394" name="title" x="410.0032215118408" y="257.8926696777344" width="77" height="53" />
+<text id="1368:37395" name="title" x="409.64087677001953" y="238.1163558959961" width="48" height="40" />
+<text id="1368:37396" name="title" x="409.64087677001953" y="305.11871337890625" width="176.74681091308594" height="108" />
+<rounded-rectangle id="1368:37397" name="L-Search" x="509.8914108276367" y="378.03065490722656" width="76.49581909179688" height="76.49581909179688" />
+</frame>
+<frame id="1368:37398" name="Group 2085666011" x="613.567626953125" y="221.273193359375" width="211.1604461669922" height="253.71871948242188">
+<rounded-rectangle id="1368:37399" name="Rectangle 4191" x="613.5677393239166" y="221.27318543143338" width="208.50990295410156" height="253.71871948242188" />
+<text id="1368:37400" name="title" x="632.2694339752197" y="257.8926696777344" width="77" height="53" />
+<text id="1368:37401" name="title" x="631.9070873260498" y="238.1163558959961" width="49" height="40" />
+<text id="1368:37402" name="title" x="631.9070873260498" y="305.11871337890625" width="176.74681091308594" height="43" />
+<rounded-rectangle id="1368:37403" name="L-Newspaper" x="749.2077484130859" y="369.90362548828125" width="99.5787884840197" height="99.62906535746333" />
+</frame>
+<frame id="1368:37404" name="Group 2085666012" x="838.48583984375" y="221.26953125" width="208.5099334716797" height="253.71871948242188">
+<rounded-rectangle id="1368:37405" name="Rectangle 4191" x="838.4858021551918" y="221.26953125" width="208.50990295410156" height="253.71871948242188" />
+<text id="1368:37406" name="title" x="857.1877288818359" y="257.88905334472656" width="77" height="53" />
+<text id="1368:37407" name="title" x="856.8244800567627" y="238.1127414703369" width="49" height="40" />
+<text id="1368:37408" name="title" x="856.8244800567627" y="305.11510467529297" width="176.74681091308594" height="43" />
+<rounded-rectangle id="1368:37409" name="R-Shopping Cart" x="952.2262649536133" y="378.0487365722656" width="81.60942077636719" height="81.60942077636719" />
+</frame>
+<frame id="1368:37410" name="Group 2085666015" x="1060.751953125" y="221.27294921875" width="208.50990295410156" height="253.71871948242188">
+<frame id="1368:37411" name="Group 2085666013" x="1060.7520142279827" y="221.2729015320656" width="208.50990295410156" height="253.71871948242188">
+<rounded-rectangle id="1368:37412" name="Rectangle 4191" x="1060.7520753309655" y="221.27285384538118" width="208.50990295410156" height="253.71871948242188" />
+<text id="1368:37413" name="title" x="1079.4540024481976" y="257.89237785042496" width="77" height="53" />
+<text id="1368:37414" name="title" x="1079.0907517157757" y="238.11606406868668" width="49" height="40" />
+<text id="1368:37415" name="title" x="1079.0907517157757" y="305.11842155159684" width="176.74681091308594" height="86" />
+</frame>
+<rounded-rectangle id="1368:37416" name="L-Dollar Coin" x="1173.490379333496" y="380.22642517089844" width="86.64639282226562" height="74.3006591796875" />
+</frame>
+</frame>
+<frame id="1368:37417" name="자주묻는 질문" x="-1" y="1329" width="1437" height="1195">
+<frame id="1368:37418" name="Group 2085666016" x="171.677734375" y="93.3046875" width="1096" height="791.671875">
+<text id="1368:37419" name="title" x="172.11328125" y="136.3046875" width="410" height="61" />
+<text id="1368:37420" name="title" x="172.11328125" y="93.3046875" width="315" height="61" />
+<rounded-rectangle id="1368:37421" name="Rectangle 4192" x="172.11328125" y="216.67578125" width="1095.12890625" height="668.30078125" />
+<frame id="1368:37422" name="Frame 2087328275" x="171.677734375" y="231.36328125" width="1096" height="85">
+<frame id="1368:37423" name="Frame 2087328278" x="48" y="16" width="1000" height="61">
+<frame id="1368:37424" name="Frame 2087328277" x="0" y="0" width="368.00390625" height="61">
+<frame id="1368:37425" name="Frame 2087328276" x="0" y="16.998046875" width="27.00390625" height="27.00390625">
+<frame id="1368:37426" name="Question Lg" x="4" y="4.461658477783203" width="18.080589294433594" height="18.080589294433594" />
+</frame>
+<text id="1368:37428" name="title" x="42.00390625" y="0" width="326" height="61" />
+</frame>
+<frame id="1368:37429" name="chevron-right" x="1000" y="17.45947265625" width="26.0810546875" height="26.0810546875" />
+</frame>
+<line id="1368:37431" name="Line 77" x="48" y="85" width="999.9892578125" height="0.00008840274495014455" />
+</frame>
+<frame id="1368:37432" name="Frame 2087328276" x="171.677734375" y="316.36328125" width="1096" height="85">
+<frame id="1368:37433" name="Frame 2087328278" x="48" y="16" width="1000" height="61">
+<frame id="1368:37434" name="Frame 2087328277" x="0" y="0" width="294.00390625" height="61">
+<frame id="1368:37435" name="Frame 2087328276" x="0" y="16.998046875" width="27.00390625" height="27.00390625">
+<frame id="1368:37436" name="Question Lg" x="4" y="4.461658477783203" width="18.080589294433594" height="18.080589294433594" />
+</frame>
+<text id="1368:37438" name="title" x="42.00390625" y="0" width="252" height="61" />
+</frame>
+<frame id="1368:37439" name="chevron-right" x="1000" y="17.45947265625" width="26.0810546875" height="26.0810546875" />
+</frame>
+<line id="1368:37441" name="Line 77" x="48" y="85" width="999.9892578125" height="0.00008840274495014455" />
+</frame>
+<frame id="1368:37442" name="Frame 2087328277" x="171.677734375" y="401.36328125" width="1096" height="85">
+<frame id="1368:37443" name="Frame 2087328278" x="48" y="16" width="1000" height="61">
+<frame id="1368:37444" name="Frame 2087328277" x="0" y="0" width="389.00390625" height="61">
+<frame id="1368:37445" name="Frame 2087328276" x="0" y="16.998046875" width="27.00390625" height="27.00390625">
+<frame id="1368:37446" name="Question Lg" x="4" y="4.461658477783203" width="18.080589294433594" height="18.080589294433594" />
+</frame>
+<text id="1368:37448" name="title" x="42.00390625" y="0" width="347" height="61" />
+</frame>
+<frame id="1368:37449" name="chevron-right" x="1000" y="17.45947265625" width="26.0810546875" height="26.0810546875" />
+</frame>
+<line id="1368:37451" name="Line 77" x="48" y="85" width="999.9892578125" height="0.00008840274495014455" />
+</frame>
+<frame id="1368:37452" name="Frame 2087328278" x="171.677734375" y="486.36328125" width="1096" height="85">
+<frame id="1368:37453" name="Frame 2087328278" x="48" y="16" width="1000" height="61">
+<frame id="1368:37454" name="Frame 2087328277" x="0" y="0" width="342.00390625" height="61">
+<frame id="1368:37455" name="Frame 2087328276" x="0" y="16.998046875" width="27.00390625" height="27.00390625">
+<frame id="1368:37456" name="Question Lg" x="4" y="4.461658477783203" width="18.080589294433594" height="18.080589294433594" />
+</frame>
+<text id="1368:37458" name="title" x="42.00390625" y="0" width="300" height="61" />
+</frame>
+<frame id="1368:37459" name="chevron-right" x="1000" y="17.45947265625" width="26.0810546875" height="26.0810546875" />
+</frame>
+<line id="1368:37461" name="Line 77" x="48" y="85" width="999.9892578125" height="0.00008840274495014455" />
+</frame>
+<frame id="1368:37462" name="Frame 2087328279" x="171.677734375" y="571.36328125" width="1096" height="85">
+<frame id="1368:37463" name="Frame 2087328278" x="48" y="16" width="1000" height="61">
+<frame id="1368:37464" name="Frame 2087328277" x="0" y="0" width="368.00390625" height="61">
+<frame id="1368:37465" name="Frame 2087328276" x="0" y="16.998046875" width="27.00390625" height="27.00390625">
+<frame id="1368:37466" name="Question Lg" x="4" y="4.461658477783203" width="18.080589294433594" height="18.080589294433594" />
+</frame>
+<text id="1368:37468" name="title" x="42.00390625" y="0" width="326" height="61" />
+</frame>
+<frame id="1368:37469" name="chevron-right" x="1000" y="17.45947265625" width="26.0810546875" height="26.0810546875" />
+</frame>
+<line id="1368:37471" name="Line 77" x="48" y="85" width="999.9892578125" height="0.00008840274495014455" />
+</frame>
+<frame id="1368:37472" name="Frame 2087328280" x="171.677734375" y="656.36328125" width="1096" height="85">
+<frame id="1368:37473" name="Frame 2087328278" x="48" y="16" width="1000" height="61">
+<frame id="1368:37474" name="Frame 2087328277" x="0" y="0" width="368.00390625" height="61">
+<frame id="1368:37475" name="Frame 2087328276" x="0" y="16.998046875" width="27.00390625" height="27.00390625">
+<frame id="1368:37476" name="Question Lg" x="4" y="4.461658477783203" width="18.080589294433594" height="18.080589294433594" />
+</frame>
+<text id="1368:37478" name="title" x="42.00390625" y="0" width="326" height="61" />
+</frame>
+<frame id="1368:37479" name="chevron-right" x="973.9189453125" y="43.54052734375" width="26.0810546875" height="26.0810546875" />
+</frame>
+</frame>
+</frame>
+<text id="1368:37481" name="title" x="261.681640625" y="741.36328125" width="884.1123046875" height="93" />
+<frame id="1368:37482" name="Frame 2087328305" x="172.11328125" y="969.9765625" width="1095.22265625" height="144">
+<frame id="1368:37483" name="Frame 2087328304" x="0" y="0" width="380" height="144">
+<text id="1368:37484" name="title" x="0" y="0" width="380" height="61" />
+<text id="1368:37485" name="title" x="0" y="78" width="354" height="66" />
+</frame>
+<frame id="1368:37486" name="Frame 2087328281" x="684" y="0.16796875" width="411.22265625" height="143.6640625">
+<frame id="1368:37487" name="Frame 2085666017" x="70.7783203125" y="49.3466796875" width="269.666015625" height="44.970703125">
+<rounded-rectangle id="1368:37488" name="image 110" x="12.84765625" y="0" width="44.970703125" height="44.970703125" />
+<text id="1368:37489" name="title" x="79.818359375" y="5.984375" width="177" height="33" />
+</frame>
+</frame>
+</frame>
+</frame>
+<rounded-rectangle id="1368:37490" name="Rectangle 4194" x="171.11328125" y="2934.76171875" width="98.4453125" height="81.23828125" />
+<frame id="1368:37491" name="top bar" x="0.49609375" y="0" width="1440" height="155">
+<frame id="1368:37492" name="Group 140" x="170.00765991210938" y="41.161678314208984" width="254.76065063476562" height="13.673710823059082" />
+<frame id="1368:37511" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="1368:37512" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="1368:37513" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1368:37514" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="1368:37515" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1368:37519" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="1368:37520" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<frame id="1368:37523" name="Frame 2087328240" x="1120.3746337890625" y="84.056640625" width="149.70703125" height="40.322059631347656">
+<frame id="1368:37524" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="109.74085235595703" height="27">
+<instance id="1368:37525" name="clipboard-plus" x="-0.44449329376220703" y="2.953369140625" width="21.09326171875" height="21.09326171875" />
+<text id="1368:37526" name="tab" x="25.185346603393555" y="0" width="85" height="27" />
+</frame>
+</frame>
+<frame id="1368:37527" name="Frame 2087328238" x="170.0078125" y="94.2470703125" width="318" height="24">
+<frame id="1368:37528" name="Frame 2087328235" x="0" y="0" width="78" height="24">
+<instance id="1368:37529" name="file-search-01" x="0" y="2.5" width="19" height="19" />
+<text id="1368:37530" name="tab" x="22" y="0" width="56" height="24" />
+</frame>
+<frame id="1368:37531" name="Frame 2087328237" x="108" y="0" width="50" height="24">
+<instance id="1368:37532" name="bar-chart-12" x="0" y="2.5" width="19" height="19" />
+<text id="1368:37533" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="1368:37534" name="Frame 2087328236" x="188" y="0" width="50" height="24">
+<frame id="1368:37535" name="Cil Truck" x="0" y="2.5" width="19" height="19" />
+<text id="1368:37537" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="1368:37538" name="Frame 2087328238" x="268" y="0" width="50" height="24">
+<instance id="1368:37539" name="coins-stacked-03" x="0" y="2.5" width="19" height="19" />
+<text id="1368:37540" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+</frame>
+<line id="1368:37541" name="Line 76" x="170.0078125" y="125.18750762939453" width="81.048828125" height="0.000007085513061610982" />
+</frame>
+<frame id="1368:37542" name="top bar" x="0.49609375" y="0" width="1440" height="155">
+<frame id="1368:37543" name="Group 140" x="170.00765991210938" y="41.16181564331055" width="254.76065063476562" height="13.673710823059082" />
+<frame id="1368:37562" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="1368:37563" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="1368:37564" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1368:37565" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="1368:37566" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1368:37570" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="1368:37571" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<frame id="1368:37574" name="Frame 2087328240" x="1120.3746337890625" y="84.056640625" width="149.70703125" height="40.322059631347656">
+<frame id="1368:37575" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="109.74085235595703" height="27">
+<instance id="1368:37576" name="clipboard-plus" x="-0.44449329376220703" y="2.953369140625" width="21.09326171875" height="21.09326171875" />
+<text id="1368:37577" name="tab" x="25.185346603393555" y="0" width="85" height="27" />
+</frame>
+</frame>
+<line id="1368:37578" name="Line 76" x="170.0078125" y="125.18750762939453" width="81.048828125" height="0.000007085513061610982" />
+<instance id="1368:37579" name="GNB(상단 네비게이션 메뉴)" x="169.52053833007812" y="94.18749237060547" width="398" height="31" />
+</frame>
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.

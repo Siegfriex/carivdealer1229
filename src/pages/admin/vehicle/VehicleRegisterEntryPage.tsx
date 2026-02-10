@@ -1,18 +1,16 @@
 /**
  * 매물등록 CTA_1 진입. 차량번호 입력 후 step1으로 이동.
  * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.9
- * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
- * 라우트: /vehicles/new. Figma 1418-20498 차량등록_비대면_랜딩.
+ * @see docs/figmaMCP/impl_plans/1425-7638_구현계획.md
+ * 라우트: /vehicles/new. Figma 1425-7638(매물등록 버튼 클릭 시 첫화면).
  */
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
-import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { Button } from '@/shared/ui/Button';
+import { Briefcase } from 'lucide-react';
 
 export const VehicleRegisterEntryPage = () => {
   const navigate = useNavigate();
@@ -25,93 +23,110 @@ export const VehicleRegisterEntryPage = () => {
       return;
     }
 
-    // 차량번호 형식 검증 (예: 123가 4567)
     const plateRegex = /^\d{2,3}[가-힣]\s?\d{4}$/;
     if (!plateRegex.test(plateNumber.replace(/\s/g, ''))) {
       setError('올바른 차량번호 형식을 입력해주세요 (예: 123가 4567)');
       return;
     }
 
-    // TODO: 중복 체크 API 호출
-    // 이미 등록된 차량인지 확인
-    // if (isDuplicate) {
-    //   setError('이미 등록 또는 거래된 매물입니다');
-    //   return;
-    // }
-
-    // 다음 단계로 이동
     const to = `/vehicles/new/step1?plateNumber=${encodeURIComponent(plateNumber)}`;
-    // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterEntryPage:handleNext',message:'CTA_1 랜딩→step1',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
-    // #endregion
+    fetch(LOG_INGEST_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'VehicleRegisterEntryPage:handleNext',
+        message: 'CTA_1 랜딩→step1',
+        data: { to },
+        timestamp: Date.now(),
+        hypothesisId: 'H_CTA1',
+        runId: 'register-flow-check',
+      }),
+    }).catch(() => {});
     navigate(to);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      className="min-h-screen bg-[var(--color-bg-primary)]"
+      data-node-id="1425:7638"
+    >
       <LandingHeader
         userName="홍길동"
         variant="main"
         activeNav="vehicles"
       />
 
-      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        <ProgressSidebar steps={getRegisterFlowSteps('upload')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline />
-        <main className={`flex-1 py-16 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
-          <div className="mx-auto max-w-4xl text-center">
-          {/* 제목 */}
-          <h1 className="text-h1 font-bold text-gray-900 mb-12">
-            빠르고 간편하게!<br />
-            완벽한 비대면 차량등록
-          </h1>
+      {/* 배지: 한국 수출차량 전문 플랫폼 — Figma 1425:7639 (260, 106, 203×37) */}
+      <div
+        className="mx-auto max-w-[1440px] px-4 pt-4"
+        style={{ paddingLeft: 260 }}
+        data-node-id="1425:7639"
+      >
+        <div
+          className="inline-flex h-[37px] w-[203px] items-center justify-center gap-1.5 rounded-[39px] border border-[var(--color-primary-border)] bg-[var(--color-primary-light)] px-3"
+          data-node-id="1425:7640"
+        >
+          <Briefcase className="h-[18px] w-[18px] shrink-0 text-[var(--color-primary)]" data-node-id="1425:7641" />
+          <span className="text-[14px] font-semibold text-[var(--color-primary)] whitespace-nowrap" data-node-id="1425:7644">
+            한국 수출차량 전문 플랫폼
+          </span>
+        </div>
+      </div>
 
-          {/* 차량번호 입력 필드 */}
-          <div className="mb-6">
-            <div className="flex items-center border-2 border-gray-300 rounded-lg overflow-hidden bg-white focus-within:border-primary transition-base">
-              {/* KOR 국기 영역 */}
-              <div className="flex items-center justify-center px-6 py-4 bg-primary text-white">
-                <div className="flex flex-col items-center">
-                  <span className="text-button font-medium mb-1">KOR</span>
-                  <div className="w-8 h-6 bg-white rounded-sm flex items-center justify-center">
-                    <div className="w-6 h-4 bg-gradient-to-b from-red-500 via-white to-blue-500 rounded-sm" />
-                  </div>
-                </div>
-              </div>
+      {/* 중앙 그룹: 제목 + 입력 박스 + 에러 + 다음 — Figma 1425:7678 (385, 336, 669×350) */}
+      <div
+        className="mx-auto max-w-[669px] px-4 pt-6 pb-12"
+        style={{ marginTop: 336 - 155 - 48 }}
+        data-node-id="1425:7678"
+      >
+        <h1
+          className="text-center text-[45px] font-extrabold leading-[61px] text-black mb-8"
+          data-node-id="1425:7679"
+        >
+          빠르고 간편하게!
+          <br aria-hidden="true" />
+          완벽한 비대면 차량등록
+        </h1>
 
-              {/* 입력 필드 */}
-              <div className="flex-1 flex items-center px-4">
-                <input
-                  type="text"
-                  value={plateNumber}
-                  onChange={(e) => {
-                    setPlateNumber(e.target.value);
-                    setError(null);
-                  }}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      handleNext();
-                    }
-                  }}
-                  placeholder="123가 4567"
-                  className="flex-1 text-h3 font-medium text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent"
-                />
-              </div>
-            </div>
-
-            {/* 오류 메시지 */}
-            {error && (
-              <p className="mt-2 text-caption text-error text-left">
-                ※ {error}
-              </p>
-            )}
+        {/* 입력 박스 669×175 — Figma 1425:7680 */}
+        <div
+          className="relative h-[175px] w-full max-w-[669px] overflow-hidden rounded-xl border border-gray-200 bg-white"
+          data-node-id="1425:7680"
+        >
+          <div className="absolute inset-0 flex items-center justify-center px-6">
+            <input
+              type="text"
+              value={plateNumber}
+              onChange={(e) => {
+                setPlateNumber(e.target.value);
+                setError(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleNext();
+              }}
+              placeholder="123가 4567"
+              className="w-full max-w-[280px] bg-transparent text-center text-[54px] font-extrabold leading-[61px] text-[var(--color-gray-900)] placeholder:text-[#bebdbd] focus:outline-none"
+              data-node-id="1425:7681"
+            />
           </div>
+        </div>
 
-          {/* 다음 버튼 */}
-          <Button onClick={handleNext} size="lg" className="w-full">
+        {/* 에러: ※ 이미 등록 또는 거래된 매물입니다 — Figma 1425:7683 */}
+        {error && (
+          <p
+            className="mt-4 text-center text-[24px] font-extrabold leading-[61px] text-[#ff7575]"
+            data-node-id="1425:7683"
+          >
+            ※ {error}
+          </p>
+        )}
+
+        {/* 다음 버튼 */}
+        <div className="mt-8 flex justify-center">
+          <Button onClick={handleNext} size="lg" className="min-w-[222px]">
             다음
           </Button>
-          </div>
-        </main>
+        </div>
       </div>
     </div>
   );

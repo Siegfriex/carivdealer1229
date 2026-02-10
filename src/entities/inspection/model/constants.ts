@@ -4,17 +4,19 @@
 
 import type { InspectionStatus } from './types';
 
+/** Figma §3.6 검차요청내역 리스트·카드와 동일 라벨 */
 export const INSPECTION_STATUS_LABELS: Record<InspectionStatus, string> = {
-  pending: '평가사 배정 대기',
+  pending: '검차자 매칭중',
   assigned: '검차자 매칭완료',
-  in_progress: '검차 진행 중',
+  in_progress: '검차 진행중',
   completed: '검차 완료',
 };
 
+/** Figma 1037-5673: 검차 진행중 #10b981, 기타 상태 구분 */
 export const INSPECTION_STATUS_COLORS: Record<InspectionStatus, string> = {
   pending: '#909090',      // Gray
   assigned: '#3B82F6',     // Blue
-  in_progress: '#F59E0B',  // Yellow
+  in_progress: '#10B981',  // Green (Figma 검차 진행중)
   completed: '#10B981',    // Green
 };
 

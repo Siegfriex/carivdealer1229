@@ -13,6 +13,7 @@ import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
+import { isRunDev } from '@/shared/config/runDev';
 
 export const GeneralSalePricePage = () => {
   const { vehicleId } = useParams<{ vehicleId: string }>();
@@ -52,7 +53,7 @@ export const GeneralSalePricePage = () => {
             <Button onClick={handleSubmit}>등록 완료</Button>
           </div>
 
-          {import.meta.env.DEV && (
+          {isRunDev() && (
             <DevSkipButton label="DEV:SKIP" subLabel="등록 완료로" onClick={handleSubmit} />
           )}
         </main>

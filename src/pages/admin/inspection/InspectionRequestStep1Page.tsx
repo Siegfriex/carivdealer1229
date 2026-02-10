@@ -42,7 +42,7 @@ export const InspectionRequestStep1Page = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
+      <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <aside className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}>
@@ -59,12 +59,13 @@ export const InspectionRequestStep1Page = () => {
           </div>
         </aside>
 
-        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_DETAIL}`}>
+        {/* §3.6 Figma 1033-4903: 메인 left 290, width 972~980, 레이아웃 스펙 반영 */}
+        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} max-w-[980px]`}>
           <h1 className="text-h1 font-bold text-gray-900 mb-8">검차 신청</h1>
 
-          <div className="space-y-8 max-w-[896px]">
-            {/* § 검차 차량 선택 */}
-            <section className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="space-y-8">
+            {/* § 검차 차량 선택 (Figma 1033-4903 1193:6763 블록 스타일) */}
+            <section className="bg-white rounded-[15px] border border-gray-200 p-6 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
               <h2 className="text-body font-bold text-gray-900 mb-4">
                 검차 차량 선택 <span className="text-red-500">*</span>
               </h2>
@@ -79,8 +80,8 @@ export const InspectionRequestStep1Page = () => {
               </div>
             </section>
 
-            {/* § 검차 일정 */}
-            <section className="bg-white rounded-lg border border-gray-200 p-6">
+            {/* § 검차 일정 (Figma 1193:6709) */}
+            <section className="bg-white rounded-[15px] border border-gray-200 p-6 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
               <h2 className="text-body font-bold text-gray-900 mb-4">
                 검차 일정 <span className="text-red-500">*</span>
               </h2>
@@ -105,7 +106,7 @@ export const InspectionRequestStep1Page = () => {
             </section>
 
             {/* § 검차 장소 */}
-            <section className="bg-white rounded-lg border border-gray-200 p-6">
+            <section className="bg-white rounded-[15px] border border-gray-200 p-6 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
               <h2 className="text-body font-bold text-gray-900 mb-4">
                 검차 장소 <span className="text-red-500">*</span>
               </h2>
@@ -153,8 +154,8 @@ export const InspectionRequestStep1Page = () => {
               </Button>
             </section>
 
-            {/* § 검차비 결제 (플레이스홀더) */}
-            <section className="bg-white rounded-lg border border-gray-200 p-6">
+            {/* § 검차비 결제 (Figma 1033-4903 1193:6764, rounded-[30px] shadow) */}
+            <section className="bg-white rounded-[30px] border border-gray-200 p-6 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
               <h2 className="text-body font-bold text-gray-900 mb-4">검차비 결제</h2>
               <p className="text-body text-gray-500">국내 결제 설정 영역 (연동 예정)</p>
             </section>

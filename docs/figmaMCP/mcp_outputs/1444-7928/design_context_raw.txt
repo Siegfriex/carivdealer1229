@@ -1,0 +1,213 @@
+const imgCilTruck = "https://www.figma.com/api/mcp/asset/198cd802-9ae6-44dc-afb1-488492948eb1";
+const imgIcon3 = "https://www.figma.com/api/mcp/asset/d58de853-3f82-40f4-8093-8651f086527f";
+const imgGroup2085666007 = "https://www.figma.com/api/mcp/asset/dd5c50fe-e7b1-434c-9974-1582d88ff219";
+const imgSearch = "https://www.figma.com/api/mcp/asset/7c4dad38-26d4-4f0e-99d9-67608d12de8b";
+export default function Component() {
+return (
+<div className="bg-white relative size-full" data-name="로그인 전 랜딩페이지" data-node-id="1444:7928">
+<div className="absolute bg-[#f3f4f6] h-[641px] left-0 overflow-clip top-[171px] w-[1440px]" data-node-id="1444:7929">
+<div className="absolute h-[490px] left-[686px] top-[211px] w-[653px]" data-name="Mac Studio" data-node-id="1444:7930">
+<img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgMacStudio} />
+</div>
+<div className="absolute font-['Pretendard:ExtraBold',sans-serif] leading-[50px] left-[260px] not-italic text-[45px] text-black top-[162px] whitespace-nowrap" data-node-id="1444:7931">
+<p className="mb-0">현명한 중고자동차 거래를 위한</p>
+<p>{Cariv }</p>
+</div>
+<p className="absolute font-['Pretendard:Regular',sans-serif] leading-[21px] left-[260px] not-italic text-[#909090] text-[16px] top-[278px] w-[460px] whitespace-pre-wrap" data-node-id="1444:7932">{차량 수출을더 쉽게, 더 빠르게 ForwardMax와 함께하면 차량 등록부터 수출까지 모든 과정을 한 곳에서 관리할 수 있습니다. 간편한 사업자 인증과 자동 차량등록 원부등록으로 빠르게 거래를 진행해보세요 }</p>
+<div className="absolute bg-[#f2f2f2] border-[#909090] border-[0.3px] border-solid h-[47px] left-[260px] overflow-clip rounded-[39px] top-[360.17px] w-[389px]" data-node-id="1444:7933">
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[36px] left-[16.7px] not-italic text-[#909090] text-[16px] top-[calc(50%-17.5px)]" data-node-id="1444:7934">
+이메일 주소 입력
+</p>
+<div className="absolute bg-[#2048e5] content-stretch flex flex-col items-start left-[234.7px] overflow-clip px-[19.983px] py-[6.661px] rounded-[43.297px] top-[3.7px] w-[149.707px]" data-node-id="1444:7935">
+<div className="content-stretch flex gap-[4.537px] items-center justify-center relative shrink-0 w-full" data-node-id="1444:7936">
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[26.644px] not-italic relative shrink-0 text-[15.542px] text-white" data-node-id="1444:7937">
+회원가입 하기
+</p>
+<div className="relative shrink-0 size-[15px]" data-name="chevron-right" data-node-id="1444:7938">
+<img alt="" className="block max-w-none size-full" src={imgChevronRight} />
+</div>
+</div>
+</div>
+</div>
+<div className="-translate-y-1/2 absolute left-[484px] size-[15px] top-[calc(50%+177.17px)]" data-name="chevron-right" data-node-id="1444:7940">
+<img alt="" className="block max-w-none size-full" src={imgChevronRight1} />
+</div>
+<div className="absolute bg-[#eef5fe] border border-[#d9e7fc] border-solid h-[37px] left-[260px] overflow-clip rounded-[39px] top-[106px] w-[203px]" data-node-id="1444:7942">
+<div className="-translate-x-1/2 -translate-y-1/2 absolute content-stretch flex gap-[5px] items-center left-[calc(50%-21px)] top-[calc(50%+0.5px)] w-[119px]" data-node-id="1444:7943">
+<div className="relative shrink-0 size-[18px]" data-name="briefcase" data-node-id="1444:7944">
+<img alt="" className="block max-w-none size-full" src={imgBriefcase} />
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#2048e5] text-[14px] w-[147px] whitespace-pre-wrap" data-node-id="1444:7947">
+한국 수출차량 전문 플랫폼
+</p>
+</div>
+</div>
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[50px] left-[390px] not-italic text-[22px] text-black top-[222px]" data-node-id="1444:7948">
+for Domestic Sellers
+</p>
+</div>
+<div className="absolute bg-[#f3f4f6] h-[555px] left-0 overflow-clip top-[819px] w-[1440px]" data-node-id="1444:7949">
+<div className="absolute contents left-[716px] not-italic text-right top-[137px]" data-node-id="1444:7950">
+<div className="-translate-x-full absolute font-['Pretendard:Regular',sans-serif] leading-[22px] left-[1265px] text-[#909090] text-[16px] top-[210px] w-[492px] whitespace-pre-wrap" data-node-id="1444:7951">
+<p className="mb-0">{판매를 희망하는 차량을 등록하고, 거래해보세요. 경매진행부터 }</p>
+<p>정산 대기까지의 과정을 실시간으로 확인하고, 빠르게 확인할 수 있습니다</p>
+</div>
+<p className="-translate-x-full absolute font-['Pretendard:ExtraBold',sans-serif] leading-[61px] left-[1265px] text-[45px] text-black top-[137px]" data-node-id="1444:7952">
+언제 어디서든 빠르고 간편하게.
+</p>
+</div>
+<div className="-translate-x-1/2 -translate-y-1/2 absolute bg-[#2048e5] h-[40px] left-[calc(50%+458.5px)] overflow-clip rounded-[39px] top-[calc(50%+13.5px)] w-[173px]" data-node-id="1444:7953">
+<div className="-translate-y-1/2 absolute flex flex-col font-['Pretendard:SemiBold',sans-serif] h-[18px] justify-center leading-[0] left-[calc(50%-60.5px)] not-italic text-[16px] text-white top-1/2 w-[115px]" data-node-id="1444:7954">
+<p className="leading-[36px] whitespace-pre-wrap">차량 업로드하기</p>
+</div>
+<div className="-translate-y-1/2 absolute left-[144px] size-[19px] top-[calc(50%+0.5px)]" data-name="chevron-right" data-node-id="1444:7955">
+<img alt="" className="block max-w-none size-full" src={imgChevronRight2} />
+</div>
+</div>
+<div className="absolute h-[825px] left-[-139px] top-[-44px] w-[1099px]" data-name="MacBook Air (15 inch)" data-node-id="1444:7957">
+<img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgMacBookAir15Inch} />
+</div>
+</div>
+<div className="absolute bg-[#f3f4f6] h-[673px] left-0 overflow-clip top-[1381px] w-[1440px]" data-node-id="1444:7958">
+<div className="absolute h-[442px] left-[-35px] top-[274px] w-[607px]" data-name="11 1" data-node-id="1444:7959">
+<img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={img111} />
+</div>
+<div className="absolute contents left-[169px] not-italic top-[156px]" data-node-id="1444:7960">
+<div className="absolute font-['Pretendard:Regular',sans-serif] leading-[21px] left-[169px] text-[#909090] text-[16px] top-[229px] w-[506px] whitespace-pre-wrap" data-node-id="1444:7961">
+<p className="mb-0">{기존의 복잡한 행정처리와 발품팔이를 스킵하고, 빠른 정보등록과 OCR스캔을 }</p>
+<p>통해 전산처리 과정을 신속하고 빠르게 처리하여 원활한 거래를 가능하게 합니다.</p>
+</div>
+<p className="absolute font-['Pretendard:ExtraBold',sans-serif] leading-[61px] left-[169px] text-[45px] text-black top-[156px]" data-node-id="1444:7962">
+간소화된 인증과정
+</p>
+</div>
+<div className="absolute border border-[#e8e8e8] border-solid h-[383px] left-[866px] rounded-[10px] top-[38px] w-[474px]" data-name="image 15" data-node-id="1444:7963">
+<div className="absolute inset-0 overflow-hidden pointer-events-none rounded-[10px]">
+<img alt="" className="absolute h-[193.06%] left-[-110.82%] max-w-none top-[-8.67%] w-[320.1%]" src={imgImage15} />
+</div>
+</div>
+<div className="absolute border border-[#e8e8e8] border-solid h-[306px] left-[606px] rounded-[10px] top-[337px] w-[475px]" data-name="image 12" data-node-id="1444:7964">
+<div className="absolute inset-0 overflow-hidden pointer-events-none rounded-[10px]">
+<img alt="" className="absolute h-[245.57%] left-[-112.68%] max-w-none top-[-11.2%] w-[323.31%]" src={imgImage12} />
+</div>
+</div>
+</div>
+<div className="absolute bg-[#f3f4f6] h-[327px] left-0 overflow-clip top-[2066px] w-[1440px]" data-node-id="1444:7965">
+<p className="absolute font-['Pretendard:Regular',sans-serif] leading-[21px] left-[171px] not-italic text-[#909090] text-[16px] top-[108px] w-[506px] whitespace-pre-wrap" data-node-id="1444:7966">{ForwardMax Cariv Domestic Seller 1.0 Prototype }</p>
+</div>
+<div className="-translate-x-1/2 absolute bg-white h-[155px] left-[calc(50%+0.5px)] overflow-clip shadow-[0px_-3px_23.8px_0px_rgba(0,0,0,0.05)] top-0 w-[1440px]" data-name="top bar" data-node-id="1444:7967">
+<div className="absolute h-[13.674px] left-[170.01px] top-[41.16px] w-[254.761px]" data-node-id="1444:7968">
+<img alt="" className="block max-w-none size-full" src={imgGroup140} />
+</div>
+<div className="absolute bg-[#2048e5] content-stretch flex flex-col items-start left-[1120.37px] overflow-clip px-[19.983px] py-[6.661px] rounded-[43.297px] top-[84.06px] w-[149.707px]" data-node-id="1444:7987">
+<div className="content-stretch flex gap-[4.537px] items-center justify-center relative shrink-0 w-full" data-node-id="1444:7988">
+<div className="overflow-clip relative shrink-0 size-[26.644px]" data-name="clipboard-plus" data-node-id="1444:7989">
+<div className="absolute inset-[8.33%16.67%]" data-name="Icon" data-node-id="I1444:7989;1007:11746">
+<div className="absolute inset-[-4.74%-5.92%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[26.644px] not-italic relative shrink-0 text-[15.542px] text-white" data-node-id="1444:7990">
+매물 등록하기
+</p>
+</div>
+</div>
+<div className="absolute content-stretch flex gap-[30px] items-center left-[170.01px] top-[94.25px]" data-node-id="1444:7991">
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="1444:7992">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="file-search-01" data-node-id="1444:7993">
+<div className="absolute inset-[8.33%8.33%_8.33%_16.67%]" data-name="Icon" data-node-id="I1444:7993;1007:11689">
+<div className="absolute inset-[-4.74%-5.26%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon1} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="1444:7994">
+차량목록
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="1444:7995">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="bar-chart-12" data-node-id="1444:7996">
+<div className="absolute inset-[12.5%]" data-name="Icon" data-node-id="I1444:7996;1007:8716">
+<div className="absolute inset-[-5.26%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon2} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="1444:7997">
+거래
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="1444:7998">
+<div className="relative shrink-0 size-[19px]" data-name="Cil Truck" data-node-id="1444:7999">
+<img alt="" className="block max-w-none size-full" src={imgCilTruck} />
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="1444:8001">
+탁송
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="1444:8002">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="coins-stacked-03" data-node-id="1444:8003">
+<div className="absolute inset-[12.5%8.33%]" data-name="Icon" data-node-id="I1444:8003;1007:9529">
+<div className="absolute inset-[-5.26%-4.74%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon3} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="1444:8004">
+정산
+</p>
+</div>
+</div>
+<div className="absolute border border-[rgba(0,0,0,0.1)] border-solid content-stretch flex flex-col h-[30px] items-center justify-center left-[1120.5px] px-[11px] py-[3px] rounded-[100px] top-[33.17px] w-[149px]" data-node-id="1444:8005">
+<div className="content-stretch flex gap-[6px] items-center relative shrink-0" data-node-id="1444:8006">
+<div className="flex items-center justify-center relative shrink-0">
+<div className="-scale-y-100 flex-none rotate-180">
+<div className="relative size-[14.243px]" data-name="stick-man_118174 1" data-node-id="1444:8007">
+<img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgStickMan1181741} />
+</div>
+</div>
+</div>
+<p className="font-['SUITE_Variable:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[14px] text-black" data-node-id="1444:8008">
+로그인/회원가입
+</p>
+</div>
+</div>
+<div className="absolute h-[18px] left-[1090.24px] top-[40.88px] w-[16px]" data-node-id="1444:8009">
+<div className="absolute contents inset-0" data-node-id="1444:8010">
+<div className="absolute inset-[-4.17%-4.69%]">
+<img alt="" className="block max-w-none size-full" src={imgGroup2085666007} />
+</div>
+</div>
+</div>
+<div className="absolute h-[22px] left-[1054px] top-[39px] w-[21px]" data-node-id="1444:8013">
+<div className="-translate-y-1/2 absolute h-[22px] left-0 top-1/2 w-[21px]" data-name="search" data-node-id="1444:8014">
+<img alt="" className="block max-w-none size-full" src={imgSearch} />
+</div>
+</div>
+</div>
+</div>
+);
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+Convert React syntax to the target framework/library
+Transform all Tailwind classes to the target styling system while preserving exact visual design
+Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+Node ids have been added to the code as data attributes, e.g. data-node-id="1:2".
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+clipboard-plus
+Node ID: 423:430
+clipboard, plus, add, file, report
+file-search-01
+Node ID: 423:435
+file, search, attachment, text, paper, pdf, report
+bar-chart-12
+Node ID: 425:440
+bar, chart, barchart, graph, data
+coins-stacked-03
+Node ID: 423:424
+coins, stacked, stack, currency, money
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.
+IMPORTANT: After you call this tool, you MUST call get_screenshot to get a screenshot of the node for context.

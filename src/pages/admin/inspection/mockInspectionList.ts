@@ -14,6 +14,8 @@ export interface InspectionWithVehicle extends Inspection {
   vehiclePlateNumber?: string;
   vehicleModelName?: string;
   vehicleModelYear?: string;
+  /** Figma 표시용 일련번호 (예: 12345) */
+  serialNumber?: string;
 }
 
 export const MOCK_INSPECTIONS: InspectionWithVehicle[] = [
@@ -26,38 +28,44 @@ export const MOCK_INSPECTIONS: InspectionWithVehicle[] = [
     vehiclePlateNumber: '33바 3333',
     vehicleModelName: 'Carnival KA4',
     vehicleModelYear: '2022',
+    serialNumber: '12341',
     createdAt: mockTimestamp(new Date('2026-01-28')) as Inspection['createdAt'],
     updatedAt: mockTimestamp(new Date('2026-01-28')) as Inspection['updatedAt'],
   },
   {
     id: 'insp-2',
+    serialNumber: '12345',
     vehicleId: 'v-2',
-    preferredDate: '2026-02-04',
+    preferredDate: '2025/01/01',
     preferredTime: '10:00',
     status: 'assigned' as InspectionStatus,
     evaluatorName: '김평가',
-    vehiclePlateNumber: '12나 3456',
+    vehiclePlateNumber: '123가 4567',
     vehicleModelName: 'G70 3T 스포츠 엘리트',
     vehicleModelYear: '2020',
+    location: { address: '인천광역시 서구 봉수대로 158', coordinates: null },
     createdAt: mockTimestamp(new Date('2026-01-27')) as Inspection['createdAt'],
     updatedAt: mockTimestamp(new Date('2026-01-28')) as Inspection['updatedAt'],
   },
   {
     id: 'insp-3',
     vehicleId: 'v-3',
-    preferredDate: '2026-02-03',
-    preferredTime: '15:30',
+    serialNumber: '12346',
+    preferredDate: '2025/01/01',
+    preferredTime: '10:00',
     status: 'in_progress' as InspectionStatus,
     evaluatorName: '이검차',
-    vehiclePlateNumber: '82가 1923',
-    vehicleModelName: 'Porter II Diesel',
-    vehicleModelYear: '2018',
+    vehiclePlateNumber: '123가 4567',
+    vehicleModelName: 'G70 3T 스포츠 엘리트',
+    vehicleModelYear: '2020',
+    location: { address: '인천광역시 서구 봉수대로 158', coordinates: null },
     createdAt: mockTimestamp(new Date('2026-01-26')) as Inspection['createdAt'],
     updatedAt: mockTimestamp(new Date('2026-01-28')) as Inspection['updatedAt'],
   },
   {
     id: 'insp-4',
     vehicleId: 'v-4',
+    serialNumber: '12347',
     preferredDate: '2026-02-01',
     preferredTime: '11:00',
     status: 'completed' as InspectionStatus,
@@ -65,6 +73,7 @@ export const MOCK_INSPECTIONS: InspectionWithVehicle[] = [
     vehiclePlateNumber: '55라 5555',
     vehicleModelName: 'Grandeur IG',
     vehicleModelYear: '2019',
+    location: { address: '인천광역시 서구 봉수대로 158', coordinates: null },
     createdAt: mockTimestamp(new Date('2026-01-25')) as Inspection['createdAt'],
     updatedAt: mockTimestamp(new Date('2026-01-27')) as Inspection['updatedAt'],
   },

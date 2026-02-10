@@ -1,76 +1,91 @@
-# 다음 에이전트 핸드오프
+# 다음 에이전트 핸드오프 (세션 보존)
 
-**작성일**: 2025-02-09  
-**목적**: 다음 에이전트가 이어서 작업할 때 필요한 맥락·결정사항·미완 작업 요약.
+**최종 갱신**: 2025-02-10  
+**목적**: 리프레시 후 다음 에이전트가 **바로 이어서** 작업할 수 있도록 맥락·경로·다음 작업을 한곳에 정리.
 
----
-
-## 1. 오늘 세션에서 한 일 (요약)
-
-- **LandingHeader 구문/런타임 수정**: 잘못된 `</>` 제거, `Search` 아이콘 import 추가 → 빌드·랜딩 정상.
-- **유저 드롭다운**: `<a href>` → `<Link to>` 로 변경해 SPA 이동(전체 새로고침 방지).  
-  - 첫 메뉴를 **「대시보드」→「차량 목록」**으로 변경, `/vehicles` 연결.  
-  - **마이페이지** 진입 추가 → `/mypage` (내부 리다이렉트: `/mypage/settlement-account`).
-- **로그인/회원가입 후 진입점**: 기본 리다이렉트를 **`/dashboard` → `/vehicles`** 로 통일.  
-  - `LoginPage`, `SignupCompletePage`, 라우터 `*` 폴백 모두 `/vehicles`.
-- **마이페이지 레이아웃**: `SettlementAccountPage`를 차량목록/대시보드와 동일 구조(Container → flex → 사이드바 + main + 푸터)로 정렬.
-- **탁송 완료 화면**: "대시보드로" 버튼 → **「차량 목록으로」** + `navigate('/vehicles')`.
-- **사이트맵 대비 구현 현황 문서**: `docs/SITEMAP_IMPLEMENTATION_STATUS.md` 작성 (플로우별 구현/미구현 매핑).
+> **세션 리프레시 후**: 이 문서를 먼저 읽고 §5 "다음에 이어서 할 작업"부터 재개하면 됩니다.
 
 ---
 
-## 2. 반드시 알아둘 결정사항
+## 1. 이 문서를 먼저 읽으세요
 
-| 항목 | 결정 내용 |
+- **`docs/HANDOFF_NEXT_AGENT.md`** (본 문서)를 열어 현재 상태와 다음 작업을 확인한 뒤 진행하세요.
+- Figma 구현은 **MCP 호출 없이** `docs/figmaMCP/mcp_outputs/{nodeId}/` 의 `metadata_raw.txt`, `design_context_raw.txt` 를 **read_file로만** 사용합니다. (2번 에이전트 규칙)
+
+---
+
+## 2. 최근 세션에서 한 일 (요약)
+
+| 영역 | 상태 |
+|------|------|
+| **CTA_1** (매물등록·차량원부) | 1425-7638, 1425-7684 매핑·구현계획·VehicleRegisterEntryPage·VehicleRegisterStep1Page 반영 |
+| **CTA_2** (검차) | 1033-4903, 1037-5126/5673, 1042-4681, 1121-5308, 1193-8343/8120/9217 매핑·구현. InspectionProgressPage 임시저장·다음단계·검차내역 스크롤·검차 상세 모달 |
+| **CTA_3** (거래) | 17노드(1714-22332, 794-3704/4015/4200/4371/4107/4708/4542, 1302-27289/27093, 1123-13580/20023/20699/13763/13487/14112/13946) mcp_outputs·NODE_TO_ROUTE·구현. 판매방식선택·시세분석·거래상세 펼침·검차 상세 모달·판매방식 변경 컨테이너 |
+| **CTA_4** (탁송) | 10노드(1714-22874, 1362-36169, 1272-12926/13294/14540/13503/13819/14309/15049/13099) mcp_outputs·NODE_TO_ROUTE·MCP 호출. GNB 탁송≠차량목록 탁송단계 별도 페이지. TradeDetailPage "탁송 목록으로" 버튼·JSDoc(목록 돌아가기=GNB 탁송). LogisticsSchedulePage 탁송 목록·리스트 클릭 하단 패널·새 탁송예약 폼·주소 모달·기사배정 진행중·탁송완료(탁송목록/정산 분기) |
+
+---
+
+## 3. 반드시 유지할 결정사항
+
+| 항목 | 내용 |
+|------|------|
+| **목록 돌아가기 (거래 단계)** | 매물등록 CTA_3 거래에서 "목록 돌아가기" = **GNB 탁송 탭** (`/logistics/schedule`). TradeDetailPage에 "탁송 목록으로" 버튼 있음. |
+| **GNB 탁송 vs 차량목록 탁송** | **GNB 탁송 탭** = `/logistics/schedule` (LogisticsSchedulePage). **차량목록 탭 탁송단계 필터** = `/vehicles?stage=logistics` (VehicleListPage). 서로 다른 페이지. |
+| **탁송 상태 4개** | 탁송일정 → 탁송 배정 → 픽업 완료 → 인계완료. 정산단계 진행은 **인계완료** 시에만. |
+| **메인 진입점** | 로그인·회원가입 후·404 폴백 → **차량 목록(`/vehicles`)**. |
+
+---
+
+## 4. Figma MCP 워크플로 (재적용 시)
+
+| 단계 | 경로/행동 |
 |------|-----------|
-| **메인 진입점** | 로그인·회원가입 후·404 폴백 모두 **차량 목록(`/vehicles`)**. `/dashboard` 라우트는 유지하되 기본 진입은 아님. |
-| **GNB 유저 메뉴** | 순서: **차량 목록** → **마이페이지** → **로그아웃**. 모두 React Router `Link` 사용. |
-| **마이페이지** | 진입 URL은 `/mypage` → 내부에서 `/mypage/settlement-account`로 리다이렉트. 현재 구현은 **정산 계좌** 페이지만. |
+| **문서** | `docs/figmaMCP/README.md`, `WORKFLOW.md`, `NODE_TO_ROUTE_AND_FILE.md`, `MCP_RESPONSE_CHECKLIST.md` |
+| **데이터** | `docs/figmaMCP/mcp_outputs/{nodeId하이픈}/metadata_raw.txt`, `design_context_raw.txt` (MCP 호출 금지·read_file만) |
+| **계획** | `docs/figmaMCP/impl_plans/` (노드별 `{nodeId}_구현계획.md`, `CTA_3_거래_플로우_요약.md`, `CTA_4_탁송_플로우_요약.md`) |
+| **에셋** | `src/shared/figma_image/`, `docs/figmaMCP/FIGMA_ASSET_TRACEABILITY.md` |
+| **로그** | `docs/figmaMCP/figMCP.MD` (6하원칙) |
+| **2번 에이전트** | `docs/figmaMCP/AGENT_PROMPT_TEMPLATE.md` 의 "2번 에이전트용" 상수 복사 후, 같은 Figma URL + 구현 요청 |
 
 ---
 
-## 3. 현재 상태 & 알려진 갭
+## 5. 다음에 이어서 할 작업 (우선순위)
 
-- **사이트맵 대비**: 랜딩·GNB 5탭·회원가입·매물등록 CTA_1~3·CTA_5는 라우트/페이지 구현됨.  
-  - **CTA_4(탁송)**: 예약 폼·완료 있음. **주소검색 모달(우편번호 찾기)·연/월/일 캘린더 UI**는 Figma 명세 대비 단순화/미구현.  
-  - **마이페이지**: **정산 계좌**만 구현. 내프로필 랜딩·기본정보수정·딜러승인·알림설정·알림센터·고객지원 등은 미구현(사이드바 "준비 중").
-- **상세 매핑**: `docs/SITEMAP_IMPLEMENTATION_STATUS.md` 참고.
+1. **CTA_4 탁송 상세 UI**  
+   - `LogisticsSchedulePage`: 주소 모달(1272-14540) 우편번호 검색·결과, 연도 캘린더(1272-13503)·월 3×4(1272-13819)·시간 선택(1272-14309) Figma대로 반영.  
+   - `docs/figmaMCP/mcp_outputs/1272-*` 채워진 경우 read_file로 레이아웃 스펙 추출 후 적용.
+
+2. **차량목록 탭 탁송단계 필터**  
+   - `VehicleListPage`: `/vehicles?stage=logistics` 시 1362-36169 디자인(별도 페이지) 반영.  
+   - `mcp_outputs/1362-36169/` 내용 기준으로 레이아웃·필터 UI.
+
+3. **기타**  
+   - 마이페이지 확장(내프로필·기본정보수정 등), 회원가입 유도 전용 뷰 등은 `docs/SITEMAP_IMPLEMENTATION_STATUS.md` 참고.
 
 ---
 
-## 4. 다음 에이전트가 보면 좋은 문서·파일
+## 6. 핵심 파일 경로
 
 | 용도 | 경로 |
 |------|------|
-| 프로젝트 컨텍스트 | `CLAUDE.md` (루트) |
-| 사이트맵 대비 구현 현황 | `docs/SITEMAP_IMPLEMENTATION_STATUS.md` |
-| IA/사이트맵 명세 | `docs/figma/IA_SITEMAP_SPEC_IPOE.md` |
-| API·ERD | `docs/CarivDealer_api_v1.md`, `docs/CarivDealer_API_ERD_Mapping.md` |
-| 라우트 정의 | `src/app/router.tsx` |
-| GNB·유저 메뉴 | `src/widgets/Header/ui/LandingHeader.tsx` |
-| 인증·보호 라우트 | `src/shared/context/AuthContext.tsx` |
-| 마이페이지 레이아웃 | `src/pages/admin/mypage/SettlementAccountPage.tsx`, `src/widgets/MypageSidebar/` |
+| 프로젝트 컨텍스트 | `CLAUDE.md` |
+| 라우트 | `src/app/router.tsx` |
+| Figma 노드↔라우트↔페이지 | `docs/figmaMCP/NODE_TO_ROUTE_AND_FILE.md` |
+| CTA_3 거래 요약 | `docs/figmaMCP/impl_plans/CTA_3_거래_플로우_요약.md` |
+| CTA_4 탁송 요약 | `docs/figmaMCP/impl_plans/CTA_4_탁송_플로우_요약.md` |
+| 탁송 페이지 | `src/pages/admin/LogisticsSchedulePage.tsx` |
+| 거래 상세(탁송 목록으로 버튼) | `src/pages/admin/TradeDetailPage.tsx` |
+| 차량 목록(탁송단계 필터) | `src/pages/admin/VehicleListPage.tsx` |
 
 ---
 
-## 5. 제안 다음 작업 (우선순위 예시)
-
-1. **탁송 CTA_4**: 주소검색 모달(우편번호 찾기·결과) 및 연/월/일·시간 선택 UI Figma 명세 반영.  
-   - 참고: `functions/src/address/` (listAddresses, createAddress 등) 이미 있음.
-2. **마이페이지 확장**: 내프로필 랜딩(§3.8 1418-36766), 기본정보수정·딜러승인·알림 등 사이드바 메뉴별 라우트·페이지 추가.
-3. **회원가입 유도 화면**: 비로그인 GNB 탭 클릭 시 현재는 `/signup?redirect=...`로만 유도. 사이트맵의 「나의매물목록_회원가입유도」 전용 뷰가 필요하면 별도 라우트/페이지 검토.
-
----
-
-## 6. 빌드·실행
+## 7. 빌드·실행
 
 ```bash
 npm run dev      # 프론트 개발 서버
 npm run build    # 프로덕션 빌드
 ```
 
-인증은 `localStorage` 키 `carivdealer_auth` 로 가드. (추후 Firebase Auth 등으로 교체 예정.)
-
 ---
 
-**이 문서는 다음 에이전트가 `docs/HANDOFF_NEXT_AGENT.md` 또는 `HANDOFF` 로 검색해 바로 읽을 수 있도록 작성됨.**
+**리프레시 후**: 이 파일(`HANDOFF_NEXT_AGENT.md`)을 열고, §5 다음 작업부터 이어서 진행하면 됩니다.

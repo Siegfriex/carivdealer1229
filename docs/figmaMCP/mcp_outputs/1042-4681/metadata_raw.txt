@@ -1,0 +1,270 @@
+<frame id="1042:4681" name="매물 목록 - 차량목록 페이지 랜딩페이지" x="3913" y="2227" width="1440" height="1532">
+<frame id="1042:4684" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="1042:4685" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="1042:4686" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="1042:4689" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<frame id="1042:4690" name="top bar" x="0" y="0" width="1440" height="155">
+<frame id="1042:4691" name="Group 140" x="170.00765991210938" y="41.163143157958984" width="254.76065063476562" height="13.673710823059082" />
+<frame id="1042:4710" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="1042:4711" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="1042:4712" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1042:4713" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="1042:4714" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1042:4718" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="1042:4719" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<instance id="1042:4722" name="GNB(상단 네비게이션 메뉴)" x="170.009765625" y="94.25" width="398" height="31" />
+</frame>
+<frame id="1042:4723" name="Frame 2087328290" x="-0.5" y="155" width="249" height="1260">
+<line id="1042:4724" name="Line 78" x="249" y="0" width="0.00006592795739379653" height="1508.255859375" />
+<text id="1042:4725" name="title" x="23.5830078125" y="29.814453125" width="25" height="20" />
+<rounded-rectangle id="1042:4726" name="Rectangle 4193" x="23.5830078125" y="54.5859375" width="210.5615234375" height="40.12109375" />
+<text id="1042:4727" name="title" x="39.5830078125" y="63.646484375" width="88" height="22" />
+<frame id="1042:4728" name="Frame 2087328271" x="200" y="63.646484375" width="21" height="22">
+<frame id="1042:4729" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+</frame>
+<text id="1042:4754" name="title" x="295.318359375" y="207.6484375" width="152" height="44" />
+<frame id="1042:4755" name="Frame 2087328311" x="263" y="1622" width="1007" height="65">
+<text id="1042:4756" name="tab" x="92" y="19" width="48" height="27" />
+<text id="1042:4757" name="tab" x="186" y="23" width="146" height="19" />
+<text id="1042:4758" name="tab" x="372" y="23" width="136" height="19" />
+<text id="1042:4759" name="tab" x="649" y="23" width="9" height="19" />
+<instance id="1042:4760" name="체크박스2" x="28" y="21" width="24" height="24" />
+</frame>
+<frame id="1042:4761" name="Frame 2087328312" x="263" y="1692" width="1007" height="65">
+<text id="1042:4762" name="tab" x="92" y="19" width="48" height="27" />
+<text id="1042:4763" name="tab" x="186" y="23" width="146" height="19" />
+<text id="1042:4764" name="tab" x="372" y="23" width="136" height="19" />
+<text id="1042:4765" name="tab" x="649" y="23" width="9" height="19" />
+<instance id="1042:4766" name="체크박스2" x="28" y="21" width="24" height="24" />
+<vector id="1042:4767" name="Vector" x="965" y="30" width="13" height="6" />
+<text id="1042:4768" name="tab" x="834" y="19" width="56" height="27" />
+</frame>
+<frame id="1042:4769" name="Frame 2087328307" x="263" y="1552" width="1007" height="65">
+<text id="1042:4770" name="tab" x="92" y="19" width="48" height="27" />
+<text id="1042:4771" name="tab" x="186" y="23" width="146" height="19" />
+<text id="1042:4772" name="tab" x="372" y="23" width="136" height="19" />
+<text id="1042:4773" name="tab" x="649" y="23" width="10" height="19" />
+<instance id="1042:4774" name="체크박스2" x="28" y="21" width="24" height="24" />
+<text id="1042:4775" name="tab" x="834" y="19" width="56" height="27" />
+<vector id="1042:4776" name="Vector" x="965" y="30" width="13" height="6" />
+</frame>
+<frame id="1042:4777" name="Frame 2087328313" x="263" y="1762" width="1007" height="65">
+<text id="1042:4778" name="tab" x="92" y="19" width="48" height="27" />
+<text id="1042:4779" name="tab" x="186" y="23" width="146" height="19" />
+<text id="1042:4780" name="tab" x="372" y="23" width="136" height="19" />
+<text id="1042:4781" name="tab" x="649" y="23" width="10" height="19" />
+<instance id="1042:4782" name="체크박스2" x="28" y="21" width="24" height="24" />
+<text id="1042:4783" name="tab" x="834" y="19" width="56" height="27" />
+<vector id="1042:4784" name="Vector" x="965" y="30" width="13" height="6" />
+</frame>
+<frame id="1042:4799" name="페이지" x="296.5048828125" y="1418" width="970" height="114">
+<frame id="1042:4800" name="chevron-right" x="345.1708984375" y="61.23828125" width="11.14453125" height="11.14453125" />
+<frame id="1042:4801" name="Group 2085666031" x="356.0576171875" y="40.9765625" width="257.884765625" height="32.046875">
+<frame id="1042:4802" name="Check Box Fill" x="397.4765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1042:4803" name="Check Box" x="0" y="0" width="32.046875" height="32.046875">
+<frame id="1042:4804" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1042:4805" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1042:4806" name="1" x="13.0234375" y="-1.146484375" width="6" height="29" />
+</frame>
+</frame>
+<frame id="1042:4807" name="Check Box" x="434.4765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1042:4808" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1042:4809" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1042:4810" name="2" x="12.3837890625" y="-1.146484375" width="7.2802734375" height="29" />
+</frame>
+<frame id="1042:4811" name="Check Box" x="471.4765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1042:4812" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1042:4813" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1042:4814" name="3" x="12.3837890625" y="-1.146484375" width="7.2802734375" height="29" />
+</frame>
+<frame id="1042:4815" name="Check Box" x="540.4765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1042:4816" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1042:4817" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1042:4818" name="10" x="9.274491310119629" y="-1.146484375" width="13.498046875" height="29" />
+</frame>
+<vector id="1042:4819" name="Vector" x="356.0576171875" y="42.3125" width="24.03515625" height="24.03515625" />
+<vector id="1042:4820" name="Vector" x="613.9423828125" y="42.3125" width="24.03515625" height="24.03515625" />
+<vector id="1042:4821" name="Vector" x="369.880859375" y="57.94140625" width="3.6118149757385254" height="7.223629951477051" />
+<frame id="1042:4822" name="Three Dots" x="514" y="47.6640625" width="16" height="16" />
+<vector id="1042:4824" name="Vector" x="600.119140625" y="57.94140625" width="3.6118149757385254" height="7.223629951477051" />
+</frame>
+</frame>
+<frame id="1193:8810" name="Frame 2087328291" x="296" y="333" width="974" height="44">
+<text id="1193:8811" name="tab" x="499" y="8" width="60" height="27" />
+<text id="1193:8812" name="tab" x="694" y="8" width="60" height="27" />
+<text id="1193:8813" name="tab" x="359" y="8" width="56" height="27" />
+<instance id="1193:8814" name="체크박스2" x="28" y="10" width="24" height="24" />
+<text id="1193:8815" name="tab" x="92" y="9" width="28" height="27" />
+<text id="1193:8816" name="tab" x="237" y="9" width="56" height="27" />
+</frame>
+<frame id="1193:8818" name="Group 2085666019" x="296" y="389" width="974" height="243">
+<frame id="1193:8819" name="Frame 2087328262" x="296" y="389" width="974" height="243">
+<frame id="1193:8820" name="Frame 2087328263" x="0" y="0" width="397" height="243">
+<instance id="1193:8821" name="차량 사진" x="31" y="23" width="101" height="27" />
+<rounded-rectangle id="1193:8822" name="image 112" x="-76" y="82" width="168" height="96" />
+<rounded-rectangle id="1193:8823" name="image 113" x="360" y="70" width="153" height="103" />
+<ellipse id="1193:8824" name="Ellipse 56" x="39" y="143" width="348" height="66" />
+<rounded-rectangle id="1193:8825" name="스크린샷 2026-01-06 오후 11.45.26 5" x="114" y="57" width="228" height="164" />
+</frame>
+<text id="1193:8826" name="123가 4567" x="431" y="68" width="128" height="19" />
+<text id="1193:8829" name="2020년형 · 9.0만 km" x="431" y="122" width="110" height="19" />
+<text id="1193:8830" name="G70 3T 스포츠 엘리트" x="431" y="102" width="164" height="18" />
+<text id="1193:8831" name="tab" x="859" y="75" width="80" height="27" />
+<frame id="1193:8964" name="Group 2085666154" x="430" y="41" width="79.1568603515625" height="22">
+<text id="1193:8965" name="title" x="441.1568603515625" y="41" width="68" height="22" />
+<ellipse id="1193:8966" name="Ellipse 45" x="430" y="48.68359375" width="6.4154510498046875" height="6.6328125" />
+</frame>
+<frame id="1193:8987" name="loading" x="803" y="192" width="136" height="36.949771881103516">
+<text id="1193:8988" name="✏ Designing..." x="25" y="7.474885940551758" width="86" height="22" />
+</frame>
+</frame>
+<frame id="1193:8834" name="Group 2085666087" x="727" y="558" width="227.2879638671875" height="45">
+<text id="1193:8835" name="tab" x="750.2879638671875" y="558" width="155" height="22" />
+<text id="1193:8836" name="tab" x="751.2879638671875" y="581" width="203" height="22" />
+<frame id="1193:8837" name="clock" x="727" y="560" width="16.442899703979492" height="17" />
+<frame id="1193:8840" name="map" x="727" y="583" width="16.442899703979492" height="17" />
+</frame>
+</frame>
+<frame id="1193:8854" name="Group 2085666020" x="296" y="645" width="974" height="243">
+<frame id="1193:8855" name="Frame 2087328262" x="296" y="645" width="974" height="243">
+<frame id="1193:8856" name="Frame 2087328263" x="0" y="0" width="397" height="243">
+<instance id="1193:8857" name="차량 사진" x="31" y="23" width="101" height="27" />
+<rounded-rectangle id="1193:8858" name="image 112" x="-76" y="82" width="168" height="96" />
+<rounded-rectangle id="1193:8859" name="image 113" x="360" y="70" width="153" height="103" />
+<ellipse id="1193:8860" name="Ellipse 56" x="39" y="143" width="348" height="66" />
+<rounded-rectangle id="1193:8861" name="스크린샷 2026-01-06 오후 11.45.26 5" x="114" y="57" width="228" height="164" />
+</frame>
+<text id="1193:8862" name="123가 4567" x="431" y="68" width="128" height="19" />
+<text id="1193:8865" name="2020년형 · 9.0만 km" x="431" y="122" width="110" height="19" />
+<text id="1193:8866" name="G70 3T 스포츠 엘리트" x="431" y="102" width="164" height="18" />
+<text id="1193:8867" name="tab" x="859" y="75" width="80" height="27" />
+<frame id="1193:8962" name="Group 2085666153" x="430" y="41" width="57" height="22">
+<text id="1193:8959" name="title" x="442" y="41" width="45" height="22" />
+<ellipse id="1193:8960" name="Ellipse 45" x="430" y="49" width="6.630000114440918" height="6.630000114440918" />
+</frame>
+<frame id="1193:8982" name="loading" x="703" y="184" width="136" height="36.949771881103516">
+<text id="1193:8983" name="✏ Designing..." x="25" y="7.474885940551758" width="86" height="22" />
+</frame>
+<frame id="1193:8984" name="loading" x="847" y="184" width="92" height="36.949771881103516">
+<text id="1193:8985" name="✏ Designing..." x="25" y="7.474885940551758" width="42" height="22" />
+</frame>
+</frame>
+<frame id="1193:8870" name="Group 2085666087" x="727" y="814" width="227.2879638671875" height="45">
+<text id="1193:8871" name="tab" x="750.2879638671875" y="814" width="155" height="22" />
+<text id="1193:8872" name="tab" x="751.2879638671875" y="837" width="203" height="22" />
+<frame id="1193:8873" name="clock" x="727" y="816" width="16.442899703979492" height="17" />
+<frame id="1193:8876" name="map" x="727" y="839" width="16.442899703979492" height="17" />
+</frame>
+</frame>
+<frame id="1193:8889" name="Group 2085666021" x="296" y="901" width="974" height="243">
+<frame id="1193:8890" name="Frame 2087328262" x="296" y="901" width="974" height="243">
+<frame id="1193:8891" name="Frame 2087328263" x="0" y="0" width="397" height="243">
+<instance id="1193:8892" name="차량 사진" x="31" y="23" width="101" height="27" />
+<rounded-rectangle id="1193:8893" name="image 112" x="-76" y="82" width="168" height="96" />
+<rounded-rectangle id="1193:8894" name="image 113" x="360" y="70" width="153" height="103" />
+<ellipse id="1193:8895" name="Ellipse 56" x="39" y="143" width="348" height="66" />
+<rounded-rectangle id="1193:8896" name="스크린샷 2026-01-06 오후 11.45.26 5" x="114" y="57" width="228" height="164" />
+</frame>
+<text id="1193:8897" name="123가 4567" x="431" y="68" width="128" height="19" />
+<text id="1193:8900" name="2020년형 · 9.0만 km" x="431" y="122" width="110" height="19" />
+<text id="1193:8901" name="G70 3T 스포츠 엘리트" x="431" y="102" width="164" height="18" />
+<text id="1193:8902" name="tab" x="859" y="75" width="80" height="27" />
+<ellipse id="1193:8968" name="Ellipse 44" x="430" y="48.68359375" width="6.6328125" height="6.6328125" />
+<text id="1193:8969" name="title" x="441.6328125" y="41" width="42" height="22" />
+<frame id="1193:8979" name="loading" x="803" y="184" width="136" height="36.949771881103516">
+<text id="1193:8980" name="✏ Designing..." x="25" y="7.474885940551758" width="86" height="22" />
+</frame>
+</frame>
+<frame id="1193:8905" name="Group 2085666087" x="727" y="1070" width="227.2879638671875" height="45">
+<text id="1193:8906" name="tab" x="750.2879638671875" y="1070" width="155" height="22" />
+<text id="1193:8907" name="tab" x="751.2879638671875" y="1093" width="203" height="22" />
+<frame id="1193:8908" name="clock" x="727" y="1072" width="16.442899703979492" height="17" />
+<frame id="1193:8911" name="map" x="727" y="1095" width="16.442899703979492" height="17" />
+</frame>
+</frame>
+<frame id="1193:8924" name="Group 2085666022" x="296" y="1157" width="974" height="243">
+<frame id="1193:8925" name="Frame 2087328262" x="296" y="1157" width="974" height="243">
+<frame id="1193:8926" name="Frame 2087328263" x="0" y="0" width="397" height="243">
+<instance id="1193:8927" name="차량 사진" x="31" y="23" width="101" height="27" />
+<rounded-rectangle id="1193:8928" name="image 112" x="-76" y="82" width="168" height="96" />
+<rounded-rectangle id="1193:8929" name="image 113" x="360" y="70" width="153" height="103" />
+<ellipse id="1193:8930" name="Ellipse 56" x="39" y="143" width="348" height="66" />
+<rounded-rectangle id="1193:8931" name="스크린샷 2026-01-06 오후 11.45.26 5" x="114" y="57" width="228" height="164" />
+</frame>
+<text id="1193:8932" name="123가 4567" x="431" y="68" width="128" height="19" />
+<text id="1193:8935" name="2020년형 · 9.0만 km" x="431" y="122" width="110" height="19" />
+<text id="1193:8936" name="G70 3T 스포츠 엘리트" x="431" y="102" width="164" height="18" />
+<text id="1193:8937" name="tab" x="859" y="75" width="80" height="27" />
+<ellipse id="1193:8971" name="Ellipse 44" x="431" y="42.68359375" width="6.6328125" height="6.6328125" />
+<text id="1193:8972" name="title" x="442.6328125" y="35" width="52" height="22" />
+<frame id="1193:8974" name="loading" x="847" y="184" width="92" height="36.949771881103516">
+<text id="1193:8975" name="✏ Designing..." x="25" y="7.474885940551758" width="42" height="22" />
+</frame>
+<frame id="1193:8976" name="loading" x="771" y="184" width="71" height="36.949771881103516">
+<text id="1193:8977" name="✏ Designing..." x="25" y="7.474885940551758" width="21" height="22" />
+</frame>
+</frame>
+<frame id="1193:8940" name="Group 2085666087" x="727" y="1326" width="227.2879638671875" height="45">
+<text id="1193:8941" name="tab" x="750.2879638671875" y="1326" width="155" height="22" />
+<text id="1193:8942" name="tab" x="751.2879638671875" y="1349" width="203" height="22" />
+<frame id="1193:8943" name="clock" x="727" y="1328" width="16.442899703979492" height="17" />
+<frame id="1193:8946" name="map" x="727" y="1351" width="16.442899703979492" height="17" />
+</frame>
+</frame>
+<frame id="1300:6039" name="Group 2085666156" x="1090" y="213" width="180" height="33">
+<frame id="1300:6040" name="Frame 2087328293" x="1090" y="213" width="95" height="33">
+<text id="1300:6041" name="tab" x="11" y="3" width="49" height="27" />
+<vector id="1300:6042" name="Vector" x="76" y="14.5" width="8" height="4" />
+</frame>
+<frame id="1300:6043" name="grid" x="1201" y="214" width="29" height="29" />
+<frame id="1300:6048" name="list" x="1241" y="213" width="29" height="29" />
+</frame>
+<frame id="1367:9463" name="검차 진행상황" x="291" y="263" width="814" height="40.322059631347656">
+<frame id="1367:9464" name="Frame 2087328275" x="0" y="0" width="75" height="40.322059631347656">
+<frame id="1367:9465" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="35.03382110595703" height="27">
+<text id="1367:9466" name="tab" x="-5.983089447021484" y="0" width="47" height="27" />
+</frame>
+</frame>
+<frame id="1367:9482" name="Frame 2087328283" x="85" y="0" width="104" height="40.322059631347656">
+<frame id="1367:9483" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="64.03382110595703" height="27">
+<text id="1367:9484" name="tab" x="-3.4830894470214844" y="0" width="71" height="27" />
+</frame>
+</frame>
+<frame id="1367:9467" name="Frame 2087328282" x="199" y="0" width="104" height="40.322059631347656">
+<frame id="1367:9468" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="64.03382110595703" height="27">
+<text id="1367:9469" name="tab" x="-3.4830894470214844" y="0" width="71" height="27" />
+</frame>
+</frame>
+<frame id="1367:9470" name="Frame 2087328281" x="313" y="0" width="132" height="40.322059631347656">
+<frame id="1367:9471" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="92.03382110595703" height="27">
+<text id="1367:9472" name="tab" x="-4.983089447021484" y="0" width="102" height="27" />
+</frame>
+</frame>
+<frame id="1367:9473" name="Frame 2087328280" x="455" y="0" width="145" height="40.322059631347656">
+<frame id="1367:9474" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="105.03382110595703" height="27">
+<text id="1367:9475" name="tab" x="-5.483089447021484" y="0" width="116" height="27" />
+</frame>
+</frame>
+<frame id="1367:9476" name="Frame 2087328279" x="610" y="0" width="90" height="40.322059631347656">
+<frame id="1367:9477" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="50.03382110595703" height="27">
+<text id="1367:9478" name="tab" x="-3.4830894470214844" y="0" width="57" height="27" />
+</frame>
+</frame>
+<frame id="1367:9479" name="Frame 2087328277" x="710" y="0" width="104" height="40.322059631347656">
+<frame id="1367:9480" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="64.03382110595703" height="27">
+<text id="1367:9481" name="tab" x="-3.4830894470214844" y="0" width="71" height="27" />
+</frame>
+</frame>
+</frame>
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.

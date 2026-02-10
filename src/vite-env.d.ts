@@ -11,6 +11,8 @@ interface ImportMetaEnv {
   readonly VITE_API_BASE_URL?: string;
   readonly GEMINI_API_KEY?: string;
   readonly VITE_GEMINI_API_KEY?: string;
+  /** 배포 빌드에서도 DEV 스킵/런데브 기능 노출 (true 시 활성화) */
+  readonly VITE_RUN_DEV?: string;
 }
 
 interface ImportMeta {

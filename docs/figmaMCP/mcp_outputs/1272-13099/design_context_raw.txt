@@ -1,0 +1,527 @@
+const imgIcon = "https://www.figma.com/api/mcp/asset/f1ccc34c-0726-46c4-9cea-fbf397dca458";
+const imgSearch = "https://www.figma.com/api/mcp/asset/78fe6d47-f4d3-42bf-8791-1b16a41723d6";
+const imgIcon1 = "https://www.figma.com/api/mcp/asset/0b57d1ad-1796-4c9e-b51e-b23107c32e63";
+const imgCilTruck = "https://www.figma.com/api/mcp/asset/50bd093c-6995-4644-88eb-e82a9416f04c";
+const imgIcon2 = "https://www.figma.com/api/mcp/asset/20a326d3-9bf8-4ea1-81ed-0084f5631377";
+const imgLine76 = "https://www.figma.com/api/mcp/asset/58800c59-cf70-46ba-abda-9cd3080dd18f";
+const img202601061145265 = "https://www.figma.com/api/mcp/asset/78b32c07-da3c-4931-8edf-d1611576f661";
+const imgEllipse8398 = "https://www.figma.com/api/mcp/asset/4b3551c8-e06b-456f-9d69-b0828ef3f634";
+const imgStickMan1181741 = "https://www.figma.com/api/mcp/asset/5b98096b-033e-4f4e-9616-c7ade26c5939";
+const imgLine87 = "https://www.figma.com/api/mcp/asset/c1c5c30e-db4d-4956-8c34-5d3f7f3d2c08";
+const imgEllipse55 = "https://www.figma.com/api/mcp/asset/3ebe48b0-09b9-4ca3-9e4b-8ebd1e72770a";
+const imgEllipse56 = "https://www.figma.com/api/mcp/asset/f7370786-dfbf-43a7-9741-fa404689ce51";
+const imgEllipse57 = "https://www.figma.com/api/mcp/asset/478862f2-c61b-428d-aaad-268c1c5403ac";
+const imgEllipse58 = "https://www.figma.com/api/mcp/asset/cef75558-6ca5-4dae-b659-124397c0e248";
+const imgLine88 = "https://www.figma.com/api/mcp/asset/6638695d-33f1-4c79-ab5a-6844dd6c8c8f";
+const imgLine83 = "https://www.figma.com/api/mcp/asset/d03de768-564e-4445-9685-445bab0935a8";
+const imgLine85 = "https://www.figma.com/api/mcp/asset/c59291bf-7e4f-4df0-9d40-5baf587fc095";
+const imgEllipse49 = "https://www.figma.com/api/mcp/asset/486503da-643e-4c45-9fc0-fdf88ed75885";
+const imgCheck = "https://www.figma.com/api/mcp/asset/0728c9ba-83a6-4eee-8d3a-99ca309b6e09";
+const imgCheck1 = "https://www.figma.com/api/mcp/asset/d05247fc-9e15-45ae-9b33-64967e5b9240";
+const imgEllipse48 = "https://www.figma.com/api/mcp/asset/60c299a1-d607-48d7-b347-0f9d6dce4880";
+const imgLine78 = "https://www.figma.com/api/mcp/asset/8674b837-5ef6-4168-bef6-c355ddd1617d";
+const imgGroup2085666051 = "https://www.figma.com/api/mcp/asset/2f7a3b7b-fcd1-4737-b6d9-30bc548b14fc";
+const imgGroup2085666053 = "https://www.figma.com/api/mcp/asset/8e25f207-1096-4ea2-9d52-d4ad8eba777e";
+const imgCheck2 = "https://www.figma.com/api/mcp/asset/9c9e1002-8b71-4eb8-a1d8-51c610291eb3";
+const imgFrame2087328312 = "https://www.figma.com/api/mcp/asset/03b0fc26-2b29-4d29-8439-90ae07a119af";
+const imgEllipse50 = "https://www.figma.com/api/mcp/asset/1673c81d-63fa-4882-8921-57eb78ec004f";
+const imgBriefcase = "https://www.figma.com/api/mcp/asset/3fa197de-938f-4bf9-b366-8025772f22e7";
+const imgLine1398 = "https://www.figma.com/api/mcp/asset/b036be53-c502-4277-b03a-67d74fbd9359";
+const imgGroup140 = "https://www.figma.com/api/mcp/asset/9d8d28a9-e94a-47e2-9d6d-2daef8b34157";
+const imgGroup2085666007 = "https://www.figma.com/api/mcp/asset/ae35d152-c868-4b12-a3f7-12a677e766a9";
+const imgSearch1 = "https://www.figma.com/api/mcp/asset/c48dd0a4-b5be-44d7-9bc1-37e3619fd214";
+const imgIcon3 = "https://www.figma.com/api/mcp/asset/1559f2f8-f6f5-41be-8de4-51ba8880856c";
+function Gnb({ className }: { className?: string }) {
+return (
+<div className={className || ""} data-name="GNB(상단 네비게이션 메뉴)" data-node-id="650:1034">
+<div className="h-[31px] relative w-[398px]" data-name="state=탁송" data-node-id="650:1067">
+<div className="absolute content-stretch flex gap-[30px] inset-[0_0_22.43%0] items-center" data-node-id="650:1068">
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1069">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="file-search-01" data-node-id="650:1070">
+<div className="absolute inset-[8.33%8.33%_8.33%_16.67%]" data-name="Icon" data-node-id="I650:1070;1007:11689">
+<div className="absolute inset-[-4.74%-5.26%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1071">
+차량목록
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="1193:5605">
+<div className="relative shrink-0 size-[19px]" data-name="search" data-node-id="1193:5606">
+<img alt="" className="block max-w-none size-full" src={imgSearch} />
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="1193:5609">
+검차
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1072">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="bar-chart-12" data-node-id="650:1073">
+<div className="absolute inset-[12.5%]" data-name="Icon" data-node-id="I650:1073;1007:8716">
+<div className="absolute inset-[-5.26%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon1} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1074">
+거래
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1075">
+<div className="relative shrink-0 size-[19px]" data-name="Cil Truck" data-node-id="650:1076">
+<img alt="" className="block max-w-none size-full" src={imgCilTruck} />
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[16px] text-black" data-node-id="650:1078">
+탁송
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1079">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="coins-stacked-03" data-node-id="650:1080">
+<div className="absolute inset-[12.5%8.33%]" data-name="Icon" data-node-id="I650:1080;1007:9529">
+<div className="absolute inset-[-5.26%-4.74%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon2} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1081">
+정산
+</p>
+</div>
+</div>
+<div className="absolute inset-[100.57%15.83%-0.57%64.82%]" data-node-id="650:1082">
+<div className="absolute inset-[-2px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine76} />
+</div>
+</div>
+</div>
+</div>
+);
+}
+export default function F() {
+return (
+<div className="bg-[#f8f9fa] relative size-full" data-name="F_3_1_구매 제안 차량정보 펼쳐보기" data-node-id="1272:13099">
+<div className="absolute bg-white h-[420px] left-[calc(8.33%+176.09px)] overflow-clip rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[278.92px] w-[320px]" data-node-id="1272:13100">
+<div className="absolute bg-[#eef5fe] h-[26.988px] left-[20.08px] rounded-[5px] top-[25.66px] w-[67.117px]" data-node-id="1272:13101" />
+<p className="absolute font-['SUITE_Variable:ExtraBold',sans-serif] leading-[44px] left-[calc(50%-139.92px)] not-italic text-[#2048e5] text-[28px] top-[61.68px]" data-node-id="1272:13102">{12바 1234}</p>
+<p className="absolute font-['SUITE_Variable:ExtraBold',sans-serif] leading-[44px] left-[calc(50%-132.86px)] not-italic text-[15px] text-[rgba(0,0,0,0.5)] top-[17.68px] tracking-[0.15px]" data-node-id="1272:13103">
+차량정보
+</p>
+<div className="absolute h-[51px] left-0 overflow-clip top-[142px] w-[320px]" data-node-id="1272:13104">
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[44px] left-[calc(50%-128.28px)] not-italic text-[16px] text-[rgba(0,0,0,0.4)] top-[3.5px]" data-node-id="1272:13105">
+제조사
+</p>
+<p className="absolute font-['Pretendard:Regular',sans-serif] leading-[44px] left-[calc(50%+68.43px)] not-italic text-[16px] text-[rgba(0,0,0,0.8)] top-[3.5px]" data-node-id="1272:13106">
+Hyundai
+</p>
+<div className="-translate-x-1/2 absolute bottom-0 h-0 left-1/2 w-[256.867px]" data-node-id="1272:13107">
+<div className="absolute inset-[-1px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine87} />
+</div>
+</div>
+</div>
+<div className="absolute h-[51px] left-0 overflow-clip top-[244px] w-[320px]" data-node-id="1272:13108">
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[44px] left-[calc(50%-128.28px)] not-italic text-[16px] text-[rgba(0,0,0,0.4)] top-[3.5px]" data-node-id="1272:13109">
+연식
+</p>
+<p className="-translate-x-full absolute font-['Pretendard:Regular',sans-serif] leading-[44px] left-[calc(50%+128.43px)] not-italic text-[16px] text-[rgba(0,0,0,0.8)] text-right top-[3.5px]" data-node-id="1272:13110">
+2018
+</p>
+<div className="-translate-x-1/2 absolute bottom-0 h-0 left-1/2 w-[256.867px]" data-node-id="1272:13111">
+<div className="absolute inset-[-1px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine87} />
+</div>
+</div>
+</div>
+<div className="absolute h-[51px] left-0 overflow-clip top-[193px] w-[320px]" data-node-id="1272:13112">
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[44px] left-[calc(50%-128.28px)] not-italic text-[16px] text-[rgba(0,0,0,0.4)] top-[3.5px]" data-node-id="1272:13113">
+모델
+</p>
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[44px] not-italic right-[176.24px] text-[16px] text-[rgba(0,0,0,0.8)] top-[3.5px] translate-x-full" data-node-id="1272:13114">
+G70 3T 스포츠 엘리트
+</p>
+<div className="-translate-x-1/2 absolute bottom-0 h-0 left-1/2 w-[256.867px]" data-node-id="1272:13115">
+<div className="absolute inset-[-1px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine87} />
+</div>
+</div>
+</div>
+<div className="absolute h-[51px] left-0 overflow-clip top-[295px] w-[320px]" data-node-id="1272:13116">
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[44px] left-[calc(50%-128.28px)] not-italic text-[16px] text-[rgba(0,0,0,0.4)] top-[3.5px]" data-node-id="1272:13117">
+주행거리
+</p>
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[44px] not-italic right-[31.24px] text-[16px] text-[rgba(0,0,0,0.8)] text-right top-[3.5px]" data-node-id="1272:13118">
+14.6만 km
+</p>
+<div className="-translate-x-1/2 absolute bottom-0 h-0 left-1/2 w-[256.867px]" data-node-id="1272:13119">
+<div className="absolute inset-[-1px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine87} />
+</div>
+</div>
+</div>
+<div className="absolute h-[51px] left-0 overflow-clip top-[346px] w-[320px]" data-node-id="1272:13120">
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[44px] left-[calc(50%-128.28px)] not-italic text-[16px] text-[rgba(0,0,0,0.4)] top-[3.5px]" data-node-id="1272:13121">
+연료
+</p>
+<p className="absolute font-['Pretendard:Medium',sans-serif] leading-[44px] not-italic right-[31.24px] text-[16px] text-[rgba(0,0,0,0.8)] text-right top-[3.5px]" data-node-id="1272:13122">
+-
+</p>
+<div className="-translate-x-1/2 absolute bottom-0 h-0 left-1/2 w-[256.867px]" data-node-id="1272:13123">
+<div className="absolute inset-[-1px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine87} />
+</div>
+</div>
+</div>
+</div>
+<div className="absolute bg-white h-[420px] left-[calc(41.67%+39px)] overflow-clip rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[278.92px] w-[628px]" data-node-id="1272:13124">
+<div className="absolute bg-white border-[1.3px] border-[rgba(0,0,0,0.2)] border-solid content-stretch flex h-[26.988px] items-center justify-center left-[29px] px-[7px] py-[3px] rounded-[5px] top-[34px]" data-node-id="1272:13125">
+<p className="font-['SUITE_Variable:ExtraBold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[15px] text-[rgba(0,0,0,0.5)] tracking-[0.15px]" data-node-id="1272:13126">
+전체 피드백
+</p>
+</div>
+<div className="absolute h-[161.844px] left-[50.8px] top-[68.56px] w-[225.086px]" data-name="스크린샷 2026-01-06 오후 11.45.26 5" data-node-id="1272:13127">
+<div className="absolute inset-0 overflow-hidden pointer-events-none">
+<img alt="" className="absolute h-[634.68%] left-[-357.66%] max-w-none top-[-350.09%] w-[904.52%]" src={img202601061145265} />
+</div>
+</div>
+<div className="absolute content-stretch flex gap-[9px] items-center left-[335px] top-[78.56px]" data-node-id="1272:13128">
+<div className="relative shrink-0 size-[9.117px]" data-node-id="1272:13129">
+<img alt="" className="block max-w-none size-full" src={imgEllipse55} />
+</div>
+<div className="content-stretch flex gap-[5px] items-center not-italic relative shrink-0 text-[16px]" data-node-id="1272:13130">
+<p className="font-['Pretendard:Medium',sans-serif] leading-[20px] relative shrink-0 text-[rgba(0,0,0,0.4)]" data-node-id="1272:13131">
+양호
+</p>
+<p className="font-['Pretendard:Regular',sans-serif] leading-[44px] relative shrink-0 text-[rgba(0,0,0,0.8)]" data-node-id="1272:13132">
+95개
+</p>
+</div>
+</div>
+<div className="absolute content-stretch flex gap-[9px] items-center left-[335px] top-[122.56px]" data-node-id="1272:13133">
+<div className="relative shrink-0 size-[9.117px]" data-node-id="1272:13134">
+<img alt="" className="block max-w-none size-full" src={imgEllipse56} />
+</div>
+<div className="content-stretch flex gap-[5px] items-center not-italic relative shrink-0 text-[16px]" data-node-id="1272:13135">
+<p className="font-['Pretendard:Medium',sans-serif] leading-[20px] relative shrink-0 text-[rgba(0,0,0,0.4)]" data-node-id="1272:13136">
+주의
+</p>
+<p className="font-['Pretendard:Regular',sans-serif] leading-[44px] relative shrink-0 text-[rgba(0,0,0,0.8)]" data-node-id="1272:13137">
+3개
+</p>
+</div>
+</div>
+<div className="absolute content-stretch flex gap-[9px] items-center left-[464px] top-[122.56px]" data-node-id="1272:13138">
+<div className="relative shrink-0 size-[9.117px]" data-node-id="1272:13139">
+<img alt="" className="block max-w-none size-full" src={imgEllipse57} />
+</div>
+<div className="content-stretch flex gap-[5px] items-center not-italic relative shrink-0 text-[16px]" data-node-id="1272:13140">
+<p className="font-['Pretendard:Medium',sans-serif] leading-[20px] relative shrink-0 text-[rgba(0,0,0,0.4)]" data-node-id="1272:13141">
+불량
+</p>
+<p className="font-['Pretendard:Regular',sans-serif] leading-[44px] relative shrink-0 text-[rgba(0,0,0,0.8)]" data-node-id="1272:13142">
+1개
+</p>
+</div>
+</div>
+<div className="absolute content-stretch flex gap-[9px] items-center left-[464px] top-[78.56px]" data-node-id="1272:13143">
+<div className="relative shrink-0 size-[9.117px]" data-node-id="1272:13144">
+<img alt="" className="block max-w-none size-full" src={imgEllipse58} />
+</div>
+<div className="content-stretch flex gap-[5px] items-center not-italic relative shrink-0 text-[16px]" data-node-id="1272:13145">
+<p className="font-['Pretendard:Medium',sans-serif] leading-[20px] relative shrink-0 text-[rgba(0,0,0,0.4)]" data-node-id="1272:13146">
+경미
+</p>
+<p className="font-['Pretendard:Regular',sans-serif] leading-[44px] relative shrink-0 text-[rgba(0,0,0,0.8)]" data-node-id="1272:13147">
+12개
+</p>
+</div>
+</div>
+<div className="-translate-x-1/2 absolute h-0 left-1/2 top-[265.23px] w-[541.277px]" data-node-id="1272:13148">
+<div className="absolute inset-[-2px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine88} />
+</div>
+</div>
+<div className="absolute bg-[#eef5fe] content-stretch flex h-[47.664px] items-center justify-center left-[323px] px-[61px] py-[10px] rounded-[10px] top-[182.74px] w-[240.426px]" data-node-id="1272:13149">
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[26.644px] not-italic relative shrink-0 text-[#2048e5] text-[16px]" data-node-id="1272:13150">
+검차 상세내용 확인
+</p>
+</div>
+<div className="absolute font-['Pretendard:Regular',sans-serif] leading-[0] left-[calc(50%-270.64px)] not-italic text-[18px] text-black top-[314.63px] whitespace-nowrap" data-node-id="1272:13151">
+<p className="mb-0">
+<span className="font-['Pretendard:SemiBold',sans-serif] leading-[26px] not-italic">총 111개</span>
+<span className="leading-[26px]">의 항목이 검사되었습니다.</span>
+</p>
+<p className="leading-[26px]">전반적인 상태는 양호하며, 일부 부위에 경미한 스키레치가 확인되었습니다.</p>
+</div>
+</div>
+<div className="absolute bg-white h-[473px] left-[calc(8.33%+175px)] overflow-clip rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] top-[752px] w-[972px]" data-node-id="1272:13152">
+<p className="absolute font-['SUITE_Variable:ExtraBold',sans-serif] leading-[44px] left-[calc(50%-443px)] not-italic text-[#2048e5] text-[38px] top-[52.79px]" data-node-id="1272:13153">
+탁송 기사 방문 확정 🛻
+</p>
+<div className="absolute font-['Pretendard:Medium',sans-serif] h-[80px] leading-[40px] left-[calc(50%-443px)] not-italic text-[24px] text-[rgba(0,0,0,0.6)] top-[116.64px] w-[366px] whitespace-pre-wrap" data-node-id="1272:13154">
+<p className="mb-0">2026년 1월 25일 (일) 오후 11:00</p>
+<p className="mb-0">서울 중구 한강대로 416 (남대문로5가)</p>
+<p>&nbsp;</p>
+</div>
+<div className="absolute bg-[#f3f3f3] content-stretch flex flex-col h-[160.188px] items-start left-[527.2px] px-[46px] py-[29px] rounded-[20px] top-[52.78px] w-[400.008px]" data-node-id="1272:13155">
+<div className="content-stretch flex gap-[31px] items-center relative shrink-0" data-node-id="1272:13156">
+<div className="relative shrink-0 size-[101.434px]" data-node-id="1272:13157">
+<img alt="" className="block max-w-none size-full" height="101.434" src={imgEllipse8398} width="101.434" />
+</div>
+<div className="content-stretch flex flex-col items-start leading-[40px] not-italic relative shrink-0 text-[24px] w-[171px] whitespace-pre-wrap" data-node-id="1272:13158">
+<p className="font-['Pretendard:Bold',sans-serif] relative shrink-0 text-black w-full" data-node-id="1272:13159">
+홍길동 기사님
+</p>
+<p className="font-['Pretendard:Regular',sans-serif] relative shrink-0 text-[#9b9b9b] w-full" data-node-id="1272:13160">
+010-1234-5678
+</p>
+</div>
+</div>
+</div>
+<div className="absolute contents left-[200.53px] top-[335.25px]" data-node-id="1272:13161">
+<div className="absolute h-0 left-[278.02px] top-[352.64px] w-[91.109px]" data-node-id="1272:13162">
+<div className="absolute inset-[-2.56px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine83} />
+</div>
+</div>
+<div className="absolute h-0 left-[432.02px] top-[352.64px] w-[91.109px]" data-node-id="1272:13163">
+<div className="absolute inset-[-2.56px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine83} />
+</div>
+</div>
+<div className="absolute h-0 left-[586.08px] top-[352.64px] w-[91.109px]" data-node-id="1272:13164">
+<div className="absolute inset-[-1.28px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine85} />
+</div>
+</div>
+<div className="absolute content-stretch flex flex-col gap-[17.912px] h-[77.02px] items-center justify-center left-[536.69px] top-[335.25px] w-[35.824px]" data-node-id="1272:13165">
+<div className="border-[#2048e5] border-[1.279px] border-solid content-stretch flex h-[34.799px] items-center justify-center p-[9.266px] relative rounded-[17.399px] shrink-0 w-full" data-node-id="1272:13166">
+<div className="relative shrink-0 size-[11.162px]" data-node-id="1272:13167">
+<img alt="" className="block max-w-none size-full" src={imgEllipse49} />
+</div>
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[23.993px] not-italic relative shrink-0 text-[19.994px] text-[rgba(0,0,0,0.5)]" data-node-id="1272:13168">
+픽업 완료
+</p>
+</div>
+<div className="absolute content-stretch flex flex-col gap-[17.912px] h-[77.021px] items-center left-[200.53px] top-[335.25px] w-[92.119px]" data-node-id="1272:13169">
+<div className="bg-[#2048e5] content-stretch flex items-center p-[6.95px] relative rounded-[17.4px] shrink-0 size-[34.8px]" data-node-id="1272:13170">
+<div className="relative shrink-0 size-[20.849px]" data-name="Check" data-node-id="1272:13171">
+<img alt="" className="block max-w-none size-full" src={imgCheck} />
+</div>
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[23.993px] not-italic relative shrink-0 text-[19.994px] text-[rgba(0,0,0,0.5)]" data-node-id="1272:13173">
+탁송요청
+</p>
+</div>
+<div className="absolute content-stretch flex flex-col gap-[17.912px] h-[77.021px] items-center left-[365.4px] top-[335.25px] w-[70.368px]" data-node-id="1272:13174">
+<div className="bg-[#2048e5] content-stretch flex items-center p-[6.95px] relative rounded-[17.4px] shrink-0 size-[34.8px]" data-node-id="1272:13175">
+<div className="relative shrink-0 size-[20.849px]" data-name="Check" data-node-id="1272:13176">
+<img alt="" className="block max-w-none size-full" src={imgCheck1} />
+</div>
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[23.993px] not-italic relative shrink-0 text-[19.994px] text-[rgba(0,0,0,0.5)]" data-node-id="1272:13178">
+기사 배정
+</p>
+</div>
+<div className="absolute content-stretch flex flex-col gap-[17.912px] h-[77.021px] items-center justify-center left-[691.38px] top-[335.25px] w-[35.824px]" data-node-id="1272:13179">
+<div className="h-[34.8px] relative shrink-0 w-full" data-node-id="1272:13180">
+<img alt="" className="block max-w-none size-full" src={imgEllipse48} />
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[23.993px] not-italic relative shrink-0 text-[19.994px] text-[rgba(0,0,0,0.5)]" data-node-id="1272:13181">
+인계 완료
+</p>
+</div>
+</div>
+<div className="absolute bg-white border-[1.3px] border-[rgba(0,0,0,0.2)] border-solid content-stretch flex h-[26.988px] items-center justify-center left-[43px] px-[7px] py-[3px] rounded-[5px] top-[270px]" data-node-id="1272:13182">
+<p className="font-['SUITE_Variable:ExtraBold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[15px] text-[rgba(0,0,0,0.5)] tracking-[0.15px]" data-node-id="1272:13183">
+진행 상황
+</p>
+</div>
+</div>
+<div className="absolute bg-white h-[1260px] left-[-0.5px] overflow-clip top-[155px] w-[249px]" data-node-id="1272:13184">
+<div className="absolute flex h-[1508.256px] items-center justify-center right-[-0.5px] top-[-0.17px] w-0">
+<div className="flex-none rotate-90">
+<div className="h-0 relative w-[1508.256px]" data-node-id="1272:13185">
+<div className="absolute inset-[-2px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine78} />
+</div>
+</div>
+</div>
+</div>
+<p className="absolute font-['SUITE_Variable:Heavy',sans-serif] leading-[20px] left-[calc(50%-100.42px)] not-italic text-[14px] text-[rgba(144,144,144,0.6)] top-[29.65px]" data-node-id="1272:13186">
+현재 거래 진행상황
+</p>
+<div className="absolute contents left-[24.08px] top-[69.65px]" data-node-id="1272:13187">
+<div className="absolute h-[14.301px] left-[30.28px] top-[96.67px] w-[2.5px]" data-node-id="1272:13188">
+<img alt="" className="block max-w-none size-full" src={imgGroup2085666051} />
+</div>
+<div className="absolute h-[14.301px] left-[30.28px] top-[145.81px] w-[2.5px]" data-node-id="1272:13192">
+<img alt="" className="block max-w-none size-full" src={imgGroup2085666051} />
+</div>
+<div className="absolute h-[14.301px] left-[30.28px] top-[195.03px] w-[2.5px]" data-node-id="1272:13196">
+<img alt="" className="block max-w-none size-full" src={imgGroup2085666053} />
+</div>
+<div className="absolute h-[14.301px] left-[30.28px] top-[244.33px] w-[2.5px]" data-node-id="1272:13200">
+<img alt="" className="block max-w-none size-full" src={imgGroup2085666053} />
+</div>
+<div className="absolute content-stretch flex gap-[7px] items-center left-[24.08px] top-[69.65px]" data-node-id="1272:13204">
+<div className="bg-[#2048e5] content-stretch flex items-center p-[2.976px] relative rounded-[7.451px] shrink-0 size-[14.902px]" data-node-id="1272:13205">
+<div className="relative shrink-0 size-[8.928px]" data-name="Check" data-node-id="1272:13206">
+<img alt="" className="block max-w-none size-full" src={imgCheck2} />
+</div>
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)] w-[72px] whitespace-pre-wrap" data-node-id="1272:13208">
+차량 업로드
+</p>
+</div>
+<div className="absolute content-stretch flex gap-[7px] items-center left-[24.08px] top-[118.89px]" data-node-id="1272:13209">
+<div className="bg-[#2048e5] content-stretch flex items-center p-[2.976px] relative rounded-[7.451px] shrink-0 size-[14.902px]" data-node-id="1272:13210">
+<div className="relative shrink-0 size-[8.928px]" data-name="Check" data-node-id="1272:13211">
+<img alt="" className="block max-w-none size-full" src={imgCheck2} />
+</div>
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)] w-[72px] whitespace-pre-wrap" data-node-id="1272:13213">
+검차 진행
+</p>
+</div>
+<div className="absolute content-stretch flex gap-[6px] items-center left-[24.08px] top-[168.11px]" data-node-id="1272:13214">
+<div className="bg-[#2048e5] content-stretch flex items-center p-[2.976px] relative rounded-[7.451px] shrink-0 size-[14.902px]" data-node-id="1272:13215">
+<div className="relative shrink-0 size-[8.928px]" data-name="Check" data-node-id="1272:13216">
+<img alt="" className="block max-w-none size-full" src={imgCheck2} />
+</div>
+</div>
+<div className="content-stretch flex items-center relative shrink-0" data-node-id="1272:13218">
+<p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1272:13219">
+거래
+</p>
+</div>
+</div>
+<div className="absolute content-stretch flex gap-[6px] items-center left-[24.08px] top-[217.33px]" data-node-id="1272:13220">
+<div className="content-stretch flex gap-[7px] items-center relative shrink-0" data-node-id="1272:13221">
+<div className="h-[14.474px] relative shrink-0 w-[14.9px]" data-node-id="1272:13222">
+<img alt="" className="block max-w-none size-full" src={imgFrame2087328312} />
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1272:13224">
+탁송
+</p>
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[11px] text-[rgba(32,72,229,0.8)]" data-node-id="1272:13225">
+진행 중...
+</p>
+</div>
+<div className="absolute content-stretch flex items-center left-[24.08px] top-[266.55px]" data-node-id="1272:13226">
+<div className="content-stretch flex gap-[7px] items-center relative shrink-0" data-node-id="1272:13227">
+<div className="h-[14.474px] relative shrink-0 w-[14.9px]" data-node-id="1272:13228">
+<img alt="" className="block max-w-none size-full" src={imgEllipse50} />
+</div>
+<p className="font-['Pretendard:Medium',sans-serif] leading-[18.753px] not-italic relative shrink-0 text-[15.627px] text-[rgba(0,0,0,0.8)]" data-node-id="1272:13229">
+완료
+</p>
+</div>
+</div>
+</div>
+</div>
+<div className="absolute bg-[#eef5fe] border border-[#d9e7fc] border-solid h-[37px] left-[calc(8.33%+140px)] overflow-clip rounded-[39px] top-[106px] w-[203px]" data-node-id="1272:13230">
+<div className="-translate-x-1/2 -translate-y-1/2 absolute content-stretch flex gap-[5px] items-center left-[calc(50%-21px)] top-[calc(50%+0.5px)] w-[119px]" data-node-id="1272:13231">
+<div className="relative shrink-0 size-[18px]" data-name="briefcase" data-node-id="1272:13232">
+<img alt="" className="block max-w-none size-full" src={imgBriefcase} />
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#2048e5] text-[14px] w-[147px] whitespace-pre-wrap" data-node-id="1272:13235">
+한국 수출차량 전문 플랫폼
+</p>
+</div>
+</div>
+<p className="absolute font-['SUITE_Variable:ExtraBold',sans-serif] leading-[44px] left-[calc(20.83%-4.68px)] not-italic text-[28px] text-black top-[207.16px]" data-node-id="1272:13236">
+탁송 신청 완료
+</p>
+<div className="absolute bg-[#eef5fe] h-[132px] left-[calc(8.33%+176.09px)] overflow-clip rounded-tl-[30px] rounded-tr-[30px] top-[278.92px] w-[320px]" data-node-id="1272:13288">
+<p className="absolute font-['SUITE_Variable:ExtraBold',sans-serif] leading-[44px] left-[calc(50%-131px)] not-italic text-[26px] text-black top-[60.98px]" data-node-id="1272:13289">{12바 1234}</p>
+<div className="absolute bg-white content-stretch flex h-[26.988px] items-center justify-center left-[29px] px-[7px] py-[3px] rounded-[5px] top-[34px] w-[67.117px]" data-node-id="1272:13290">
+<p className="font-['SUITE_Variable:ExtraBold',sans-serif] leading-[20px] not-italic relative shrink-0 text-[15px] text-[rgba(0,0,0,0.5)] tracking-[0.15px]" data-node-id="1272:13291">
+차량정보
+</p>
+</div>
+</div>
+<div className="absolute h-[87.668px] left-[calc(25%+113.56px)] top-[304.58px] w-[121.925px]" data-name="스크린샷 2026-01-06 오후 11.45.26 5" data-node-id="1272:13292">
+<div className="absolute inset-0 overflow-hidden pointer-events-none">
+<img alt="" className="absolute h-[634.68%] left-[-357.66%] max-w-none top-[-350.09%] w-[904.52%]" src={img202601061145265} />
+</div>
+</div>
+<div className="-translate-x-1/2 absolute h-0 left-[calc(54.17%+0.1px)] top-[996.49px] w-[884.207px]" data-node-id="1272:13293">
+<div className="absolute inset-[-2px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine1398} />
+</div>
+</div>
+<div className="-translate-x-1/2 absolute bg-white h-[155px] left-[calc(50%-0.07px)] overflow-clip shadow-[0px_-3px_23.8px_0px_rgba(0,0,0,0.05)] top-[-0.33px] w-[1440px]" data-name="top bar" data-node-id="1371:46096">
+<div className="absolute h-[13.674px] left-[170.01px] top-[41.16px] w-[254.76px]" data-node-id="1371:46097">
+<img alt="" className="block max-w-none size-full" src={imgGroup140} />
+</div>
+<div className="absolute border border-[rgba(0,0,0,0.1)] border-solid content-stretch flex flex-col h-[30px] items-center justify-center left-[1172px] px-[11px] py-[3px] rounded-[100px] top-[33px] w-[98px]" data-node-id="1371:46116">
+<div className="content-stretch flex gap-[6px] items-center relative shrink-0" data-node-id="1371:46117">
+<div className="flex items-center justify-center relative shrink-0">
+<div className="-scale-y-100 flex-none rotate-180">
+<div className="relative size-[14.243px]" data-name="stick-man_118174 1" data-node-id="1371:46118">
+<img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgStickMan1181741} />
+</div>
+</div>
+</div>
+<p className="font-['SUITE_Variable:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[14px] text-black" data-node-id="1371:46119">
+홍길동님
+</p>
+</div>
+</div>
+<div className="absolute h-[18px] left-[1138.24px] top-[40.88px] w-[16px]" data-node-id="1371:46120">
+<div className="absolute contents inset-0" data-node-id="1371:46121">
+<div className="absolute inset-[-4.17%-4.69%]">
+<img alt="" className="block max-w-none size-full" src={imgGroup2085666007} />
+</div>
+</div>
+</div>
+<div className="absolute h-[22px] left-[1102px] top-[39px] w-[21px]" data-node-id="1371:46124">
+<div className="-translate-y-1/2 absolute h-[22px] left-0 top-1/2 w-[21px]" data-name="search" data-node-id="1371:46125">
+<img alt="" className="block max-w-none size-full" src={imgSearch1} />
+</div>
+</div>
+<div className="absolute bg-[#2048e5] content-stretch flex flex-col items-start left-[1120.37px] overflow-clip px-[19.983px] py-[6.661px] rounded-[43.297px] top-[84.06px] w-[149.707px]" data-node-id="1371:46128">
+<div className="content-stretch flex gap-[4.537px] items-center justify-center relative shrink-0 w-full" data-node-id="1371:46129">
+<div className="overflow-clip relative shrink-0 size-[26.644px]" data-name="clipboard-plus" data-node-id="1371:46130">
+<div className="absolute inset-[8.33%16.67%]" data-name="Icon" data-node-id="I1371:46130;1007:11746">
+<div className="absolute inset-[-4.74%-5.92%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon3} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[26.644px] not-italic relative shrink-0 text-[15.542px] text-white" data-node-id="1371:46131">
+매물 등록하기
+</p>
+</div>
+</div>
+<Gnb className="absolute h-[31px] left-[170.01px] top-[94.25px] w-[398px]" />
+</div>
+</div>
+);
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+Convert React syntax to the target framework/library
+Transform all Tailwind classes to the target styling system while preserving exact visual design
+Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+Node ids have been added to the code as data attributes, e.g. data-node-id="1:2".
+These styles are contained in the design: 기본 dropshadow: Effect(type: DROP_SHADOW, color: #0000000D, offset: (2.3440988063812256, 3.1254653930664062), radius: 11.017265319824219, spread: 0), #2048E5: #2048E5.
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+clipboard-plus
+Node ID: 423:430
+clipboard, plus, add, file, report
+file-search-01
+Node ID: 423:435
+file, search, attachment, text, paper, pdf, report
+bar-chart-12
+Node ID: 425:440
+bar, chart, barchart, graph, data
+coins-stacked-03
+Node ID: 423:424
+coins, stacked, stack, currency, money
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.
+IMPORTANT: After you call this tool, you MUST call get_screenshot to get a screenshot of the node for context.

@@ -9,7 +9,7 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
-import { Search } from 'lucide-react';
+import iconSearch from '@/shared/figma_image/1425-8153_검색_search.png';
 
 const LIST_ITEMS = [
   { label: '전체', href: '/vehicles', key: 'all' },
@@ -64,7 +64,7 @@ export function MainLandingSidebar({
               onChange={(e) => onSearchChange?.(e.target.value)}
               className="w-full pl-3 pr-10 py-2.5 border border-gray-200 rounded-md text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+            <img src={iconSearch} alt="" className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none object-contain" aria-hidden />
           </div>
         </div>
 

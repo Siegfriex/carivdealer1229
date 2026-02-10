@@ -1,0 +1,286 @@
+<frame id="1425:7684" name="등록됨" x="2066" y="3430" width="1440" height="2257">
+<frame id="1425:7685" name="Frame 2087328333" x="296" y="769" width="971" height="1313">
+<frame id="1425:7686" name="Group 2085666055" x="59" y="122" width="822" height="1058">
+<frame id="1425:7687" name="Frame 2087328328" x="59" y="122" width="358" height="1058">
+<frame id="1425:7688" name="Group 2085666047" x="0" y="0" width="365" height="68">
+<text id="1425:7689" name="일련번호" x="0" y="0" width="145" height="19" />
+<frame id="1425:7690" name="Frame 2087328326" x="0" y="28" width="286" height="40">
+<text id="1425:7691" name="계좌번호 &#39;-&#39;를 제외하고 입력" x="11" y="11" width="156" height="19" />
+</frame>
+<frame id="1425:7692" name="Frame 2087328327" x="297" y="28" width="68" height="40">
+<text id="1425:7693" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7694" name="Group 2085666054" x="0" y="99" width="365" height="68">
+<text id="1425:7695" name="제원관리번호" x="0" y="99" width="145" height="19" />
+<frame id="1425:7696" name="Frame 2087328326" x="0" y="127" width="286" height="40">
+<text id="1425:7697" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7698" name="Frame 2087328327" x="297" y="127" width="68" height="40">
+<text id="1425:7699" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7700" name="Group 2085666060" x="0" y="198" width="365" height="68">
+<text id="1425:7701" name="말소등쪽일" x="0" y="198" width="145" height="19" />
+<frame id="1425:7702" name="Frame 2087328326" x="0" y="226" width="286" height="40">
+<text id="1425:7703" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7704" name="Frame 2087328327" x="297" y="226" width="68" height="40">
+<text id="1425:7705" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7706" name="Group 2085666061" x="0" y="297" width="365" height="68">
+<text id="1425:7707" name="차명" x="0" y="297" width="145" height="19" />
+<frame id="1425:7708" name="Frame 2087328326" x="0" y="325" width="286" height="40">
+<text id="1425:7709" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7710" name="Frame 2087328327" x="297" y="325" width="68" height="40">
+<text id="1425:7711" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7712" name="Group 2085666062" x="0" y="396" width="365" height="68">
+<text id="1425:7713" name="치종" x="0" y="396" width="145" height="19" />
+<frame id="1425:7714" name="Frame 2087328326" x="0" y="424" width="286" height="40">
+<text id="1425:7715" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7716" name="Frame 2087328327" x="297" y="424" width="68" height="40">
+<text id="1425:7717" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7718" name="Group 2085666063" x="0" y="495" width="365" height="68">
+<text id="1425:7719" name="차대번호" x="0" y="495" width="145" height="19" />
+<frame id="1425:7720" name="Frame 2087328326" x="0" y="523" width="286" height="40">
+<text id="1425:7721" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7722" name="Frame 2087328327" x="297" y="523" width="68" height="40">
+<text id="1425:7723" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7724" name="Group 2085666064" x="0" y="594" width="365" height="68">
+<text id="1425:7725" name="원동기명식" x="0" y="594" width="145" height="19" />
+<frame id="1425:7726" name="Frame 2087328326" x="0" y="622" width="286" height="40">
+<text id="1425:7727" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7728" name="Frame 2087328327" x="297" y="622" width="68" height="40">
+<text id="1425:7729" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7730" name="Group 2085666065" x="0" y="693" width="365" height="68">
+<text id="1425:7731" name="용도" x="0" y="693" width="145" height="19" />
+<frame id="1425:7732" name="Frame 2087328326" x="0" y="721" width="286" height="40">
+<text id="1425:7733" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7734" name="Frame 2087328327" x="297" y="721" width="68" height="40">
+<text id="1425:7735" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7736" name="Group 2085666066" x="0" y="792" width="365" height="68">
+<text id="1425:7737" name="연식( 모델면도)" x="0" y="792" width="145" height="19" />
+<frame id="1425:7738" name="Frame 2087328326" x="0" y="820" width="286" height="40">
+<text id="1425:7739" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7740" name="Frame 2087328327" x="297" y="820" width="68" height="40">
+<text id="1425:7741" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7742" name="Group 2085666067" x="0" y="891" width="365" height="68">
+<text id="1425:7743" name="색상" x="0" y="891" width="145" height="19" />
+<frame id="1425:7744" name="Frame 2087328326" x="0" y="919" width="286" height="40">
+<text id="1425:7745" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7746" name="Frame 2087328327" x="297" y="919" width="68" height="40">
+<text id="1425:7747" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7748" name="Group 2085666068" x="0" y="990" width="365" height="68">
+<text id="1425:7749" name="출처구분" x="0" y="990" width="145" height="19" />
+<frame id="1425:7750" name="Frame 2087328326" x="0" y="1018" width="286" height="40">
+<text id="1425:7751" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7752" name="Frame 2087328327" x="297" y="1018" width="68" height="40">
+<text id="1425:7753" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+</frame>
+<frame id="1425:7754" name="Frame 2087328329" x="523" y="122" width="358" height="1058">
+<frame id="1425:7755" name="Group 2085666047" x="0" y="0" width="365" height="68">
+<text id="1425:7756" name="최초등록일" x="0" y="0" width="145" height="19" />
+<frame id="1425:7757" name="Frame 2087328326" x="0" y="28" width="286" height="40">
+<text id="1425:7758" name="계좌번호 &#39;-&#39;를 제외하고 입력" x="11" y="11" width="156" height="19" />
+</frame>
+<frame id="1425:7759" name="Frame 2087328327" x="297" y="28" width="68" height="40">
+<text id="1425:7760" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7761" name="Group 2085666054" x="0" y="99" width="365" height="68">
+<text id="1425:7762" name="세부유형(사업용 자동차만 해당합니다.)" x="0" y="99" width="281" height="19" />
+<frame id="1425:7763" name="Frame 2087328326" x="0" y="127" width="286" height="40">
+<text id="1425:7764" name="예) 하나은행, 삼성증권 등" x="11" y="11" width="140" height="19" />
+</frame>
+<frame id="1425:7765" name="Frame 2087328327" x="297" y="127" width="68" height="40">
+<text id="1425:7766" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7767" name="Group 2085666060" x="0" y="198" width="365" height="68">
+<text id="1425:7768" name="제작연월일" x="0" y="198" width="145" height="19" />
+<frame id="1425:7769" name="Frame 2087328326" x="0" y="226" width="286" height="40">
+<text id="1425:7770" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7771" name="Frame 2087328327" x="297" y="226" width="68" height="40">
+<text id="1425:7772" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7773" name="Group 2085666061" x="0" y="297" width="365" height="68">
+<text id="1425:7774" name="최종소유자" x="0" y="297" width="145" height="19" />
+<frame id="1425:7775" name="Frame 2087328326" x="0" y="325" width="286" height="40">
+<text id="1425:7776" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7777" name="Frame 2087328327" x="297" y="325" width="68" height="40">
+<text id="1425:7778" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7779" name="Group 2085666062" x="0" y="396" width="365" height="68">
+<text id="1425:7780" name="주민(법인)등록번호" x="0" y="396" width="145" height="19" />
+<frame id="1425:7781" name="Frame 2087328326" x="0" y="424" width="286" height="40">
+<text id="1425:7782" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7783" name="Frame 2087328327" x="297" y="424" width="68" height="40">
+<text id="1425:7784" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7785" name="Group 2085666063" x="0" y="495" width="365" height="68">
+<text id="1425:7786" name="사용본거지(차고지)" x="0" y="495" width="210" height="19" />
+<frame id="1425:7787" name="Frame 2087328326" x="0" y="523" width="286" height="40">
+<text id="1425:7788" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7789" name="Frame 2087328327" x="297" y="523" width="68" height="40">
+<text id="1425:7790" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7791" name="Group 2085666064" x="0" y="594" width="365" height="68">
+<text id="1425:7792" name="검사유효기간" x="0" y="594" width="145" height="19" />
+<frame id="1425:7793" name="Frame 2087328326" x="0" y="622" width="286" height="40">
+<text id="1425:7794" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7795" name="Frame 2087328327" x="297" y="622" width="68" height="40">
+<text id="1425:7796" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7797" name="Group 2085666065" x="0" y="693" width="365" height="68">
+<text id="1425:7798" name="등록사항 확인일" x="0" y="693" width="145" height="19" />
+<frame id="1425:7799" name="Frame 2087328326" x="0" y="721" width="286" height="40">
+<text id="1425:7800" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7801" name="Frame 2087328327" x="297" y="721" width="68" height="40">
+<text id="1425:7802" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7803" name="Group 2085666066" x="0" y="792" width="365" height="68">
+<text id="1425:7804" name="폐쇠일" x="0" y="792" width="145" height="19" />
+<frame id="1425:7805" name="Frame 2087328326" x="0" y="820" width="286" height="40">
+<text id="1425:7806" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7807" name="Frame 2087328327" x="297" y="820" width="68" height="40">
+<text id="1425:7808" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7809" name="Group 2085666067" x="0" y="891" width="365" height="68">
+<text id="1425:7810" name="색상" x="0" y="891" width="145" height="19" />
+<frame id="1425:7811" name="Frame 2087328326" x="0" y="919" width="286" height="40">
+<text id="1425:7812" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7813" name="Frame 2087328327" x="297" y="919" width="68" height="40">
+<text id="1425:7814" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+<frame id="1425:7815" name="Group 2085666068" x="0" y="990" width="365" height="68">
+<text id="1425:7816" name="출처구분" x="0" y="990" width="145" height="19" />
+<frame id="1425:7817" name="Frame 2087328326" x="0" y="1018" width="286" height="40">
+<text id="1425:7818" name="xxxx" x="11" y="11" width="30" height="19" />
+</frame>
+<frame id="1425:7819" name="Frame 2087328327" x="297" y="1018" width="68" height="40">
+<text id="1425:7820" name="수정" x="21" y="11" width="25" height="19" />
+</frame>
+</frame>
+</frame>
+</frame>
+<text id="1425:7821" name="title" x="59" y="40" width="179" height="61" />
+<frame id="1425:7822" name="loading" x="677" y="1223" width="222" height="37">
+<text id="1425:7823" name="✏ Designing..." x="100.5" y="7.5" width="21" height="22" />
+</frame>
+</frame>
+<frame id="1425:7824" name="Frame 2087328334" x="296" y="287" width="971" height="464">
+<text id="1425:7825" name="title" x="59" y="40" width="125" height="61" />
+<text id="1425:7826" name="" x="196" y="54" width="37" height="32" />
+<rounded-rectangle id="1425:7827" name="스크린샷 2026-01-30 오후 4.48.55 1" x="27" y="117" width="921" height="300" />
+</frame>
+<frame id="1425:7828" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="1425:7829" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="1425:7830" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="1425:7833" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<frame id="1425:7834" name="top bar" x="0" y="0" width="1440" height="155">
+<frame id="1425:7835" name="Group 140" x="170.0076904296875" y="41.1640625" width="254.76065063476562" height="13.673710823059082" />
+<frame id="1425:7854" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="1425:7855" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="1425:7856" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1425:7857" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="1425:7858" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1425:7862" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="1425:7863" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<instance id="1425:7866" name="GNB(상단 네비게이션 메뉴)" x="170.009765625" y="94.25" width="398" height="31" />
+</frame>
+<frame id="1425:7867" name="Frame 2087328290" x="0" y="155" width="249" height="2151">
+<line id="1425:7868" name="Line 78" x="249" y="0" width="0.00006592795762117021" height="1508.255859375" />
+<text id="1425:7869" name="title" x="23.5830078125" y="29.814453125" width="25" height="20" />
+<rounded-rectangle id="1425:7870" name="Rectangle 4193" x="23.5830078125" y="54.5859375" width="210.5615234375" height="40.12109375" />
+<text id="1425:7871" name="title" x="39.5830078125" y="63.646484375" width="88" height="22" />
+<frame id="1425:7872" name="Frame 2087328271" x="200" y="63.646484375" width="21" height="22">
+<frame id="1425:7873" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<frame id="1425:7877" name="Group 2085666055" x="23.58203125" y="132" width="93.90156555175781" height="215.8984375">
+<frame id="1425:7878" name="Group 2085666051" x="29.78125" y="159.0234375" width="2.5" height="14.30078125" />
+<frame id="1425:7882" name="Group 2085666052" x="29.78125" y="208.16015625" width="2.5" height="14.30078125" />
+<frame id="1425:7886" name="Group 2085666053" x="29.78125" y="257.37890625" width="2.5" height="14.30078125" />
+<frame id="1425:7890" name="Group 2085666054" x="29.78125" y="306.6796875" width="2.5" height="14.30078125" />
+<frame id="1425:7894" name="Frame 2087328322" x="23.58203125" y="132" width="93.90156555175781" height="19">
+<frame id="1425:7895" name="Frame 2087328313" x="0" y="2.0492191314697266" width="14.901561737060547" height="14.901561737060547">
+<frame id="1425:7896" name="Check" x="2.975856065750122" y="2.986996650695801" width="8.927568435668945" height="8.927568435668945" />
+</frame>
+<text id="1425:7898" name="차량 업로드" x="21.901561737060547" y="0" width="72" height="19" />
+</frame>
+<frame id="1425:7899" name="Frame 2087328323" x="23.58203125" y="181.2421875" width="93.9000015258789" height="19">
+<ellipse id="1425:7900" name="Ellipse 48" x="0" y="2.262856960296631" width="14.899999618530273" height="14.474286079406738" />
+<text id="1425:7901" name="검차 진행" x="21.899999618530273" y="0" width="72" height="19" />
+</frame>
+<frame id="1425:7902" name="Frame 2087328325" x="23.58203125" y="230.4609375" width="48.900001525878906" height="19">
+<ellipse id="1425:7903" name="Ellipse 48" x="0" y="2.262856960296631" width="14.899999618530273" height="14.474286079406738" />
+<frame id="1425:7904" name="Frame 2087328324" x="20.899999618530273" y="0" width="28" height="19">
+<text id="1425:7905" name="거래" x="0" y="0" width="28" height="19" />
+</frame>
+</frame>
+<frame id="1425:7906" name="Frame 2087328326" x="23.58203125" y="279.6796875" width="49.900001525878906" height="19">
+<frame id="1425:7907" name="Frame 2087328324" x="0" y="0" width="49.900001525878906" height="19">
+<ellipse id="1425:7908" name="Ellipse 48" x="0" y="2.262856960296631" width="14.899999618530273" height="14.474286079406738" />
+<text id="1425:7909" name="탁송" x="21.899999618530273" y="0" width="28" height="19" />
+</frame>
+</frame>
+<frame id="1425:7910" name="Frame 2087328327" x="23.58203125" y="328.8984375" width="49.900001525878906" height="19">
+<frame id="1425:7911" name="Frame 2087328324" x="0" y="0" width="49.900001525878906" height="19">
+<ellipse id="1425:7912" name="Ellipse 48" x="0" y="2.262856960296631" width="14.899999618530273" height="14.474286079406738" />
+<text id="1425:7913" name="완료" x="21.899999618530273" y="0" width="28" height="19" />
+</frame>
+</frame>
+</frame>
+</frame>
+<text id="1425:7914" name="title" x="295.318359375" y="207.6484375" width="159" height="44" />
+<text id="1425:7915" name="✏ Designing..." x="322" y="2098" width="21" height="22" />
+<frame id="1425:7916" name="loading" x="1149" y="2101" width="118" height="37">
+<text id="1425:7917" name="✏ Designing..." x="48.5" y="7.5" width="21" height="22" />
+</frame>
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.

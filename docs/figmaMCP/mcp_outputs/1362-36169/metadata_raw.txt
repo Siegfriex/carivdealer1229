@@ -1,0 +1,172 @@
+<frame id="1362:36169" name="로그인 후 랜딩페이지_판매/거래 단계 필터 미적용" x="390" y="177" width="1440" height="1742">
+<frame id="1362:36170" name="Frame 2087328282" x="-0.4951171875" y="155" width="249" height="1260">
+<line id="1362:36171" name="Line 78" x="249" y="0" width="0.00006592795762117021" height="1508.255859375" />
+<text id="1362:36172" name="title" x="23.5830078125" y="29.814453125" width="25" height="20" />
+<text id="1362:36173" name="title" x="23.5830078125" y="130.35720825195312" width="25" height="20" />
+<rounded-rectangle id="1362:36174" name="Rectangle 4193" x="23.5830078125" y="54.5859375" width="210.5615234375" height="40.12109375" />
+<text id="1362:36175" name="title" x="39.5830078125" y="63.646484375" width="88" height="22" />
+<frame id="1362:36176" name="Frame 2087328271" x="200" y="63.646484375" width="21" height="22">
+<frame id="1362:36177" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<frame id="1362:36181" name="Frame 2087328283" x="23.5830078125" y="164" width="24" height="22">
+<text id="1362:36182" name="title" x="0" y="0" width="24" height="22" />
+</frame>
+<frame id="1362:36183" name="Frame 2087328284" x="23.5830078125" y="211.189453125" width="80" height="22">
+<text id="1362:36184" name="title" x="0" y="0" width="80" height="22" />
+</frame>
+<line id="1362:36185" name="Line 79" x="23.5830078125" y="327.19140625" width="51" height="0" />
+<frame id="1362:36186" name="Frame 2087328285" x="23.5830078125" y="258.189453125" width="80" height="22">
+<text id="1362:36187" name="title" x="0" y="0" width="80" height="22" />
+</frame>
+<frame id="1362:36188" name="Frame 2087328286" x="23.5830078125" y="305.189453125" width="51" height="22">
+<text id="1362:36189" name="title" x="0" y="0" width="51" height="22" />
+</frame>
+<frame id="1362:36190" name="Frame 2087328287" x="23.5830078125" y="352.189453125" width="24" height="22">
+<text id="1362:36191" name="title" x="0" y="0" width="24" height="22" />
+</frame>
+</frame>
+<frame id="1362:36192" name="푸터" x="0" y="1415" width="1440" height="327">
+<text id="1362:36193" name="title" x="171" y="108" width="506" height="21" />
+</frame>
+<frame id="1362:36194" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="1362:36195" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="1362:36196" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="1362:36199" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<frame id="1362:36200" name="top bar" x="0.00048828125" y="0" width="1440" height="155">
+<frame id="1362:36201" name="Group 140" x="170.00814819335938" y="41.163143157958984" width="254.76016235351562" height="13.673710823059082" />
+<frame id="1362:36220" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="1362:36221" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="1362:36222" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1362:36223" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="1362:36224" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1362:36228" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="1362:36229" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<frame id="1362:36232" name="Frame 2087328240" x="1120.3746337890625" y="84.056640625" width="149.70703125" height="40.322059631347656">
+<frame id="1362:36233" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="109.74085235595703" height="27">
+<instance id="1362:36234" name="clipboard-plus" x="-0.44449329376220703" y="2.953369140625" width="21.09326171875" height="21.09326171875" />
+<text id="1362:36235" name="tab" x="25.185346603393555" y="0" width="85" height="27" />
+</frame>
+</frame>
+<frame id="1362:36236" name="Frame 2087328238" x="170.0078125" y="94.2470703125" width="318" height="24">
+<frame id="1362:36237" name="Frame 2087328235" x="0" y="0" width="78" height="24">
+<instance id="1362:36238" name="file-search-01" x="0" y="2.5" width="19" height="19" />
+<text id="1362:36239" name="tab" x="22" y="0" width="56" height="24" />
+</frame>
+<frame id="1362:36240" name="Frame 2087328237" x="108" y="0" width="50" height="24">
+<instance id="1362:36241" name="bar-chart-12" x="0" y="2.5" width="19" height="19" />
+<text id="1362:36242" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="1362:36243" name="Frame 2087328236" x="188" y="0" width="50" height="24">
+<frame id="1362:36244" name="Cil Truck" x="0" y="2.5" width="19" height="19" />
+<text id="1362:36246" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="1362:36247" name="Frame 2087328238" x="268" y="0" width="50" height="24">
+<instance id="1362:36248" name="coins-stacked-03" x="0" y="2.5" width="19" height="19" />
+<text id="1362:36249" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+</frame>
+<line id="1362:36250" name="Line 76" x="170.0078125" y="125.18750762939453" width="81.048828125" height="0.000007085513061610982" />
+</frame>
+<frame id="1362:36251" name="Frame 2087328288" x="1121.4384765625" y="264.396484375" width="146.15625" height="45.091796875">
+<frame id="1362:36252" name="Check Box Fill" x="20" y="10.0458984375" width="25" height="25">
+<frame id="1362:36253" name="Check Box" x="0" y="0" width="25" height="25" />
+</frame>
+<text id="1362:36255" name="title" x="51" y="11.5458984375" width="75" height="22" />
+</frame>
+<frame id="1362:36256" name="Group 2085666032" x="296.09375" y="330" width="642.5009765625" height="291">
+<frame id="1362:36257" name="Group 2085666017" x="296.09375" y="330" width="314" height="291">
+<frame id="1362:36258" name="Frame 2087328262" x="296.09375" y="330" width="314" height="291">
+<frame id="1362:36259" name="Frame 2087328263" x="-3.5009765625" y="-5.94921875" width="318" height="174">
+<rounded-rectangle id="1362:36260" name="스크린샷 2026-01-06 오후 11.45.26 5" x="58.470703125" y="21.036746978759766" width="197.94969177246094" height="142.3323974609375" />
+</frame>
+<text id="1362:36261" name="title" x="250.47958374023438" y="172.09375" width="51" height="22" />
+<ellipse id="1362:36262" name="Ellipse 44" x="23.0302734375" y="179.775390625" width="6.6328125" height="6.6328125" />
+<text id="1362:36263" name="title" x="34.6630859375" y="172.091796875" width="68" height="22" />
+<text id="1362:36264" name="G70 3T 스포츠 엘리트" x="23.0302734375" y="213.73828125" width="143" height="19" />
+<text id="1362:36265" name="2020년형 · 9.0만 km" x="172.2470703125" y="213.73828125" width="110" height="19" />
+<text id="1362:36266" name="신차 4,600만원" x="23.0302734375" y="254.490234375" width="77" height="19" />
+<text id="1362:36267" name="3,000만원" x="23.0302734375" y="235.73828125" width="73" height="19" />
+<frame id="1362:36268" name="Frame 2087328264" x="203.93838500976562" y="254.734375" width="36.21090316772461" height="16.199613571166992">
+<text id="1362:36269" name="1년보증" x="0.00040501775220036507" y="-0.00013816582213621587" width="36.21090316772461" height="16.199613571166992" />
+</frame>
+<frame id="1362:36270" name="Frame 2087328265" x="243.35244750976562" y="254.734375" width="58.128028869628906" height="16.199613571166992">
+<text id="1362:36271" name="단순교환무사고" x="-0.0004566227435134351" y="-0.00013816582213621587" width="58.128028869628906" height="16.199613571166992" />
+</frame>
+<line id="1362:36272" name="Line 80" x="23.0302734375" y="197.09182739257812" width="278.44921875" height="0.000024342803953913972" />
+</frame>
+</frame>
+<frame id="1362:36273" name="Group 2085666023" x="624.5947265625" y="330.26171875" width="314" height="290.73828125">
+<frame id="1362:36274" name="Frame 2087328262" x="624.5947265625" y="330.26171875" width="314" height="290.73828125">
+<frame id="1362:36275" name="Frame 2087328263" x="-3.5009765625" y="-5.94921875" width="318" height="174" />
+<text id="1362:36276" name="title" x="251.34765625" y="172.09375" width="51" height="22" />
+<ellipse id="1362:36277" name="Ellipse 44" x="23.0302734375" y="179.775390625" width="6.6328125" height="6.6328125" />
+<text id="1362:36278" name="title" x="34.6630859375" y="172.091796875" width="68" height="22" />
+<text id="1362:36279" name="G70 3T 스포츠 엘리트" x="23.0302734375" y="213.73828125" width="143" height="19" />
+<text id="1362:36280" name="2020년형 · 9.0만 km" x="172.2470703125" y="213.73828125" width="110" height="19" />
+<text id="1362:36281" name="신차 4,600만원" x="23.0302734375" y="254.490234375" width="77" height="19" />
+<text id="1362:36282" name="3,000만원" x="23.0302734375" y="235.73828125" width="73" height="19" />
+<frame id="1362:36283" name="Frame 2087328264" x="204.80557250976562" y="254.734375" width="36.21090316772461" height="16.199613571166992">
+<text id="1362:36284" name="1년보증" x="0.00040501775220036507" y="-0.00013816582213621587" width="36.21090316772461" height="16.199613571166992" />
+</frame>
+<frame id="1362:36285" name="Frame 2087328265" x="244.21963500976562" y="254.734375" width="58.128028869628906" height="16.199613571166992">
+<text id="1362:36286" name="단순교환무사고" x="-0.0004566227435134351" y="-0.00013816582213621587" width="58.128028869628906" height="16.199613571166992" />
+</frame>
+<line id="1362:36287" name="Line 80" x="23.0302734375" y="197.09182739257812" width="278.44921875" height="0.000024342803953913972" />
+<rounded-rectangle id="1362:36288" name="스크린샷 2026-01-06 오후 11.45.26 2" x="41.47261047363281" y="2.1883087158203125" width="218.0068817138672" height="148.1515350341797" />
+</frame>
+</frame>
+</frame>
+<text id="1362:36297" name="title" x="295.318359375" y="207.16015625" width="104" height="44" />
+<frame id="1362:36298" name="페이지" x="296" y="621.00390625" width="970" height="114">
+<frame id="1362:36299" name="chevron-right" x="345.1708984375" y="61.23828125" width="11.14453125" height="11.14453125" />
+<frame id="1362:36300" name="Group 2085666031" x="427.5576171875" y="40.9765625" width="114.884765625" height="32.046875">
+<frame id="1362:36301" name="Check Box Fill" x="468.9765625" y="40.9765625" width="32.046875" height="32.046875">
+<frame id="1362:36302" name="Check Box" x="0" y="0" width="32.046875" height="32.046875">
+<frame id="1362:36303" name="Frame 2087328289" x="4.005859375" y="1.3352864980697632" width="24.03515625" height="24.03515625">
+<vector id="1362:36304" name="Vector" x="0" y="0" width="24.03515625" height="24.03515625" />
+</frame>
+<text id="1362:36305" name="1" x="13.0234375" y="-1.146484375" width="6" height="29" />
+</frame>
+</frame>
+<frame id="1362:36306" name="Frame 2087328303" x="427.5576171875" y="42.3125" width="24.03515625" height="24.03515625">
+<vector id="1362:36307" name="Vector" x="13.611814498901367" y="15.629393577575684" width="3.6118149757385254" height="7.223629951477051" />
+</frame>
+<frame id="1362:36308" name="Frame 2087328302" x="518.4072265625" y="42.3125" width="24.03515625" height="24.03515625">
+<vector id="1362:36309" name="Vector" x="10" y="15.629393577575684" width="3.6118149757385254" height="7.223629951477051" />
+</frame>
+</frame>
+</frame>
+<frame id="1371:45384" name="검차 진행상황" x="296.25390625" y="264" width="604.8985595703125" height="40.322059631347656">
+<frame id="1371:45385" name="Frame 2087328275" x="0" y="0" width="75" height="40.322059631347656">
+<frame id="1371:45386" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="35.03382110595703" height="27">
+<text id="1371:45387" name="tab" x="-5.983089447021484" y="0" width="47" height="27" />
+</frame>
+</frame>
+<frame id="1371:45388" name="Frame 2087328282" x="85" y="0" width="104" height="40.322059631347656">
+<frame id="1371:45389" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="64.03382110595703" height="27">
+<text id="1371:45390" name="tab" x="-5.483089447021484" y="0" width="75" height="27" />
+</frame>
+</frame>
+<frame id="1371:45391" name="Frame 2087328281" x="199" y="0" width="128.9661865234375" height="40.322059631347656">
+<frame id="1371:45392" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="89" height="27">
+<text id="1371:45393" name="tab" x="0" y="0" width="89" height="27" />
+</frame>
+</frame>
+<frame id="1371:45394" name="Frame 2087328280" x="337.9661865234375" y="0" width="141.9661865234375" height="40.322059631347656">
+<frame id="1371:45395" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="102" height="27">
+<text id="1371:45396" name="tab" x="0" y="0" width="102" height="27" />
+</frame>
+</frame>
+<frame id="1371:45397" name="Frame 2087328279" x="489.932373046875" y="0" width="114.96617889404297" height="40.322059631347656">
+<frame id="1371:45398" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="75" height="27">
+<text id="1371:45399" name="tab" x="0" y="0" width="75" height="27" />
+</frame>
+</frame>
+</frame>
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.

@@ -1,0 +1,305 @@
+<frame id="1272:14540" name="매물 목록 - 차량목록 페이지 랜딩페이지" x="6503.140625" y="197.828125" width="1440" height="2246">
+<frame id="1362:36463" name="Frame 2087328378" x="295.9296875" y="1331.2109375" width="971.1953125" height="656">
+<frame id="1362:36464" name="Frame 2087328377" x="0" y="0" width="145.109375" height="44">
+<frame id="1362:36465" name="Group 2085666147" x="0" y="9.4453125" width="25.109375" height="25.109375" />
+<text id="1362:36468" name="title" x="35.109375" y="0" width="110" height="44" />
+</frame>
+<frame id="1362:36469" name="Frame 2087328360" x="0" y="61" width="971.1953125" height="595">
+<text id="1362:36470" name="국내결제" x="68" y="155.1328125" width="270" height="19" />
+<frame id="1362:36471" name="Frame 2087328361" x="64.5" y="180.6328125" width="351" height="87">
+<rounded-rectangle id="1362:36472" name="F-Card" x="20.81552505493164" y="13.5" width="63" height="60" />
+<text id="1362:36473" name="국내 전자 결제" x="107.29022216796875" y="22" width="102" height="19" />
+<text id="1362:36474" name="신청하기" x="107.29022216796875" y="46" width="56" height="19" />
+</frame>
+<frame id="1362:36475" name="Frame 2087328366" x="441.40625" y="41.8671875" width="461" height="511">
+<text id="1362:36476" name="공통 설정" x="35" y="36" width="270" height="19" />
+<text id="1362:36477" name="국내 결제설정" x="35" y="103" width="270" height="19" />
+<text id="1362:36478" name="휴대폰 결제" x="35" y="328" width="270" height="19" />
+<frame id="1362:36479" name="Group 2085666089" x="35" y="142" width="155" height="24">
+<text id="1362:36480" name="신용카드" x="67" y="144" width="123" height="19" />
+<instance id="1362:36481" name="체크박스2" x="35" y="142" width="24" height="24" />
+</frame>
+<frame id="1362:36482" name="Group 2085666093" x="270" y="142" width="24" height="24">
+<instance id="1362:36483" name="체크박스2" x="270" y="142" width="24" height="24" />
+</frame>
+<frame id="1362:36484" name="Group 2085666090" x="35" y="180" width="155" height="24">
+<text id="1362:36485" name="실시간계좌이체" x="67" y="182" width="123" height="19" />
+<instance id="1362:36486" name="체크박스2" x="35" y="180" width="24" height="24" />
+</frame>
+<frame id="1362:36487" name="Group 2085666094" x="270" y="180" width="24" height="24">
+<instance id="1362:36488" name="체크박스2" x="270" y="180" width="24" height="24" />
+</frame>
+<frame id="1362:36489" name="Group 2085666091" x="35" y="218" width="155" height="24">
+<text id="1362:36490" name="가상계좌" x="67" y="220" width="123" height="19" />
+<instance id="1362:36491" name="체크박스2" x="35" y="218" width="24" height="24" />
+</frame>
+<frame id="1362:36492" name="Group 2085666095" x="270" y="218" width="24" height="24">
+<instance id="1362:36493" name="체크박스2" x="270" y="218" width="24" height="24" />
+</frame>
+<frame id="1362:36494" name="Group 2085666092" x="35" y="256" width="155" height="24">
+<text id="1362:36495" name="무통장입금금" x="67" y="258" width="123" height="19" />
+<instance id="1362:36496" name="체크박스2" x="35" y="256" width="24" height="24" />
+</frame>
+<frame id="1362:36497" name="Group 2085666096" x="270" y="256" width="24" height="24">
+<instance id="1362:36498" name="체크박스2" x="270" y="256" width="24" height="24" />
+</frame>
+<frame id="1362:36499" name="help-circle" x="128" y="100" width="24" height="24" />
+<rounded-rectangle id="1362:36503" name="image 118" x="476" y="226" width="116" height="39" />
+<rounded-rectangle id="1362:36504" name="image 119" x="301" y="181" width="54" height="21" />
+<rounded-rectangle id="1362:36505" name="image 120" x="301" y="263" width="42" height="10" />
+<rounded-rectangle id="1362:36506" name="image 121" x="301" y="144" width="54" height="21" />
+<rounded-rectangle id="1362:36507" name="image 122" x="301" y="225" width="85" height="12" />
+<frame id="1362:36508" name="Group 2085666089" x="62" y="369" width="123" height="19">
+<text id="1362:36509" name="사용안함" x="62" y="369" width="123" height="19" />
+</frame>
+<frame id="1362:36510" name="Group 2085666097" x="62" y="407" width="123" height="19">
+<text id="1362:36511" name="휴대폰결제" x="62" y="407" width="123" height="19" />
+</frame>
+<frame id="1362:36512" name="Frame 2087328312" x="35" y="369" width="19" height="19">
+<ellipse id="1362:36513" name="Ellipse 49" x="5.137713432312012" y="5.137713432312012" width="8.724573135375977" height="8.724573135375977" />
+</frame>
+<frame id="1362:36514" name="Frame 2087328313" x="35" y="407" width="19" height="19" />
+</frame>
+<frame id="1362:36515" name="Frame 2087328363" x="68" y="276.1328125" width="351" height="87">
+<text id="1362:36516" name="네이버페이" x="103.79022216796875" y="22.5" width="78" height="19" />
+<text id="1362:36517" name="신청하기" x="103.79022216796875" y="46.5" width="56" height="19" />
+<rounded-rectangle id="1362:36518" name="image 116" x="23.4296875" y="19" width="50" height="50" />
+</frame>
+<frame id="1362:36519" name="Frame 2087328364" x="68" y="371.1328125" width="351" height="87">
+<text id="1362:36520" name="톡체크아웃 (카카오페이 구매)" x="103.79022216796875" y="22" width="210" height="19" />
+<text id="1362:36521" name="신청하기" x="103.79022216796875" y="46" width="56" height="19" />
+<rounded-rectangle id="1362:36522" name="image 117" x="23.431453704833984" y="18" width="50" height="50" />
+</frame>
+<frame id="1362:36523" name="Frame 2087328365" x="68" y="466.1328125" width="351" height="87">
+<text id="1362:36524" name="자동결제" x="103.79022216796875" y="22.5" width="63" height="19" />
+<text id="1362:36525" name="신청하기" x="103.79022216796875" y="46.5" width="56" height="19" />
+<rounded-rectangle id="1362:36526" name="F-Link" x="16.5953369140625" y="13" width="63" height="62" />
+</frame>
+<frame id="1362:36527" name="Frame 2087328362" x="68" y="42.1328125" width="351" height="87">
+<text id="1362:36528" name="공통 결제 설정" x="103.79022216796875" y="34" width="102" height="19" />
+<rounded-rectangle id="1362:36529" name="F-Settings" x="15.167379379272461" y="11" width="66" height="66" />
+</frame>
+</frame>
+</frame>
+<frame id="1362:36530" name="Frame 2087328380" x="295.734375" y="309.2109375" width="970.796875" height="539">
+<frame id="1362:36531" name="Frame 2087328375" x="0" y="0" width="124.109375" height="44">
+<frame id="1362:36532" name="Group 2043687544" x="0" y="9.4453125" width="25.109375" height="25.109375" />
+<text id="1362:36535" name="title" x="35.109375" y="0" width="89" height="44" />
+</frame>
+<frame id="1362:36536" name="Group 2085666145" x="0" y="61" width="969" height="478">
+<frame id="1362:36537" name="Frame 2087328374" x="0" y="61" width="969" height="478">
+<rounded-rectangle id="1362:36538" name="Rectangle 461566811" x="0" y="0" width="969.03125" height="478" />
+<frame id="1362:36539" name="Frame 2087328422" x="46.90234375" y="417.3671875" width="163.095703125" height="26.095703125">
+<frame id="1362:36540" name="Frame 2087328313" x="0" y="0" width="26.095703125" height="26.095703125">
+<frame id="1362:36541" name="Check" x="5.211336612701416" y="5.230845928192139" width="15.634011268615723" height="15.634011268615723" />
+</frame>
+<frame id="1362:36543" name="Frame 2043687433" x="34.095703125" y="2.5478515625" width="129" height="21">
+<text id="1362:36544" name="기본 주소지 설정" x="0" y="3" width="155" height="15" />
+</frame>
+</frame>
+</frame>
+<frame id="1362:36545" name="Frame 2087328371" x="46.70703125" y="221.885498046875" width="874.8396606445312" height="100.49461364746094">
+<frame id="1362:36546" name="Frame 2043687435" x="0" y="0" width="64" height="20.810009002685547">
+<text id="1362:36547" name="주소지" x="0" y="2.9050045013427734" width="52" height="15" />
+<text id="1362:36548" name="" x="52" y="0.9050045013427734" width="12" height="19" />
+</frame>
+<frame id="1362:36549" name="Frame 2087328368" x="0" y="32.81000900268555" width="874.8396606445312" height="64.12896728515625">
+<text id="1362:36550" name="주소지를 입력해 주세요" x="22" y="9.064483642578125" width="202" height="46" />
+</frame>
+</frame>
+<frame id="1362:36551" name="Frame 2087328370" x="46.70703125" y="340.494873046875" width="874.8396606445312" height="100.49461364746094">
+<frame id="1362:36552" name="Frame 2043687436" x="0" y="0" width="81" height="20.810009002685547">
+<text id="1362:36553" name="상세주소" x="0" y="2.9050045013427734" width="69" height="15" />
+<text id="1362:36554" name="" x="69" y="0.9050045013427734" width="12" height="19" />
+</frame>
+<frame id="1362:36555" name="Frame 2087328367" x="0" y="32.81000900268555" width="874.8396606445312" height="64.12896728515625">
+<text id="1362:36556" name="상세주소를 입력해 주세요" x="22" y="9.064483642578125" width="221" height="46" />
+</frame>
+</frame>
+<frame id="1362:36557" name="Frame 2087328373" x="46.70703125" y="105.26050567626953" width="874.0546875" height="97.32102966308594">
+<frame id="1362:36558" name="Frame 2043687433" x="0" y="0" width="81" height="20.810009002685547">
+<text id="1362:36559" name="우편번호" x="0" y="2.9050045013427734" width="69" height="15" />
+<text id="1362:36560" name="" x="69" y="0.9050045013427734" width="12" height="19" />
+</frame>
+<frame id="1362:36561" name="Frame 2087328372" x="0" y="32.81000900268555" width="874.0546875" height="64.51102447509766">
+<frame id="1362:36562" name="Frame 2087328369" x="0" y="1.4391059875488281" width="648.0546875" height="61.6328125">
+<text id="1362:36563" name="우편번호를 입력해 주세요" x="22" y="7.81640625" width="221" height="46" />
+</frame>
+<frame id="1362:36564" name="Frame 2043687421" x="660.0546875" y="0" width="214" height="64.51102447509766">
+<frame id="1362:36565" name="Frame 2043687435" x="47" y="18.755512237548828" width="120" height="27">
+<text id="1362:36566" name="우편번호 찾기" x="0" y="0" width="120" height="27" />
+</frame>
+</frame>
+</frame>
+</frame>
+</frame>
+</frame>
+<frame id="1362:36567" name="Frame 2087328379" x="295.734375" y="905.2109375" width="971.1953125" height="369">
+<frame id="1362:36568" name="Frame 2087328376" x="0" y="0" width="124.109375" height="44">
+<frame id="1362:36569" name="Group 2085666147" x="0" y="9.4453125" width="25.109375" height="25.109375" />
+<text id="1362:36572" name="title" x="35.109375" y="0" width="89" height="44" />
+</frame>
+<frame id="1362:36573" name="Group 2085666146" x="0" y="61" width="969" height="308">
+<frame id="1362:36574" name="Frame 2087328374" x="0" y="61" width="969" height="308">
+<rounded-rectangle id="1362:36575" name="Rectangle 461566811" x="0" y="0" width="969.03125" height="308.1640625" />
+</frame>
+<frame id="1362:36576" name="Frame 2087328371" x="46.66796875" y="222.3515625" width="874.8396606445312" height="100.49461364746094">
+<frame id="1362:36577" name="Frame 2043687435" x="0" y="0" width="64" height="20.810009002685547">
+<text id="1362:36578" name="시간 선택" x="0" y="2.9050045013427734" width="73" height="15" />
+<text id="1362:36579" name="" x="73" y="0.9050045013427734" width="12" height="19" />
+</frame>
+<frame id="1362:36580" name="Frame 2087328368" x="0" y="32.81000900268555" width="874.8396606445312" height="64.12896728515625">
+<text id="1362:36581" name="오후 12:00" x="22" y="9.064483642578125" width="98" height="46" />
+</frame>
+</frame>
+<frame id="1362:36582" name="Frame 2087328373" x="46.66796875" y="105.7265625" width="874.0546875" height="93.81001281738281">
+<frame id="1362:36583" name="Frame 2043687433" x="0" y="0" width="81" height="20.810009002685547">
+<text id="1362:36584" name="날짜 선택" x="0" y="2.9050045013427734" width="73" height="15" />
+<text id="1362:36585" name="" x="73" y="0.9050045013427734" width="12" height="19" />
+</frame>
+<frame id="1362:36586" name="Frame 2087328372" x="0" y="32.81000900268555" width="874.0546875" height="61">
+<frame id="1362:36587" name="Frame 2087328369" x="0" y="0" width="874" height="61">
+<text id="1362:36588" name="2026년 1월 25일 일요일" x="22" y="7.5" width="219" height="46" />
+</frame>
+</frame>
+</frame>
+</frame>
+</frame>
+<frame id="1362:36589" name="loading" x="295.7890625" y="2044.2109375" width="971" height="60">
+<text id="1362:36590" name="✏ Designing..." x="468" y="19" width="35" height="22" />
+</frame>
+<frame id="1272:14541" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="1272:14542" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="1272:14543" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="1272:14546" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<text id="1272:14580" name="title" x="295.3203125" y="207.6484375" width="134" height="44" />
+<frame id="1272:14703" name="Frame 2087328282" x="-0.0703125" y="155" width="249" height="1986">
+<line id="1272:14704" name="Line 78" x="249.49609375" y="-0.16796875" width="0.00006592795762117021" height="1508.255859375" />
+<text id="1272:14705" name="title" x="24.078125" y="29.6484375" width="105" height="20" />
+<frame id="1272:14706" name="Group 2085666055" x="24.078125" y="69.6484375" width="95.9000015258789" height="215.8984375">
+<frame id="1272:14707" name="Group 2085666051" x="30.27734375" y="96.671875" width="2.5" height="14.30078125" />
+<frame id="1272:14711" name="Group 2085666052" x="30.27734375" y="145.80859375" width="2.5" height="14.30078125" />
+<frame id="1272:14715" name="Group 2085666053" x="30.27734375" y="195.02734375" width="2.5" height="14.30078125" />
+<frame id="1272:14719" name="Group 2085666054" x="30.27734375" y="244.328125" width="2.5" height="14.30078125" />
+<frame id="1272:14723" name="Frame 2087328322" x="24.078125" y="69.6484375" width="93.90156555175781" height="19">
+<frame id="1272:14724" name="Frame 2087328313" x="0" y="2.0492191314697266" width="14.901561737060547" height="14.901561737060547">
+<frame id="1272:14725" name="Check" x="2.975856065750122" y="2.986996650695801" width="8.927568435668945" height="8.927568435668945" />
+</frame>
+<text id="1272:14727" name="차량 업로드" x="21.901561737060547" y="0" width="72" height="19" />
+</frame>
+<frame id="1272:14728" name="Frame 2087328323" x="24.078125" y="118.890625" width="93.90156555175781" height="19">
+<frame id="1272:14729" name="Frame 2087328313" x="0" y="2.0492191314697266" width="14.901561737060547" height="14.901561737060547">
+<frame id="1272:14730" name="Check" x="2.975856065750122" y="2.986996650695801" width="8.927568435668945" height="8.927568435668945" />
+</frame>
+<text id="1272:14732" name="검차 진행" x="21.901561737060547" y="0" width="72" height="19" />
+</frame>
+<frame id="1272:14733" name="Frame 2087328325" x="24.078125" y="168.109375" width="48.90156173706055" height="19">
+<frame id="1272:14734" name="Frame 2087328313" x="0" y="2.0492191314697266" width="14.901561737060547" height="14.901561737060547">
+<frame id="1272:14735" name="Check" x="2.975856065750122" y="2.986996650695801" width="8.927568435668945" height="8.927568435668945" />
+</frame>
+<frame id="1272:14737" name="Frame 2087328324" x="20.901561737060547" y="0" width="28" height="19">
+<text id="1272:14738" name="거래" x="0" y="0" width="28" height="19" />
+</frame>
+</frame>
+<frame id="1272:14739" name="Frame 2087328326" x="24.078125" y="217.328125" width="95.9000015258789" height="19">
+<frame id="1272:14740" name="Frame 2087328324" x="0" y="0" width="49.900001525878906" height="19">
+<frame id="1272:14741" name="Frame 2087328312" x="0" y="2.2632193565368652" width="14.899999618530273" height="14.47356128692627">
+<ellipse id="1272:14742" name="Ellipse 49" x="5.128640174865723" y="4.915421009063721" width="4.642719268798828" height="4.642719268798828" />
+</frame>
+<text id="1272:14743" name="탁송" x="21.899999618530273" y="0" width="28" height="19" />
+</frame>
+<text id="1272:14744" name="진행 중..." x="55.900001525878906" y="0" width="40" height="19" />
+</frame>
+<frame id="1272:14745" name="Frame 2087328327" x="24.078125" y="266.546875" width="49.900001525878906" height="19">
+<frame id="1272:14746" name="Frame 2087328324" x="0" y="0" width="49.900001525878906" height="19">
+<ellipse id="1272:14747" name="Ellipse 48" x="0" y="2.262856960296631" width="14.899999618530273" height="14.474286079406738" />
+<text id="1272:14748" name="완료" x="21.899999618530273" y="0" width="28" height="19" />
+</frame>
+</frame>
+</frame>
+</frame>
+<frame id="1272:14749" name="Frame 2087328387" x="505.3359375" y="400.578125" width="514" height="640">
+<frame id="1272:14750" name="Group 2085666146" x="0" y="0" width="514" height="640">
+<frame id="1272:14751" name="Frame 2043687439" x="27" y="0" width="486" height="640" />
+<frame id="1272:14752" name="Group 2043687556" x="0" y="0" width="514" height="603.6640625">
+<rounded-rectangle id="1272:14753" name="Rectangle 461566814" x="0" y="0" width="514" height="603.6640625" />
+<frame id="1272:14754" name="Group 2043687553" x="23" y="61.75242614746094" width="469.4098205566406" height="282.8125">
+<frame id="1272:14755" name="Group 2043687552" x="23" y="61.75242614746094" width="469.4098205566406" height="282.8125">
+<frame id="1272:14756" name="Group 2043687551" x="23" y="61.75242614746094" width="469.4098205566406" height="282.8125">
+<text id="1272:14757" name="주소를 검색해 주세요" x="23" y="61.75242614746094" width="196.06581115722656" height="26" />
+<text id="1272:14758" name="이렇게 검색해 보세요!" x="29.392578125" y="186.5622329711914" width="201.3936767578125" height="24" />
+<text id="1272:14759" name="도로명+건물번호" x="23" y="226.56492614746094" width="160" height="24" />
+<text id="1272:14760" name="도로명+건물번호" x="23" y="293.56492614746094" width="160" height="24" />
+<text id="1272:14761" name="예) 정자일로 95, 불정로 6" x="29.392578125" y="253.56492614746094" width="197" height="24" />
+<text id="1272:14762" name="예) 정자동 178-4, 동면 만천리 1000" x="29.392578125" y="320.56492614746094" width="275" height="24" />
+<frame id="1272:14763" name="Frame 2087328383" x="23" y="99.72117614746094" width="469.4098205566406" height="47">
+<frame id="1272:14764" name="Frame 2087328382" x="0" y="0" width="364.4266662597656" height="47">
+<frame id="1272:14765" name="Frame 2087328381" x="18" y="12" width="229.0577392578125" height="24">
+<frame id="1272:14766" name="Group 2043687401" x="0" y="2.175893783569336" width="19.6640625" height="19.648212432861328" />
+<text id="1272:14768" name="도로명, 지번, 건물명 검색" x="27.6640625" y="0" width="201.3936767578125" height="24" />
+</frame>
+</frame>
+<frame id="1272:14769" name="Frame 2043687421" x="374.4266662597656" y="0" width="94.983154296875" height="47">
+<text id="1272:14770" name="검색" x="31.4915771484375" y="7" width="32" height="33" />
+</frame>
+</frame>
+</frame>
+</frame>
+</frame>
+</frame>
+</frame>
+<frame id="1272:14771" name="X Close Delete" x="476.400390625" y="19.21875" width="16" height="16" />
+</frame>
+<frame id="1371:45455" name="top bar" x="-0.2109375" y="0.01171875" width="1440" height="155">
+<frame id="1371:45456" name="Group 140" x="170.00814819335938" y="41.163143157958984" width="254.76016235351562" height="13.673710823059082" />
+<frame id="1371:45475" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="1371:45476" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="1371:45477" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1371:45478" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="1371:45479" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1371:45483" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="1371:45484" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<frame id="1371:45487" name="Frame 2087328240" x="1120.3746337890625" y="84.056640625" width="149.70703125" height="40.322059631347656">
+<frame id="1371:45488" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="109.74085235595703" height="27">
+<instance id="1371:45489" name="clipboard-plus" x="-0.44449329376220703" y="2.953369140625" width="21.09326171875" height="21.09326171875" />
+<text id="1371:45490" name="tab" x="25.185346603393555" y="0" width="85" height="27" />
+</frame>
+</frame>
+<instance id="1371:45491" name="GNB(상단 네비게이션 메뉴)" x="170.0078125" y="94.24803924560547" width="398" height="31" />
+</frame>
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.
+거래 단계의 '목록 돌아가기'를 GNB 탁송 탭(/logistics/schedule)으로 연결하는지 확인하고, figMCP.MD에 로그를 추가합니다.
+거래 페이지에 '목록 돌아가기 = GNB 탁송 탭' 안내를 반영하고 figMCP.MD에 로그를 추가합니다.
+TradeDetailPage.tsx
++1
+ * 라우트: /vehicles/:id/trade */
+ * 라우트: /vehicles/:id/trade * @remarks 매물등록 CTA_3 거래 단계에서 "목록 돌아가기"는 GNB 탁송 탭(/logistics/schedule)으로 이동. (docs/figmaMCP/impl_plans/CTA_4_탁송_플로우_요약.md) */
+TradeDetailPage.tsx
++2
+-1
+            <div className="mt-8">              <Button variant="secondary" size="sm" onClick={handleBack}>차량 상세</Button>            </div>
+            <div className="mt-8">            <div className="mt-8 flex flex-wrap gap-2">              <Button variant="secondary" size="sm" onClick={handleBack}>차량 상세</Button>              <Button variant="secondary" size="sm" onClick={() => navigate('/logistics/schedule')}>탁송 목록으로</Button>            </div>
+figMCP.MD
++1
+| 에이전트 | CTA_2 검차(1033·1037·1042) 미흡사항 재검·최종 구현·리팩토링 | 2025-02-10 | InspectionRequestLandingPage·InspectionRequestStep1Page·InspectionRequestStep2Page·InspectionListPage·mockInspectionList·entities/inspection/model/constants.ts·impl_plans 1033·1037-1042 | 디자인·니즈 확실 충족 | GNB: 검차 신청/Step1/Step2에서 activeNav "vehicles"→"inspections"로 변경(검차 탭 활성화). 상태 라벨·색상: INSPECTION_STATUS_LABELS pending "검차자 매칭중", in_progress "검차 진행중"; INSPECTION_STATUS_COLORS in_progress #10B981. Step1: 차량 선택·검차 일정·검차 장소 섹션에 rounded-[15px]·Figma shadow 적용. 리스트: 테이블 컨테이너 rounded-xl·shadow·overflow-hidden, 행 min-h-[56px] py-3. 카드 뷰: Figma 1042 좌(이미지 ~397px #eef5fe)·우(차량번호·모델·일련번호·상태·검차일정/장소·버튼) 레이아웃, serialNumber mock 추가·표시. InspectionListPage STATUS_LABELS 제거·INSPECTION_STATUS_LABELS 사용. npm run build·린트 통과. |
+| 에이전트 | CTA_2 검차(1033·1037·1042) 미흡사항 재검·최종 구현·리팩토링 | 2025-02-10 | InspectionRequestLandingPage·InspectionRequestStep1Page·InspectionRequestStep2Page·InspectionListPage·mockInspectionList·entities/inspection/model/constants.ts·impl_plans 1033·1037-1042 | 디자인·니즈 확실 충족 | GNB: 검차 신청/Step1/Step2에서 activeNav "vehicles"→"inspections"로 변경(검차 탭 활성화). 상태 라벨·색상: INSPECTION_STATUS_LABELS pending "검차자 매칭중", in_progress "검차 진행중"; INSPECTION_STATUS_COLORS in_progress #10B981. Step1: 차량 선택·검차 일정·검차 장소 섹션에 rounded-[15px]·Figma shadow 적용. 리스트: 테이블 컨테이너 rounded-xl·shadow·overflow-hidden, 행 min-h-[56px] py-3. 카드 뷰: Figma 1042 좌(이미지 ~397px #eef5fe)·우(차량번호·모델·일련번호·상태·검차일정/장소·버튼) 레이아웃, serialNumber mock 추가·표시. InspectionListPage STATUS_LABELS 제거·INSPECTION_STATUS_LABELS 사용. npm run build·린트 통과. || 에이전트 | CTA_4 탁송 플로우 10노드 mcp_outputs·NODE_TO_ROUTE·MCP 호출 | 2025-02-10 | fileKey 4w3ft8RpGwoho5EtvNO9hQ, mcp_outputs 10폴더(1714-22874·1362-36169·1272-12926·1272-13294·1272-14540·1272-13503·1272-13819·1272-14309·1272-15049·1272-13099), NODE_TO_ROUTE_AND_FILE.md, impl_plans/CTA_4_탁송_플로우_요약.md, TradeDetailPage.tsx | §3.5·§3.10 매물등록 CTA_4 탁송 | GNB 탁송 탭(1714-22874)=/logistics/schedule·차량목록 탭 탁송단계 필터(1362-36169)=/vehicles?stage=logistics 별도 페이지. 탁송 상태 4개: 탁송일정·탁송 배정·픽업 완료·인계완료. 새탁송예약 폼·주소 모달·연도/월/시간 선택·기사배정 진행중·탁송완료(탁송목록/정산 분기·정산은 인계확정 시만). 거래 단계 목록 돌아가기=GNB 탁송 탭 명시·TradeDetailPage에 "탁송 목록으로" 버튼(/logistics/schedule) 추가. 10노드 get_metadata·get_design_context MCP 호출 완료. |
+cd c:\carivdealer; npm run build
+dist/assets/tanstack-vendor-nkkwaYZx.js                   38.91 kB │ gzip:  11.94 kB
+dist/assets/firebase-vendor-DU_gqCOi.js                  443.85 kB │ gzip: 104.03 kB
+dist/assets/index-B_opvD3r.js                            576.97 kB │ gzip: 151.07 kB
+✓ built in 4.38s
+CTA_4 탁송 플로우 준비와 거래→탁송 목록 안내 반영까지 모두 적용했습니다.
+1. 완료한 작업
+1) GNB 탁송 탭 ≠ 차량목록 탭 탁송단계 (별도 페이지)
+GNB 탁송 탭 (1714-22874): /logistics/schedule → LogisticsSchedulePage (탁송 전용).
+차량목록 탭 + 탁송단계 필터 (1362-36169): /vehicles?stage=logistics → VehicleListPage (별도 화면).
+2) 거래 단계 → 목록 돌아가기 = GNB 탁송 탭
+TradeDetailPage JSDoc에
+“매물등록 CTA_3 거래 단계에서 목록 돌아가기는 GNB 탁송 탭(/logistics/schedule)으로 이동” 명시.
+TradeDetailPage에 「탁송 목록으로」 버튼 추가 → 클릭 시 

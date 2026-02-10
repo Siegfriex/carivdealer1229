@@ -35,7 +35,7 @@ export const InspectionRequestLandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
+      <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <aside className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}>
@@ -57,8 +57,9 @@ export const InspectionRequestLandingPage = () => {
           </div>
         </aside>
 
-        <main className="flex-1 p-8">
-          <h1 className="text-h1 font-bold text-gray-900 mb-4">검차 신청</h1>
+        {/* §3.6 Figma 1033-4903: 메인 left 290, max-width 980 */}
+        <main className="flex-1 p-8 max-w-[980px]">
+          <h1 className="text-h1 font-bold text-gray-900 mb-4" style={{ marginTop: '0.5rem' }}>검차 신청</h1>
           <p className="text-body text-gray-600 mb-8">
             차량 검차를 신청하시면 전문 평가사가 배정되어 검차가 진행됩니다.
           </p>

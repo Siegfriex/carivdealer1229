@@ -51,6 +51,7 @@ import { AuctionCompletePage } from '@/pages/admin/auction/AuctionCompletePage';
 import { TradeDetailPage } from '@/pages/admin/TradeDetailPage';
 import { SettlementAccountPage } from '@/pages/admin/mypage/SettlementAccountPage';
 import { DevSkipFloatingButton } from '@/shared/ui/DevSkipFloatingButton';
+import { isRunDev } from '@/shared/config/runDev';
 
 /**
  * 앱 라우터 (공개·보호·폴백 라우트)
@@ -111,7 +112,7 @@ export const Router = () => {
         {/* --- 폴백: 미매칭 경로 → /vehicles --- */}
         <Route path="*" element={<Navigate to="/vehicles" replace />} />
       </Routes>
-      {import.meta.env.DEV && <DevSkipFloatingButton />}
+      {isRunDev() && <DevSkipFloatingButton />}
     </BrowserRouter>
   );
 };

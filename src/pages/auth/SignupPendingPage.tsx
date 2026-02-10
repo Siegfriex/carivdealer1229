@@ -8,6 +8,7 @@ import { StepProgress } from '@/shared/ui/StepProgress';
 import { Button } from '@/shared/ui/Button';
 import { PageLayout } from '@/shared/ui/PageLayout';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
+import { isRunDev } from '@/shared/config/runDev';
 import { ClipboardList } from 'lucide-react';
 
 const SIGNUP_STEPS = [
@@ -50,7 +51,7 @@ export const SignupPendingPage = () => {
           </Button>
         </div>
 
-        {import.meta.env.DEV && (
+        {isRunDev() && (
           <DevSkipButton
             label="DEV:SKIP"
             subLabel="승인 완료로"

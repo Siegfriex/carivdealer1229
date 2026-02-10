@@ -41,6 +41,8 @@ export const DashboardPage = () => {
     return filteredVehicles.slice(start, start + PAGE_SIZE);
   }, [filteredVehicles, currentPage]);
 
+  const handleRegister = () => navigate('/vehicles/new');
+
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader

@@ -1,0 +1,31 @@
+# 아래에 get_metadata 반환 전체를 UI에서 복사해 붙여넣으세요
+<frame id="1425:7638" name="매물 목록 - 차량목록 페이지 랜딩페이지" x="440" y="3430" width="1440" height="1024">
+<frame id="1425:7639" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="1425:7640" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="1425:7641" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="1425:7644" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<frame id="1425:7645" name="top bar" x="0" y="0" width="1440" height="155">
+<frame id="1425:7646" name="Group 140" x="170.007568359375" y="41.1640625" width="254.76065063476562" height="13.673710823059082" />
+<frame id="1425:7665" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="1425:7666" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="1425:7667" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="1425:7668" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="1425:7669" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="1425:7673" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="1425:7674" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<instance id="1425:7677" name="GNB(상단 네비게이션 메뉴)" x="170.009765625" y="94.25" width="398" height="31" />
+</frame>
+<frame id="1425:7678" name="Group 2085666084" x="385" y="336" width="669" height="350">
+<text id="1425:7679" name="title" x="500" y="336" width="411" height="122" />
+<rounded-rectangle id="1425:7680" name="unnamed (1) 1" x="385" y="479" width="669" height="175" />
+<text id="1425:7681" name="123가 4567" x="592" y="526" width="280" height="61" />
+<vector id="1425:7682" name="Vector 28" x="728" y="524" width="0" height="65.5" />
+<text id="1425:7683" name="※ 이미 등록 또는 거래된 매물입니다" x="555" y="625" width="341" height="61" />
+</frame>
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.

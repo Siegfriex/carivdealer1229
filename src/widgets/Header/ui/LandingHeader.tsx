@@ -1,29 +1,35 @@
 /**
  * GNB. 랜딩/메인 공통. 차량목록·검차·거래·탁송·정산, 매물등록. IA §3.
+ * Figma 1444-7928(로그인 전 랜딩) 에셋: 검색·탁송·정산 아이콘.
  * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §3
  * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.3
- * Figma 1194-7481, 1368-43715(알림).
+ * @see docs/figmaMCP/FIGMA_ASSET_TRACEABILITY.md
  */
 
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
-import { User, ChevronDown, Car, FileText, Truck, Calculator, Bell, Search, SearchCheck, UserCircle } from 'lucide-react';
+import { User, ChevronDown, Car, FileText, Bell, SearchCheck } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { LoginModal } from '@/shared/ui/LoginModal';
 import { Z_INDEX } from '@/shared/config/zIndex';
+
+import iconSearch from '@/shared/figma_image/1444-7928_검색_search.png';
+import iconTruck from '@/shared/figma_image/1444-7928_탁송_cil-truck.png';
+import iconCoins from '@/shared/figma_image/1444-7928_정산_coins-stacked-03.png';
 
 const NOTIFICATION_MOCKS = [
   { id: '1', text: '아반떼 CN7 검차가 완료되었습니다.', time: '10분 전' },
   { id: '2', text: '그랜져 IG에 새로운 제안이 도착했습니다.', time: '30분 전' },
 ];
 
+/** GNB 네비 항목: icon(Lucide) 또는 imgSrc(Figma 에셋) */
 const NAV_ITEMS = [
   { label: '차량목록', href: '/vehicles', icon: Car },
   { label: '검차', href: '/inspections', icon: SearchCheck },
   { label: '거래', href: '/offers', icon: FileText },
-  { label: '탁송', href: '/logistics/schedule', icon: Truck },
-  { label: '정산', href: '/settlements', icon: Calculator },
+  { label: '탁송', href: '/logistics/schedule', imgSrc: iconTruck },
+  { label: '정산', href: '/settlements', imgSrc: iconCoins },
 ] as const;
 
 type NavKey = 'vehicles' | 'inspections' | 'offers' | 'logistics' | 'settlements';
@@ -94,10 +100,10 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
         <div className="flex items-center gap-4 shrink-0">
           <button
             type="button"
-            className="p-2 text-gray-600 hover:text-gray-900 rounded-md transition-fast"
+            className="p-2 text-gray-600 hover:text-gray-900 rounded-md transition-fast flex items-center justify-center"
             aria-label="검색"
           >
-            <Search className="h-5 w-5" />
+            <img src={iconSearch} alt="" className="h-5 w-5 object-contain" />
           </button>
           {isMain && (
             <div className="relative" ref={notificationRef}>
@@ -182,7 +188,7 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
                 onClick={() => setLoginModalOpen(true)}
                 className="flex items-center gap-2 px-3 py-2 text-body font-medium text-gray-700 hover:text-primary transition-fast"
               >
-                로그인
+                로그인/회원가입
               </button>
               <LoginModal
                 isOpen={loginModalOpen}
@@ -198,9 +204,16 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
       <div className="border-t border-gray-100">
         <div className="container mx-auto max-w-[1440px] hidden md:flex items-center justify-between h-12 px-6">
           <nav className="flex items-center gap-8">
-            {NAV_ITEMS.map(({ label, href, icon: Icon }, index) => {
+            {NAV_ITEMS.map((item, index) => {
               const key = NAV_KEYS[index];
               const isActive = isMain && activeNav === key;
+              const { label, href } = item;
+              const IconComp = 'icon' in item ? item.icon : null;
+              const iconEl = IconComp
+                ? <IconComp className="h-5 w-5" />
+                : 'imgSrc' in item && item.imgSrc
+                  ? <img src={item.imgSrc} alt="" className="h-5 w-5 object-contain" />
+                  : null;
               return (
                 <Link
                   key={label}
@@ -209,7 +222,7 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
                     isActive ? 'text-primary border-primary' : 'text-gray-700 border-transparent hover:text-primary hover:border-primary'
                   }`}
                 >
-                  <Icon className="h-5 w-5" />
+                  {iconEl}
                   {label}
                 </Link>
               );

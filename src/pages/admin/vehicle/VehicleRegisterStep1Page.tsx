@@ -1,8 +1,8 @@
 /**
- * 차량 등록 Step1. 원부등록·차량 정보. IA §4.9 CTA_1.
+ * 차량 등록 Step1. 원부등록 (1/2). IA §4.9 CTA_1.
  * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4.9
- * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
- * 라우트: /vehicles/new/step1. Figma 1418-20498 원부등록-2/-1.
+ * @see docs/figmaMCP/impl_plans/1425-7684_구현계획.md
+ * 라우트: /vehicles/new/step1. Figma 1425-7684(등록됨).
  */
 
 import { useState, useEffect } from 'react';
@@ -11,17 +11,81 @@ import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
 import { useDevSkip } from '@/shared/context/DevSkipContext';
-import { Card } from '@/shared/ui/Card';
-import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
-import { ImageUpload } from '@/shared/ui/ImageUpload';
 import { MessageModal } from '@/shared/ui/MessageModal';
 import { ocrRegistration } from '@/features/vehicle/register-form/api/vehicleApi';
-import { VehicleStatusBadge } from '@/entities/vehicle/ui/VehicleStatusBadge';
 import { useFormFeedback } from '@/shared/lib/formFeedback';
-import { ChevronLeft, ChevronRight, ScanEye, Search } from 'lucide-react';
-import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { Search } from 'lucide-react';
 import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
+
+/** 좌측 열 필드 (Figma 1425:7687) */
+const LEFT_FIELDS: { id: string; label: string; placeholder: string }[] = [
+  { id: 'serialNumber', label: '일련번호', placeholder: "계좌번호 '-'를 제외하고 입력" },
+  { id: 'managementNumber', label: '제원관리번호', placeholder: 'xxxx' },
+  { id: 'cancellationDate', label: '말소등록일', placeholder: 'xxxx' },
+  { id: 'modelName', label: '차명', placeholder: 'xxxx' },
+  { id: 'vehicleType', label: '치종', placeholder: 'xxxx' },
+  { id: 'vin', label: '차대번호', placeholder: 'xxxx' },
+  { id: 'engineSpec', label: '원동기명식', placeholder: 'xxxx' },
+  { id: 'use', label: '용도', placeholder: 'xxxx' },
+  { id: 'modelYear', label: '연식( 모델면도)', placeholder: 'xxxx' },
+  { id: 'color', label: '색상', placeholder: 'xxxx' },
+  { id: 'sourceType', label: '출처구분', placeholder: 'xxxx' },
+];
+
+/** 우측 열 필드 (Figma 1425:7754) */
+const RIGHT_FIELDS: { id: string; label: string; placeholder: string }[] = [
+  { id: 'firstRegistrationDate', label: '최초등록일', placeholder: "계좌번호 '-'를 제외하고 입력" },
+  { id: 'detailType', label: '세부유형(사업용 자동차만 해당합니다.)', placeholder: '예) 하나은행, 삼성증권 등' },
+  { id: 'manufactureDate', label: '제작연월일', placeholder: 'xxxx' },
+  { id: 'lastOwner', label: '최종소유자', placeholder: 'xxxx' },
+  { id: 'residentNumber', label: '주민(법인)등록번호', placeholder: 'xxxx' },
+  { id: 'garageAddress', label: '사용본거지(차고지)', placeholder: 'xxxx' },
+  { id: 'inspectionExpiry', label: '검사유효기간', placeholder: 'xxxx' },
+  { id: 'registrationConfirmDate', label: '등록사항 확인일', placeholder: 'xxxx' },
+  { id: 'closureDate', label: '폐쇠일', placeholder: 'xxxx' },
+  { id: 'colorRight', label: '색상', placeholder: 'xxxx' },
+  { id: 'sourceTypeRight', label: '출처구분', placeholder: 'xxxx' },
+];
+
+/** 원부등록 행: 라벨 + 입력 + 수정 버튼 (Figma 행 높이 68px, 입력 286×40, 수정 68×40) */
+function FormRow({
+  label,
+  placeholder,
+  value,
+  onChange,
+  onEdit,
+  dataNodeId,
+}: {
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (v: string) => void;
+  onEdit: () => void;
+  dataNodeId?: string;
+}) {
+  return (
+    <div className="grid grid-cols-[145px_286px_68px] gap-0 items-start" style={{ minHeight: 68 }} data-node-id={dataNodeId}>
+      <label className="text-[16px] font-bold text-black pt-0.5" style={{ width: 145 }}>
+        {label}
+      </label>
+      <input
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="mt-[28px] h-10 w-[286px] rounded-[5px] border-0 bg-[var(--color-gray-100)] px-3 text-[14px] text-gray-900 placeholder-[#a5abb6] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+      />
+      <button
+        type="button"
+        onClick={onEdit}
+        className="mt-[28px] h-10 w-[68px] rounded-[5px] bg-[var(--color-gray-100)] text-[14px] text-[#a5abb6] hover:bg-gray-200 hover:text-gray-700"
+      >
+        수정
+      </button>
+    </div>
+  );
+}
 
 export const VehicleRegisterStep1Page = () => {
   const navigate = useNavigate();
@@ -33,55 +97,31 @@ export const VehicleRegisterStep1Page = () => {
 
   useEffect(() => {
     const plate = searchParams.get('plateNumber');
-    if (plate) {
-      setPlateNumber(decodeURIComponent(plate));
-    }
+    if (plate) setPlateNumber(decodeURIComponent(plate));
   }, [searchParams]);
 
-  // 차량 정보 (OCR 결과 또는 수동 입력)
-  const [vehicleData, setVehicleData] = useState({
-    vin: '',
-    manufacturer: '현대',
-    modelName: 'G70 3T 스포츠 엘리트',
-    modelYear: '2020',
-    mileage: '9.0',
-    price: '3000',
-    status: 'inspection' as const,
-    updatedAt: new Date(),
-  });
-
-  // 등록원부 정보
-  const [registrationData, setRegistrationData] = useState({
-    businessNumber: '',
-    businessCertificateImage: null as File | null,
-    representativeName: '',
-    businessAddress: '',
-    businessType: '',
-    businessInfo: '',
-  });
-
+  const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [ocrLoading, setOcrLoading] = useState(false);
-  const [, setUploadedFiles] = useState<File[]>([]);
-
   const { skipRequired } = useDevSkip();
+
+  const updateField = (id: string, value: string) => {
+    setFormValues((prev) => ({ ...prev, [id]: value }));
+  };
 
   const handleOcr = async () => {
     if (!skipRequired && !plateNumber) {
       showValidationError('차량번호를 입력해주세요');
       return;
     }
-
     setOcrLoading(true);
     try {
       const result = await ocrRegistration(plateNumber);
-      setVehicleData({
-        ...vehicleData,
-        vin: result.vin,
-        manufacturer: result.manufacturer,
-        modelName: result.model,
-        modelYear: result.year,
-        mileage: result.mileage,
-      });
+      setFormValues((prev) => ({
+        ...prev,
+        vin: result.vin ?? prev.vin,
+        modelName: result.model ?? prev.modelName,
+        modelYear: result.year ?? prev.modelYear,
+      }));
     } catch (error) {
       console.error('OCR failed:', error);
       showValidationError('OCR 처리에 실패했습니다');
@@ -91,37 +131,48 @@ export const VehicleRegisterStep1Page = () => {
   };
 
   const handleSaveDraft = async () => {
-    // TODO: 임시저장 API 호출 (status: 'draft')
-    console.log('임시저장:', { vehicleData, registrationData });
     showSuccess('임시저장되었습니다.');
-    // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterStep1Page:handleSaveDraft',message:'CTA_1 step1 임시저장',data:{to:'/vehicles?filter=draft'},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
-    // #endregion
+    fetch(LOG_INGEST_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'VehicleRegisterStep1Page:handleSaveDraft',
+        message: 'CTA_1 step1 임시저장',
+        data: { to: '/vehicles?filter=draft' },
+        timestamp: Date.now(),
+        hypothesisId: 'H_CTA1',
+        runId: 'register-flow-check',
+      }),
+    }).catch(() => {});
     navigate('/vehicles?filter=draft');
   };
 
   const handleSubmit = () => {
-    // TODO: 등록 제출 API 호출
-    console.log('등록 제출:', { vehicleData, registrationData });
     const queryString = plateNumber ? `plateNumber=${encodeURIComponent(plateNumber)}` : '';
     const to = `/vehicles/new/step2${queryString ? `?${queryString}` : ''}`;
-    // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegisterStep1Page:handleSubmit',message:'CTA_1 step1→step2',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
-    // #endregion
+    fetch(LOG_INGEST_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'VehicleRegisterStep1Page:handleSubmit',
+        message: 'CTA_1 step1→step2',
+        data: { to },
+        timestamp: Date.now(),
+        hypothesisId: 'H_CTA1',
+        runId: 'register-flow-check',
+      }),
+    }).catch(() => {});
     navigate(to);
   };
 
-  const handleDelete = () => {
-    setShowDeleteConfirm(true);
-  };
-
+  const handleDelete = () => setShowDeleteConfirm(true);
   const handleConfirmDelete = () => {
     navigate('/vehicles');
     setShowDeleteConfirm(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[var(--color-bg-primary)]" data-node-id="1425:7684">
       <MessageModal
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
@@ -132,24 +183,23 @@ export const VehicleRegisterStep1Page = () => {
         onConfirm={handleConfirmDelete}
         variant="warning"
       />
-      <LandingHeader
-        userName="홍길동"
-        variant="main"
-        activeNav="vehicles"
-      />
+      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
 
-      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
-        {/* 좌측 사이드바: 검색(상단) + ProgressSidebar(하단) — Figma 1198-5889 */}
-        <aside className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}>
+      <div className="flex max-w-[1440px] mx-auto">
+        {/* 좌측 사이드바: Figma 1425:7867 — 249×2151 */}
+        <aside
+          className="flex-shrink-0 w-[249px] bg-white border-r border-gray-200 min-h-[calc(100vh-64px)] flex flex-col"
+          data-node-id="1425:7867"
+        >
           <div className="p-4 border-b border-gray-200">
-            <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
+            <p className="text-[14px] text-[rgba(144,144,144,0.6)] mb-2">검색</p>
             <div className="relative">
               <input
                 type="text"
                 placeholder="차량번호/모델명"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-3 pr-10 py-2.5 border border-gray-200 rounded-md text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full h-10 pl-3 pr-10 rounded-[20px] border border-black/10 bg-white text-[14px] text-gray-900 placeholder-[#909090] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               />
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
             </div>
@@ -159,230 +209,114 @@ export const VehicleRegisterStep1Page = () => {
           </div>
         </aside>
 
-        {/* 메인 콘텐츠 */}
-        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING}`}>
-          <h1 className="text-h1 font-bold text-gray-900 mb-8">차량 원부 등록</h1>
+        {/* 메인: 페이지 제목 + 상단 카드 + 원부 폼 카드 + 하단 액션 */}
+        <main className="flex-1 p-8 pl-10">
+          <h1
+            className="text-[28px] font-bold text-black mb-6"
+            style={{ fontFamily: 'var(--font-primary)' }}
+            data-node-id="1425:7914"
+          >
+            차량 원부 등록
+          </h1>
 
-          {/* 차량 정보 섹션 */}
-          <Card className="mb-6" padding="lg">
-            <h2 className="text-h3 font-bold text-gray-900 mb-6">
-              차량 정보<span className="text-error ml-1">*</span>
-            </h2>
-
-            <div className="grid grid-cols-2 gap-8">
-              {/* 좌측: 차량 요약 정보 */}
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <VehicleStatusBadge status={vehicleData.status} size="sm" />
-                  <span className="text-caption text-gray-500">
-                    {vehicleData.updatedAt.toLocaleTimeString('ko-KR', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                      hour12: false,
-                    })}
-                  </span>
-                </div>
-
-                <h3 className="text-h3 font-bold text-gray-900 mb-2">
-                  {vehicleData.modelName}
-                </h3>
-                <p className="text-body text-gray-600 mb-4">
-                  {plateNumber || '123가 4567'} {vehicleData.modelYear}년형 {vehicleData.mileage}만 km
-                </p>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-3 py-1 rounded-full text-caption text-gray-600 bg-gray-100">
-                    위탁차량
-                  </span>
-                  <span className="px-3 py-1 rounded-full text-caption text-gray-600 bg-gray-100">
-                    단순교환무사고
-                  </span>
-                </div>
-
-                <div className="mb-4">
-                  <p className="text-h3 font-bold text-primary mb-1">
-                    {parseInt(vehicleData.price, 10).toLocaleString()}만원
-                  </p>
-                  <p className="text-caption text-gray-500 line-through">
-                    신차 {(parseInt(vehicleData.price, 10) * 1.5).toLocaleString()}만원
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button className="p-2 text-gray-400 hover:text-gray-600">
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
-                  <span className="text-caption text-gray-500">이전 차량</span>
-                  <span className="text-caption text-gray-500 mx-2">|</span>
-                  <span className="text-caption text-gray-500">다음 차량</span>
-                  <button className="p-2 text-gray-400 hover:text-gray-600">
-                    <ChevronRight className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* 우측: 차량 이미지 갤러리 */}
-              <div>
-                <div className="relative w-full h-64 bg-gray-100 rounded-md flex items-center justify-center">
-                  <img
-                    src="https://via.placeholder.com/400x300?text=차량+이미지"
-                    alt={vehicleData.modelName}
-                    className="w-full h-full object-cover rounded-md"
-                  />
-                  <div className="absolute top-4 right-4 flex gap-2">
-                    {['L', 'R', 'F', 'B'].map((view) => (
-                      <button
-                        key={view}
-                        className="w-8 h-8 rounded-full bg-white bg-opacity-80 text-caption font-medium text-gray-700 hover:bg-opacity-100"
-                      >
-                        {view}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
+          {/* 상단 카드: 차량 등록 원부 + * + 스크린샷 영역 (Figma 1425:7824) */}
+          <div
+            className="mb-6 rounded-[30px] bg-white p-6 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] max-w-[971px]"
+            data-node-id="1425:7824"
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-[22px] font-bold text-black">차량 등록 원부</h2>
+              <span className="text-[22px] font-bold text-[#f21824]">*</span>
             </div>
-          </Card>
+            <div className="h-[300px] w-full max-w-[921px] rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 text-body">
+              차량 이미지 영역
+            </div>
+          </div>
 
-          {/* 차량 등록원부 섹션 */}
-          <Card className="mb-6" padding="lg">
-            <h2 className="text-h3 font-bold text-gray-900 mb-6">
-              차량 등록원부<span className="text-error ml-1">*</span>
-            </h2>
+          {/* 메인 폼 카드: 차량 등록 원부 (1/2) + 2단 폼 (Figma 1425:7685, 7686, 7687, 7754) */}
+          <div
+            className="rounded-[30px] bg-white p-8 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] max-w-[971px]"
+            data-node-id="1425:7685"
+          >
+            <p
+              className="text-[22px] font-bold text-black mb-6"
+              data-node-id="1425:7821"
+            >
+              차량 등록 원부 (1/2)
+            </p>
 
-            <div className="grid grid-cols-2 gap-8">
-              {/* 좌측 열 */}
-              <div className="space-y-6">
-                <Input
-                  label="사업자 등록 번호"
-                  value={registrationData.businessNumber}
-                  onChange={(e) =>
-                    setRegistrationData({ ...registrationData, businessNumber: e.target.value })
-                  }
-                  placeholder="XXX-XX-XXXXX"
-                  disabled
-                  fullWidth
-                />
-
-                <div>
-                  <label className="block text-body font-medium text-gray-700 mb-2">
-                    사업자 등록증 이미지
-                  </label>
-                  <ImageUpload
-                    onFilesSelect={(files) => {
-                      if (files.length > 0) {
-                        setUploadedFiles(files);
-                        setRegistrationData({
-                          ...registrationData,
-                          businessCertificateImage: files[0],
-                        });
-                      }
-                    }}
-                    maxFiles={1}
-                    accept="image/*"
+            <div className="flex gap-[106px]" data-node-id="1425:7686">
+              {/* 좌측 열 358px, 행 간격 31px */}
+              <div className="flex flex-col gap-[31px] w-[358px]" data-node-id="1425:7687">
+                {LEFT_FIELDS.map((f) => (
+                  <FormRow
+                    key={f.id}
+                    label={f.label}
+                    placeholder={f.placeholder}
+                    value={formValues[f.id] ?? ''}
+                    onChange={(v) => updateField(f.id, v)}
+                    onEdit={() => {}}
                   />
-                  <div className="flex gap-2 mt-2">
-                    <Button variant="secondary" size="sm">
-                      파일추가
-                    </Button>
-                    <Button variant="secondary" size="sm">
-                      항목 제거
-                    </Button>
-                    <Button variant="secondary" size="sm">
-                      전체 항목 제거
-                    </Button>
-                  </div>
-                </div>
+                ))}
               </div>
-
-              {/* 우측 열 */}
-              <div className="space-y-6">
-                <Input
-                  label="대표자명"
-                  value={registrationData.representativeName}
-                  onChange={(e) =>
-                    setRegistrationData({ ...registrationData, representativeName: e.target.value })
-                  }
-                  placeholder="XXX-XX-XXXXX"
-                  disabled
-                  fullWidth
-                />
-
-                <Input
-                  label="사업장 주소"
-                  value={registrationData.businessAddress}
-                  onChange={(e) =>
-                    setRegistrationData({ ...registrationData, businessAddress: e.target.value })
-                  }
-                  placeholder="XXX-XX-XXXXX"
-                  disabled
-                  fullWidth
-                />
-
-                <Input
-                  label="업태 종목"
-                  value={registrationData.businessType}
-                  onChange={(e) =>
-                    setRegistrationData({ ...registrationData, businessType: e.target.value })
-                  }
-                  placeholder="XXX-XX-XXXXX"
-                  disabled
-                  fullWidth
-                />
-
-                <Input
-                  label="사업자 정보 선택"
-                  value={registrationData.businessInfo}
-                  onChange={(e) =>
-                    setRegistrationData({ ...registrationData, businessInfo: e.target.value })
-                  }
-                  placeholder="XXX-XX-XXXXX"
-                  disabled
-                  fullWidth
-                />
+              {/* 우측 열 358px */}
+              <div className="flex flex-col gap-[31px] w-[358px]" data-node-id="1425:7754">
+                {RIGHT_FIELDS.map((f) => (
+                  <FormRow
+                    key={f.id}
+                    label={f.label}
+                    placeholder={f.placeholder}
+                    value={formValues[f.id] ?? ''}
+                    onChange={(v) => updateField(f.id, v)}
+                    onEdit={() => {}}
+                  />
+                ))}
               </div>
             </div>
 
-            {/* 차량번호 + OCR (상단에 추가) */}
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <div className="flex gap-4">
-                <Input
-                  label="차량번호"
+            {/* 차량번호 + OCR (기능 유지) */}
+            <div className="mt-8 pt-6 border-t border-gray-200 flex gap-4 items-end">
+              <div>
+                <label className="block text-[16px] font-bold text-black mb-1">차량번호</label>
+                <input
                   type="text"
                   placeholder="123가 4567"
                   value={plateNumber}
                   onChange={(e) => setPlateNumber(e.target.value)}
-                  className="flex-1"
+                  className="h-10 w-[200px] rounded-[5px] border border-gray-200 bg-[var(--color-gray-100)] px-3 text-[14px]"
                 />
-                <div className="flex items-end">
-                  <Button onClick={handleOcr} loading={ocrLoading} className="whitespace-nowrap">
-                    <ScanEye className="h-5 w-5 mr-2" />
-                    OCR 실행
-                  </Button>
-                </div>
               </div>
+              <Button onClick={handleOcr} loading={ocrLoading} size="md">
+                OCR 실행
+              </Button>
             </div>
-          </Card>
+          </div>
 
-          {/* 하단 액션 바 */}
-          <div className="flex items-center justify-between">
-            <div className="flex gap-4">
+          {/* 하단 액션: 삭제, 저장(임시저장), 다음(step2) — Figma 1425:7915, 7916, 7822 */}
+          <div className="flex items-center justify-between mt-8 max-w-[971px]">
+            <div className="flex gap-6">
               <button
+                type="button"
                 onClick={handleDelete}
-                className="text-body text-gray-600 hover:text-gray-900 transition-fast"
+                className="text-[12px] text-[#161616] hover:text-black"
+                data-node-id="1425:7915"
               >
                 삭제
               </button>
               <button
+                type="button"
                 onClick={handleSaveDraft}
-                className="text-body text-gray-600 hover:text-gray-900 transition-fast"
+                className="text-[12px] text-[#161616] hover:text-black"
               >
                 임시저장
               </button>
             </div>
-            <Button onClick={handleSubmit} size="lg">
-              거래하기
+            <Button
+              onClick={handleSubmit}
+              className="rounded-[10px] px-6 h-[37px]"
+              data-node-id="1425:7822"
+            >
+              다음
             </Button>
           </div>
         </main>

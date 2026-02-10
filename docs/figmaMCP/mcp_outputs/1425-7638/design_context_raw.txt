@@ -1,0 +1,172 @@
+const imgIcon = "https://www.figma.com/api/mcp/asset/b9eec4b3-ad8c-4421-a3c1-f9a1726d8dcd";
+const imgSearch = "https://www.figma.com/api/mcp/asset/9ac079eb-b511-454b-a05e-5857f3ec2cc5";
+const imgIcon1 = "https://www.figma.com/api/mcp/asset/e6a696dd-3c78-4259-b4cc-c45032ba7677";
+const imgCilTruck = "https://www.figma.com/api/mcp/asset/a5dd92c1-d986-479e-9e77-af43273a0ee0";
+const imgIcon2 = "https://www.figma.com/api/mcp/asset/54008513-3ded-4548-80d5-daf2c09203b8";
+const imgLine76 = "https://www.figma.com/api/mcp/asset/1a8f01c9-abce-4bf3-b639-bc170b5c6d82";
+const imgStickMan1181741 = "https://www.figma.com/api/mcp/asset/077547ee-0d17-4e05-8f5c-49eaabb6f2d9";
+const imgUnnamed11 = "https://www.figma.com/api/mcp/asset/9ebd3517-c3df-4e64-9086-3cc621cdda48";
+const imgBriefcase = "https://www.figma.com/api/mcp/asset/afb2073d-73fb-4670-9206-b8e8b80f5964";
+const imgGroup140 = "https://www.figma.com/api/mcp/asset/3e9786f9-5ac0-468d-943e-0c754d374eaa";
+const imgGroup2085666007 = "https://www.figma.com/api/mcp/asset/cd8d2a4a-df0f-4587-815c-6123313c272e";
+const imgSearch1 = "https://www.figma.com/api/mcp/asset/8ecd061b-b3f6-4fd6-841d-459eb2ad87f5";
+const imgVector28 = "https://www.figma.com/api/mcp/asset/0378bdef-b1ac-4852-b6f3-6f1b4acdc0ad";
+function Gnb({ className }: { className?: string }) {
+return (
+<div className={className || ""} data-name="GNB(상단 네비게이션 메뉴)" data-node-id="650:1034">
+<div className="h-[31px] relative w-[398px]" data-name="state=차량목록" data-node-id="650:1035">
+<div className="absolute content-stretch flex gap-[30px] inset-[0_0_22.43%0] items-center" data-node-id="650:1036">
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1037">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="file-search-01" data-node-id="650:1038">
+<div className="absolute inset-[8.33%8.33%_8.33%_16.67%]" data-name="Icon" data-node-id="I650:1038;1007:11689">
+<div className="absolute inset-[-4.74%-5.26%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[16px] text-black" data-node-id="650:1039">
+차량목록
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="1121:7144">
+<div className="relative shrink-0 size-[19px]" data-name="search" data-node-id="1193:5450">
+<img alt="" className="block max-w-none size-full" src={imgSearch} />
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="1121:7146">
+검차
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1040">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="bar-chart-12" data-node-id="650:1041">
+<div className="absolute inset-[12.5%]" data-name="Icon" data-node-id="I650:1041;1007:8716">
+<div className="absolute inset-[-5.26%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon1} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1042">
+거래
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1043">
+<div className="relative shrink-0 size-[19px]" data-name="Cil Truck" data-node-id="650:1044">
+<img alt="" className="block max-w-none size-full" src={imgCilTruck} />
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1046">
+탁송
+</p>
+</div>
+<div className="content-stretch flex gap-[3px] items-center relative shrink-0" data-node-id="650:1047">
+<div className="overflow-clip relative shrink-0 size-[24px]" data-name="coins-stacked-03" data-node-id="650:1048">
+<div className="absolute inset-[12.5%8.33%]" data-name="Icon" data-node-id="I650:1048;1007:9529">
+<div className="absolute inset-[-5.26%-4.74%]">
+<img alt="" className="block max-w-none size-full" src={imgIcon2} />
+</div>
+</div>
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#909090] text-[16px]" data-node-id="650:1049">
+정산
+</p>
+</div>
+</div>
+<div className="absolute bottom-0 left-0 right-[78.14%] top-full" data-node-id="650:1050">
+<div className="absolute inset-[-2px_0_0_0]">
+<img alt="" className="block max-w-none size-full" src={imgLine76} />
+</div>
+</div>
+</div>
+</div>
+);
+}
+export default function Component() {
+return (
+<a className="bg-[#f8f9fa] block cursor-pointer relative size-full" data-name="매물 목록 - 차량목록 페이지 랜딩페이지" data-node-id="1425:7638">
+<div className="absolute bg-[#eef5fe] border border-[#d9e7fc] border-solid h-[37px] left-[calc(8.33%+140px)] overflow-clip rounded-[39px] top-[106px] w-[203px]" data-node-id="1425:7639">
+<div className="-translate-x-1/2 -translate-y-1/2 absolute content-stretch flex gap-[5px] items-center left-[calc(50%-21px)] top-[calc(50%+0.5px)] w-[119px]" data-node-id="1425:7640">
+<div className="relative shrink-0 size-[18px]" data-name="briefcase" data-node-id="1425:7641">
+<img alt="" className="block max-w-none size-full" src={imgBriefcase} />
+</div>
+<p className="font-['Pretendard:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#2048e5] text-[14px] text-left w-[147px] whitespace-pre-wrap" data-node-id="1425:7644">
+한국 수출차량 전문 플랫폼
+</p>
+</div>
+</div>
+<div className="-translate-x-1/2 absolute bg-white h-[155px] left-1/2 overflow-clip shadow-[0px_-3px_23.8px_0px_rgba(0,0,0,0.05)] top-0 w-[1440px]" data-name="top bar" data-node-id="1425:7645">
+<div className="absolute h-[13.674px] left-[170.01px] top-[41.16px] w-[254.761px]" data-node-id="1425:7646">
+<img alt="" className="block max-w-none size-full" src={imgGroup140} />
+</div>
+<div className="absolute border border-[rgba(0,0,0,0.1)] border-solid content-stretch flex flex-col h-[30px] items-center justify-center left-[1172px] px-[11px] py-[3px] rounded-[100px] top-[33px] w-[98px]" data-node-id="1425:7665">
+<div className="content-stretch flex gap-[6px] items-center relative shrink-0" data-node-id="1425:7666">
+<div className="flex items-center justify-center relative shrink-0">
+<div className="-scale-y-100 flex-none rotate-180">
+<div className="relative size-[14.243px]" data-name="stick-man_118174 1" data-node-id="1425:7667">
+<img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgStickMan1181741} />
+</div>
+</div>
+</div>
+<p className="font-['SUITE_Variable:SemiBold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[14px] text-black text-left" data-node-id="1425:7668">
+홍길동님
+</p>
+</div>
+</div>
+<div className="absolute h-[18px] left-[1138.24px] top-[40.88px] w-[16px]" data-node-id="1425:7669">
+<div className="absolute contents inset-0" data-node-id="1425:7670">
+<div className="absolute inset-[-4.17%-4.69%]">
+<img alt="" className="block max-w-none size-full" src={imgGroup2085666007} />
+</div>
+</div>
+</div>
+<div className="absolute h-[22px] left-[1102px] top-[39px] w-[21px]" data-node-id="1425:7673">
+<div className="-translate-y-1/2 absolute h-[22px] left-0 top-1/2 w-[21px]" data-name="search" data-node-id="1425:7674">
+<img alt="" className="block max-w-none size-full" src={imgSearch1} />
+</div>
+</div>
+<Gnb className="absolute h-[31px] left-[170.01px] top-[94.25px] w-[398px]" />
+</div>
+<div className="-translate-x-1/2 absolute contents left-[calc(50%-0.5px)] top-[336px]" data-node-id="1425:7678">
+<p className="-translate-x-1/2 absolute font-['SUITE_Variable:ExtraBold',sans-serif] leading-[0] left-[calc(45.83%+45.5px)] not-italic text-[45px] text-black text-center top-[336px]" data-node-id="1425:7679">
+<span className="font-['SUITE_Variable:Bold',sans-serif] leading-[61px]">빠르고 간편하게!</span>
+<span className="leading-[61px]">
+<br aria-hidden="true" />
+완벽한 비대면 차량등록
+</span>
+</p>
+<div className="absolute h-[175px] left-[calc(16.67%+145px)] top-[479px] w-[669px]" data-name="unnamed (1) 1" data-node-id="1425:7680">
+<div className="absolute inset-0 overflow-hidden pointer-events-none">
+<img alt="" className="absolute h-[491.15%] left-0 max-w-none top-[-189.58%] w-full" src={imgUnnamed11} />
+</div>
+</div>
+<p className="-translate-x-1/2 absolute font-['SUITE_Variable:ExtraBold',sans-serif] leading-[61px] left-[calc(33.33%+252px)] not-italic text-[#bebdbd] text-[54px] text-center top-[526px]" data-node-id="1425:7681">
+123가 4567
+</p>
+<div className="absolute h-[65.5px] left-[calc(50%+8px)] top-[524px] w-0" data-node-id="1425:7682">
+<div className="absolute inset-[-2.29%-1.5px]">
+<img alt="" className="block max-w-none size-full" src={imgVector28} />
+</div>
+</div>
+<p className="-translate-x-1/2 absolute font-['SUITE:ExtraBold',sans-serif] leading-[61px] left-[calc(50%+5.5px)] not-italic text-[#ff7575] text-[24px] text-center top-[625px]" data-node-id="1425:7683">
+※ 이미 등록 또는 거래된 매물입니다
+</p>
+</div>
+</a>
+);
+}
+SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+Convert React syntax to the target framework/library
+Transform all Tailwind classes to the target styling system while preserving exact visual design
+Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+Node ids have been added to the code as data attributes, e.g. data-node-id="1:2".
+Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+file-search-01
+Node ID: 423:435
+file, search, attachment, text, paper, pdf, report
+bar-chart-12
+Node ID: 425:440
+bar, chart, barchart, graph, data
+coins-stacked-03
+Node ID: 423:424
+coins, stacked, stack, currency, money
+Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.
+IMPORTANT: After you call this tool, you MUST call get_screenshot to get a screenshot of the node for context.

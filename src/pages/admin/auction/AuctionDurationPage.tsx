@@ -13,6 +13,7 @@ import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
+import { isRunDev } from '@/shared/config/runDev';
 
 export const AuctionDurationPage = () => {
   const { vehicleId } = useParams<{ vehicleId: string }>();
@@ -56,7 +57,7 @@ export const AuctionDurationPage = () => {
             <Button onClick={handleSubmit}>경매 시작</Button>
           </div>
 
-          {import.meta.env.DEV && (
+          {isRunDev() && (
             <DevSkipButton label="DEV:SKIP" subLabel="경매 완료로" onClick={handleSubmit} />
           )}
         </main>

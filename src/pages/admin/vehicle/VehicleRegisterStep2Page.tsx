@@ -37,6 +37,7 @@ const fuelTypeOptions = [
 export const VehicleRegisterStep2Page = () => {
   const navigate = useNavigate();
   const { skipRequired } = useDevSkip();
+  const { showSuccess, showValidationError } = useFormFeedback();
   const [searchParams] = useSearchParams();
   const [fuelType, setFuelType] = useState('');
   const [color, setColor] = useState('');

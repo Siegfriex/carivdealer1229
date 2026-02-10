@@ -6,7 +6,7 @@
  * 레이아웃: 검차내역 제목 + 차량정보·전체 피드백·검차자 카드 + 세부 검차내역(양호/경미/주의/불량) + 사진항목/영상항목 아코디언 + 판매 방식 선택
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
@@ -38,11 +38,21 @@ const VIDEO_CATEGORIES = [
   { name: '외부 손상', duration: '10초/1' },
 ];
 
+/** 검차내역 페이지: 컨테이너 클릭 시 아래(세부 검차내역)로 스크롤 (Figma 1193-9217 별도 뷰) */
+const useScrollToDetail = () => {
+  const detailSectionRef = useRef<HTMLDivElement>(null);
+  const scrollToDetail = useCallback(() => {
+    detailSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+  return { detailSectionRef, scrollToDetail };
+};
+
 export const InspectionCompletePage = () => {
   const navigate = useNavigate();
   const { inspectionId } = useParams<{ inspectionId: string }>();
   const [expandedPhoto, setExpandedPhoto] = useState<string | null>('차량 내부');
   const [expandedVideo, setExpandedVideo] = useState<string | null>(null);
+  const { detailSectionRef, scrollToDetail } = useScrollToDetail();
 
   const inspection = useMemo(
     () => MOCK_INSPECTIONS.find((i) => i.id === inspectionId),
@@ -58,19 +68,19 @@ export const InspectionCompletePage = () => {
   const vehicleId = inspection?.vehicleId;
 
   const handleAuctionSale = () => {
-    const to = vehicleId ? `/vehicles/${vehicleId}/auction/start-price` : '/offers?type=auction';
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleAuctionSale',message:'검차완료→CTA_3 경매(해당 차량)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
+    const to = vehicleId ? `/vehicles/${vehicleId}/sale/analyzing?type=auction` : '/offers?type=auction';
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleAuctionSale',message:'검차완료→CTA_3 판매방식(경매)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
     navigate(to);
   };
   const handleGeneralSale = () => {
     const to = vehicleId ? `/vehicles/${vehicleId}/sale/analyzing` : '/offers?type=general';
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleGeneralSale',message:'검차완료→CTA_3 일반(시세분석)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleGeneralSale',message:'검차완료→CTA_3 판매방식선택(일반)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
     navigate(to);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
+      <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <aside className={`${LAYOUT_CLASSES.SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`}>
@@ -90,6 +100,15 @@ export const InspectionCompletePage = () => {
         <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING}`}>
           <h1 className="text-h1 font-bold text-gray-900 mb-8">검차내역</h1>
 
+          {/* 상단 컨테이너: 클릭 시 아래(세부 검차내역)로 스크롤 (Figma 1193-9217 별도 뷰) */}
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={scrollToDetail}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToDetail(); } }}
+            className="cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg mb-6"
+            aria-label="아래 세부 검차내역으로 이동"
+          >
           {/* 상단 2열: 차량정보 | 전체 피드백 (참조 10285) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <Card className="p-6">
@@ -148,9 +167,10 @@ export const InspectionCompletePage = () => {
               </div>
             </div>
           </Card>
+          </div>
 
-          {/* 세부 검차내역 4칸 (참조 10285 변형) */}
-          <div className="mb-6">
+          {/* 세부 검차내역 4칸 (참조 10285 변형) — 컨테이너 클릭 시 스크롤 목적지 (Figma 1193-9217) */}
+          <div ref={detailSectionRef} className="mb-6">
             <h2 className="text-h3 font-bold text-gray-900 mb-4">세부 검차내역</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[

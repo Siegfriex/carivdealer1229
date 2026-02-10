@@ -1,0 +1,115 @@
+<frame id="794:4708" name="로그인 후 랜딩페이지_판매/거래 단계 필터 미적용" x="453" y="2164.83203125" width="1440" height="1516">
+<frame id="794:4709" name="Frame 2087328282" x="-0.4951171875" y="155" width="249" height="1260">
+<line id="794:4710" name="Line 78" x="249.49609375" y="-0.16796875" width="0.00006592795762117021" height="1508.255859375" />
+<text id="794:4711" name="title" x="24.078125" y="29.6484375" width="105" height="20" />
+<frame id="794:4712" name="Group 2085666055" x="24.078125" y="69.6484375" width="95.9000015258789" height="215.8984375">
+<frame id="794:4713" name="Group 2085666051" x="30.27734375" y="96.671875" width="2.5" height="14.30078125" />
+<frame id="794:4717" name="Group 2085666052" x="30.27734375" y="145.80859375" width="2.5" height="14.30078125" />
+<frame id="794:4721" name="Group 2085666053" x="30.27734375" y="195.02734375" width="2.5" height="14.30078125" />
+<frame id="794:4725" name="Group 2085666054" x="30.27734375" y="244.328125" width="2.5" height="14.30078125" />
+<frame id="794:4729" name="Frame 2087328322" x="24.078125" y="69.6484375" width="93.90156555175781" height="19">
+<frame id="794:4730" name="Frame 2087328313" x="0" y="2.0492191314697266" width="14.901561737060547" height="14.901561737060547">
+<frame id="794:4731" name="Check" x="2.975856065750122" y="2.986996650695801" width="8.927568435668945" height="8.927568435668945" />
+</frame>
+<text id="794:4733" name="차량 업로드" x="21.901561737060547" y="0" width="72" height="19" />
+</frame>
+<frame id="794:4734" name="Frame 2087328323" x="24.078125" y="118.890625" width="93.90156555175781" height="19">
+<frame id="794:4735" name="Frame 2087328313" x="0" y="2.0492191314697266" width="14.901561737060547" height="14.901561737060547">
+<frame id="794:4736" name="Check" x="2.975856065750122" y="2.986996650695801" width="8.927568435668945" height="8.927568435668945" />
+</frame>
+<text id="794:4738" name="검차 진행" x="21.901561737060547" y="0" width="72" height="19" />
+</frame>
+<frame id="794:4739" name="Frame 2087328325" x="24.078125" y="168.109375" width="95.9000015258789" height="19">
+<frame id="794:4740" name="Frame 2087328324" x="0" y="0" width="49.900001525878906" height="19">
+<frame id="794:4741" name="Frame 2087328312" x="0" y="2.2632193565368652" width="14.899999618530273" height="14.47356128692627">
+<ellipse id="794:4742" name="Ellipse 49" x="5.128640174865723" y="4.915421009063721" width="4.642719268798828" height="4.642719268798828" />
+</frame>
+<text id="794:4743" name="거래" x="21.899999618530273" y="0" width="28" height="19" />
+</frame>
+<text id="794:4744" name="진행 중..." x="55.900001525878906" y="0" width="40" height="19" />
+</frame>
+<frame id="794:4745" name="Frame 2087328326" x="24.078125" y="217.328125" width="49.900001525878906" height="19">
+<frame id="794:4746" name="Frame 2087328324" x="0" y="0" width="49.900001525878906" height="19">
+<ellipse id="794:4747" name="Ellipse 48" x="0" y="2.262856960296631" width="14.899999618530273" height="14.474286079406738" />
+<text id="794:4748" name="탁송" x="21.899999618530273" y="0" width="28" height="19" />
+</frame>
+</frame>
+<frame id="794:4749" name="Frame 2087328327" x="24.078125" y="266.546875" width="49.900001525878906" height="19">
+<frame id="794:4750" name="Frame 2087328324" x="0" y="0" width="49.900001525878906" height="19">
+<ellipse id="794:4751" name="Ellipse 48" x="0" y="2.262856960296631" width="14.899999618530273" height="14.474286079406738" />
+<text id="794:4752" name="완료" x="21.899999618530273" y="0" width="28" height="19" />
+</frame>
+</frame>
+</frame>
+</frame>
+<frame id="794:4753" name="Frame 2087328240" x="260" y="106" width="203" height="37">
+<frame id="794:4754" name="Frame 2087328234" x="21" y="7" width="119" height="24">
+<frame id="794:4755" name="briefcase" x="0" y="3" width="18" height="18" />
+<text id="794:4758" name="tab" x="23" y="0" width="147" height="24" />
+</frame>
+</frame>
+<text id="794:4759" name="title" x="295.3203125" y="207.16015625" width="159" height="44" />
+<frame id="794:4760" name="top bar" x="0" y="0" width="1440" height="155">
+<frame id="794:4761" name="Group 140" x="170.00765991210938" y="41.163143157958984" width="254.76065063476562" height="13.673710823059082" />
+<frame id="794:4780" name="Frame 2087328270" x="1172" y="33" width="98" height="30">
+<frame id="794:4781" name="Frame 2087328269" x="14.87841796875" y="3" width="68.2431640625" height="24">
+<rounded-rectangle id="794:4782" name="stick-man_118174 1" x="14.2431640625" y="4.87841796875" width="14.2431640625" height="14.2431640625" />
+<text id="794:4783" name="홍길동님" x="20.2431640625" y="0" width="48" height="24" />
+</frame>
+</frame>
+<frame id="794:4784" name="Frame 2087328272" x="1138.23828125" y="40.87890625" width="15.999700546264648" height="18" />
+<frame id="794:4788" name="Frame 2087328271" x="1102" y="39" width="21" height="22">
+<frame id="794:4789" name="search" x="0" y="0" width="21" height="22" />
+</frame>
+<frame id="794:4792" name="Frame 2087328240" x="1120.3746337890625" y="84.056640625" width="149.70703125" height="40.322059631347656">
+<frame id="794:4793" name="Frame 2087328234" x="19.983089447021484" y="6.661030292510986" width="109.74085235595703" height="27">
+<instance id="794:4794" name="clipboard-plus" x="-0.44449329376220703" y="2.953369140625" width="21.09326171875" height="21.09326171875" />
+<text id="794:4795" name="tab" x="25.185346603393555" y="0" width="85" height="27" />
+</frame>
+</frame>
+<frame id="794:4796" name="Frame 2087328238" x="170.0078125" y="94.2470703125" width="318" height="24">
+<frame id="794:4797" name="Frame 2087328235" x="0" y="0" width="78" height="24">
+<instance id="794:4798" name="file-search-01" x="0" y="2.5" width="19" height="19" />
+<text id="794:4799" name="tab" x="22" y="0" width="56" height="24" />
+</frame>
+<frame id="794:4800" name="Frame 2087328237" x="108" y="0" width="50" height="24">
+<instance id="794:4801" name="bar-chart-12" x="0" y="2.5" width="19" height="19" />
+<text id="794:4802" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="794:4803" name="Frame 2087328236" x="188" y="0" width="50" height="24">
+<frame id="794:4804" name="Cil Truck" x="0" y="2.5" width="19" height="19" />
+<text id="794:4806" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+<frame id="794:4807" name="Frame 2087328238" x="268" y="0" width="50" height="24">
+<instance id="794:4808" name="coins-stacked-03" x="0" y="2.5" width="19" height="19" />
+<text id="794:4809" name="tab" x="22" y="0" width="28" height="24" />
+</frame>
+</frame>
+<line id="794:4810" name="Line 76" x="280.2265625" y="125.1875" width="46.84765625" height="0" />
+</frame>
+<text id="794:4811" name="title" x="297.0078125" y="238.6150665283203" width="393" height="61" />
+<frame id="794:4812" name="Frame 2087328341" x="1065.2109375" y="288.61328125" width="180.1220703125" height="22">
+<text id="794:4813" name="현재 차량 정보 보기" x="0" y="0" width="153" height="22" />
+<frame id="794:4814" name="chevron-right" x="159" y="0.43896484375" width="21.1220703125" height="21.1220703125" />
+</frame>
+<frame id="794:4816" name="Frame 2087328332" x="296" y="323" width="971" height="224">
+<text id="794:4817" name="title" x="51.78125" y="58.5" width="206" height="87" />
+<text id="794:4818" name="title" x="58" y="135.5" width="340" height="30" />
+<frame id="794:4819" name="Frame 2087328331" x="58" y="25" width="82.50730895996094" height="33.176753997802734">
+<text id="794:4820" name="title" x="8.753654479980469" y="4.088376998901367" width="65" height="25" />
+</frame>
+<ellipse id="794:4821" name="Ellipse 56" x="485.5" y="110.46358489990234" width="398.68359375" height="78.88239288330078" />
+<rounded-rectangle id="794:4822" name="스크린샷 2026-01-06 오후 11.45.26 5" x="566.203125" y="18.939453125" width="237.28167724609375" height="170.61341857910156" />
+</frame>
+<rounded-rectangle id="794:4823" name="스크린샷 2026-01-18 오후 7.12.05 1" x="272.15234375" y="581.27734375" width="1004.8246459960938" height="400.19927978515625" />
+</frame>
+IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.
+CTA_3 거래 플로우 요약 문서 작성 및 figMCP.MD 로그 추가 중.
+CTA_3_거래_플로우_요약.md(new)
++51
+# CTA_3 거래 플로우 구현 요약 (§3.5)**진입**: 검차 완료 내역에서 "판매하기" 클릭 → 판매방식선택 페이지로 이동 후 **일반/경매** 분기.---
+figMCP.MD
++1
+| 에이전트 | nodeId 1121-5308 Phase 5·6 워크플로 이행(에셋 연동·레이아웃 스펙 반영) | 2025-02-10 | mcp_outputs/1121-5308/design_context_raw.txt(에셋 URL), impl_plans/1121-5308_구현계획.md(레이아웃 스펙), InspectionProgressPage.tsx, FIGMA_ASSET_TRACEABILITY.md | WORKFLOW Phase 5·6 필수 이행 | Phase 5: design_context에서 imgClock·imgMap URL 추출 후 다운로드(1121-5308_검차일정_clock.png, 1121-5308_검차장소_map.png) → InspectionProgressPage에서 import·검차 일정/검차 장소 행에 <img> 연동, FIGMA_ASSET_TRACEABILITY.md에 2건 추가. Phase 6: 레이아웃 스펙 반영 — 사이드바 249px(1121:5350), 메인 max-w-[972px], 제목·차량 카드·검차 카드에 data-node-id(1121:5381, 1193:9066, 1193:7871, 1193:7872) 및 max-w-[972px] 적용, JSDoc에 노드·치수 명시. npm run build 성공. |
+| 에이전트 | nodeId 1121-5308 Phase 5·6 워크플로 이행(에셋 연동·레이아웃 스펙 반영) | 2025-02-10 | mcp_outputs/1121-5308/design_context_raw.txt(에셋 URL), impl_plans/1121-5308_구현계획.md(레이아웃 스펙), InspectionProgressPage.tsx, FIGMA_ASSET_TRACEABILITY.md | WORKFLOW Phase 5·6 필수 이행 | Phase 5: design_context에서 imgClock·imgMap URL 추출 후 다운로드(1121-5308_검차일정_clock.png, 1121-5308_검차장소_map.png) → InspectionProgressPage에서 import·검차 일정/검차 장소 행에 <img> 연동, FIGMA_ASSET_TRACEABILITY.md에 2건 추가. Phase 6: 레이아웃 스펙 반영 — 사이드바 249px(1121:5350), 메인 max-w-[972px], 제목·차량 카드·검차 카드에 data-node-id(1121:5381, 1193:9066, 1193:7871, 1193:7872) 및 max-w-[972px] 적용, JSDoc에 노드·치수 명시. npm run build 성공. || 에이전트 | CTA_3 거래 플로우 17노드 mcp_outputs·NODE_TO_ROUTE·MCP 호출 | 2025-02-10 | fileKey 4w3ft8RpGwoho5EtvNO9hQ, mcp_outputs 17폴더(1714-22332·794-3704·794-4015·794-4200·794-4371·794-4107·794-4708·794-4542·1302-27289·1123-13580·1123-20023·1123-20699·1123-13763·1123-13487·1123-14112·1123-13946·1302-27093), NODE_TO_ROUTE_AND_FILE.md, impl_plans/CTA_3_거래_플로우_요약.md | §3.5 매물등록 CTA_3 거래 | 검차 완료 후 판매하기→판매방식선택(794-3704)→일반(시세분석·가격·완료·거래상세 펼침·검차상세 모달) 및 경매(시작가·연월일시·완료·거래상세 펼침·판매방식변경 컨테이너·검차상세 모달). 17노드 get_metadata·get_design_context MCP 호출 완료. 사용자에게 UI 반환 전체를 각 mcp_outputs/{nodeId}/ 에 붙여넣기 안내. |
+CTA_3 거래 플로우용 17개 노드 준비와 MCP 호출까지 모두 반영했습니다.
