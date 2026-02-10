@@ -72,9 +72,9 @@ export const AuctionStartPricePage = () => {
             <h1 className="text-h1 font-bold text-gray-900 mb-2">경매 사전 설정</h1>
             <p className="text-body text-gray-600 mb-8">경매 시작 이후에는 조건을 변경할 수 없습니다</p>
 
-            {/* 차량정보 · 전체 피드백 카드 */}
+            {/* 1123-13580: 좌측 차량정보 패널 320×420 (1302/794와 동일 스펙) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <Card className="p-6">
+              <div className="bg-white rounded-[30px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] w-full max-w-[320px] min-h-[420px] overflow-hidden flex flex-col p-6 box-border shrink-0" data-node-id="1123:13582">
                 <h3 className="text-h4 font-bold text-gray-900 mb-4">차량정보</h3>
                 {vehicle?.thumbnailUrl && (
                   <div className="w-full h-32 bg-gray-100 rounded-lg mb-4 overflow-hidden">
@@ -87,7 +87,7 @@ export const AuctionStartPricePage = () => {
                 <p className="text-caption text-gray-500 mb-1">연식: {vehicle?.modelYear ?? '2018'}</p>
                 <p className="text-caption text-gray-500 mb-1">주행거리: {vehicle?.mileage ? `${(parseInt(vehicle.mileage, 10) / 10000).toFixed(1)}만 km` : '14.6만 km'}</p>
                 <p className="text-caption text-gray-500">연료: —</p>
-              </Card>
+              </div>
               <Card className="p-6">
                 <h3 className="text-h4 font-bold text-gray-900 mb-4">전체 피드백</h3>
                 {vehicle?.thumbnailUrl && (

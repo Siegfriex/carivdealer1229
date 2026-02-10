@@ -29,7 +29,7 @@ export const GeneralSaleCompletePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
+      <LandingHeader userName="홍길동" variant="main" activeNav="offers" />
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline />
         <main className={`flex-1 py-8 ${LAYOUT_CLASSES.MAIN_DETAIL}`}>

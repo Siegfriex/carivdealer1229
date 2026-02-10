@@ -15,7 +15,6 @@ import { InspectionStatusBadge } from '@/entities/inspection/ui/InspectionStatus
 import { Button } from '@/shared/ui/Button';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { ChevronDown, ChevronUp, LayoutList, LayoutGrid, Clock, MapPin } from 'lucide-react';
-import type { InspectionStatus } from '@/entities/inspection/model/types';
 import { INSPECTION_STATUS_LABELS } from '@/entities/inspection/model/constants';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';
 
@@ -115,13 +114,18 @@ export const InspectionListPage = () => {
 
       <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <GnbMinimalSidebar
+          className="!w-[249px]"
           sectionTitle="검차"
           searchValue={searchTerm}
           onSearchChange={setSearchTerm}
         />
-        <main className="flex-1 p-8">
+        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_GNB}`}>
+          {/* 배지: GNB 공통 203×37 */}
+          <div className="flex items-center gap-1.5 w-[203px] h-[37px] rounded-[39px] border border-[#d9e7fc] bg-[#eef5fe] px-5 py-2 mb-4">
+            <span className="text-body font-semibold text-primary">한국 수출차량 전문 플랫폼</span>
+          </div>
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-h1 font-bold text-gray-900">검차 신청목록</h1>
+            <h1 className="text-[28px] leading-[44px] font-bold text-gray-900">검차 신청목록</h1>
             <div className="flex items-center gap-4">
               <select
                 value={period}
@@ -166,7 +170,7 @@ export const InspectionListPage = () => {
           </div>
 
           {viewMode === 'card' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[15px] gap-y-[36px]">
               {inspections.length === 0 ? (
                 <div className="col-span-full p-12 text-center text-body text-gray-500 bg-white rounded-lg border border-gray-200">
                   검차 신청 목록이 없습니다.

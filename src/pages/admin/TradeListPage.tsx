@@ -6,7 +6,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
+import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { VehicleTable } from '@/widgets/VehicleTable/ui/VehicleTable';
 import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
@@ -93,14 +93,19 @@ export const TradeListPage = () => {
     <div className="min-h-screen bg-gray-50">
       <LandingHeader userName="홍길동" variant="main" activeNav="offers" />
 
-      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`} data-node-id="1714:22332">
         <GnbMinimalSidebar
+          className="!w-[249px]"
           sectionTitle="거래"
           searchValue={searchTerm}
           onSearchChange={setSearchTerm}
         />
-        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_LIST}`}>
-            <h1 className="text-h1 font-bold text-gray-900 mb-6">거래 목록</h1>
+        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_GNB}`}>
+            {/* 배지: 1714:22345 260,106 203×37 */}
+            <div className="flex items-center gap-1.5 w-[203px] h-[37px] rounded-[39px] border border-[#d9e7fc] bg-[#eef5fe] px-5 py-2 mb-4">
+              <span className="text-body font-semibold text-primary">한국 수출차량 전문 플랫폼</span>
+            </div>
+            <h1 className="text-[28px] leading-[44px] font-bold text-gray-900 mb-6" data-node-id="1714:22351">거래 목록</h1>
 
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
@@ -151,19 +156,21 @@ export const TradeListPage = () => {
               </div>
             ) : viewMode === 'grid' ? (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[15px] gap-y-[36px] mb-8" data-node-id="1714:22378">
                   {paginatedVehicles.map((vehicle) => (
-                    <VehicleCard
-                      key={vehicle.id}
-                      vehicle={vehicle}
-                      variant="mainLanding"
-                      statusLabelOverride={TRADE_LIST_STATUS_LABELS[vehicle.status]}
-                      onClick={() => navigate(`/vehicles/${vehicle.id}`)}
-                    />
+                    <div key={vehicle.id} className="min-h-[291px] max-w-[314px]">
+                      <VehicleCard
+                        vehicle={vehicle}
+                        variant="mainLanding"
+                        statusLabelOverride={TRADE_LIST_STATUS_LABELS[vehicle.status]}
+                        onClick={() => navigate(`/vehicles/${vehicle.id}`)}
+                        className="h-full min-h-[291px] w-full max-w-[314px] rounded-[23.441px] shadow-[2.34px_3.13px_11.02px_rgba(0,0,0,0.05)]"
+                      />
+                    </div>
                   ))}
                 </div>
                 {totalPages > 1 && (
-                  <div className="flex justify-center">
+                  <div className="flex justify-center w-full max-w-[970px]" data-node-id="1714:22352">
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}
@@ -178,7 +185,7 @@ export const TradeListPage = () => {
                   <VehicleTable vehicles={paginatedVehicles} />
                 </div>
                 {totalPages > 1 && (
-                  <div className="flex justify-center">
+                  <div className="flex justify-center w-full max-w-[970px]" data-node-id="1714:22352">
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}

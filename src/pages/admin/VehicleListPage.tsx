@@ -13,17 +13,15 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
+import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { VehicleTable } from '@/widgets/VehicleTable/ui/VehicleTable';
 import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { Checkbox } from '@/shared/ui/Checkbox';
 import { Pagination } from '@/shared/ui/Pagination';
+import { ViewModeToggle } from '@/shared/ui/ViewModeToggle';
 import { useVehicles } from '@/features/vehicle/register-form/model/useVehicles';
-import iconGrid from '@/shared/figma_image/1425-8153_그리드_grid.png';
-import iconList from '@/shared/figma_image/1425-8153_리스트_list.png';
-import iconBriefcase from '@/shared/figma_image/1425-8153_배지_briefcase.png';
 import type { VehicleStatus } from '@/entities/vehicle/model/types';
 
 const PAGE_SIZE = 9;
@@ -154,81 +152,36 @@ export const VehicleListPage = () => {
     ? 'all'
     : filterTab;
 
+  const footer = (
+    <footer className="py-6 border-t border-gray-200" data-node-id="1425:8165">
+      <p className="text-caption text-gray-500">ForwardMax Cariv Domestic Seller 1.0 Prototype</p>
+    </footer>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50" data-node-id="1425:8153">
-      <LandingHeader
-        userName="홍길동"
-        variant="main"
-        activeNav="vehicles"
-      />
-
+      <LandingHeader userName="홍길동" variant="main" activeNav="vehicles" />
       <div className={LAYOUT_CLASSES.CONTAINER}>
         <div className="flex">
-          <MainLandingSidebar
-            searchValue={searchTerm}
-            onSearchChange={updateSearchTerm}
-            activeKey={sidebarActiveKey}
-          />
-
-          {/* 메인: Figma 1425:8210 title, 1425:8387 탭, 1425:8237 그리드, 1425:8211 페이지네이션 */}
-          <main
-            className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING} ${LAYOUT_CLASSES.MAIN_LIST}`}
-            data-node-id="1425:8237"
+          <GnbListLayout
+            sidebar={{
+              type: 'vehicles',
+              searchValue: searchTerm,
+              onSearchChange: updateSearchTerm,
+              activeKey: sidebarActiveKey,
+            }}
+            title="나의 매물 목록"
+            mainNodeId="1425:8237"
+            footer={footer}
           >
-            {/* 배지: Figma 1425:8167 260,106 203×37 — 한국 수출차량 전문 플랫폼 */}
-            <div
-              className="flex items-center gap-1.5 rounded-full border border-[#d9e7fc] bg-[#eef5fe] px-5 py-2 w-fit mb-4"
-              data-node-id="1425:8167"
-            >
-              <img src={iconBriefcase} alt="" className="h-[18px] w-[18px] object-contain" aria-hidden />
-              <span className="text-body font-semibold text-primary">한국 수출차량 전문 플랫폼</span>
-            </div>
-
-            {/* 제목: 나의 매물 목록 — Figma 295,207 159×44, 탭과 간격 14px */}
-            <h1
-              className="text-h1 font-bold text-gray-900 mb-4"
-              style={{ height: 44 }}
-              data-node-id="1425:8210"
-            >
-              나의 매물 목록
-            </h1>
-
-            {/* 필터 탭 + 뷰 토글 + 확인 필요차량 — Figma 296,265 320×40, 그리드와 간격 65px */}
-            <div
-              className="flex items-center justify-between mb-8"
-              style={{ minHeight: 40 }}
-              data-node-id="1425:8387"
-            >
+            <div className="flex items-center justify-between mb-8" style={{ minHeight: 40 }} data-node-id="1425:8387">
               <div className="flex items-center gap-4">
                 <SegmentedControl
                   options={filterOptions}
                   value={segmentValue}
                   onChange={(value) => updateFilter(value as FilterTab)}
                 />
-                {/* 뷰 토글 — Figma 1090,268 175×33 */}
-                <div
-                  className="flex items-center gap-2 p-1 bg-gray-100 rounded-md"
-                  data-node-id="1425:8404"
-                >
-                  <button
-                    onClick={() => updateViewMode('grid')}
-                    className={`p-2 rounded transition-fast ${
-                      viewMode === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'
-                    }`}
-                    aria-label="그리드 뷰"
-                  >
-                    <img src={iconGrid} alt="" className="h-5 w-5 object-contain" aria-hidden />
-                  </button>
-                  <button
-                    onClick={() => updateViewMode('list')}
-                    className={`p-2 rounded transition-fast ${
-                      viewMode === 'list' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'
-                    }`}
-                    aria-label="리스트 뷰"
-                  >
-                    <img src={iconList} alt="" className="h-5 w-5 object-contain" aria-hidden />
-                  </button>
-                </div>
+                <ViewModeToggle value={viewMode} onChange={updateViewMode} />
               </div>
               <Checkbox
                 checked={needsAttention}
@@ -237,7 +190,6 @@ export const VehicleListPage = () => {
               />
             </div>
 
-            {/* 콘텐츠 */}
             {isLoading || isLoadingAll ? (
               <div className="text-center py-16">
                 <p className="text-body text-gray-500">로딩 중...</p>
@@ -248,30 +200,21 @@ export const VehicleListPage = () => {
               </div>
             ) : viewMode === 'grid' ? (
               <>
-                {/* 그리드: Figma 293,330 972×1271, 카드 314×291, gap 15px. lg에서 3열 시 314px 열. */}
-                <div
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[15px] mb-8 max-w-[972px]"
-                  data-node-id="1425:8237"
-                >
+                <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${LAYOUT_CLASSES.GNB_GRID} mb-8`} data-node-id="1425:8237">
                   {paginatedVehicles.map((vehicle) => (
-                    <VehicleCard
-                      key={vehicle.id}
-                      vehicle={vehicle}
-                      variant="mainLanding"
-                      onClick={() => navigate(`/vehicles/${vehicle.id}`)}
-                      className="min-h-[291px] rounded-[10px] shadow-[2.34px_3.13px_11.02px_rgba(0,0,0,0.05)]"
-                    />
+                    <div key={vehicle.id} className={`h-full ${LAYOUT_CLASSES.GNB_CARD_WRAPPER}`} data-node-id="1425:8239">
+                      <VehicleCard
+                        vehicle={vehicle}
+                        variant="mainLanding"
+                        onClick={() => navigate(`/vehicles/${vehicle.id}`)}
+                        className={`h-full min-h-[291px] w-full ${LAYOUT_CLASSES.GNB_CARD}`}
+                      />
+                    </div>
                   ))}
                 </div>
-
-                {/* 페이지네이션 — Figma 296,1301 970×114 */}
                 {totalPages > 1 && (
-                  <div className="flex justify-center" data-node-id="1425:8211">
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={setCurrentPage}
-                    />
+                  <div className={`flex justify-center w-full ${LAYOUT_CLASSES.GNB_PAGINATION_WRAPPER}`} data-node-id="1425:8211">
+                    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
                   </div>
                 )}
               </>
@@ -281,28 +224,14 @@ export const VehicleListPage = () => {
                   <VehicleTable vehicles={paginatedVehicles} />
                 </div>
                 {totalPages > 1 && (
-                  <div className="flex justify-center" data-node-id="1425:8211">
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={setCurrentPage}
-                    />
+                  <div className={`flex justify-center w-full ${LAYOUT_CLASSES.GNB_PAGINATION_WRAPPER}`} data-node-id="1425:8211">
+                    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
                   </div>
                 )}
               </>
             )}
-          </main>
+          </GnbListLayout>
         </div>
-
-        {/* 푸터 — Figma 1425:8165 0,1415 1440×327 */}
-        <footer
-          className="py-6 border-t border-gray-200"
-          data-node-id="1425:8165"
-        >
-          <p className="text-caption text-gray-500">
-            ForwardMax Cariv Domestic Seller 1.0 Prototype
-          </p>
-        </footer>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 const LEFT_FIELDS: { id: string; label: string; placeholder: string }[] = [
   { id: 'serialNumber', label: '일련번호', placeholder: "계좌번호 '-'를 제외하고 입력" },
   { id: 'managementNumber', label: '제원관리번호', placeholder: 'xxxx' },
-  { id: 'cancellationDate', label: '말소등록일', placeholder: 'xxxx' },
+  { id: 'cancellationDate', label: '말소등록일', placeholder: 'xxxx' }, /* Figma metadata 1425:7701 "말소등쪽일" → SSOT 정정 "말소등록일" */
   { id: 'modelName', label: '차명', placeholder: 'xxxx' },
   { id: 'vehicleType', label: '치종', placeholder: 'xxxx' },
   { id: 'vin', label: '차대번호', placeholder: 'xxxx' },

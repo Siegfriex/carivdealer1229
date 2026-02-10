@@ -98,7 +98,9 @@ export const InspectionCompletePage = () => {
         </aside>
 
         <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING}`}>
-          <h1 className="text-h1 font-bold text-gray-900 mb-8">검차내역</h1>
+          {/* SSOT 1193-8120, 1425-10285: 검차완료! 내역을 확인하세요 */}
+          <h1 className="text-h1 font-bold text-gray-900 mb-2">검차완료!</h1>
+          <p className="text-body text-gray-600 mb-8">내역을 확인하세요</p>
 
           {/* 상단 컨테이너: 클릭 시 아래(세부 검차내역)로 스크롤 (Figma 1193-9217 별도 뷰) */}
           <div

@@ -90,17 +90,17 @@ export const LandingPage = () => {
   return (
     <div
       className={`min-h-screen ${isAuthenticated ? 'bg-[var(--color-gray-50)]' : 'bg-white'}`}
-      data-node-id={isAuthenticated ? '1368:37364' : undefined}
-      data-name={isAuthenticated ? '로그인 후 랜딩페이지_첫 사용자' : undefined}
+      data-node-id={isAuthenticated ? '1368:37364' : '1444:7928'}
+      data-name={isAuthenticated ? '로그인 후 랜딩페이지_첫 사용자' : '로그인 전 랜딩페이지'}
     >
       <LandingHeader userName={userName} variant="main" activeNav="vehicles" />
 
-      {/* Hero — Figma 1444-7929: 비로그인 시 Domestic Seller Hero */}
+      {/* Hero — Figma 1444-7929: 비로그인 시 Domestic Seller Hero (0,171 1440×641) */}
       {!isAuthenticated ? (
-        <section className="relative w-full min-h-[641px] flex items-center overflow-hidden bg-[var(--color-gray-100)]" data-node-id="1444:7929">
-          <div className={`${LAYOUT_CLASSES.CONTAINER} relative z-10 px-6 py-16 md:py-20`}>
-            {/* 배지: 한국 수출차량 전문 플랫폼 — 1444:7942 */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-primary-border)] bg-[var(--color-primary-light)] px-5 py-2 mb-6" data-node-id="1444:7942">
+        <section className="relative w-full h-[641px] max-w-[1440px] mx-auto flex items-center overflow-hidden bg-[var(--color-gray-100)]" data-node-id="1444:7929">
+          <div className="relative z-10 w-full max-w-[1440px] mx-auto pl-6 pr-6 pt-16 pb-20 md:pl-[260px] md:pr-6">
+            {/* 배지: 1444:7942 — 260,106 203×37, rounded 39px #eef5fe */}
+            <div className="inline-flex items-center gap-2 w-[203px] h-[37px] rounded-[39px] border border-[#d9e7fc] bg-[#eef5fe] px-5 py-2 mb-6" data-node-id="1444:7942">
               <Briefcase className="h-[18px] w-[18px] text-[var(--color-primary)]" aria-hidden />
               <span className="text-[14px] font-semibold text-[var(--color-primary)]">한국 수출차량 전문 플랫폼</span>
             </div>
@@ -138,16 +138,21 @@ export const LandingPage = () => {
           </div>
         </section>
       ) : (
-        /* 로그인 시: Figma 1368-37364 Hero — design_context 1368:37367, 1368:37375, 1368:37370 */
+        /* 로그인 시: Figma 1368-37364 Hero — 1368:37367 ~1448×627, 배지 1368:37376 203×37 */
         <section
-          className="relative w-full min-h-[628px] flex items-center overflow-hidden"
+          className="relative w-full min-h-[627px] max-w-[1440px] mx-auto flex items-center overflow-hidden"
           data-node-id="1368:37367"
           data-name="Frame_Hero"
         >
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1440&q=80')` }} />
           <div className="absolute inset-0 bg-black/65" aria-hidden />
-          <div className={`${LAYOUT_CLASSES.CONTAINER} relative z-10 px-6 py-16 md:pl-[175px] md:pr-6`}>
-            <p className="font-semibold text-[45px] leading-[61px] text-white mb-6 max-w-[508px]" style={{ fontFamily: 'var(--font-primary)' }} data-node-id="1368:37375">
+          <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 py-16 md:pl-[175px] md:pr-6">
+            {/* 배지: 1368:37376 260,106 203×37 */}
+            <div className="absolute top-0 left-6 md:left-0 inline-flex items-center gap-2 w-[203px] h-[37px] rounded-[39px] border border-[#d9e7fc] bg-[#eef5fe] px-5 py-2" data-node-id="1368:37376">
+              <img src={img1368Briefcase} alt="" className="h-[18px] w-[18px] object-contain" aria-hidden />
+              <span className="text-[14px] font-semibold text-[var(--color-primary)]">한국 수출차량 전문 플랫폼</span>
+            </div>
+            <p className="font-semibold text-[45px] leading-[61px] text-white mb-6 max-w-[508px] mt-14 md:mt-16" style={{ fontFamily: 'var(--font-primary)' }} data-node-id="1368:37375">
               안녕하세요 {userName}님! 👋<br />
               ForwardMax Cariv와 함께<br />
               첫 거래를 시작해보세요
@@ -157,18 +162,14 @@ export const LandingPage = () => {
               <img src={img1368ChevronRight} alt="" className="h-[15px] w-[15px] object-contain" aria-hidden />
             </Button>
           </div>
-          <div className="absolute top-[106px] left-[260px] z-10 inline-flex items-center gap-2 rounded-[39px] border border-[var(--color-primary-border)] bg-[var(--color-primary-light)] px-5 py-2" data-node-id="1368:37376">
-            <img src={img1368Briefcase} alt="" className="h-[18px] w-[18px] object-contain" aria-hidden />
-            <span className="text-[14px] font-semibold text-[var(--color-primary)]">한국 수출차량 전문 플랫폼</span>
-          </div>
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-[var(--color-gray-100)] rounded-t-[2rem]" />
         </section>
       )}
 
-      {/* Section 2 — Figma 1444-7949: 언제 어디서든 빠르고 간편하게 + 차량 업로드하기 */}
+      {/* Section 2 — Figma 1444-7949: 0,819 1440×555 */}
       {!isAuthenticated && (
-        <section className="w-full py-16 md:py-20 bg-[var(--color-gray-100)]" data-node-id="1444:7949">
-          <div className={`${LAYOUT_CLASSES.CONTAINER} px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-8`}>
+        <section className="w-full max-w-[1440px] mx-auto min-h-[555px] flex items-center py-16 md:py-20 bg-[var(--color-gray-100)]" data-node-id="1444:7949">
+          <div className="w-full max-w-[1440px] mx-auto px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
             <div className="max-w-[549px] md:text-right">
               <h2 className="font-extrabold text-[45px] leading-[61px] text-black mb-4" style={{ fontFamily: 'var(--font-primary)' }} data-node-id="1444:7952">
                 언제 어디서든 빠르고 간편하게.
@@ -185,10 +186,10 @@ export const LandingPage = () => {
         </section>
       )}
 
-      {/* Section 3 — Figma 1444-7958: 간소화된 인증과정 */}
+      {/* Section 3 — Figma 1444-7958: 0,1381 1440×673 */}
       {!isAuthenticated && (
-        <section className="w-full py-16 md:py-20 bg-[var(--color-gray-100)]" data-node-id="1444:7958">
-          <div className={`${LAYOUT_CLASSES.CONTAINER} px-6`}>
+        <section className="w-full max-w-[1440px] mx-auto min-h-[673px] py-16 md:py-20 bg-[var(--color-gray-100)]" data-node-id="1444:7958">
+          <div className="w-full max-w-[1440px] mx-auto px-6">
             <h2 className="font-extrabold text-[45px] leading-[61px] text-black mb-4 max-w-[322px]" style={{ fontFamily: 'var(--font-primary)' }} data-node-id="1444:7962">
               간소화된 인증과정
             </h2>
@@ -199,12 +200,12 @@ export const LandingPage = () => {
         </section>
       )}
 
-      {/* 사용 가이드 — Figma 1368:37382(로그인 후) / 881-1372 */}
+      {/* 사용 가이드 — Figma 1368:37382(로그인 후) 0,737 1440×592, 카드 208×253 */}
       <section
-        className={isAuthenticated ? 'bg-[var(--color-primary-light)] pt-16 pb-24 rounded-t-[40px]' : 'bg-gray-50 py-16 md:py-24'}
+        className={isAuthenticated ? 'bg-[var(--color-primary-light)] min-h-[592px] pt-16 pb-24 rounded-t-[40px] w-full max-w-[1440px] mx-auto' : 'bg-gray-50 py-16 md:py-24'}
         data-node-id={isAuthenticated ? '1368:37382' : undefined}
       >
-        <div className={`${LAYOUT_CLASSES.CONTAINER} px-6`}>
+        <div className={isAuthenticated ? 'w-full max-w-[1440px] mx-auto px-6' : `${LAYOUT_CLASSES.CONTAINER} px-6`}>
           <h2 className={isAuthenticated ? 'text-[34px] font-extrabold leading-[61px] text-black/80 mb-1' : 'text-h2 font-medium leading-tight tracking-tight text-gray-900 mb-2'} style={isAuthenticated ? { fontFamily: 'var(--font-primary)' } : undefined}>
             사용 가이드
           </h2>
@@ -318,9 +319,9 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer — Figma 1368:37365 */}
-      <footer className={`border-t border-gray-200 ${isAuthenticated ? 'bg-[var(--color-gray-100)] min-h-[327px] flex items-start' : 'bg-gray-50'}`} data-node-id={isAuthenticated ? '1368:37365' : undefined}>
-        <div className="container max-w-6xl mx-auto px-6 py-8 md:pl-[171px] md:pt-[108px]">
+      {/* Footer — Figma 1368:37365 / 1444:7965 (0,2066 1440×327) */}
+      <footer className={`border-t border-gray-200 ${isAuthenticated ? 'bg-[var(--color-gray-100)] min-h-[327px] flex items-start' : 'bg-gray-50 min-h-[327px]'}`} data-node-id={isAuthenticated ? '1368:37365' : '1444:7965'}>
+        <div className="container max-w-[1440px] mx-auto px-6 py-8 md:pl-[171px] md:pt-[108px]">
           <p className="text-[16px] leading-[21px] text-[var(--color-gray-500)]" data-node-id={isAuthenticated ? '1368:37366' : undefined}>
             ForwardMax Cariv Domestic Seller 1.0 Prototype
           </p>

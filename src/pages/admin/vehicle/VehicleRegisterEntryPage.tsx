@@ -12,6 +12,9 @@ import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Button } from '@/shared/ui/Button';
 import { Briefcase } from 'lucide-react';
 
+/** Figma 1425:7683 SSOT — 이미 등록/거래된 매물 에러 문구 */
+const SSOT_ERROR_ALREADY_REGISTERED = '이미 등록 또는 거래된 매물입니다';
+
 export const VehicleRegisterEntryPage = () => {
   const navigate = useNavigate();
   const [plateNumber, setPlateNumber] = useState('');
@@ -111,7 +114,7 @@ export const VehicleRegisterEntryPage = () => {
           </div>
         </div>
 
-        {/* 에러: ※ 이미 등록 또는 거래된 매물입니다 — Figma 1425:7683 */}
+        {/* 에러: Figma 1425:7683 SSOT "※ 이미 등록 또는 거래된 매물입니다" (중복 시 SSOT_ERROR_ALREADY_REGISTERED 사용) */}
         {error && (
           <p
             className="mt-4 text-center text-[24px] font-extrabold leading-[61px] text-[#ff7575]"

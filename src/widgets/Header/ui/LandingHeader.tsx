@@ -88,10 +88,11 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
     <header
       className="sticky top-0 left-0 right-0 bg-white border-b border-gray-200 shadow-sm"
       style={{ zIndex: Z_INDEX.STICKY }}
+      data-node-id="1444:7967"
     >
-      {/* 1단: 로고 + 우측(마이페이지, 알림, 유저) — Figma 881-1581 */}
+      {/* 1단: 로고(1444:7968) + 우측 검색(1444:8014)·로그인/회원가입(1444:8005) — Figma 1444-7928 */}
       <div className="container mx-auto max-w-[1440px] h-14 flex items-center justify-between gap-6 px-6">
-        <Link to="/" className="flex items-center shrink-0">
+        <Link to="/" className="flex items-center shrink-0" data-node-id="1444:7968">
           <span className="text-h3 font-bold text-gray-900 tracking-tight">
             FORWARD<span className="text-primary">MAX</span>
           </span>
@@ -102,8 +103,9 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
             type="button"
             className="p-2 text-gray-600 hover:text-gray-900 rounded-md transition-fast flex items-center justify-center"
             aria-label="검색"
+            data-node-id="1444:8013"
           >
-            <img src={iconSearch} alt="" className="h-5 w-5 object-contain" />
+            <img src={iconSearch} alt="" className="h-5 w-5 object-contain" data-node-id="1444:8014" />
           </button>
           {isMain && (
             <div className="relative" ref={notificationRef}>
@@ -187,6 +189,7 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
                 type="button"
                 onClick={() => setLoginModalOpen(true)}
                 className="flex items-center gap-2 px-3 py-2 text-body font-medium text-gray-700 hover:text-primary transition-fast"
+                data-node-id="1444:8005"
               >
                 로그인/회원가입
               </button>
@@ -200,10 +203,10 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
         </div>
       </div>
 
-      {/* 2단: 네비(차량목록, 검차, 거래, 탁송, 정산) + 매물 등록하기 오른쪽 — Figma 881-1581 */}
+      {/* 2단: GNB(1444:7991) 차량목록·검차·거래·탁송·정산 + 매물등록(1444:7987) — Figma 1444-7928 */}
       <div className="border-t border-gray-100">
         <div className="container mx-auto max-w-[1440px] hidden md:flex items-center justify-between h-12 px-6">
-          <nav className="flex items-center gap-8">
+          <nav className="flex items-center gap-8" data-node-id="1444:7991">
             {NAV_ITEMS.map((item, index) => {
               const key = NAV_KEYS[index];
               const isActive = isMain && activeNav === key;
@@ -228,7 +231,7 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
               );
             })}
           </nav>
-          <Button size="md" onClick={handleRegister} className="shrink-0">
+          <Button size="md" onClick={handleRegister} className="shrink-0" data-node-id="1444:7987">
             {isMain ? (
               <>
                 <Car className="h-5 w-5 mr-2" />

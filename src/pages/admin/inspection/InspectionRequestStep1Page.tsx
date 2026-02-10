@@ -34,10 +34,11 @@ export const InspectionRequestStep1Page = () => {
       showValidationError('필수 항목을 입력해주세요.');
       return;
     }
+    // Figma CTA_2: 1033-4903 검차신청 Step1만 존재. Step2(평가사 선택) 노드 없음 → 신청 완료 시 목록으로 이동.
     // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionRequestStep1Page:next',message:'검차 step1→step2',data:{to:'/inspections/request/step2'},timestamp:Date.now(),hypothesisId:'H_CTA2',runId:'register-flow-check'})}).catch(()=>{});
+    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionRequestStep1Page:next',message:'검차 step1→목록',data:{to:'/inspections'},timestamp:Date.now(),hypothesisId:'H_CTA2',runId:'register-flow-check'})}).catch(()=>{});
     // #endregion
-    navigate('/inspections/request/step2');
+    navigate('/inspections');
   };
 
   return (
@@ -64,11 +65,22 @@ export const InspectionRequestStep1Page = () => {
           <h1 className="text-h1 font-bold text-gray-900 mb-8">검차 신청</h1>
 
           <div className="space-y-8">
-            {/* § 검차 차량 선택 (Figma 1033-4903 1193:6763 블록 스타일) */}
-            <section className="bg-white rounded-[15px] border border-gray-200 p-6 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
+            {/* § 검차 차량 선택 (Figma 1033-4903 1193:6763 — placeholder 예) 12바 1234, 버튼 검색하기 SSOT) */}
+            <section className="bg-white rounded-[15px] border border-gray-200 p-6 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]" data-node-id="1193:6763">
               <h2 className="text-body font-bold text-gray-900 mb-4">
                 검차 차량 선택 <span className="text-red-500">*</span>
               </h2>
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <input
+                  type="text"
+                  placeholder="예) 12바 1234"
+                  className="flex-1 min-w-[200px] px-3 py-2.5 border border-gray-200 rounded-lg text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                  aria-label="차량번호 검색"
+                />
+                <Button type="button" variant="secondary" size="md" data-node-id="1193:6755">
+                  검색하기
+                </Button>
+              </div>
               <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                 <div className="w-24 h-24 flex items-center justify-center bg-gray-200 rounded">
                   <Car className="h-10 w-10 text-gray-500" />

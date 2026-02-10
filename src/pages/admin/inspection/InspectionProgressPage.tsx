@@ -11,7 +11,7 @@ import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { Card } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
-import { User, Check, Truck, CheckCircle2 } from 'lucide-react';
+import { User, Check, CheckCircle2 } from 'lucide-react';
 import imgClock from '@/shared/figma_image/1121-5308_검차일정_clock.png';
 import imgMap from '@/shared/figma_image/1121-5308_검차장소_map.png';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -54,8 +54,8 @@ function InspectionProgressSidebar() {
           className="w-full pl-3 pr-10 py-2.5 border border-gray-200 rounded-md text-body text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
+      {/* Figma 1193-8343: 차량 업로드·검차 진행·거래·탁송·완료, 진행 중... (1193:8433) */}
       <div>
-        <h3 className="text-button font-medium text-gray-700 mb-2">현재 거래 진행상황</h3>
         <ul className="space-y-1">
           {['차량 업로드', '검차 진행', '거래', '탁송', '완료'].map((label, i) => (
             <li key={label} className="flex items-center gap-2">
@@ -65,8 +65,13 @@ function InspectionProgressSidebar() {
                 }`}
               />
               <span className={`text-body ${i === 1 ? 'font-medium text-primary' : 'text-gray-600'}`}>
-                {i === 1 ? '검차 진행 중...' : label}
+                {label}
               </span>
+              {i === 1 && (
+                <span className="text-[11px] text-primary/80" data-node-id="1193:8433">
+                  진행 중...
+                </span>
+              )}
             </li>
           ))}
         </ul>
@@ -237,46 +242,73 @@ export const InspectionProgressPage = () => {
             </div>
           </Card>
 
-          {/* 5: 검차자 매칭중 (Figma 1193:7871 — 972×473) */}
+          {/* 5: 검차자 매칭중 (Figma 1425:10227 972×473, 1425:10230 400×160 SSOT) */}
           {localStage === 'matching' && (
-            <Card className="mb-6 p-6 w-full max-w-[972px]" data-node-id="1193:7871">
-              <h2 className="text-h3 font-bold text-gray-900 mb-4" data-node-id="1193:7872">검차자 매칭중</h2>
-              <p className="text-body text-gray-700 mb-2">
-                2026년 1월 10일 (일) 오후 11:00
-              </p>
-              <p className="text-body text-gray-700 mb-6">{locationDisplay}</p>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                  <User className="h-6 w-6 text-gray-500" />
+            <Card
+              className="mb-6 p-0 w-full max-w-[972px] min-h-[473px] overflow-hidden rounded-[30px] shadow-[2.344px_3.125px_11.017px_rgba(0,0,0,0.05)]"
+              data-node-id="1425:10227"
+            >
+              <div className="p-6 flex flex-col sm:flex-row sm:items-start gap-6">
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-[38px] font-extrabold text-primary leading-[44px] mb-4" data-node-id="1425:10228">
+                    검차자 매칭중
+                  </h2>
+                  <div className="text-[24px] leading-[40px] text-black/60 mb-6" data-node-id="1425:10229">
+                    <p className="mb-0">{dateDisplay}</p>
+                    <p className="mb-0">{locationDisplay}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-body font-medium text-gray-900">익명의 기사님</p>
-                  <p className="text-caption text-gray-500">010-xxxx-xxxx</p>
+                <div
+                  className="flex-shrink-0 w-full sm:w-[400px] min-h-[160px] bg-[#f3f3f3] rounded-[20px] px-[46px] py-[29px] flex items-center gap-8"
+                  data-node-id="1425:10230"
+                >
+                  <div className="w-[101px] h-[101px] rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                    <User className="h-12 w-12 text-gray-500" />
+                  </div>
+                  <div className="text-[24px] leading-[40px]">
+                    <p className="font-bold text-black">익명의 기사님</p>
+                    <p className="text-[#9b9b9b]">010-xxxx-xxxx</p>
+                  </div>
                 </div>
               </div>
-              <Stepper currentStep={0} />
+              <div className="px-6 pb-6">
+                <Stepper currentStep={0} />
+              </div>
             </Card>
           )}
 
-          {/* 5-1: 검차자 이동중 (Figma 1193-8343, 동일 카드 스펙 972×473) */}
+          {/* 5-1: 검차자 이동중 (Figma 1193-8343, 1425-10813 레이아웃 972×473, 400×160 SSOT) */}
           {localStage === 'en_route' && (
-            <Card className="mb-6 p-6 w-full max-w-[972px]" data-node-id="1193:7871">
-              <h2 className="text-h3 font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Truck className="h-5 w-5 text-green-600" />
-                검차자 이동중
-              </h2>
-              <p className="text-body text-gray-700 mb-2">2026년 1월 10일 (일) 오후 11:00</p>
-              <p className="text-body text-gray-700 mb-6">{locationDisplay}</p>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                  <User className="h-6 w-6 text-gray-500" />
+            <Card
+              className="mb-6 p-0 w-full max-w-[972px] min-h-[473px] overflow-hidden rounded-[30px] shadow-[2.344px_3.125px_11.017px_rgba(0,0,0,0.05)]"
+              data-node-id="1425:10227"
+            >
+              <div className="p-6 flex flex-col sm:flex-row sm:items-start gap-6">
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-[38px] font-extrabold text-primary leading-[44px] mb-4 flex items-center gap-2" data-node-id="1193:8436">
+                    검차자 이동중 🛻
+                  </h2>
+                  <div className="text-[24px] leading-[40px] text-black/60 mb-6">
+                    <p className="mb-0">{dateDisplay}</p>
+                    <p className="mb-0">{locationDisplay}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-body font-medium text-gray-900">홍길동 기사님</p>
-                  <p className="text-caption text-gray-500">010-1234-5678</p>
+                <div
+                  className="flex-shrink-0 w-full sm:w-[400px] min-h-[160px] bg-[#f3f3f3] rounded-[20px] px-[46px] py-[29px] flex items-center gap-8"
+                  data-node-id="1425:10230"
+                >
+                  <div className="w-[101px] h-[101px] rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                    <User className="h-12 w-12 text-gray-500" />
+                  </div>
+                  <div className="text-[24px] leading-[40px]">
+                    <p className="font-bold text-black">홍길동 기사님</p>
+                    <p className="text-[#9b9b9b]">010-1234-5678</p>
+                  </div>
                 </div>
               </div>
-              <Stepper currentStep={2} />
+              <div className="px-6 pb-6">
+                <Stepper currentStep={2} />
+              </div>
             </Card>
           )}
 

@@ -11,10 +11,10 @@
 | 로컬 파일명 | 원본 nodeId (MCP 콜링 페이지) | 용도 | import 경로 (파일 또는 컴포넌트) |
 |-------------|-------------------------------|------|----------------------------------|
 | (예) icon_briefcase.svg | 1418:24679 (거래상세) | GNB/헤더 아이콘 | widgets/Header/ui/... |
-| 1444-7928_탁송_cil-truck.png | 1444:7928 (로그인 전 랜딩) | GNB 탁송 아이콘 | widgets/Header/ui/LandingHeader.tsx |
-| 1444-7928_정산_coins-stacked-03.png | 1444:7928 (로그인 전 랜딩) | GNB 정산 아이콘 | widgets/Header/ui/LandingHeader.tsx |
-| 1444-7928_검색_group.png | 1444:7928 (로그인 전 랜딩) | 헤더 검색 영역 | (참조용 보관) |
-| 1444-7928_검색_search.png | 1444:7928 (로그인 전 랜딩) | 헤더 검색 아이콘 | widgets/Header/ui/LandingHeader.tsx |
+| 1444-7928_탁송_cil-truck.png | 1444:7928 (로그인 전 랜딩) | GNB 탁송 아이콘 | widgets/Header/ui/LandingHeader.tsx (NAV_ITEMS 탁송 imgSrc) |
+| 1444-7928_정산_coins-stacked-03.png | 1444:7928 (로그인 전 랜딩) | GNB 정산 아이콘 | widgets/Header/ui/LandingHeader.tsx (NAV_ITEMS 정산 imgSrc) |
+| 1444-7928_검색_group.png | 1444:7928 (로그인 전 랜딩) | 헤더 검색 그룹 레이아웃 참조용 | 참조용 보관 (실제 사용: 검색_search) |
+| 1444-7928_검색_search.png | 1444:7928 (로그인 전 랜딩) | 헤더 검색 버튼 아이콘 | widgets/Header/ui/LandingHeader.tsx (검색 버튼 \<img src={iconSearch} />) |
 | 1368-37364_지금시작하기_chevron-right.png | 1368:37364 (로그인 후 랜딩) | Hero CTA 버튼 화살표 | pages/landing/LandingPage.tsx |
 | 1368-37364_배지_briefcase.png | 1368:37364 (로그인 후 랜딩) | Hero 배지 아이콘 | pages/landing/LandingPage.tsx |
 | 1368-37364_스텝1_L-Up-Arrow.png | 1368:37364 (로그인 후 랜딩) | 사용 가이드 STEP.1 아이콘 | pages/landing/LandingPage.tsx |
