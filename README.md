@@ -208,4 +208,19 @@ npm run preview
 
 ---
 
-*최종 업데이트: 2026-02-09*
+## 11. 2026-02-10 (0210) 작업 요약
+
+| 구분 | 내용 |
+|------|------|
+| **랜딩** | LandingPage 구성, Hero(Auth/Unauth)·Faq·Inquiry·UserGuide 위젯, `img/LANDING.png`·`img/logo_FOWARDMAX.svg` 추가, LandingHeader 수정 |
+| **검수** | InspectionListPage·InspectionListCard, InspectionRequestStep1(위치/일정/결제/차량선택), InspectionScheduleBlock, InspectionCompletePage·InspectionProgressPage 등 정리 |
+| **차량 등록** | VehicleRegisterStep2 제거, VehicleRegisterEntryPage·VehicleRegisterStep1Page 수정 |
+| **레이아웃·스타일** | `layout.ts`, `design-tokens.css`, GnbListLayout, ProgressSidebar, 전역 스타일 정리 |
+| **경매·정산** | AuctionStartPricePage·AuctionDurationPage·AuctionCompletePage, GeneralSaleAnalyzingPage·GeneralSalePricePage·GeneralSaleCompletePage 등 레이아웃/노드 반영 |
+| **거래·탁송** | TradeListPage·TradeDetailPage, LogisticsSchedulePage 수정 |
+| **문서** | figmaMCP(impl_plans, mcp_outputs), LANDING_SSOT_VS_CODE_DIFF, DESIGN_TOKENS_LAYOUT_SSOT, FIGMA_IMAGE_DOWNLOAD 등 |
+| **기타** | PlatformBadge 제거, vite/tsconfig/tailwind 설정 조정, 라우터·엔티티(vehicle) 보강 |
+
+---
+
+*최종 업데이트: 2026-02-10*
