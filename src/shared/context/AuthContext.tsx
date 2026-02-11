@@ -9,6 +9,7 @@ import { createContext, useContext, useMemo, useState, useCallback, useEffect } 
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 
 const AUTH_STORAGE_KEY = 'carivdealer_auth';
+const LOGGED_OUT_BY_USER_KEY = 'carivdealer_logged_out';
 
 /** 인증 컨텍스트 값: 로그인 여부 및 설정 함수 */
 interface AuthContextValue {
@@ -17,6 +18,24 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+/** URL 쿼리 ?devLogin=1 체크 (런데브·파베 호스팅 공통, 캐시 없이 로그인 우회) */
+function readDevLoginFromUrl(): boolean {
+  try {
+    return new URLSearchParams(window.location.search).get('devLogin') === '1';
+  } catch {
+    return false;
+  }
+}
+
+/** 사용자가 명시적으로 로그아웃했는지 (로그아웃 시 devLogin 우회 무시) */
+function readLoggedOutByUser(): boolean {
+  try {
+    return localStorage.getItem(LOGGED_OUT_BY_USER_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
 
 /** localStorage에서 인증 여부 읽기 (실패 시 false) */
 function readStoredAuth(): boolean {
@@ -27,17 +46,26 @@ function readStoredAuth(): boolean {
   }
 }
 
+/** 최종 인증 여부: devLogin URL(단, 사용자 로그아웃 제외) > localStorage */
+function getInitialAuth(): boolean {
+  if (readDevLoginFromUrl() && !readLoggedOutByUser()) return true;
+  return readStoredAuth();
+}
+
 /**
  * 인증 상태 Provider. 자식에서 useAuth 사용 가능.
  * @param children - 자식 노드
  * @description 인증 상태를 localStorage에 동기화. 추후 Firebase Auth로 교체 가능.
  */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setAuthenticatedState] = useState(readStoredAuth);
+  const [isAuthenticated, setAuthenticatedState] = useState(getInitialAuth);
 
   useEffect(() => {
     try {
       localStorage.setItem(AUTH_STORAGE_KEY, String(isAuthenticated));
+      if (isAuthenticated) {
+        localStorage.removeItem(LOGGED_OUT_BY_USER_KEY);
+      }
     } catch {
       // ignore
     }
@@ -45,6 +73,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const setAuthenticated = useCallback((value: boolean) => {
     setAuthenticatedState(value);
+    try {
+      if (!value) {
+        localStorage.setItem(LOGGED_OUT_BY_USER_KEY, 'true');
+      }
+    } catch {
+      // ignore
+    }
   }, []);
 
   const value = useMemo(
