@@ -225,4 +225,23 @@ npm run preview
 
 ---
 
-*최종 업데이트: 2026-02-10*
+## 12. 2026-02-11 (0211/0211F) 작업 요약
+
+**브랜치**: `0211` (origin), `0211F` (carivdealder)  
+**상세**: [docs/CHANGELOG_2026-02-11.md](docs/CHANGELOG_2026-02-11.md)
+
+| 구분 | 내용 |
+|------|------|
+| **목업 공통화** | `mockLists.ts` — MOCK_VEHICLES_ALL, MOCK_TRADES, MOCK_LOGISTICS, MOCK_SETTLEMENTS (거래·차량·탁송·정산 공통), Figma MCP asset URL 참조 |
+| | `mockNavigationMap.ts` — vehicleId→inspectionId/settlementId 매핑, `getVehicleDetailRoute()` 상태별 상세 페이지 경로 |
+| **차량목록·거래·탁송·정산** | 사이드바 필터(vehicleListFilterMeta) ↔ 상태별 목록/카드 연동, 클릭 시 상세 페이지 라우팅 |
+| | VehicleListPage, TradeListPage, LogisticsSchedulePage, LogisticsHistoryPage, SettlementListPage, SettlementDetailPage 목업 연동 |
+| **위젯** | VehicleListCard (카드뷰), VehicleListTableWithExpand (테이블+확장), ImagePlaceholder (이미지 없을 때), StepFooter (플로우 하단 버튼) |
+| **엔티티·피처** | vehicleListFilterMeta (사이드바 필터 메타), VehicleCard·VehicleStatusBadge 보강, useVehicles mockLists 폴백 |
+| **Figma 검증** | figma-design-audit/docs/VERIFIER_DETAILED_GUIDE.md — Python 검증기 상세 가이드 (인풋/아웃풋, Stage 1~3, R001~R008, IPOE) |
+| **설정** | .env.example 추가 |
+| **문서** | docs/CHANGELOG_2026-02-11.md (오늘 작업 상세), README §12 추가 |
+
+---
+
+*최종 업데이트: 2026-02-11*

@@ -9,8 +9,10 @@ import { db } from '@/shared/config/firebase';
 import { isRunDev } from '@/shared/config/runDev';
 import { MOCK_VEHICLES_ALL } from '@/shared/api/mockLists';
 
-/** dev 모드에서 목업 사용. VITE_USE_MOCK_LIST=false로 명시 시 Firestore 사용 */
-const USE_MOCK_LIST = import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_LIST !== 'false';
+/** 목업 사용: dev 기본 ON, 프로덕션 빌드 시 VITE_USE_MOCK_LIST=true면 ON (Firebase Hosting 등) */
+const USE_MOCK_LIST =
+  import.meta.env.VITE_USE_MOCK_LIST === 'true' ||
+  (import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_LIST !== 'false');
 import { vehicleSchema } from '@/entities/vehicle/model/schema';
 import type { Vehicle, VehicleStatus } from '@/entities/vehicle/model/types';
 
@@ -47,7 +49,7 @@ export const useVehicles = (options: UseVehiclesOptions = {}) => {
 
       q = query(q as Query, orderBy('updatedAt', 'desc'));
 
-      if (isRunDev() && USE_MOCK_LIST) {
+      if (USE_MOCK_LIST) {
         const mock = getMockVehicles();
         return options.status && options.status.length > 0
           ? mock.filter((v) => options.status!.includes(v.status))

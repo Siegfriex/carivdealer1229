@@ -182,42 +182,42 @@ export const VehicleListPage = () => {
             mainNodeId="1425:8237"
             footer={footer}
           >
-            {/* 1행: 검차탭과 동일 — 좌측 최근 1개월, 우측 리스트/카드 토글 + 탭별 고유(확인필요차량) */}
+            {/* 1행: 최근 1개월 | 확인 필요차량(바로 우측) | 리스트/카드 토글(제일 우측) */}
             <div className="flex items-center justify-between mb-6" data-node-id="1300:6039">
-              <select
-                value={period}
-                onChange={(e) => setPeriod(e.target.value)}
-                className="px-3 py-2 border border-gray-200 rounded-[10px] text-body text-gray-700 bg-white shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-primary"
-                aria-label="조회기간"
-              >
-                {PERIOD_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
-                ))}
-              </select>
               <div className="flex items-center gap-3">
-                <div className="flex h-9 rounded-[10px] border border-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
-                  <button
-                    type="button"
-                    onClick={() => updateViewMode('list')}
-                    className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                    aria-pressed={viewMode === 'list'}
-                  >
-                    <LayoutList className="h-4 w-4" /> 리스트
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => updateViewMode('grid')}
-                    className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                    aria-pressed={viewMode === 'grid'}
-                  >
-                    <LayoutGrid className="h-4 w-4" /> 카드
-                  </button>
-                </div>
+                <select
+                  value={period}
+                  onChange={(e) => setPeriod(e.target.value)}
+                  className="px-3 py-2 border border-gray-200 rounded-[10px] text-body text-gray-700 bg-white shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-primary"
+                  aria-label="조회기간"
+                >
+                  {PERIOD_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
                 <Checkbox
                   checked={needsAttention}
                   onChange={(e) => updateNeedsAttention(e.target.checked)}
                   label="확인 필요차량"
                 />
+              </div>
+              <div className="flex h-9 rounded-[10px] border border-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
+                <button
+                  type="button"
+                  onClick={() => updateViewMode('list')}
+                  className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                  aria-pressed={viewMode === 'list'}
+                >
+                  <LayoutList className="h-4 w-4" /> 리스트
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateViewMode('grid')}
+                  className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                  aria-pressed={viewMode === 'grid'}
+                >
+                  <LayoutGrid className="h-4 w-4" /> 카드
+                </button>
               </div>
             </div>
             {/* 2행: 상태 필터 (전체/임시저장/등록완료) */}
