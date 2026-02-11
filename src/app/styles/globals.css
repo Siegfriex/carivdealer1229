@@ -59,6 +59,15 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* 모바일 가로: 가로 스크롤 방지, 레이아웃 안정화 */
+  @media (orientation: landscape) and (max-width: 900px) {
+    html, body {
+      overflow-x: hidden;
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
+    }
+  }
+
   /* 폰트: 전역 Pretendard만 사용. 페이지/컴포넌트에서 font-family·@font-face 추가 금지. */
   body {
     font-family: var(--font-primary);
@@ -206,18 +215,25 @@
   }
 }
 
-/* Mobile Blocker (700px 미만) */
-@media (max-width: 699px) {
+/* Mobile Blocker: 세로 모드 + 좁은 화면에서만 차단. 가로 모드는 앱 표시 */
+#mobile-blocker {
+  display: none;
+}
+
+@media (orientation: portrait) and (max-width: 699px) {
   #root {
     display: none;
   }
-  
   #mobile-blocker {
     display: flex;
   }
 }
 
-@media (min-width: 700px) {
+@media (orientation: landscape),
+       (min-width: 700px) {
+  #root {
+    display: block;
+  }
   #mobile-blocker {
     display: none;
   }

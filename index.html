@@ -6,23 +6,23 @@
     <title>ForwardMax | B2B 중고차 수출 플랫폼</title>
   </head>
   <body>
-    <!-- Mobile Blocker (700px 미만에서만 표시) -->
+    <!-- Mobile Blocker (세로 모드에서만 표시 — 가로로 돌리면 앱 사용 가능) -->
     <div id="mobile-blocker">
-      <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; background-color: #F8F9FA;">
-        <div style="text-center; max-width: 28rem;">
-          <h1 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: #111827;">데스크톱에서 접속해주세요</h1>
+      <div style="min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 1rem; background-color: #F8F9FA;">
+        <div style="text-align: center; max-width: 28rem;">
+          <h1 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: #111827;">가로 모드로 이용해주세요</h1>
           <p style="color: #4B5563; line-height: 1.75;">
-            본 서비스는 데스크톱 환경에 최적화되어 있습니다.<br />
-            PC나 태블릿(가로 모드)에서 접속해주세요.
+            본 서비스는 가로 화면에 최적화되어 있습니다.<br />
+            기기를 <strong>가로로 돌려</strong> 주세요.
           </p>
           <p style="font-size: 0.875rem; color: #6B7280; margin-top: 1rem;">
-            최소 권장 해상도: 700px × 600px
+            권장: 가로 700px 이상 또는 모바일 가로 모드
           </p>
         </div>
       </div>
     </div>
 
-    <!-- Main Application (700px 이상) -->
+    <!-- Main Application -->
     <div id="root"></div>
     
     <script type="module" src="/src/app/main.tsx"></script>
