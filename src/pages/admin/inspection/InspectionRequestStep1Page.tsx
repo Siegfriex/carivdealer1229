@@ -72,7 +72,7 @@ export const InspectionRequestStep1Page = () => {
             <input
               type="text"
               placeholder="차량번호/모델명"
-              className="h-full w-full rounded-[20px] border-[1.5px] border-black/10 bg-white pl-4 pr-10 text-[13.757px] leading-[21.496px] text-gray-900 placeholder:text-[#909090] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+              className="h-full w-full rounded-[20px] border-[1.5px] border-black/10 bg-white pl-4 pr-10 text-[13.757px] leading-[21.496px] text-gray-900 placeholder:text-[var(--color-1033-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
               data-node-id="1033:4947"
             />
           </div>

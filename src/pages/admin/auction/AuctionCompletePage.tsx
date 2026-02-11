@@ -1,9 +1,10 @@
 /**
- * AuctionCompletePage (Figma 1418:20576 — §3.5 판매 상태 전환 완료)
+ * AuctionCompletePage (Figma 1123-13487 — 판매전환완료 경매)
  * 경매 등록 완료. 라우트: /vehicles/:id/auction/complete
+ * @see docs/figmaMCP/impl_plans/1123-13487_구현계획.md
  */
 
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
@@ -15,6 +16,13 @@ import { CheckCircle2 } from 'lucide-react';
 export const AuctionCompletePage = () => {
   const { vehicleId } = useParams<{ vehicleId: string }>();
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { startPrice, instantPrice, startDate, endDate } = (state as {
+    startPrice?: string;
+    instantPrice?: string;
+    startDate?: string;
+    endDate?: string;
+  }) ?? {};
 
   const handleAuctionDetail = () => {
     const to = vehicleId ? `/vehicles/${vehicleId}/auction` : '/vehicles';
@@ -39,11 +47,11 @@ export const AuctionCompletePage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <LandingHeader variant="main" activeNav="offers" />
-      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+      <div className={`flex min-w-0 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} ${LAYOUT_CLASSES.CONTAINER}`}>
         <ProgressSidebar steps={getRegisterFlowSteps('trade')} className={LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} inline widthClass={LAYOUT_CLASSES.GNB_SIDEBAR} />
-        <main className={`flex-1 p-6 ${LAYOUT_CLASSES.MAIN_GNB_STEP}`}>
+        <main className={`flex-1 min-w-0 overflow-x-auto p-6 ${LAYOUT_CLASSES.MAIN_GNB_STEP} flex flex-col items-center justify-center ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT}`} data-node-id="1123:13487">
           {/* 1123-13487 SSOT: 1123:13572 32px, 1123:13579 20px — 일반판매완료와 동일 문구 */}
-          <div className="text-center mb-8" data-node-id="1123:13571">
+          <div className="text-center mb-8 w-full max-w-md" data-node-id="1123:13571">
             <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-success-light flex items-center justify-center">
               <CheckCircle2 className="h-12 w-12 text-success" />
             </div>
@@ -53,6 +61,14 @@ export const AuctionCompletePage = () => {
             <p className="font-['Pretendard'] text-[20px] leading-[48px] text-black text-center mb-8" data-node-id="1123:13579">
               구매제안이 오면 알람을 통해 알려드려요!
             </p>
+            {(startPrice || instantPrice || startDate || endDate) && (
+              <div className="text-body text-gray-600 mb-4 space-y-1">
+                {startPrice && <p>시작가: {startPrice}만원</p>}
+                {instantPrice && <p>즉시구매가: {instantPrice}만원</p>}
+                {startDate && <p>경매 시작일: {startDate}</p>}
+                {endDate && <p>경매 종료일: {endDate}</p>}
+              </div>
+            )}
           </div>
           <div className="flex flex-wrap gap-4" data-node-id="1123:13577">
             <Button variant="secondary" onClick={handleAuctionDetail}>

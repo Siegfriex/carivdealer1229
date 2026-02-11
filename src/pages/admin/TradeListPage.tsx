@@ -1,6 +1,7 @@
 /**
- * TradeListPage — 거래 목록 (Figma 1418:22630 판매_거래목록_그리드/리스트 — §3.5 차량 등록·상세·경매)
+ * TradeListPage — 거래 목록 (Figma 1714-22332 GNB 거래 탭)
  * 라우트: /offers. GNB 거래 활성, 좌측 검색, 필터(전체/일반 거래/경매 거래/거래완료), 그리드/리스트 뷰, 페이지네이션.
+ * @see docs/figmaMCP/impl_plans/1714-22332_구현계획.md
  */
 
 import { useState, useMemo } from 'react';
@@ -96,9 +97,9 @@ export const TradeListPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" data-node-id="1714:22332">
       <LandingHeader userName="홍길동" variant="main" activeNav="offers" />
-      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`} data-node-id="1714:22332">
+      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
         <GnbListLayout
           sidebar={{
             type: 'minimal',
@@ -163,7 +164,11 @@ export const TradeListPage = () => {
                       vehicle={vehicle}
                       variant="mainLanding"
                       statusLabelOverride={TRADE_LIST_STATUS_LABELS[vehicle.status]}
-                      onClick={() => navigate(`/vehicles/${vehicle.id}`)}
+                      onClick={() => {
+                        if (vehicle.status === 'bidding') navigate(`/vehicles/${vehicle.id}/auction`);
+                        else if (vehicle.status === 'active_sale') navigate(`/vehicles/${vehicle.id}/trade`);
+                        else navigate(`/vehicles/${vehicle.id}`);
+                      }}
                       className={`h-full w-full ${LAYOUT_CLASSES.GNB_CARD}`}
                     />
                   </div>
@@ -178,7 +183,14 @@ export const TradeListPage = () => {
           ) : (
             <>
               <div className="bg-white rounded-lg shadow-md mb-8">
-                <VehicleTable vehicles={paginatedVehicles} />
+                <VehicleTable
+                  vehicles={paginatedVehicles}
+                  onView={(vehicle) => {
+                    if (vehicle.status === 'bidding') navigate(`/vehicles/${vehicle.id}/auction`);
+                    else if (vehicle.status === 'active_sale') navigate(`/vehicles/${vehicle.id}/trade`);
+                    else navigate(`/vehicles/${vehicle.id}`);
+                  }}
+                />
               </div>
               {totalPages > 1 && (
                 <div className={`flex justify-center w-full ${LAYOUT_CLASSES.GNB_PAGINATION_WRAPPER}`} data-node-id="1714:22352">

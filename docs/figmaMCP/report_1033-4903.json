@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-02-11T07:46:43.909477Z",
+  "node_ids": [
+    "1033-4903"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 1440.0px, code has no w-[Npx]",
+      "node_id": "1033:4903",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 249.0px, code has no w-[Npx]",
+      "node_id": "1033:4943",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 104.0px, code has no w-[Npx]",
+      "node_id": "1033:4974",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1033:4903: design context classes not fully in code: ['bottom-0', 'right-[56.78%]', 'absolute', 'top-full', 'left-[25.63%]']...",
+      "node_id": "1033:4903",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1033:4943: design context classes not fully in code: ['left-0', 'h-[22px]', 'absolute', '-translate-y-1/2', 'w-[21px]']...",
+      "node_id": "1033:4943",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1033:4945: design context classes not fully in code: ['h-0', 'relative', 'w-[1508.256px]']...",
+      "node_id": "1033:4945",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1033:4946: design context classes not fully in code: ['left-[calc(50%-100.92px)]', 'top-[29.81px]', 'leading-[20px]', 'text-[14px]', \"font-['SUITE_Variable:Heavy',sans-serif]\"]...",
+      "node_id": "1033:4946",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1033:4947: design context classes not fully in code: ['border-solid', 'border-[rgba(0,0,0,0.1)]', 'h-[40.121px]', 'top-[54.59px]', 'absolute']...",
+      "node_id": "1033:4947",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1033:4974: design context classes not fully in code: ['left-0', 'h-[22px]', 'absolute', '-translate-y-1/2', 'w-[21px]']...",
+      "node_id": "1033:4974",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1193:6885: design context classes not fully in code: ['shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]', 'border-solid', 'overflow-clip', 'top-[calc(50%+1257px)]', 'left-[calc(95.83%-173px)]']...",
+      "node_id": "1193:6885",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1193:6887: design context classes not fully in code: ['top-[6.5px]', 'left-[37px]', 'text-white', 'not-italic', 'absolute']...",
+      "node_id": "1193:6887",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 3
+}

@@ -29,7 +29,7 @@ export const InspectionVehicleSelectSection = ({
         <h2 className="font-bold leading-[44px] text-[24px] text-black" data-node-id="1193:6758">
           검차 차량 선택
         </h2>
-        <span className="text-[22px] leading-[18.753px] text-[#f21824]" data-node-id="1193:6896">*</span>
+        <span className="text-[22px] leading-[18.753px] text-[var(--color-error-figma)]" data-node-id="1193:6896">*</span>
       </div>
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <input
@@ -37,7 +37,7 @@ export const InspectionVehicleSelectSection = ({
           placeholder="예) 12바 1234"
           value={searchValue}
           onChange={(e) => onSearchChange?.(e.target.value)}
-          className="h-10 w-[217px] overflow-hidden rounded-[5px] bg-[#f3f3f6] px-3 py-2.5 text-[14px] leading-[18.753px] text-gray-900 placeholder:text-[#a5abb6] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+          className="h-10 w-[217px] overflow-hidden rounded-[5px] bg-[var(--color-1033-input-bg)] px-3 py-2.5 text-[14px] leading-[18.753px] text-gray-900 placeholder:text-[var(--color-1033-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
           aria-label="차량번호 검색"
           data-node-id="1193:6751"
         />

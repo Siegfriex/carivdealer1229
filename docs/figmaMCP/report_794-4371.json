@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-02-11T08:29:30.641771Z",
+  "node_ids": [
+    "794-4371"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Width mismatch: Figma 1440.0px vs code 280.0px (>15.0% diff)",
+      "node_id": "794:4371",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4371: design context classes not fully in code: ['bg-[#f8f9fa]', 'size-full', 'relative']...",
+      "node_id": "794:4371",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 1
+}

@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-02-11T07:42:50.124752Z",
+  "node_ids": [
+    "1425-10285"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 1440.0px, code has no w-[Npx]",
+      "node_id": "1425:10285",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 249.0px, code has no w-[Npx]",
+      "node_id": "1425:10325",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 972.0px, code has no w-[Npx]",
+      "node_id": "1425:10376",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 400.0078125px, code has no w-[Npx]",
+      "node_id": "1425:10378",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1425:10285: design context classes not fully in code: ['left-[25.63%]', 'bottom-0', 'absolute', 'right-[56.78%]', 'top-full']...",
+      "node_id": "1425:10285",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1425:10325: design context classes not fully in code: ['left-[1102px]', 'top-[39px]', 'absolute', 'w-[21px]', 'h-[22px]']...",
+      "node_id": "1425:10325",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1425:10376: design context classes not fully in code: [\"font-['Pretendard:Bold',sans-serif]\", 'text-black', 'leading-[44px]', 'not-italic', 'text-[28px]']...",
+      "node_id": "1425:10376",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 4
+}

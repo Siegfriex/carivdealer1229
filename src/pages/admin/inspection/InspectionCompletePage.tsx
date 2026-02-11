@@ -1,7 +1,8 @@
 /**
  * InspectionCompletePage
- * 검차 완료·결과 요약·상세 (Figma §3.6 nodeId: 1425:10813, 1425:10285, 1425:10443)
- * 참조: FIGMASCR0208/§3.6_검차/§3.6_1425-10285_검차결과요약*.png
+ * 검차 완료·결과 요약·상세 (Figma §3.6 CTA_2 검차 플로우)
+ * nodeId: 1193-8120, 1193-9217, 1425-10285
+ * 참조: impl_plans/1193-8120_구현계획.md, 1193-9217_구현계획.md, 1425-10285_구현계획.md
  * 라우트: /inspections/:inspectionId/complete
  * 레이아웃: 검차내역 제목 + 차량정보·전체 피드백·검차자 카드 + 세부 검차내역(양호/경미/주의/불량) + 사진항목/영상항목 아코디언 + 판매 방식 선택
  */
@@ -11,6 +12,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
+import { VehicleInfoPanel } from '@/widgets/VehicleInfoPanel';
+import { FeedbackBlock } from '@/widgets/FeedbackBlock';
+import { InspectionDetailModal } from '@/widgets/InspectionDetailModal';
 import { Card } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -52,6 +56,7 @@ export const InspectionCompletePage = () => {
   const { inspectionId } = useParams<{ inspectionId: string }>();
   const [expandedPhoto, setExpandedPhoto] = useState<string | null>('차량 내부');
   const [expandedVideo, setExpandedVideo] = useState<string | null>(null);
+  const [inspectionDetailOpen, setInspectionDetailOpen] = useState(false);
   const { detailSectionRef, scrollToDetail } = useScrollToDetail();
 
   const inspection = useMemo(
@@ -78,7 +83,7 @@ export const InspectionCompletePage = () => {
     <div className="min-h-screen bg-[#f8f9fa]" data-node-id="1425:10285">
       <LandingHeader userName="홍길동" variant="main" activeNav="inspections" />
 
-      <div className={`flex ${LAYOUT_CLASSES.CONTAINER}`}>
+      <div className={`flex min-w-0 ${LAYOUT_CLASSES.CONTAINER}`}>
         <aside className={`${LAYOUT_CLASSES.GNB_SIDEBAR} flex-shrink-0 bg-white border-r border-gray-200 ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col`} data-node-id="1425:10325">
           <div className="p-4 border-b border-gray-200">
             <h3 className="text-button font-medium text-gray-700 mb-2">검색</h3>
@@ -93,81 +98,65 @@ export const InspectionCompletePage = () => {
           </div>
         </aside>
 
-        <main className={`flex-1 ${LAYOUT_CLASSES.MAIN_PADDING}`}>
+        <main className={`flex-1 min-w-0 overflow-x-auto p-6 ${LAYOUT_CLASSES.MAIN_GNB_STEP} flex flex-col`}>
           {/* SSOT 1193-8120, 1425-10285: 검차완료! 내역을 확인하세요 */}
           <h1 className="text-h1 font-bold text-gray-900 mb-2">검차완료!</h1>
           <p className="text-body text-gray-600 mb-8">내역을 확인하세요</p>
 
-          {/* 상단 컨테이너: 클릭 시 아래(세부 검차내역)로 스크롤 (Figma 1193-9217 별도 뷰) */}
+          {/* 상단: 차량정보+피드백 (거래단계와 동일 flex 레이아웃) — 클릭 시 아래로 스크롤 */}
           <div
             role="button"
             tabIndex={0}
             onClick={scrollToDetail}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToDetail(); } }}
-            className="cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg mb-6"
+            className="cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg mb-8"
             aria-label="아래 세부 검차내역으로 이동"
           >
-          {/* 상단 2열: 차량정보 | 전체 피드백 — 1425:10376 972×266 (1425-10285) */}
-          <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 ${LAYOUT_CLASSES.GNB_CARD_972_266}`} data-node-id="1425:10376">
-            <Card className="p-6">
-              <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">차량정보</h2>
-              <div className="flex gap-4">
-                <div>
-                  <p className="text-h3 font-bold text-gray-900 mb-2">{vehicleNumber}</p>
-                  <dl className="space-y-1.5 text-body text-gray-700">
-                    <div><dt className="inline font-medium">제조사 </dt><dd className="inline">Hyundai</dd></div>
-                    <div><dt className="inline font-medium">모델 </dt><dd className="inline">{vehicleModel}</dd></div>
-                    <div><dt className="inline font-medium">연식 </dt><dd className="inline">{vehicleYear}</dd></div>
-                    <div><dt className="inline font-medium">주행거리 </dt><dd className="inline">14.6만 km</dd></div>
-                    <div><dt className="inline font-medium">연료 </dt><dd className="inline">-</dd></div>
-                  </dl>
-                </div>
-                <div className="w-24 h-24 flex-shrink-0 bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-caption text-gray-400">차량</span>
-                </div>
-              </div>
-            </Card>
+          <div className="flex flex-wrap gap-6 mb-6" data-node-id="1425:10376">
+            <VehicleInfoPanel
+              vehicle={{
+                plateNumber: vehicleNumber,
+                manufacturer: 'Hyundai',
+                modelName: vehicleModel,
+                modelYear: vehicleYear,
+                mileage: '14.6만 km',
+                fuelType: '-',
+              }}
+              nodeIdPrefix="1425"
+            />
 
-            <Card className="p-6">
-              <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">전체 피드백</h2>
-              <div className="flex gap-4 mb-4">
-                <div className="w-28 h-20 flex-shrink-0 bg-gray-200 rounded flex items-center justify-center">
-                  <span className="text-caption text-gray-400">이미지</span>
-                </div>
-                <div className="flex-1 flex flex-wrap gap-x-4 gap-y-1 text-body">
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500" />양호 {FEEDBACK_COUNTS.good}개</span>
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-orange-400" />경미 {FEEDBACK_COUNTS.minor}개</span>
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-500" />주의 {FEEDBACK_COUNTS.caution}개</span>
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" />불량 {FEEDBACK_COUNTS.defect}개</span>
-                </div>
-              </div>
-              <Button variant="secondary" size="sm" className="mb-3">세부 검차내역</Button>
-              <p className="text-caption text-gray-600">{SUMMARY_TEXT}</p>
-            </Card>
-          </div>
-
-          {/* 검차자 카드 — 1425:10378 400×160 (1425-10285) */}
-          <Card className={`p-6 mb-8 ${LAYOUT_CLASSES.GNB_PANEL_400_160}`} data-node-id="1425:10378">
-            <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">검차자</h2>
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <p className="text-body text-gray-700 mb-1">{dateDisplay}</p>
-                <p className="text-body text-gray-700">{locationDisplay}</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                  <User className="h-6 w-6 text-gray-500" />
-                </div>
-                <div>
-                  <p className="text-body font-medium text-gray-900">홍길동 검사원</p>
-                  <p className="text-caption text-gray-500">010-1234-5678</p>
-                </div>
-              </div>
+            <div className="flex-1 min-w-[280px] max-w-[628px] min-h-[420px]">
+              <FeedbackBlock
+                nodeIdPrefix="1425"
+                counts={{ good: FEEDBACK_COUNTS.good, minor: FEEDBACK_COUNTS.minor, caution: FEEDBACK_COUNTS.caution, bad: FEEDBACK_COUNTS.defect }}
+                summaryText={{ total: '총 111개', body: '의 항목이 검사되었습니다.', paragraph2: '전반적인 상태는 양호하며, 일부 부위에 경미한 스키레치가 확인되었습니다.' }}
+                onInspectionDetail={() => setInspectionDetailOpen(true)}
+              />
             </div>
-          </Card>
           </div>
 
-          {/* 세부 검차내역 4칸 (참조 10285 변형) — 컨테이너 클릭 시 스크롤 목적지 (Figma 1193-9217) */}
+            {/* 검차자 카드 — 1425:10378 */}
+            <Card className={`p-6 w-full ${LAYOUT_CLASSES.GNB_PANEL_400_160}`} data-node-id="1425:10378">
+              <h2 className="text-body font-bold text-gray-700 mb-4 pb-2 border-b border-gray-100">검차자</h2>
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                  <p className="text-body text-gray-700 mb-1">{dateDisplay}</p>
+                  <p className="text-body text-gray-700">{locationDisplay}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                    <User className="h-6 w-6 text-gray-500" />
+                  </div>
+                  <div>
+                    <p className="text-body font-medium text-gray-900">홍길동 검사원</p>
+                    <p className="text-caption text-gray-500">010-1234-5678</p>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* 세부 검차내역 4칸 (참조 10285 변형) — 스크롤 목적지 (Figma 1193-9217) */}
           <div ref={detailSectionRef} className="mb-6">
             <h2 className="text-h3 font-bold text-gray-900 mb-4">세부 검차내역</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -270,6 +259,7 @@ export const InspectionCompletePage = () => {
           </Card>
         </main>
       </div>
+      <InspectionDetailModal isOpen={inspectionDetailOpen} onClose={() => setInspectionDetailOpen(false)} />
     </div>
   );
 };

@@ -43,14 +43,14 @@ export const InspectionLocationSection = ({
         <h2 className="font-bold leading-[44px] text-[24px] text-black" data-node-id="1636:10696">
           검차 장소
         </h2>
-        <span className="text-[22px] leading-[18.753px] text-[#f21824]" data-node-id="1636:12381">*</span>
+        <span className="text-[22px] leading-[18.753px] text-[var(--color-error-figma)]" data-node-id="1636:12381">*</span>
       </div>
       <div className="w-full rounded-[30px]" data-node-id="1636:10698">
         <div className="inspection-step1-location-inner min-h-[427px] w-full max-w-[973px] rounded-[20px] bg-white p-6" data-node-id="1636:10699">
         <div className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
             <div className="flex-1">
-              <label className="mb-1 block text-[18px] leading-[15px] text-black/60">우편번호 <span className="text-[#f21824]">*</span></label>
+              <label className="mb-1 block text-[18px] leading-[15px] text-black/60">우편번호 <span className="text-[var(--color-error-figma)]">*</span></label>
               <div className="flex gap-[17px]">
                 <input
                   placeholder="우편번호를 입력해 주세요"
@@ -70,7 +70,7 @@ export const InspectionLocationSection = ({
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-[18px] leading-[15px] text-black/60">주소지 <span className="text-[#f21824]">*</span></label>
+            <label className="mb-1 block text-[18px] leading-[15px] text-black/60">주소지 <span className="text-[var(--color-error-figma)]">*</span></label>
             <input
               placeholder="주소지를 입력해 주세요"
               value={address}

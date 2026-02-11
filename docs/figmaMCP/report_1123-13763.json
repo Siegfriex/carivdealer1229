@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-02-11T08:29:32.943800Z",
+  "node_ids": [
+    "1123-13763"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 1440.0px, code has no w-[Npx]",
+      "node_id": "1123:13763",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13763: design context classes not fully in code: ['size-full', 'bg-[#f8f9fa]', 'relative']...",
+      "node_id": "1123:13763",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 1
+}

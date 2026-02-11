@@ -77,6 +77,26 @@
 | 1425-10813_imgMap | 1425:10813 | imgMap 검차장소 | design_context |
 | 1425-10813_imgVector | 1425:10813 | imgVector 스크롤 화살표 | design_context |
 
+**CTA_2 검차 에셋 (구현 대체, R002/R005)**  
+| (로컬 파일 없음) | 1121:5308, 1193:8343, 1425:10137 | imgEllipse49 imgEllipse50 상태 점 | (구현: rounded-full) | InspectionProgressPage.tsx, InspectionScheduleBlock |
+| (로컬 파일 없음) | 1193:9217, 1425:10285 | imgEllipse55 imgEllipse57 imgEllipse58 imgLine87 imgLine88 | (구현: border, rounded-full) | InspectionCompletePage.tsx |
+| (로컬 파일 없음) | 1033:4903 | imgFCard imgImage116 imgImage117 imgImage118 imgImage119 imgImage120 imgImage121 imgImage122 imgFLink imgFSettings img1231 imgHelpCircle imgVector1 imgEllipse44 | (구현: rounded-full) | InspectionRequestStep1Page.tsx |
+| (로컬 파일 없음) | 1037:5126, 1037:5673, 1042:4681 | imgFrame2087328289 imgFrame2087328290 imgVector1 imgVector2 imgVector3 imgVector4 imgVector5 imgThreeDots imgGrid imgList imgEllipse44 imgEllipse46 imgEllipse47 | 1444-7928/1425-8153 경로 사용 | InspectionListPage.tsx, MainLandingSidebar |
+
+**CTA_3 거래 에셋 (구현 대체)**
+| (로컬 파일 없음) | 794:4200, 794:4371, 1123:13580 | imgLine87 imgLine88 imgLine89 imgEllipse55 구분선·상태점 | (구현: border, rounded-full) | GeneralSalePricePage.tsx, AuctionStartPricePage.tsx |
+| (로컬 파일 없음) | 794:4107, 1123:13487 | imgEllipse50 imgEllipse51 imgRShoppingmode 완료 아이콘 | (구현: Lucide 또는 rounded-full) | GeneralSaleCompletePage.tsx, AuctionCompletePage.tsx |
+| (로컬 파일 없음) | 1714:22332 | imgBriefcase imgSearch imgIcon imgIcon1 imgCilTruck imgIcon3 GNB·사이드바 | 1425-8153 경로 사용 | TradeListPage.tsx, GnbListLayout |
+| (로컬 파일 없음) | 1302:27093, 1302:27289, 794:4708, 1123:14112 | imgLine87 imgEllipse55 차량정보·피드백 | (구현: border, rounded-full) | TradeDetailPage.tsx |
+| (로컬 파일 없음) | 794:3704 | imgLShoppingBag imgLWallet | (구현: Lucide ShoppingBag, Gavel) | GeneralSaleAnalyzingPage.tsx |
+| (로컬 파일 없음) | 794:4015 | imgLMagicWand | (구현: Lucide Loader2) | GeneralSaleAnalyzingPage.tsx |
+| (로컬 파일 없음) | 794:4542, 794:4708, 1123:13946, 1123:14112 | img20260118712051 imgChevronRight | (구현: border, Lucide ChevronDown/ChevronUp) | TradeDetailPage.tsx |
+| (로컬 파일 없음) | 1123:20023 | imgEllipse4119 | (구현: rounded-full) | AuctionDurationPage.tsx |
+| (로컬 파일 없음) | 1123:20699 | imgXCloseDelete | (구현: Lucide X 또는 border) | AuctionDurationPage.tsx |
+| (로컬 파일 없음) | 1302:27093 | imgArrowRepeat imgAdjustHorizontalSettings | (구현: Lucide RefreshCw, Wallet) | TradeDetailPage.tsx |
+| (로컬 파일 없음) | 1302:27289 | imgCircle imgSquare imgTriangle imgX imgLine86 | (구현: border, Lucide 아이콘) | TradeDetailPage.tsx (Modal) |
+| (로컬 파일 없음) | 1714:22332 | imgLine80 imgEllipse52 | (구현: border, rounded-full) | TradeListPage.tsx, GnbListLayout |
+
 **에셋 미사용(구현 대체)**  
 | (로컬 파일 없음) | 1636:10115 (VehicleCard) | 구분선 → border, 상태 점 → rounded-full+색상. URL만 상수: `entities/vehicle/model/figma-assets.ts` | entities/vehicle/ui/VehicleCard.tsx |
 

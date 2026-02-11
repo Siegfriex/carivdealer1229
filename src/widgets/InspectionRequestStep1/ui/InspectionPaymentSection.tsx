@@ -14,7 +14,7 @@ export const InspectionPaymentSection = () => {
         </h2>
       </div>
       <div className="inspection-step1-section-card overflow-hidden bg-white p-6">
-        <p className="text-[16px] leading-[18.753px] text-[#909090]">국내 결제 설정 영역 (연동 예정)</p>
+        <p className="text-[16px] leading-[18.753px] text-[var(--color-1033-text-muted-alt)]">국내 결제 설정 영역 (연동 예정)</p>
       </div>
     </section>
   );

@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-02-11T07:46:44.053459Z",
+  "node_ids": [
+    "1042-4681"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 1440.0px, code has no w-[Npx]",
+      "node_id": "1042:4681",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 974.0px, code has no w-[Npx]",
+      "node_id": "1193:8810",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 180.0px, code has no w-[Npx]",
+      "node_id": "1300:6039",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 814.0px, code has no w-[Npx]",
+      "node_id": "1367:9463",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1042:4681: design context classes not fully in code: ['left-[25.63%]', 'top-full', 'bottom-0', 'right-[56.78%]', 'absolute']...",
+      "node_id": "1042:4681",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1300:6039: design context classes not fully in code: ['block', 'max-w-none', 'size-full']...",
+      "node_id": "1300:6039",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1367:9463: design context classes not fully in code: ['block', 'max-w-none', 'size-full']...",
+      "node_id": "1367:9463",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 4
+}

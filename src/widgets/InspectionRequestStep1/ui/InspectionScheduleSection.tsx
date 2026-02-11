@@ -26,7 +26,7 @@ export const InspectionScheduleSection = ({
         <h2 className="font-bold leading-[44px] text-[24px] text-black" data-node-id="1193:6707">
           검차 일정
         </h2>
-        <span className="text-[22px] leading-[18.753px] text-[#f21824]">*</span>
+        <span className="text-[22px] leading-[18.753px] text-[var(--color-error-figma)]">*</span>
       </div>
       <div className="inspection-step1-section-card overflow-hidden bg-white p-6">
         <div className="grid grid-cols-2 gap-4">

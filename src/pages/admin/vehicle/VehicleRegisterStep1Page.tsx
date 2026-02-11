@@ -80,12 +80,12 @@ function FormRow({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="min-w-0 max-w-full truncate mt-[28px] h-10 rounded-[5px] border-0 bg-[var(--color-gray-100)] px-3 text-[14px] text-gray-900 placeholder-[#a5abb6] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        className="min-w-0 max-w-full truncate mt-[28px] h-10 rounded-[5px] border-0 bg-[var(--color-gray-100)] px-3 text-[14px] text-gray-900 placeholder-[var(--color-1033-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
       />
       <button
         type="button"
         onClick={onEdit}
-        className="shrink-0 mt-[28px] h-10 w-[68px] rounded-[5px] bg-[var(--color-gray-100)] text-[14px] text-[#a5abb6] hover:bg-gray-200 hover:text-gray-700"
+        className="shrink-0 mt-[28px] h-10 w-[68px] rounded-[5px] bg-[var(--color-gray-100)] text-[14px] text-[var(--color-1033-placeholder)] hover:bg-gray-200 hover:text-gray-700"
       >
         수정
       </button>
@@ -231,7 +231,7 @@ export const VehicleRegisterStep1Page = () => {
           >
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-[22px] font-bold text-black">차량 등록 원부</h2>
-              <span className="text-[22px] font-bold text-[#f21824]">*</span>
+              <span className="text-[22px] font-bold text-[var(--color-error-figma)]">*</span>
             </div>
             <div className="h-[300px] w-full max-w-[921px] rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 text-body">
               차량 이미지 영역

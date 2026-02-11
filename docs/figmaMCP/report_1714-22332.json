@@ -1,0 +1,52 @@
+{
+  "generated_at": "2026-02-11T08:29:34.259165Z",
+  "node_ids": [
+    "1714-22332"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 1440.0px, code has no w-[Npx]",
+      "node_id": "1714:22332",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 970.0px, code has no w-[Npx]",
+      "node_id": "1714:22352",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 972.0px, code has no w-[Npx]",
+      "node_id": "1714:22378",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1714:22332: design context classes not fully in code: ['left-[45.23%]', 'absolute', 'top-full', 'bottom-0', 'right-[37.19%]']...",
+      "node_id": "1714:22332",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1714:22352: design context classes not fully in code: ['top-[207.65px]', 'absolute', 'left-[calc(16.67%+55.32px)]', \"font-['Pretendard:Bold',sans-serif]\", 'leading-[44px]']...",
+      "node_id": "1714:22352",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1714:22378: design context classes not fully in code: ['h-[7.224px]', 'flex-none', '-scale-y-100', 'w-[3.612px]']...",
+      "node_id": "1714:22378",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 3
+}

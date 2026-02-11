@@ -1,0 +1,94 @@
+{
+  "generated_at": "2026-02-11T08:29:31.191730Z",
+  "node_ids": [
+    "1123-20023"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 1440.0px, code has no w-[Npx]",
+      "node_id": "1123:20023",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 434.515625px, code has no w-[Npx]",
+      "node_id": "1123:20092",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 434.515625px, code has no w-[Npx]",
+      "node_id": "1123:20093",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 100.0px, code has no w-[Npx]",
+      "node_id": "1123:20094",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 100.0px, code has no w-[Npx]",
+      "node_id": "1123:20097",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:20023: design context classes not fully in code: ['relative', 'bg-[#f8f9fa]', 'size-full']...",
+      "node_id": "1123:20023",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:20090: design context classes not fully in code: ['w-[175.117px]', 'h-0', 'left-[35.33px]', 'top-[157.37px]', 'absolute']...",
+      "node_id": "1123:20090",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:20091: design context classes not fully in code: ['block', 'max-w-none', 'size-full']...",
+      "node_id": "1123:20091",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:20092: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'not-italic', 'leading-[44px]', 'top-[43.56px]', 'text-black']...",
+      "node_id": "1123:20092",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:20093: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'not-italic', 'leading-[44px]', 'top-[43.56px]', 'text-black']...",
+      "node_id": "1123:20093",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:20094: design context classes not fully in code: ['bg-[#f4f4f4]', 'left-[35.98px]', 'top-[113.03px]', 'w-[434.516px]', 'rounded-[30px]']...",
+      "node_id": "1123:20094",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:20097: design context classes not fully in code: ['text-[38px]', 'left-[calc(50%+114.71px)]', \"font-['Pretendard:Bold',sans-serif]\", 'not-italic', 'leading-[44px]']...",
+      "node_id": "1123:20097",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 5
+}

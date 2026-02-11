@@ -1,0 +1,52 @@
+{
+  "generated_at": "2026-02-11T07:42:49.819407Z",
+  "node_ids": [
+    "1425-10137"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 972.0px, code has no w-[Npx]",
+      "node_id": "1425:10227",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 207.0px, code has no w-[Npx]",
+      "node_id": "1425:10228",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 366.0px, code has no w-[Npx]",
+      "node_id": "1425:10229",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1425:10227: design context classes not fully in code: ['leading-[44px]', 'not-italic', 'text-[28px]', 'left-[calc(20.83%-4.68px)]', 'absolute']...",
+      "node_id": "1425:10227",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1425:10228: design context classes not fully in code: ['shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]', 'rounded-[30px]', 'top-[552px]', 'left-[calc(8.33%+178px)]', 'h-[473px]']...",
+      "node_id": "1425:10228",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1425:10229: design context classes not fully in code: ['top-[52.79px]', 'left-[calc(50%-443px)]', 'not-italic', 'text-[38px]', \"font-['SUITE_Variable:ExtraBold',sans-serif]\"]...",
+      "node_id": "1425:10229",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 3
+}

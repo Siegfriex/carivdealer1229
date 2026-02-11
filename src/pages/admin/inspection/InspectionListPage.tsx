@@ -123,7 +123,7 @@ export const InspectionListPage = () => {
           title="검차 신청목록"
           titleNodeId="1042:4754"
         >
-          <div className={`${LAYOUT_CLASSES.MAIN_GNB} w-full ml-auto`}>
+          <div className={`${LAYOUT_CLASSES.MAIN_GNB} w-full ml-auto`} data-node-id="1042:4681">
             {/* 1행: 좌측 최근 1개월, 우측 리스트/카드 토글 + 검차 신청하기 */}
             <div className="flex items-center justify-between mb-6" data-node-id="1300:6039">
               <select
@@ -173,7 +173,6 @@ export const InspectionListPage = () => {
           {viewMode === 'card' ? (
             <div
               className={`grid grid-cols-3 ${LAYOUT_CLASSES.GNB_GRID} max-w-[972px] w-full mb-8`}
-              data-node-id="1042:4681"
             >
               {inspections.length === 0 ? (
                 <div className="col-span-3 p-12 text-center text-[15.627px] text-gray-500 bg-white rounded-[23.441px] border border-gray-200 shadow-[2.34px_3.13px_11.02px_rgba(0,0,0,0.05)]">
@@ -192,19 +191,21 @@ export const InspectionListPage = () => {
               )}
             </div>
           ) : (
-          <div className={`w-full ${LAYOUT_CLASSES.MAIN_GNB} flex flex-col`} data-node-id="1037:5126">
+          <>
             {inspections.length === 0 ? (
-              <div className="text-center py-12 px-6 bg-white rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
-                <p className="text-body text-gray-600">검차 신청 목록이 없습니다.</p>
-                <Button className="mt-4" onClick={() => navigate('/inspections/request')}>
-                  검차 신청하기
-                </Button>
+              <div className={`w-full ${LAYOUT_CLASSES.MAIN_GNB} flex flex-col`} data-node-id="1037:5126">
+                <div className="text-center py-12 px-6 bg-white rounded-[15px] shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
+                  <p className="text-body text-gray-600">검차 신청 목록이 없습니다.</p>
+                  <Button className="mt-4" onClick={() => navigate('/inspections/request')}>
+                    검차 신청하기
+                  </Button>
+                </div>
               </div>
             ) : (
             <>
-            {/* 테이블 헤더 Figma 1193:8810: 974×44, sticky — 스크롤 시 컬럼 의미 유지 */}
+            {/* 테이블 헤더 Figma 1193:8810: 1042:4681 직접 자식 (R003-C) */}
             <div
-              className={`sticky top-0 z-10 grid grid-cols-[28px_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 h-11 items-center bg-white rounded-[15px] text-caption font-semibold text-gray-900 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] ${LAYOUT_CLASSES.MAIN_GNB}`}
+              className={`sticky top-0 z-10 grid grid-cols-[28px_1fr_auto_2fr_1.5fr_1.5fr_auto] gap-4 px-6 h-11 items-center bg-white rounded-[15px] text-caption font-semibold text-gray-900 shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] ${LAYOUT_CLASSES.MAIN_GNB} mb-2`}
               data-node-id="1193:8810"
             >
               <input type="checkbox" className="rounded border-gray-300" aria-label="전체 선택" />
@@ -215,7 +216,8 @@ export const InspectionListPage = () => {
               <span>검차 장소</span>
               <span className="w-8" aria-hidden />
             </div>
-            <div className="flex flex-col gap-y-2 mt-2 w-full max-w-[974px]">
+            <div className={`w-full ${LAYOUT_CLASSES.MAIN_GNB} flex flex-col`} data-node-id="1037:5126">
+            <div className="flex flex-col gap-y-2 w-full max-w-[974px]">
             {inspections.map((insp) => {
               const isExpanded = expandedIds.has(insp.id);
               return (
@@ -304,9 +306,10 @@ export const InspectionListPage = () => {
               );
             })}
             </div>
+            </div>
             </>
             )}
-          </div>
+          </>
           )}
           </div>
         </GnbListLayout>

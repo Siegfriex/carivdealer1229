@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-11T06:54:02.391066Z",
+  "generated_at": "2026-02-11T08:29:30.020411Z",
   "node_ids": [
     "794-3704"
   ],
@@ -26,412 +26,48 @@
       "file_path": null
     },
     {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgLShoppingBag not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgLWallet not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgStickMan1181741 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgBriefcase not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgGroup140 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgGroup2085666007 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgSearch not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgIcon not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgIcon1 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgIcon2 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgCilTruck not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgIcon3 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgLine76 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgFrame2087328289 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgFrame2087328290 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgVector not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgVector1 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgVector2 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgThreeDots not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgVector3 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgLine78 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgGroup2085666051 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgGroup2085666053 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgCheck not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgFrame2087328312 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R002",
-      "severity": "critical",
-      "message": "Asset imgEllipse48 not in figma_image or FIGMA_ASSET_TRACEABILITY",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgLShoppingBag missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgLWallet missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgStickMan1181741 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgBriefcase missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgGroup140 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgGroup2085666007 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgSearch missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgIcon missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgIcon1 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgIcon2 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgCilTruck missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgIcon3 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgLine76 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgFrame2087328289 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgFrame2087328290 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgVector missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgVector1 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgVector2 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgThreeDots missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgVector3 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgLine78 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgGroup2085666051 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgGroup2085666053 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgCheck missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgFrame2087328312 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
-      "rule_id": "R005",
-      "severity": "critical",
-      "message": "Asset imgEllipse48 missing from FIGMA_ASSET_TRACEABILITY table",
-      "node_id": null,
-      "file_path": null
-    },
-    {
       "rule_id": "R007",
       "severity": "info",
-      "message": "Node 794:3706: design context classes not fully in code: ['bg-[#f8f9fa]', 'relative', 'size-full']...",
+      "message": "Node 794:3706: design context classes not fully in code: ['bg-[#f8f9fa]', 'size-full', 'relative']...",
       "node_id": "794:3706",
       "file_path": null
     },
     {
       "rule_id": "R007",
       "severity": "info",
-      "message": "Node 794:3708: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'left-[calc(50%-108px)]', 'top-[121.85px]', 'not-italic', 'text-[38px]']...",
+      "message": "Node 794:3708: design context classes not fully in code: ['text-[rgba(0,0,0,0.8)]', 'left-[calc(50%-108px)]', 'leading-[61px]', 'not-italic', 'top-[121.85px]']...",
       "node_id": "794:3708",
       "file_path": null
     },
     {
       "rule_id": "R007",
       "severity": "info",
-      "message": "Node 794:3712: design context classes not fully in code: ['contents', 'absolute', 'top-[229.72px]', 'left-[175.98px]']...",
+      "message": "Node 794:3712: design context classes not fully in code: ['top-[229.72px]', 'contents', 'left-[175.98px]', 'absolute']...",
       "node_id": "794:3712",
       "file_path": null
     },
     {
       "rule_id": "R007",
       "severity": "info",
-      "message": "Node 794:3713: design context classes not fully in code: ['h-[58.434px]', 'top-[325.14px]', \"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'whitespace-pre-wrap', 'not-italic']...",
+      "message": "Node 794:3713: design context classes not fully in code: ['whitespace-pre-wrap', 'not-italic', 'text-[#2048e5]', 'top-[325.14px]', \"font-['SUITE_Variable:ExtraBold',sans-serif]\"]...",
       "node_id": "794:3713",
       "file_path": null
     },
     {
       "rule_id": "R007",
       "severity": "info",
-      "message": "Node 794:3724: design context classes not fully in code: ['contents', 'absolute', 'top-[229.72px]', 'left-[498.35px]']...",
+      "message": "Node 794:3724: design context classes not fully in code: ['top-[229.72px]', 'contents', 'left-[498.35px]', 'absolute']...",
       "node_id": "794:3724",
       "file_path": null
     },
     {
       "rule_id": "R007",
       "severity": "info",
-      "message": "Node 794:3725: design context classes not fully in code: ['top-[325.14px]', \"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'not-italic', 'left-[calc(50%+39.17px)]', 'leading-[52.449px]']...",
+      "message": "Node 794:3725: design context classes not fully in code: ['not-italic', 'text-[#2048e5]', 'left-[calc(50%+39.17px)]', 'top-[325.14px]', 'leading-[52.449px]']...",
       "node_id": "794:3725",
       "file_path": null
     }
   ],
-  "critical_count": 52,
+  "critical_count": 0,
   "warn_count": 3
 }

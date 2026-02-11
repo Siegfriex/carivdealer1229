@@ -118,7 +118,7 @@ export const VehicleRegisterEntryPage = () => {
         {/* 에러: Figma 1425:7683 SSOT "※ 이미 등록 또는 거래된 매물입니다" (중복 시 SSOT_ERROR_ALREADY_REGISTERED 사용) */}
         {error && (
           <p
-            className="mt-4 text-center text-[24px] font-extrabold leading-[61px] text-[#ff7575]"
+            className="mt-4 text-center text-[24px] font-extrabold leading-[61px] text-[var(--color-cta3-error-red)]"
             data-node-id="1425:7683"
           >
             ※ {error}

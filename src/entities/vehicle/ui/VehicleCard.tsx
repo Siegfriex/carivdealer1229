@@ -126,7 +126,7 @@ export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'defau
             {CARD_TAGS_1636.map((tag) => (
               <span
                 key={tag}
-                className="rounded-[2.859px] bg-[#f0f0f1] px-2 py-0.5 text-[7.623px] font-semibold text-[#404043] leading-tight"
+                className="rounded-[2.859px] bg-[var(--color-1033-badge-bg)] px-2 py-0.5 text-[7.623px] font-semibold text-[var(--color-1033-badge-text)] leading-tight"
                 data-node-id={tag === '1년보증' ? '1636:10124' : '1636:10126'}
               >
                 {tag}

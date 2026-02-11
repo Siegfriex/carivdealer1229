@@ -1,0 +1,122 @@
+{
+  "generated_at": "2026-02-11T08:29:30.917717Z",
+  "node_ids": [
+    "1123-13580"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 1440.0px, code has no w-[Npx]",
+      "node_id": "1123:13580",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 170.0px, code has no w-[Npx]",
+      "node_id": "1123:13634",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 263.0px, code has no w-[Npx]",
+      "node_id": "1123:13635",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 130.0px, code has no w-[Npx]",
+      "node_id": "1123:13636",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 142.0px, code has no w-[Npx]",
+      "node_id": "1123:13638",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 233.0px, code has no w-[Npx]",
+      "node_id": "1123:13639",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 142.0px, code has no w-[Npx]",
+      "node_id": "1123:13642",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 233.0px, code has no w-[Npx]",
+      "node_id": "1123:13643",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13580: design context classes not fully in code: ['size-full', 'bg-[#f8f9fa]', 'relative']...",
+      "node_id": "1123:13580",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13635: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'left-[calc(50%-449.52px)]', 'text-[26px]', 'text-black', 'top-[61.63px]']...",
+      "node_id": "1123:13635",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13636: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'left-[calc(50%-449.52px)]', 'text-[26px]', 'text-black', 'top-[61.63px]']...",
+      "node_id": "1123:13636",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13637: design context classes not fully in code: ['left-[calc(50%-176.52px)]', 'text-[#2048e5]', 'text-[28px]', \"font-['Pretendard:ExtraBold',sans-serif]\", 'top-[125.37px]']...",
+      "node_id": "1123:13637",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13638: design context classes not fully in code: ['overflow-clip', 'top-[1049px]', 'left-[calc(8.33%+176px)]', 'bg-white', 'w-[971px]']...",
+      "node_id": "1123:13638",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13639: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'left-[calc(50%-449.52px)]', 'text-[26px]', 'top-[61.63px]', 'not-italic']...",
+      "node_id": "1123:13639",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13641: design context classes not fully in code: ['top-[157.37px]', 'h-0', 'left-[35.33px]', 'w-[175.117px]', 'absolute']...",
+      "node_id": "1123:13641",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1123:13643: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'left-[calc(50%-449.52px)]', 'text-[26px]', 'top-[61.63px]', 'not-italic']...",
+      "node_id": "1123:13643",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 8
+}

@@ -35,6 +35,10 @@ export const LAYOUT = {
   DETAIL_PANEL_H: 420,
   /** 패널 행 높이 51px — 1272:12931, 1123:13585 */
   DETAIL_PANEL_ROW_H: 51,
+  /** CTA_3 피드백 블록 최대 너비 (px) — 794:4371, 1123:13605 */
+  CTA3_FEEDBACK_MAX_W: 628,
+  /** CTA_3 가격 카드 높이 (px) — 794:4253/4257, 1123:13633/13637/13641 */
+  CTA3_PRICE_CARD_H: 224,
 } as const;
 
 /** Tailwind CSS 클래스로 변환된 레이아웃 값 (컨테이너·메인 패딩·목록/상세 max-width 등) */
@@ -82,6 +86,12 @@ export const LAYOUT_CLASSES = {
   GNB_CARD_972_266: 'w-full max-w-[972px] min-h-[266px]',
   /** 검차자/기사 카드 400×160 — 1425:10378, 1425:10230 (1425-10285, 1425-10137) */
   GNB_PANEL_400_160: 'w-full sm:w-[400px] min-h-[160px]',
+
+  // CTA_3 가격설정 페이지 (GeneralSalePricePage, AuctionStartPricePage)
+  /** 피드백 블록 — 794:4371, 1123:13605 */
+  CTA3_FEEDBACK_BLOCK: 'flex-1 min-w-[280px] max-w-[628px] min-h-[420px]',
+  /** 가격 카드 (내차 예상 시세, 판매가, 경매 시작가 등) — 794:4253/4257, 1123:13633/13637/13641 */
+  CTA3_PRICE_CARD: 'w-full max-w-[971px] min-h-[224px] bg-white rounded-card shadow-figma-card p-6',
 
   // 좌측 상세 패널 (거래상세·경매시작가·일반판매가·탁송) — 1272:12927, 1123:13582, 1302:27096, 794:4201
   /** 상세 패널 320×420, rounded 30px, shadow — design_context 1272-12926 */

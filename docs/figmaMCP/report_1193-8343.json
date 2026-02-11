@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-02-11T07:42:49.479214Z",
+  "node_ids": [
+    "1193-8343"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 254.0px, code has no w-[Npx]",
+      "node_id": "1193:8436",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1193:8433: design context classes not fully in code: ['block', 'size-full', 'max-w-none']...",
+      "node_id": "1193:8433",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 1193:8436: design context classes not fully in code: ['left-[calc(8.33%+175px)]', 'shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]', 'rounded-[30px]', 'overflow-clip', 'w-[972px]']...",
+      "node_id": "1193:8436",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 1
+}
