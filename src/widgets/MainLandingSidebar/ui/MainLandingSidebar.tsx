@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
 import iconSearch from '@/shared/figma_image/1425-8153_검색_search.png';
 
@@ -76,15 +76,15 @@ export function MainLandingSidebar({
               const isActive = activeKey === key;
               return (
                 <li key={key}>
-                  <a
-                    href={href}
+                  <Link
+                    to={href}
                     className={`
                       block px-3 py-2.5 rounded-md text-body font-medium transition-fast
                       ${isActive ? 'bg-primary-light text-primary font-bold' : 'text-gray-700 hover:bg-gray-100'}
                     `}
                   >
                     {label}
-                  </a>
+                  </Link>
                 </li>
               );
             })}

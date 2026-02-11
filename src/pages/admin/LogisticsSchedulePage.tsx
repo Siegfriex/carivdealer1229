@@ -15,6 +15,7 @@ import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { apiClient } from '@/shared/api/apiClient';
+import { MOCK_LOGISTICS_ITEMS, type MockLogisticsItem } from '@/shared/api/mockLists';
 import { useToast } from '@/shared/ui/Toast';
 import { Button } from '@/shared/ui/Button';
 import { Pagination } from '@/shared/ui/Pagination';
@@ -32,23 +33,6 @@ type LogisticsStateId = (typeof LOGISTICS_STATES)[number]['id'];
 
 type ViewMode = 'list' | 'form' | 'driver_assigning' | 'complete';
 
-/** 목록용 mock 항목 (상태 저장) */
-interface LogisticsItem {
-  id: string;
-  plateNumber: string;
-  modelName: string;
-  modelYear: string;
-  mileage: string;
-  state: LogisticsStateId;
-  thumbnailUrl?: string;
-}
-
-const MOCK_LOGISTICS_LIST: LogisticsItem[] = [
-  { id: '1', plateNumber: '12바 1234', modelName: 'G70 3T 스포츠 엘리트', modelYear: '2020', mileage: '--', state: 'schedule' },
-  { id: '2', plateNumber: '34가 5678', modelName: 'G70 3T 스포츠 엘리트', modelYear: '2020', mileage: '9.0', state: 'assigned' },
-  { id: '3', plateNumber: '56나 9012', modelName: 'G70 3T 스포츠 엘리트', modelYear: '2018', mileage: '14.6', state: 'pickup_done' },
-];
-
 const PAGE_SIZE = 9;
 
 export const LogisticsSchedulePage = () => {
@@ -57,7 +41,7 @@ export const LogisticsSchedulePage = () => {
   const vehicleId = searchParams.get('vehicleId') ?? undefined;
 
   const [viewMode, setViewMode] = useState<ViewMode>('list');
-  const [listItems, setListItems] = useState<LogisticsItem[]>(() => MOCK_LOGISTICS_LIST.map((i) => ({ ...i })));
+  const [listItems, setListItems] = useState<MockLogisticsItem[]>(() => MOCK_LOGISTICS_ITEMS.map((i) => ({ ...i })));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [listPage, setListPage] = useState(1);
 

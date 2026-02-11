@@ -9,19 +9,26 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header';
 import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { VehicleTable } from '@/widgets/VehicleTable';
-import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
+import { VehicleListTableWithExpand } from '@/widgets/VehicleTable';
+import { VehicleListCard } from '@/widgets/VehicleListCard';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { Pagination } from '@/shared/ui/Pagination';
 import { useVehicles } from '@/features/vehicle/register-form';
 import { TRADE_LIST_STATUS_LABELS } from '@/entities/vehicle/model/constants';
-import { Grid3x3, List } from 'lucide-react';
+import { getVehicleDetailRoute } from '@/shared/api/mockNavigationMap';
+import { LayoutList, LayoutGrid } from 'lucide-react';
 import type { VehicleStatus } from '@/entities/vehicle/model/types';
 
 const PAGE_SIZE = 9;
 type FilterTab = 'all' | 'general' | 'auction' | 'done';
 const FILTER_PARAM = 'filter';
 const VIEW_PARAM = 'view';
+
+const PERIOD_OPTIONS = [
+  { value: '1m', label: '최근 1개월' },
+  { value: '3m', label: '최근 3개월' },
+  { value: '6m', label: '최근 6개월' },
+];
 
 export const TradeListPage = () => {
   const navigate = useNavigate();
@@ -31,18 +38,21 @@ export const TradeListPage = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [period, setPeriod] = useState('1m');
 
   const { data: vehicles = [], isLoading } = useVehicles({});
 
-  const statusFilter = useMemo((): VehicleStatus[] | undefined => {
+  /** 거래탭 전체 = 거래 상태만 (차량등록탭과 달리 진짜 전체 아님) */
+  const tradeStatuses: VehicleStatus[] = ['active_sale', 'bidding', 'sold', 'completed'];
+
+  const statusFilter = useMemo((): VehicleStatus[] => {
     if (filterTab === 'general') return ['active_sale'];
     if (filterTab === 'auction') return ['bidding'];
     if (filterTab === 'done') return ['sold', 'completed'];
-    return undefined;
+    return tradeStatuses; // 'all' = 거래 해당 전체만
   }, [filterTab]);
 
   const filteredByStatus = useMemo(() => {
-    if (!statusFilter) return vehicles;
     return vehicles.filter((v) => statusFilter.includes(v.status));
   }, [vehicles, statusFilter]);
 
@@ -63,7 +73,7 @@ export const TradeListPage = () => {
     return filteredBySearch.slice(start, start + PAGE_SIZE);
   }, [filteredBySearch, currentPage]);
 
-  const allCount = vehicles.length;
+  const allCount = vehicles.filter((v) => tradeStatuses.includes(v.status)).length;
   const generalCount = vehicles.filter((v) => v.status === 'active_sale').length;
   const auctionCount = vehicles.filter((v) => v.status === 'bidding').length;
   const doneCount = vehicles.filter((v) => v.status === 'sold' || v.status === 'completed').length;
@@ -112,39 +122,44 @@ export const TradeListPage = () => {
           titleNodeId="1714:22351"
           footer={footer}
         >
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <SegmentedControl
-                options={filterOptions}
-                value={filterTab}
-                onChange={(value) => updateFilter(value as FilterTab)}
-              />
-              <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-md">
-                <button
-                  onClick={() => updateViewMode('grid')}
-                  className={`p-2 rounded transition-fast ${viewMode === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'}`}
-                  aria-label="그리드 뷰"
-                >
-                  <Grid3x3 className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={() => updateViewMode('list')}
-                  className={`p-2 rounded transition-fast ${viewMode === 'list' ? 'bg-white text-primary shadow-sm' : 'text-gray-600'}`}
-                  aria-label="리스트 뷰"
-                >
-                  <List className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
+          {/* 1행: 검차탭과 동일 — 좌측 최근 1개월, 우측 리스트/카드 토글 */}
+          <div className="flex items-center justify-between mb-6" data-node-id="1300:6039">
             <select
-              className="text-body border border-gray-200 rounded-md px-3 py-2 text-gray-700 bg-white"
+              value={period}
+              onChange={(e) => setPeriod(e.target.value)}
+              className="px-3 py-2 border border-gray-200 rounded-[10px] text-body text-gray-700 bg-white shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-primary"
               aria-label="조회기간"
             >
-              <option>조회기간</option>
-              <option>7일</option>
-              <option>30일</option>
-              <option>90일</option>
+              {PERIOD_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
             </select>
+            <div className="flex h-9 rounded-[10px] border border-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
+              <button
+                type="button"
+                onClick={() => updateViewMode('list')}
+                className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                aria-pressed={viewMode === 'list'}
+              >
+                <LayoutList className="h-4 w-4" /> 리스트
+              </button>
+              <button
+                type="button"
+                onClick={() => updateViewMode('grid')}
+                className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                aria-pressed={viewMode === 'grid'}
+              >
+                <LayoutGrid className="h-4 w-4" /> 카드
+              </button>
+            </div>
+          </div>
+          {/* 2행: 상태 필터 */}
+          <div className="mb-6" data-node-id="1367:9463">
+            <SegmentedControl
+              options={filterOptions}
+              value={filterTab}
+              onChange={(value) => updateFilter(value as FilterTab)}
+            />
           </div>
 
           {isLoading ? (
@@ -157,21 +172,15 @@ export const TradeListPage = () => {
             </div>
           ) : viewMode === 'grid' ? (
             <>
-              <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${LAYOUT_CLASSES.GNB_GRID} mb-8`} data-node-id="1714:22378">
+              {/* 검차·탁송과 동일: 3컬럼, 972px, gap 15/36 */}
+              <div className={`grid grid-cols-3 ${LAYOUT_CLASSES.GNB_GRID} max-w-[972px] w-full mb-8`} data-node-id="1714:22378">
                 {paginatedVehicles.map((vehicle) => (
-                  <div key={vehicle.id} className={LAYOUT_CLASSES.GNB_CARD_WRAPPER}>
-                    <VehicleCard
-                      vehicle={vehicle}
-                      variant="mainLanding"
-                      statusLabelOverride={TRADE_LIST_STATUS_LABELS[vehicle.status]}
-                      onClick={() => {
-                        if (vehicle.status === 'bidding') navigate(`/vehicles/${vehicle.id}/auction`);
-                        else if (vehicle.status === 'active_sale') navigate(`/vehicles/${vehicle.id}/trade`);
-                        else navigate(`/vehicles/${vehicle.id}`);
-                      }}
-                      className={`h-full w-full ${LAYOUT_CLASSES.GNB_CARD}`}
-                    />
-                  </div>
+                  <VehicleListCard
+                    key={vehicle.id}
+                    vehicle={vehicle}
+                    statusLabelOverride={TRADE_LIST_STATUS_LABELS[vehicle.status]}
+                    onClick={() => navigate(getVehicleDetailRoute(vehicle.id, vehicle.status))}
+                  />
                 ))}
               </div>
               {totalPages > 1 && (
@@ -182,14 +191,11 @@ export const TradeListPage = () => {
             </>
           ) : (
             <>
-              <div className="bg-white rounded-lg shadow-md mb-8">
-                <VehicleTable
+              <div className="mb-8">
+                <VehicleListTableWithExpand
                   vehicles={paginatedVehicles}
-                  onView={(vehicle) => {
-                    if (vehicle.status === 'bidding') navigate(`/vehicles/${vehicle.id}/auction`);
-                    else if (vehicle.status === 'active_sale') navigate(`/vehicles/${vehicle.id}/trade`);
-                    else navigate(`/vehicles/${vehicle.id}`);
-                  }}
+                  statusLabelOverride={(v) => TRADE_LIST_STATUS_LABELS[v.status]}
+                  onView={(vehicle) => navigate(getVehicleDetailRoute(vehicle.id, vehicle.status))}
                 />
               </div>
               {totalPages > 1 && (

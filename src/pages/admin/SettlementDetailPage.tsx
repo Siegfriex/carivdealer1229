@@ -47,17 +47,91 @@ export const SettlementDetailPage = () => {
     }
   }, [settlementId]);
 
-  const loadSettlementDetail = async (_id: string) => {
+  const loadSettlementDetail = async (id: string) => {
     try {
       setLoading(true);
-      // Mock 데이터
-      const mockSettlement: SettlementDetail = {
-        id: 'settle-001',
-        vehicleId: 'v-106',
-        plateNumber: '33바 3333',
-        modelName: 'Carnival KA4',
-        manufacturer: 'Kia',
-        modelYear: '2022',
+      // Mock 데이터 — mockNavigationMap, SettlementListPage와 ID 연동
+      const mockById: Record<string, SettlementDetail> = {
+        'settle-001': {
+          id: 'settle-001',
+          vehicleId: 'v-t7',
+          plateNumber: '11하 2222',
+          modelName: '투싼',
+          manufacturer: '현대',
+          modelYear: '2020',
+          salePrice: 1950,
+          settlementAmount: 1950,
+          platformFee: 97.5,
+          platformFeeRate: 5,
+          vatRefund: 177.41,
+          vatRefundRate: 9.09,
+          totalRefund: 177.41,
+          finalAmount: 2127.41,
+          settlementDate: '2025-05-20',
+          buyerName: 'Global Motors Inc.',
+          saleMethod: 'general',
+          logisticsFee: 35,
+          inspectionFee: 20,
+          bankAccount: '123-456-789012',
+          accountHolder: '포워드맥스',
+          settlementStatus: 'paid'
+        },
+        'settle-002': {
+          id: 'settle-002',
+          vehicleId: 'v-t5',
+          plateNumber: '12나 7890',
+          modelName: 'G70 3T 스포츠 엘리트',
+          manufacturer: '현대',
+          modelYear: '2020',
+          salePrice: 2100,
+          settlementAmount: 2100,
+          platformFee: 105,
+          platformFeeRate: 5,
+          vatRefund: 191.09,
+          vatRefundRate: 9.09,
+          totalRefund: 191.09,
+          finalAmount: 2291.09,
+          settlementDate: '2025-05-19',
+          buyerName: 'Buyer Co.',
+          saleMethod: 'auction',
+          logisticsFee: 40,
+          inspectionFee: 20,
+          bankAccount: '123-456-789012',
+          accountHolder: '포워드맥스',
+          settlementStatus: 'paid'
+        },
+        'settle-003': {
+          id: 'settle-003',
+          vehicleId: 'v-t6',
+          plateNumber: '98다 1111',
+          modelName: 'K5',
+          manufacturer: '기아',
+          modelYear: '2021',
+          salePrice: 1850,
+          settlementAmount: 1850,
+          platformFee: 92.5,
+          platformFeeRate: 5,
+          vatRefund: 168.32,
+          vatRefundRate: 9.09,
+          totalRefund: 168.32,
+          finalAmount: 2018.32,
+          settlementDate: '2025-05-18',
+          buyerName: 'Pending Buyer',
+          saleMethod: 'general',
+          logisticsFee: 30,
+          inspectionFee: 20,
+          bankAccount: '123-456-789012',
+          accountHolder: '포워드맥스',
+          settlementStatus: 'pending'
+        },
+      };
+      const mockSettlement = mockById[id] ?? {
+        id,
+        vehicleId: 'v-t7',
+        plateNumber: '11하 2222',
+        modelName: '투싼',
+        manufacturer: '현대',
+        modelYear: '2020',
         salePrice: 2850,
         settlementAmount: 2850,
         platformFee: 142.5,

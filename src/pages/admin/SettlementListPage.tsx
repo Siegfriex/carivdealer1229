@@ -40,9 +40,9 @@ export const SettlementListPage = () => {
       const mockSettlements: Settlement[] = [
         {
           id: 'settle-001',
-          vehicleId: 'v-106',
-          plateNumber: '33바 3333',
-          modelName: 'Carnival KA4',
+          vehicleId: 'v-t7',
+          plateNumber: '11하 2222',
+          modelName: '투싼',
           salePrice: '2,850',
           settlementAmount: '2,850',
           fees: '142.5',
@@ -52,9 +52,9 @@ export const SettlementListPage = () => {
         },
         {
           id: 'settle-002',
-          vehicleId: 'v-107',
-          plateNumber: '77사 7777',
-          modelName: 'Avante CN7',
+          vehicleId: 'v-t5',
+          plateNumber: '12나 7890',
+          modelName: 'G70 3T 스포츠 엘리트',
           salePrice: '1,450',
           settlementAmount: '1,450',
           fees: '72.5',
@@ -64,9 +64,9 @@ export const SettlementListPage = () => {
         },
         {
           id: 'settle-003',
-          vehicleId: 'v-108',
-          plateNumber: '99아 9999',
-          modelName: 'E-Class E300',
+          vehicleId: 'v-t6',
+          plateNumber: '98다 1111',
+          modelName: 'K5',
           salePrice: '4,200',
           settlementAmount: '4,200',
           fees: '210',

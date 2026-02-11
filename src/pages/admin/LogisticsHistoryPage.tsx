@@ -15,18 +15,7 @@ import { Z_INDEX } from '@/shared/config/zIndex';
 import { apiClient } from '@/shared/api/apiClient';
 import { useToast } from '@/shared/ui/Toast';
 
-interface LogisticsRecord {
-  id: string;
-  vehicleId: string;
-  plateNumber: string;
-  scheduleDate: string;
-  scheduleTime: string;
-  address: string;
-  driverName?: string;
-  driverPhone?: string;
-  status: 'scheduled' | 'dispatched' | 'in_transit' | 'completed';
-  pin?: string;
-}
+import { MOCK_LOGISTICS_HISTORY, type MockLogisticsRecord } from '@/shared/api/mockLists';
 
 type ViewMode = 'list' | 'grid';
 const VIEW_PARAM = 'view';
@@ -43,9 +32,9 @@ export const LogisticsHistoryPage = () => {
     else setSearchParams({}, { replace: true });
   };
 
-  const [logistics, setLogistics] = useState<LogisticsRecord[]>([]);
+  const [logistics, setLogistics] = useState<MockLogisticsRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedLogistics, setSelectedLogistics] = useState<LogisticsRecord | null>(null);
+  const [selectedLogistics, setSelectedLogistics] = useState<MockLogisticsRecord | null>(null);
   const [pin, setPin] = useState('');
   const [showPinModal, setShowPinModal] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
@@ -58,32 +47,7 @@ export const LogisticsHistoryPage = () => {
   const loadLogistics = async () => {
     try {
       setLoading(true);
-      // Mock 데이터
-      const mockLogistics: LogisticsRecord[] = [
-        {
-          id: 'log-001',
-          vehicleId: 'v-106',
-          plateNumber: '33바 3333',
-          scheduleDate: '2025-05-25',
-          scheduleTime: '14:00',
-          address: '서울특별시 강남구 테헤란로 123',
-          driverName: '김택시',
-          driverPhone: '010-1234-5678',
-          status: 'in_transit'
-        },
-        {
-          id: 'log-002',
-          vehicleId: 'v-107',
-          plateNumber: '77사 7777',
-          scheduleDate: '2025-05-24',
-          scheduleTime: '10:00',
-          address: '서울특별시 서초구 서초대로 456',
-          driverName: '박운송',
-          driverPhone: '010-9876-5432',
-          status: 'completed'
-        },
-      ];
-      setLogistics(mockLogistics);
+      setLogistics(MOCK_LOGISTICS_HISTORY);
     } catch {
       // Error handled silently
     } finally {

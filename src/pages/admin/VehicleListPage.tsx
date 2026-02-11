@@ -15,16 +15,24 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header';
 import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { VehicleTable } from '@/widgets/VehicleTable';
-import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
+import { VehicleListTableWithExpand } from '@/widgets/VehicleTable';
+import { VehicleListCard } from '@/widgets/VehicleListCard';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { Checkbox } from '@/shared/ui/Checkbox';
 import { Pagination } from '@/shared/ui/Pagination';
-import { ViewModeToggle } from '@/shared/ui/ViewModeToggle';
+import { LayoutList, LayoutGrid } from 'lucide-react';
 import { useVehicles } from '@/features/vehicle/register-form';
+import { VEHICLE_LIST_FILTER_TO_STATUS, VEHICLE_LIST_TAB_TO_STATUS } from '@/entities/vehicle/model/vehicleListFilterMeta';
+import { getVehicleDetailRoute } from '@/shared/api/mockNavigationMap';
 import type { VehicleStatus } from '@/entities/vehicle/model/types';
 
 const PAGE_SIZE = 9;
+
+const PERIOD_OPTIONS = [
+  { value: '1m', label: '최근 1개월' },
+  { value: '3m', label: '최근 3개월' },
+  { value: '6m', label: '최근 6개월' },
+];
 
 /** 전체/임시저장/등록완료 + 사이드바 필터(차량상태·판매거래·탁송·정산) */
 type FilterTab = 'all' | 'draft' | 'completed' | 'status' | 'sale' | 'logistics' | 'settlement';
@@ -50,6 +58,7 @@ export const VehicleListPage = () => {
   const needsAttention = searchParams.get(NEEDS_ATTENTION_PARAM) === '1';
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [period, setPeriod] = useState('1m');
 
   const updateFilter = (value: FilterTab) => {
     setCurrentPage(1);
@@ -91,14 +100,10 @@ export const VehicleListPage = () => {
   // 전체 차량 조회 (건수 계산용)
   const { data: allVehicles = [], isLoading: isLoadingAll } = useVehicles({});
   
-  // 필터별 차량 조회 (사이드바 필터 연동)
+  // 필터별 차량 조회 (사이드바 필터 연동) — vehicleListFilterMeta 엔티티 매핑 사용
   const statusFilter: VehicleStatus[] | undefined = useMemo(() => {
-    if (filterTab === 'draft') return ['draft'];
-    if (filterTab === 'completed') return ['completed', 'active_sale', 'sold'];
-    if (filterTab === 'sale') return ['active_sale', 'bidding'];
-    if (filterTab === 'logistics') return ['sold'];
-    if (filterTab === 'settlement') return ['pending_settlement', 'completed'];
-    // 'all' | 'status' → 전체
+    if (filterTab in VEHICLE_LIST_TAB_TO_STATUS) return VEHICLE_LIST_TAB_TO_STATUS[filterTab];
+    if (filterTab in VEHICLE_LIST_FILTER_TO_STATUS) return VEHICLE_LIST_FILTER_TO_STATUS[filterTab as keyof typeof VEHICLE_LIST_FILTER_TO_STATUS];
     return undefined;
   }, [filterTab]);
 
@@ -177,19 +182,50 @@ export const VehicleListPage = () => {
             mainNodeId="1425:8237"
             footer={footer}
           >
-            <div className="flex items-center justify-between mb-8" style={{ minHeight: 40 }} data-node-id="1425:8387">
-              <div className="flex items-center gap-4">
-                <SegmentedControl
-                  options={filterOptions}
-                  value={segmentValue}
-                  onChange={(value) => updateFilter(value as FilterTab)}
+            {/* 1행: 검차탭과 동일 — 좌측 최근 1개월, 우측 리스트/카드 토글 + 탭별 고유(확인필요차량) */}
+            <div className="flex items-center justify-between mb-6" data-node-id="1300:6039">
+              <select
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+                className="px-3 py-2 border border-gray-200 rounded-[10px] text-body text-gray-700 bg-white shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-primary"
+                aria-label="조회기간"
+              >
+                {PERIOD_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 rounded-[10px] border border-gray-200 overflow-hidden shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]">
+                  <button
+                    type="button"
+                    onClick={() => updateViewMode('list')}
+                    className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                    aria-pressed={viewMode === 'list'}
+                  >
+                    <LayoutList className="h-4 w-4" /> 리스트
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => updateViewMode('grid')}
+                    className={`flex items-center gap-2 px-4 h-9 text-body font-medium transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                    aria-pressed={viewMode === 'grid'}
+                  >
+                    <LayoutGrid className="h-4 w-4" /> 카드
+                  </button>
+                </div>
+                <Checkbox
+                  checked={needsAttention}
+                  onChange={(e) => updateNeedsAttention(e.target.checked)}
+                  label="확인 필요차량"
                 />
-                <ViewModeToggle value={viewMode} onChange={updateViewMode} />
               </div>
-              <Checkbox
-                checked={needsAttention}
-                onChange={(e) => updateNeedsAttention(e.target.checked)}
-                label="확인 필요차량"
+            </div>
+            {/* 2행: 상태 필터 (전체/임시저장/등록완료) */}
+            <div className="mb-6" data-node-id="1367:9463">
+              <SegmentedControl
+                options={filterOptions}
+                value={segmentValue}
+                onChange={(value) => updateFilter(value as FilterTab)}
               />
             </div>
 
@@ -203,20 +239,17 @@ export const VehicleListPage = () => {
               </div>
             ) : viewMode === 'grid' ? (
               <>
-                {/* Figma 1636-10115: 전체 차량목록 그리드 — 3컬럼, 972px, gap 15/36, 카드 314×291 */}
+                {/* Figma 1636-10115: 전체 차량목록 그리드 — 3컬럼, 972px, gap 15/36 (검차·탁송과 동일) */}
                 <div
                   className={`grid grid-cols-3 ${LAYOUT_CLASSES.GNB_GRID} max-w-[972px] w-full mb-8`}
                   data-node-id="1636:10115"
                 >
                   {paginatedVehicles.map((vehicle) => (
-                    <div key={vehicle.id} className={LAYOUT_CLASSES.GNB_CARD_WRAPPER} data-node-id="1636:10116">
-                      <VehicleCard
-                        vehicle={vehicle}
-                        variant="mainLanding"
-                        onClick={() => navigate(`/vehicles/${vehicle.id}`)}
-                        className={LAYOUT_CLASSES.GNB_CARD}
-                      />
-                    </div>
+                    <VehicleListCard
+                      key={vehicle.id}
+                      vehicle={vehicle}
+                      onClick={() => navigate(getVehicleDetailRoute(vehicle.id, vehicle.status))}
+                    />
                   ))}
                 </div>
                 {totalPages > 1 && (
@@ -227,8 +260,11 @@ export const VehicleListPage = () => {
               </>
             ) : (
               <>
-                <div className="bg-white rounded-lg shadow-md mb-8">
-                  <VehicleTable vehicles={paginatedVehicles} />
+                <div className="mb-8">
+                  <VehicleListTableWithExpand
+                    vehicles={paginatedVehicles}
+                    onView={(v) => navigate(getVehicleDetailRoute(v.id, v.status))}
+                  />
                 </div>
                 {totalPages > 1 && (
                   <div className={`flex justify-center w-full ${LAYOUT_CLASSES.GNB_PAGINATION_WRAPPER}`} data-node-id="1425:8211">

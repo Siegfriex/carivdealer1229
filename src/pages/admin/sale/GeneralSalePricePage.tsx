@@ -17,6 +17,7 @@ import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { useVehicle } from '@/features/vehicle/register-form';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
+import { StepFooter } from '@/shared/ui/StepFooter';
 import { DevSkipButton } from '@/shared/ui/DevSkipButton';
 import { isRunDev } from '@/shared/config/runDev';
 
@@ -102,12 +103,7 @@ export const GeneralSalePricePage = () => {
             </div>
           </div>
 
-          <div className="w-full flex gap-4">
-            <Button variant="secondary" onClick={handleBack}>
-              이전
-            </Button>
-            <Button onClick={handleSubmit}>등록 완료</Button>
-          </div>
+          <StepFooter onBack={handleBack} onConfirm={handleSubmit} confirmLabel="등록 완료" />
 
           {isRunDev() && (
             <DevSkipButton label="DEV:SKIP" subLabel="등록 완료로" onClick={handleSubmit} />

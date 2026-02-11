@@ -2,6 +2,8 @@
 
 중고차 딜러 플랫폼 웹 앱. React 18 + Vite + TypeScript, FSD(Feature-Sliced Design) 구조.
 
+**최근 변경 (2026-02-11)**: [docs/CHANGELOG_2026-02-11.md](docs/CHANGELOG_2026-02-11.md) — 목업 공통화, 차량목록·거래·탁송·정산 연동, Figma 검증 가이드.
+
 ---
 
 ## 1. 프로젝트 개요

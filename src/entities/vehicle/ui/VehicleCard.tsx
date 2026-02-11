@@ -7,6 +7,7 @@
  */
 
 import { Card } from '@/shared/ui/Card';
+import { ImagePlaceholder } from '@/shared/ui/ImagePlaceholder';
 import { VehicleStatusBadge } from './VehicleStatusBadge';
 import { StatusBadge } from '@/shared/ui/StatusBadge';
 import { VEHICLE_STATUS_COLORS, VEHICLE_STATUS_COLORS_1636, TRADE_LIST_STATUS_LABELS } from '@/entities/vehicle/model/constants';
@@ -63,17 +64,25 @@ export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'defau
         className={`w-[314px] min-h-[291px] max-w-[314px] rounded-[23.441px] overflow-hidden ${className}`}
         data-node-id="1636:10117"
       >
-        {/* 이미지 영역 Figma 1636:10118 — 174px, #eef5fe */}
-        <div className="relative h-[174px] w-full bg-[#eef5fe]" data-node-id="1636:10118">
+        {/* 이미지 영역 Figma 1636:10118 — 174px, #eef5fe. 없으면 ImagePlaceholder */}
+        <div className="relative h-[174px] w-full overflow-hidden" data-node-id="1636:10118">
           {vehicle.thumbnailUrl ? (
             <img
               src={vehicle.thumbnailUrl}
               alt={vehicle.modelName}
               className="absolute inset-0 h-full w-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                const placeholder = e.currentTarget.nextElementSibling;
+                if (placeholder) (placeholder as HTMLElement).style.display = 'flex';
+              }}
             />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-caption">이미지 없음</div>
-          )}
+          ) : null}
+          <div className={`absolute inset-0 flex ${vehicle.thumbnailUrl ? 'hidden' : ''}`}>
+            <div className="w-full h-full bg-[#eef5fe] border-2 border-dashed border-gray-200 flex items-center justify-center">
+              <div className="w-12 h-12 rounded bg-gray-200/60" />
+            </div>
+          </div>
         </div>
 
         <div className="relative px-[23px] pt-[18px] pb-4">
@@ -158,12 +167,20 @@ export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'defau
 
       <div className="px-3 pt-2">
         {vehicle.thumbnailUrl ? (
-          <img src={vehicle.thumbnailUrl} alt={vehicle.modelName} className="w-full h-40 object-cover rounded-md" />
-        ) : (
-          <div className="w-full h-40 bg-gray-100 rounded-md flex items-center justify-center text-gray-400 text-body">
-            이미지 없음
-          </div>
-        )}
+          <img
+            src={vehicle.thumbnailUrl}
+            alt={vehicle.modelName}
+            className="w-full h-40 object-cover rounded-md"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              const next = e.currentTarget.nextElementSibling;
+              if (next) (next as HTMLElement).style.display = 'block';
+            }}
+          />
+        ) : null}
+        <div className={vehicle.thumbnailUrl ? 'hidden' : 'block'}>
+          <ImagePlaceholder className="h-40 rounded-md" aspectRatio="video" ariaLabel={`${vehicle.modelName} 이미지`} />
+        </div>
       </div>
 
       <div className="p-4">
