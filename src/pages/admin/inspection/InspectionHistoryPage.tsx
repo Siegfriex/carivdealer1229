@@ -6,7 +6,7 @@
 
 import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { LandingHeader } from '@/widgets/Header';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { Search, ChevronRight, LayoutList, LayoutGrid } from 'lucide-react';
 import { MOCK_INSPECTIONS, type InspectionWithVehicle } from './mockInspectionList';

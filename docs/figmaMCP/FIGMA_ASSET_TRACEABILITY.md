@@ -44,6 +44,39 @@
 | 1121-5308_검차일정_clock.png | 1121:5308 (검차자 매칭중) | 검차 일정 아이콘 | pages/admin/inspection/InspectionProgressPage.tsx |
 | 1121-5308_검차장소_map.png | 1121:5308 (검차자 매칭중) | 검차 장소 아이콘 | pages/admin/inspection/InspectionProgressPage.tsx |
 
+**1425-10813 design_context 에셋 (검차진행 완료·이동중)**  
+| 1425-10813_imgIcon | 1425:10813 | imgIcon GNB file-search | design_context |
+| 1425-10813_imgSearch | 1425:10813 | imgSearch 검색 아이콘 | design_context |
+| 1425-10813_imgIcon1 | 1425:10813 | imgIcon1 GNB bar-chart | design_context |
+| 1425-10813_imgCilTruck | 1425:10813 | imgCilTruck 탁송 아이콘 | design_context |
+| 1425-10813_imgIcon2 | 1425:10813 | imgIcon2 GNB coins | design_context |
+| 1425-10813_imgLine76 | 1425:10813 | imgLine76 GNB 구분선 | design_context (구현: border) |
+| 1425-10813_imgStickMan1181741 | 1425:10813 | imgStickMan1181741 사용자 아바타 | design_context |
+| 1425-10813_imgEllipse8398 | 1425:10813 | imgEllipse8398 기사 프로필 | design_context |
+| 1425-10813_imgImage112 | 1425:10813 | imgImage112 차량 이미지 | design_context |
+| 1425-10813_imgImage113 | 1425:10813 | imgImage113 차량 이미지 | design_context |
+| 1425-10813_img202601061145265 | 1425:10813 | img202601061145265 차량 스크린샷 | design_context |
+| 1425-10813_imgBriefcase | 1425:10813 | imgBriefcase 한국 수출차량 배지 | design_context |
+| 1425-10813_imgGroup140 | 1425:10813 | imgGroup140 top bar | design_context |
+| 1425-10813_imgGroup2085666007 | 1425:10813 | imgGroup2085666007 알림 아이콘 | design_context |
+| 1425-10813_imgSearch1 | 1425:10813 | imgSearch1 검색 | design_context |
+| 1425-10813_imgLine78 | 1425:10813 | imgLine78 사이드바 구분선 | design_context (구현: border) |
+| 1425-10813_imgSearch2 | 1425:10813 | imgSearch2 사이드바 검색 | design_context |
+| 1425-10813_imgGroup2085666051 | 1425:10813 | imgGroup2085666051 progress bar | design_context |
+| 1425-10813_imgGroup2085666052 | 1425:10813 | imgGroup2085666052 progress bar | design_context |
+| 1425-10813_imgGroup2085666053 | 1425:10813 | imgGroup2085666053 progress bar | design_context |
+| 1425-10813_imgCheck | 1425:10813 | imgCheck 체크 아이콘 | design_context |
+| 1425-10813_imgFrame2087328312 | 1425:10813 | imgFrame2087328312 진행중 ellipse | design_context |
+| 1425-10813_imgEllipse48 | 1425:10813 | imgEllipse48 상태 점 | design_context (구현: rounded-full) |
+| 1425-10813_imgLine83 | 1425:10813 | imgLine83 스테퍼 구분선 | design_context (구현: border) |
+| 1425-10813_imgLine85 | 1425:10813 | imgLine85 스테퍼 구분선 | design_context (구현: border) |
+| 1425-10813_imgCheck1 | 1425:10813 | imgCheck1 스테퍼 체크 | design_context |
+| 1425-10813_imgEllipse56 | 1425:10813 | imgEllipse56 차량 카드 배경 | design_context |
+| 1425-10813_imgEllipse45 | 1425:10813 | imgEllipse45 검차완료 뱃지 점 | design_context |
+| 1425-10813_imgClock | 1425:10813 | imgClock 검차일정 | design_context |
+| 1425-10813_imgMap | 1425:10813 | imgMap 검차장소 | design_context |
+| 1425-10813_imgVector | 1425:10813 | imgVector 스크롤 화살표 | design_context |
+
 **에셋 미사용(구현 대체)**  
 | (로컬 파일 없음) | 1636:10115 (VehicleCard) | 구분선 → border, 상태 점 → rounded-full+색상. URL만 상수: `entities/vehicle/model/figma-assets.ts` | entities/vehicle/ui/VehicleCard.tsx |
 

@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, Calendar, DollarSign, Eye, CheckCircle2 } from 'lucide-react';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { LandingHeader } from '@/widgets/Header';
 import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 

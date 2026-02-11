@@ -1,0 +1,73 @@
+{
+  "generated_at": "2026-02-11T06:48:34.277047Z",
+  "node_ids": [
+    "794-3704"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 216.0px, code has no w-[Npx]",
+      "node_id": "794:3706",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 250.4609375px, code has no w-[Npx]",
+      "node_id": "794:3713",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 250.4609375px, code has no w-[Npx]",
+      "node_id": "794:3725",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:3706: design context classes not fully in code: ['bg-[#f8f9fa]', 'size-full', 'relative']...",
+      "node_id": "794:3706",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:3708: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'leading-[61px]', 'text-[38px]', 'absolute', 'left-[calc(50%-108px)]']...",
+      "node_id": "794:3708",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:3712: design context classes not fully in code: ['contents', 'top-[229.72px]', 'left-[175.98px]', 'absolute']...",
+      "node_id": "794:3712",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:3713: design context classes not fully in code: ['w-[97px]', \"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'left-[calc(50%-283.2px)]', 'text-[#2048e5]', 'absolute']...",
+      "node_id": "794:3713",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:3724: design context classes not fully in code: ['contents', 'top-[229.72px]', 'absolute', 'left-[498.35px]']...",
+      "node_id": "794:3724",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:3725: design context classes not fully in code: [\"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'text-[#2048e5]', 'absolute', 'text-[26px]', 'top-[325.14px]']...",
+      "node_id": "794:3725",
+      "file_path": null
+    }
+  ],
+  "critical_count": 0,
+  "warn_count": 3
+}

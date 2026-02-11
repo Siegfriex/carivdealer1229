@@ -5,14 +5,14 @@
 
 import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { LandingHeader } from '@/widgets/Header';
 import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { VehicleTable } from '@/widgets/VehicleTable/ui/VehicleTable';
+import { VehicleTable } from '@/widgets/VehicleTable';
 import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { Pagination } from '@/shared/ui/Pagination';
-import { useVehicles } from '@/features/vehicle/register-form/model/useVehicles';
+import { useVehicles } from '@/features/vehicle/register-form';
 import { TRADE_LIST_STATUS_LABELS } from '@/entities/vehicle/model/constants';
 import { Grid3x3, List } from 'lucide-react';
 import type { VehicleStatus } from '@/entities/vehicle/model/types';

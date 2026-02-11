@@ -8,10 +8,10 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
+import { LandingHeader } from '@/widgets/Header';
+import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { useVehicle } from '@/features/vehicle/register-form/model/useVehicle';
+import { useVehicle } from '@/features/vehicle/register-form';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Modal } from '@/shared/ui/Modal';

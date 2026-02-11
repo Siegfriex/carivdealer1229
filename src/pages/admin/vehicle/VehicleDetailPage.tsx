@@ -6,9 +6,9 @@
  */
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { LandingHeader } from '@/widgets/Header';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { useVehicle } from '@/features/vehicle/register-form/model/useVehicle';
+import { useVehicle } from '@/features/vehicle/register-form';
 import { VehicleStatusBadge } from '@/entities/vehicle/ui/VehicleStatusBadge';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';

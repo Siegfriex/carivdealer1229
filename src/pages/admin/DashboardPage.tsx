@@ -6,13 +6,13 @@
 
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
+import { LandingHeader } from '@/widgets/Header';
+import { MainLandingSidebar } from '@/widgets/MainLandingSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { VehicleCard } from '@/entities/vehicle/ui/VehicleCard';
 import { Button } from '@/shared/ui/Button';
 import { Pagination } from '@/shared/ui/Pagination';
-import { useVehicles } from '@/features/vehicle/register-form/model/useVehicles';
+import { useVehicles } from '@/features/vehicle/register-form';
 
 const PAGE_SIZE = 9;
 

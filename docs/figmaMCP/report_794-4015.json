@@ -1,0 +1,346 @@
+{
+  "generated_at": "2026-02-11T06:54:02.655555Z",
+  "node_ids": [
+    "794-4015"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 1440.0px, code has no w-[Npx]",
+      "node_id": "794:4015",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fill expected but no w-full/flex-1: 794:4101",
+      "node_id": "794:4101",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fill expected but no w-full/flex-1: 794:4102",
+      "node_id": "794:4102",
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgStickMan1181741 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgLMagicWand not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgBriefcase not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgGroup140 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgGroup2085666007 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgSearch not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgIcon not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgIcon1 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgIcon2 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgCilTruck not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgIcon3 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgLine76 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgFrame2087328289 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgFrame2087328290 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgVector not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgVector1 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgVector2 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgThreeDots not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgVector3 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgEllipse50 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgEllipse51 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgStickMan1181741 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgLMagicWand missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgBriefcase missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgGroup140 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgGroup2085666007 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgSearch missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgIcon missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgIcon1 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgIcon2 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgCilTruck missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgIcon3 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgLine76 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgFrame2087328289 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgFrame2087328290 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgVector missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgVector1 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgVector2 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgThreeDots missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgVector3 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgEllipse50 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgEllipse51 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4015: design context classes not fully in code: ['bg-[#f8f9fa]', 'size-full', 'relative']...",
+      "node_id": "794:4015",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4101: design context classes not fully in code: ['absolute', '-translate-x-1/2', 'top-[380.5px]', 'left-1/2', 'contents']...",
+      "node_id": "794:4101",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4102: design context classes not fully in code: ['absolute', '-translate-x-1/2', 'text-[32px]', 'leading-[61px]', \"font-['SUITE_Variable:ExtraBold',sans-serif]\"]...",
+      "node_id": "794:4102",
+      "file_path": null
+    }
+  ],
+  "critical_count": 42,
+  "warn_count": 3
+}

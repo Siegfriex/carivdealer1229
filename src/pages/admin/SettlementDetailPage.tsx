@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreditCard, DollarSign, Percent, FileText, Download, Printer, Truck, Banknote } from 'lucide-react';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { LandingHeader } from '@/widgets/Header';
 import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 

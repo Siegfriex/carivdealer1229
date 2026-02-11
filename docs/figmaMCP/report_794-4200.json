@@ -1,0 +1,661 @@
+{
+  "generated_at": "2026-02-11T06:54:03.282235Z",
+  "node_ids": [
+    "794-4200"
+  ],
+  "findings": [
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 131.0px, code has no w-[Npx]",
+      "node_id": "794:4203",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 240.42578125px, code has no w-[Npx]",
+      "node_id": "794:4250",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 119.0px, code has no w-[Npx]",
+      "node_id": "794:4251",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 524.0px, code has no w-[Npx]",
+      "node_id": "794:4252",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 971.0px, code has no w-[Npx]",
+      "node_id": "794:4253",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 170.0px, code has no w-[Npx]",
+      "node_id": "794:4254",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 263.0px, code has no w-[Npx]",
+      "node_id": "794:4255",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 130.0px, code has no w-[Npx]",
+      "node_id": "794:4256",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 971.0px, code has no w-[Npx]",
+      "node_id": "794:4257",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 119.0px, code has no w-[Npx]",
+      "node_id": "794:4258",
+      "file_path": null
+    },
+    {
+      "rule_id": "R003-D",
+      "severity": "warn",
+      "message": "Fixed width not reflected: Figma 233.0px, code has no w-[Npx]",
+      "node_id": "794:4259",
+      "file_path": null
+    },
+    {
+      "rule_id": "R006",
+      "severity": "warn",
+      "message": "구현 계획서 없음: C:\\carivdealer\\docs\\figmaMCP\\impl_plans\\794-4200_구현계획.md",
+      "node_id": null,
+      "file_path": "C:\\carivdealer\\docs\\figmaMCP\\impl_plans\\794-4200_구현계획.md"
+    },
+    {
+      "rule_id": "R001",
+      "severity": "critical",
+      "message": "Design color not reflected in code or tokens: #777",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R001",
+      "severity": "critical",
+      "message": "Design color not reflected in code or tokens: #c8c8c8",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset img202601061145265 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgStickMan1181741 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgLine87 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgEllipse55 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgEllipse56 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgEllipse57 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgEllipse58 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgLine88 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgLine89 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgLine78 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgGroup2085666051 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgGroup2085666053 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgCheck not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgFrame2087328312 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgEllipse48 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgBriefcase not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgGroup140 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgGroup2085666007 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgSearch not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgIcon not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgIcon1 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgIcon2 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgCilTruck not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgIcon3 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R002",
+      "severity": "critical",
+      "message": "Asset imgLine76 not in figma_image or FIGMA_ASSET_TRACEABILITY",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset img202601061145265 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgStickMan1181741 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgLine87 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgEllipse55 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgEllipse56 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgEllipse57 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgEllipse58 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgLine88 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgLine89 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgLine78 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgGroup2085666051 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgGroup2085666053 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgCheck missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgFrame2087328312 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgEllipse48 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgBriefcase missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgGroup140 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgGroup2085666007 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgSearch missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgIcon missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgIcon1 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgIcon2 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgCilTruck missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgIcon3 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R005",
+      "severity": "critical",
+      "message": "Asset imgLine76 missing from FIGMA_ASSET_TRACEABILITY table",
+      "node_id": null,
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4201: design context classes not fully in code: ['relative', 'bg-[#f8f9fa]', 'size-full']...",
+      "node_id": "794:4201",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4203: design context classes not fully in code: ['bg-white', 'top-[323px]', 'h-[420px]', 'w-[320px]', 'shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]']...",
+      "node_id": "794:4203",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4204: design context classes not fully in code: ['text-[28px]', 'not-italic', 'top-[61.68px]', 'text-[#2048e5]', 'leading-[44px]']...",
+      "node_id": "794:4204",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4225: design context classes not fully in code: ['inset-0', 'pointer-events-none', 'absolute', 'overflow-hidden']...",
+      "node_id": "794:4225",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4226: design context classes not fully in code: ['bg-white', 'left-[calc(41.67%+39px)]', 'top-[323px]', 'h-[420px]', 'shadow-[2.344px_3.125px_11.017px_0px_rgba(0,0,0,0.05)]']...",
+      "node_id": "794:4226",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4227: design context classes not fully in code: ['border-[1.3px]', 'bg-white', 'top-[34px]', 'content-stretch', 'border-[rgba(0,0,0,0.2)]']...",
+      "node_id": "794:4227",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4229: design context classes not fully in code: ['h-[161.844px]', 'w-[225.086px]', 'top-[68.56px]', 'absolute', 'left-[50.8px]']...",
+      "node_id": "794:4229",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4230: design context classes not fully in code: ['inset-0', 'pointer-events-none', 'absolute', 'overflow-hidden']...",
+      "node_id": "794:4230",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4232: design context classes not fully in code: ['relative', 'shrink-0', 'size-[9.117px]']...",
+      "node_id": "794:4232",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4233: design context classes not fully in code: ['size-full', 'block', 'max-w-none']...",
+      "node_id": "794:4233",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4234: design context classes not fully in code: ['shrink-0', 'leading-[20px]', \"font-['Pretendard:Medium',sans-serif]\", 'relative', 'text-[rgba(0,0,0,0.4)]']...",
+      "node_id": "794:4234",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4235: design context classes not fully in code: ['shrink-0', 'leading-[20px]', \"font-['Pretendard:Medium',sans-serif]\", 'relative', 'text-[rgba(0,0,0,0.4)]']...",
+      "node_id": "794:4235",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4237: design context classes not fully in code: ['relative', 'shrink-0', 'size-[9.117px]']...",
+      "node_id": "794:4237",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4238: design context classes not fully in code: ['size-full', 'block', 'max-w-none']...",
+      "node_id": "794:4238",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4239: design context classes not fully in code: ['shrink-0', 'leading-[20px]', \"font-['Pretendard:Medium',sans-serif]\", 'relative', 'text-[rgba(0,0,0,0.4)]']...",
+      "node_id": "794:4239",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4240: design context classes not fully in code: ['shrink-0', 'leading-[20px]', \"font-['Pretendard:Medium',sans-serif]\", 'relative', 'text-[rgba(0,0,0,0.4)]']...",
+      "node_id": "794:4240",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4242: design context classes not fully in code: ['relative', 'shrink-0', 'size-[9.117px]']...",
+      "node_id": "794:4242",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4243: design context classes not fully in code: ['size-full', 'block', 'max-w-none']...",
+      "node_id": "794:4243",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4244: design context classes not fully in code: ['shrink-0', 'leading-[20px]', \"font-['Pretendard:Medium',sans-serif]\", 'relative', 'text-[rgba(0,0,0,0.4)]']...",
+      "node_id": "794:4244",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4245: design context classes not fully in code: ['shrink-0', 'leading-[20px]', \"font-['Pretendard:Medium',sans-serif]\", 'relative', 'text-[rgba(0,0,0,0.4)]']...",
+      "node_id": "794:4245",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4247: design context classes not fully in code: ['relative', 'shrink-0', 'size-[9.117px]']...",
+      "node_id": "794:4247",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4248: design context classes not fully in code: ['size-full', 'block', 'max-w-none']...",
+      "node_id": "794:4248",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4250: design context classes not fully in code: ['-translate-x-1/2', 'left-1/2', 'w-[541.277px]', 'h-0', 'top-[265.23px]']...",
+      "node_id": "794:4250",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4252: design context classes not fully in code: ['shrink-0', 'text-[16px]', 'leading-[26.644px]', \"font-['Pretendard:SemiBold',sans-serif]\", 'text-[#2048e5]']...",
+      "node_id": "794:4252",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4255: design context classes not fully in code: ['text-[26px]', 'left-[calc(50%-449.52px)]', 'top-[61.63px]', \"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'text-black']...",
+      "node_id": "794:4255",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4256: design context classes not fully in code: ['text-[26px]', 'left-[calc(50%-449.52px)]', 'top-[61.63px]', \"font-['SUITE_Variable:ExtraBold',sans-serif]\", 'text-black']...",
+      "node_id": "794:4256",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4257: design context classes not fully in code: ['text-[28px]', \"font-['Pretendard:ExtraBold',sans-serif]\", 'left-[calc(50%-176.52px)]', 'top-[125.37px]', 'text-[#2048e5]']...",
+      "node_id": "794:4257",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4258: design context classes not fully in code: ['bg-white', 'w-[971px]', 'h-[224px]', 'top-[1035px]', 'absolute']...",
+      "node_id": "794:4258",
+      "file_path": null
+    },
+    {
+      "rule_id": "R007",
+      "severity": "info",
+      "message": "Node 794:4259: design context classes not fully in code: ['text-[26px]', 'not-italic', 'left-[calc(50%-449.52px)]', 'top-[61.63px]', 'leading-[44px]']...",
+      "node_id": "794:4259",
+      "file_path": null
+    }
+  ],
+  "critical_count": 52,
+  "warn_count": 12
+}

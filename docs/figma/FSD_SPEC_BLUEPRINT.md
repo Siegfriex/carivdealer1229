@@ -1,5 +1,11 @@
 # FSD 기능명세 블루프린트 (완성도 문서)
 
+> **DEPRECATED (2026-02-11)**  
+> 이 문서는 [FSD_IA_NODEID_SSOT.md](FSD_IA_NODEID_SSOT.md)로 통합·대체되었습니다.  
+> mcp_outputs 43노드 기반 Node 상세 매핑 및 코드 검증 결과는 SSOT 문서를 참조하세요.
+
+---
+
 **목적**: 전체 사이트맵 구조, IA 기능명세(§4), FIGMASCR0208 스크린샷·Figma 노드, **현재 코드베이스 FSD 구조**를 한 문서에 정렬한 블루프린트. 기능명세·디자인·구현의 단일 참조 지점.
 
 **기준 문서**: [IA_SITEMAP_SPEC_IPOE.md](IA_SITEMAP_SPEC_IPOE.md), [FIGMASCR0208](../../FIGMASCR0208/), `src/` (FSD 레이어).

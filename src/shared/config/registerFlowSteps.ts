@@ -4,7 +4,7 @@
  * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §3.5, 1714-22332
  */
 
-import type { ProgressStep } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
+import type { ProgressStep } from '@/widgets/ProgressSidebar';
 
 /** 매물등록 플로우 단계 식별자 (차량 업로드 → 검차 → 거래 → 탁송 → 완료) */
 export type RegisterFlowStepId = 'upload' | 'inspection' | 'trade' | 'logistics' | 'complete';

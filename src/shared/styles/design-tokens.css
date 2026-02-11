@@ -143,6 +143,7 @@
   /* Status Colors (차량 상태 등) */
   --color-draft: var(--color-gray-500);
   --color-inspection: var(--color-info);
+  --color-inspection-complete: #5b78cd;  /* 검차완료 뱃지 (1425:10951) */
   --color-bidding: #8B5CF6;  /* Purple */
   --color-active-sale: var(--color-success);
   --color-sold: #F97316;  /* Orange */

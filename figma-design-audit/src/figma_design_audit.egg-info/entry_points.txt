@@ -1,0 +1,2 @@
+[console_scripts]
+figma-audit = figma_audit.cli:cli

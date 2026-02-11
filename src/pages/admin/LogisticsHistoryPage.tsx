@@ -7,9 +7,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Truck, Calendar, MapPin, User, Lock, List, LayoutGrid } from 'lucide-react';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { LandingHeader } from '@/widgets/Header';
 import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
-import { LogisticsSectionTabs } from '@/pages/admin/logistics/LogisticsSectionTabs';
+import { LogisticsSectionTabs } from '@/widgets/LogisticsSectionTabs';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { Z_INDEX } from '@/shared/config/zIndex';
 import { apiClient } from '@/shared/api/apiClient';

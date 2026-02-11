@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "figma-design-audit"
+version = "0.1.0"
+description = "Figma Design Audit engine for carivdealer - metadata, design context, and code verification"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0",
+    "click>=8.0",
+    "pydantic>=2.0",
+]
+
+[project.scripts]
+figma-audit = "figma_audit.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]

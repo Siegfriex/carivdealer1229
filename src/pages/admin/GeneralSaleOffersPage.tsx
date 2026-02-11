@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { Check, X, Clock, DollarSign, Building } from 'lucide-react';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { LandingHeader } from '@/widgets/Header';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { apiClient } from '@/shared/api/apiClient';
 import { useToast } from '@/shared/ui/Toast';

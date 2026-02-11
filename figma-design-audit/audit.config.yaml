@@ -1,0 +1,29 @@
+project_root: ".."
+ssot_path: "docs/figma/FSD_IA_NODEID_SSOT.md"
+node_alias_map_path: "docs/figmaMCP/NODE_ALIAS_MAP.json"
+mcp_outputs_base: "docs/figmaMCP/mcp_outputs"
+impl_plans_base: "docs/figmaMCP/impl_plans"
+src_base: "src"
+
+rules:
+  r003_topology:
+    severity: "critical"
+  r003_dimension:
+    severity: "warn"
+    tolerance_percent: 15
+    min_width_px: 100
+  r006_impl_plan:
+    severity: "warn"
+  r001_colors:
+    severity: "critical"
+  r002_assets:
+    severity: "critical"
+  r004_fsd:
+    severity: "critical"
+  r005_traceability:
+    severity: "critical"
+  r007_styles:
+    severity: "info"
+  r008_tokens:
+    severity: "warn"
+    allow_jit: true

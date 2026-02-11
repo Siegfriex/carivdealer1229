@@ -7,14 +7,14 @@
 
 import { useNavigate } from 'react-router-dom';
 import { LOG_INGEST_URL } from '@/shared/config/logging';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { ProgressSidebar } from '@/widgets/ProgressSidebar/ui/ProgressSidebar';
+import { LandingHeader } from '@/widgets/Header';
+import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';
 import { Button } from '@/shared/ui/Button';
 import { useDevSkip } from '@/shared/context/DevSkipContext';
 import { useFormFeedback } from '@/shared/lib/formFeedback';
-import { useInspectionRequestStep1 } from '@/features/inspection/request-form/model/useInspectionRequestStep1';
+import { useInspectionRequestStep1 } from '@/features/inspection/request-form';
 import {
   InspectionVehicleSelectSection,
   InspectionScheduleSection,

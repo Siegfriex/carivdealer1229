@@ -6,7 +6,7 @@
 import type { ReactNode } from 'react';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
-import { MainLandingSidebar } from '@/widgets/MainLandingSidebar/ui/MainLandingSidebar';
+import { MainLandingSidebar } from '@/widgets/MainLandingSidebar';
 
 export type GnbListSidebarType = 'vehicles' | 'minimal';
 

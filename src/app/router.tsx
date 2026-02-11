@@ -1,9 +1,9 @@
 /**
  * Application Router
  * React Router 기반 라우팅 (URL 단일 진입점, 새로고침/딥링크/뒤로가기 지원).
- * 경로 목록은 FSD_SPEC_BLUEPRINT §2.2와 일치. IA §4.2 비로그인 시 보호된 라우트는 /signup으로 리다이렉트.
+ * 경로 목록은 FSD_IA_NODEID_SSOT §2.2와 일치. IA §4.2 비로그인 시 보호된 라우트는 /signup으로 리다이렉트.
  * @file
- * @see docs/figma/FSD_SPEC_BLUEPRINT.md §2.2
+ * @see docs/figma/FSD_IA_NODEID_SSOT.md §2.2
  * @see docs/figma/IA_SITEMAP_SPEC_IPOE.md §4
  */
 
@@ -21,6 +21,7 @@ import { SignupCompletePage } from '@/pages/auth/SignupCompletePage';
 import { DashboardPage } from '@/pages/admin/DashboardPage';
 import { VehicleRegisterEntryPage } from '@/pages/admin/vehicle/VehicleRegisterEntryPage';
 import { VehicleRegisterStep1Page } from '@/pages/admin/vehicle/VehicleRegisterStep1Page';
+import { VehicleRegisterStep2Page } from '@/pages/admin/vehicle/VehicleRegisterStep2Page';
 import { InspectionListPage } from '@/pages/admin/inspection/InspectionListPage';
 import { InspectionRequestLandingPage } from '@/pages/admin/inspection/InspectionRequestLandingPage';
 import { InspectionRequestStep1Page } from '@/pages/admin/inspection/InspectionRequestStep1Page';
@@ -54,7 +55,7 @@ import { isRunDev } from '@/shared/config/runDev';
 
 /**
  * 앱 라우터 (공개·보호·폴백 라우트)
- * @description FSD_SPEC_BLUEPRINT §2.2·IA §4.2. 비로그인 시 보호 라우트는 /signup 리다이렉트.
+ * @description FSD_IA_NODEID_SSOT §2.2·IA §4.2. 비로그인 시 보호 라우트는 /signup 리다이렉트.
  */
 export const Router = () => {
   return (
@@ -79,6 +80,7 @@ export const Router = () => {
           <Route path="/vehicles" element={<VehicleListPage />} />
           <Route path="/vehicles/new" element={<VehicleRegisterEntryPage />} />
           <Route path="/vehicles/new/step1" element={<VehicleRegisterStep1Page />} />
+          <Route path="/vehicles/new/step2" element={<VehicleRegisterStep2Page />} />
           <Route path="/vehicles/:vehicleId/complete" element={<VehicleRegistrationCompletePage />} />
           <Route path="/vehicles/:vehicleId/sale/analyzing" element={<GeneralSaleAnalyzingPage />} />
           <Route path="/vehicles/:vehicleId/sale/price" element={<GeneralSalePricePage />} />

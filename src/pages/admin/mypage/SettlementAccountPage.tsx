@@ -6,8 +6,8 @@
  */
 
 import { User, Plus, Check, Settings } from 'lucide-react';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
-import { MypageSidebar } from '@/widgets/MypageSidebar/ui/MypageSidebar';
+import { LandingHeader } from '@/widgets/Header';
+import { MypageSidebar } from '@/widgets/MypageSidebar';
 import { Button } from '@/shared/ui/Button';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 

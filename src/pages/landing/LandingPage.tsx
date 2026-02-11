@@ -16,7 +16,7 @@ import { LOG_INGEST_URL } from '@/shared/config/logging';
 import { useAuth } from '@/shared/context/AuthContext';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { Button } from '@/shared/ui/Button';
-import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
+import { LandingHeader } from '@/widgets/Header';
 import { LandingHeroUnauth } from '@/widgets/LandingHeroUnauth';
 import { LandingHeroAuth } from '@/widgets/LandingHeroAuth';
 import { LandingUserGuide } from '@/widgets/LandingUserGuide';
