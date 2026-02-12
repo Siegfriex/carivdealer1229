@@ -326,3 +326,4 @@ router.tsx 기준. **공개 11개, 보호 30개(리다이렉트 1 포함), 폴�
 - **라우트 상세**: [CarivDealer_VID.md](CarivDealer_VID.md) §4
 - **nodeId 매핑**: [FSD_IA_NODEID_SSOT.md](figma/FSD_IA_NODEID_SSOT.md) §4
 - **routeManager**: [CarivDealer_VID.md](CarivDealer_VID.md) §5
+- **의존 문서**: [CarivDealer_DOCUMENT_SUITE_INDEX.md](CarivDealer_DOCUMENT_SUITE_INDEX.md) — 문서 스위트 의존성

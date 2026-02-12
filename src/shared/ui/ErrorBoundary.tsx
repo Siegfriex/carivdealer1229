@@ -1,10 +1,11 @@
 /**
  * 에러 경계 컴포넌트
  * 자식 트리에서 발생한 런타임 에러를 잡아 fallback UI 표시 및 logError로 로깅.
+ * 네트워크·타임아웃·인증 등 에러 타입별 사용자 친화 메시지 표시.
  */
 
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { logError, ErrorType } from '@/shared/lib/errorHandler';
+import { logError, analyzeError, ErrorType } from '@/shared/lib/errorHandler';
 import type { ApiError } from '@/shared/lib/errorHandler';
 
 /** ErrorBoundary props (children, 선택 fallback) */
@@ -33,11 +34,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    const apiError: ApiError = {
-      type: ErrorType.UNKNOWN_ERROR,
-      message: error.message,
-      originalError: error,
-    };
+    const apiError = analyzeError(error);
     logError(apiError, 'ErrorBoundary');
     if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught:', error, errorInfo);
@@ -49,13 +46,20 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       if (this.props.fallback) {
         return this.props.fallback;
       }
+      const apiError = analyzeError(this.state.error);
+      const message = apiError.type === ErrorType.NETWORK_ERROR
+        ? '네트워크 연결을 확인해주세요.'
+        : apiError.type === ErrorType.TIMEOUT_ERROR
+          ? '요청 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.'
+          : apiError.type === ErrorType.AUTH_ERROR
+            ? '인증이 필요합니다. 다시 로그인해주세요.'
+            : apiError.message || '일시적인 오류가 발생했습니다. 페이지를 새로고침하거나 잠시 후 다시 시도해주세요.';
+
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
           <div className="max-w-md w-full text-center">
             <h1 className="text-h2 font-bold text-gray-900 mb-2">문제가 발생했습니다</h1>
-            <p className="text-body text-gray-600 mb-6">
-              일시적인 오류가 발생했습니다. 페이지를 새로고침하거나 잠시 후 다시 시도해주세요.
-            </p>
+            <p className="text-body text-gray-600 mb-6">{message}</p>
             <button
               type="button"
               onClick={() => this.setState({ hasError: false, error: null })}

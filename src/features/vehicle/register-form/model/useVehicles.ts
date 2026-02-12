@@ -6,6 +6,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Timestamp, collection, query, where, orderBy, getDocs, Query } from 'firebase/firestore';
 import { db } from '@/shared/config/firebase';
+import { vehicleKeys } from '@/shared/api/queryKeys';
 import { isRunDev } from '@/shared/config/runDev';
 import { MOCK_VEHICLES_ALL } from '@/shared/api/mockLists';
 
@@ -35,7 +36,7 @@ function getMockVehicles(): Vehicle[] {
  */
 export const useVehicles = (options: UseVehiclesOptions = {}) => {
   return useQuery({
-    queryKey: ['vehicles', options.ownerId, options.status],
+    queryKey: vehicleKeys.list(options.ownerId, options.status),
     queryFn: async (): Promise<Vehicle[]> => {
       let q: Query = collection(db, 'vehicles');
 

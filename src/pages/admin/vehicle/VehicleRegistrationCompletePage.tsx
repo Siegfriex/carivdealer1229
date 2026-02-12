@@ -7,7 +7,7 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -20,7 +20,7 @@ export const VehicleRegistrationCompletePage = () => {
 
   const handleGoHome = () => {
     // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegistrationCompletePage:handleGoHome',message:'CTA_1완료→홈',data:{to:'/vehicles'},timestamp:Date.now(),hypothesisId:'H_CTA1',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('VehicleRegistrationCompletePage:handleGoHome', 'CTA_1완료→홈', { to: '/vehicles' }, 'H_CTA1');
     // #endregion
     navigate('/vehicles');
   };
@@ -28,7 +28,7 @@ export const VehicleRegistrationCompletePage = () => {
   /** IA §4.10 CTA_2 진입: 검차 신청 랜딩으로 이동 */
   const handleInspectionRequest = () => {
     // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'VehicleRegistrationCompletePage:handleInspectionRequest',message:'CTA_1완료→검차신청',data:{to:'/inspections/request'},timestamp:Date.now(),hypothesisId:'H_CTA2',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('VehicleRegistrationCompletePage:handleInspectionRequest', 'CTA_1완료→검차신청', { to: '/inspections/request' }, 'H_CTA2');
     // #endregion
     navigate('/inspections/request');
   };

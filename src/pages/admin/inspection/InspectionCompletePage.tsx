@@ -9,7 +9,7 @@
 
 import { useState, useMemo, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { VehicleInfoPanel } from '@/widgets/VehicleInfoPanel';
@@ -75,7 +75,7 @@ export const InspectionCompletePage = () => {
   /** 판매하기: sale/analyzing으로 이동 후 해당 페이지에서 일반/경매 분기 */
   const handleSale = () => {
     const to = vehicleId ? `/vehicles/${vehicleId}/sale/analyzing` : '/offers';
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionCompletePage:handleSale',message:'검차완료→CTA_3 판매방식선택(sale/analyzing)',data:{to,vehicleId},timestamp:Date.now(),hypothesisId:'H_CTA3',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('InspectionCompletePage:handleSale', '검차완료→CTA_3 판매방식선택(sale/analyzing)', { to, vehicleId }, 'H_CTA3');
     navigate(to);
   };
 

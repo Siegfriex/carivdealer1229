@@ -13,17 +13,18 @@
 | **데이터 소스** | routeManager, AuthContext, apiClient, features, pages |
 | **검증 방법** | grep, read_file (코드베이스 Fact) |
 | **의존성** | [CarivDealer_IA.md](CarivDealer_IA.md) |
+| **문서 스위트** | [CarivDealer_DOCUMENT_SUITE_INDEX.md](CarivDealer_DOCUMENT_SUITE_INDEX.md) |
 
 ---
 
 ## §1 Core Loop (핵심 시나리오)
 
-차량 등록 → 검수 → 판매/경매 설정 → 낙찰/유찰 → 탁송 → 정산 완료 (End-to-End Flow)
+차량 등록 → 검차 → 판매/경매 설정 → 낙찰/유찰 → 탁송 → 정산 완료 (End-to-End Flow)
 
 ```mermaid
 flowchart TD
     subgraph Loop [Core Loop]
-        A[차량등록] --> B{검수 신청?}
+        A[차량등록] --> B{검차 신청?}
         B -->|MOCK 있음| C[검차 진행]
         B -->|MOCK 없음| D[검차 신청]
         D --> C
@@ -40,9 +41,9 @@ flowchart TD
 | 단계 | 라우트 | 페이지 |
 |------|--------|--------|
 | 1. 차량등록 | `/vehicles/new` → `/vehicles/new/step1` → `step2` → `/vehicles/:vehicleId/complete` | VehicleRegisterEntryPage → VehicleRegisterStep1Page → Step2Page → VehicleRegistrationCompletePage |
-| 2. 검수 | `/inspections/request` → `request/step1` → `step2` | InspectionRequestLandingPage → InspectionRequestStep1Page → InspectionRequestStep2Page |
-| 2. 검수 진행 | `/inspections/:inspectionId/progress` (?stage=matching, en_route) | InspectionProgressPage |
-| 2. 검수 완료 | `/inspections/:inspectionId/complete` | InspectionCompletePage |
+| 2. 검차 | `/inspections/request` → `request/step1` → `step2` | InspectionRequestLandingPage → InspectionRequestStep1Page → InspectionRequestStep2Page |
+| 2. 검차 진행 | `/inspections/:inspectionId/progress` (?stage=matching, en_route) | InspectionProgressPage |
+| 2. 검차 완료 | `/inspections/:inspectionId/complete` | InspectionCompletePage |
 | 3. 판매방식 선택 | `/vehicles/:vehicleId/sale/analyzing` | GeneralSaleAnalyzingPage |
 | 3. 일반판매 | `/vehicles/:vehicleId/sale/price` → `/sale/complete` | GeneralSalePricePage → GeneralSaleCompletePage |
 | 3. 경매 | `/vehicles/:vehicleId/auction`, `auction/start-price`, `duration`, `complete` | AuctionDetailPage → AuctionStartPricePage → AuctionDurationPage → AuctionCompletePage |
@@ -62,7 +63,7 @@ flowchart TD
 | `bidding` | vehicleId 존재 | `/vehicles/:vehicleId/auction` | |
 | `sold` | vehicleId 존재 | `/logistics/schedule?vehicleId={vehicleId}` | |
 | `pending_settlement` | vehicleId 존재 | `MOCK_VEHICLE_TO_SETTLEMENT[vehicleId]` 있으면 `/settlements/:settlementId`, **없으면** `/settlements` | settlementId 없으면 정산 목록 |
-| `completed` | vehicleId 존재 | settlementId 있으면 `/settlements/:id`, 없으면 `/vehicles/:vehicleId` | |
+| `completed` | vehicleId 존재 | settlementId 있으면 `/settlements/:settlementId`, 없으면 `/vehicles/:vehicleId` | |
 
 **vehicleId 예외**:
 - `vehicleId` 빈 문자열·null·잘못된 형식 → `FALLBACK_ROUTE` (`/vehicles`)
@@ -80,14 +81,14 @@ flowchart TD
     CheckV -->|No| Fallback[/vehicles]
     CheckV -->|Yes| CheckS{status?}
     CheckS -->|draft,inspection| CheckI{inspectionId?}
-    CheckI -->|Yes| Progress[/inspections/:id/progress]
+    CheckI -->|Yes| Progress[/inspections/:inspectionId/progress]
     CheckI -->|No| Request[/inspections/request?vehicleId=...]
-    CheckS -->|active_sale| Trade[/vehicles/:id/trade]
-    CheckS -->|bidding| Auction[/vehicles/:id/auction]
+    CheckS -->|active_sale| Trade[/vehicles/:vehicleId/trade]
+    CheckS -->|bidding| Auction[/vehicles/:vehicleId/auction]
     CheckS -->|sold| Logistics[/logistics/schedule?vehicleId=...]
     CheckS -->|pending_settlement,completed| CheckSet{settlementId?}
-    CheckSet -->|Yes| Settlement[/settlements/:id]
-    CheckSet -->|No| SettlementList[/settlements] or Vehicle[/vehicles/:id]
+    CheckSet -->|Yes| Settlement[/settlements/:settlementId]
+    CheckSet -->|No| SettlementList[/settlements] or Vehicle[/vehicles/:vehicleId]
     CheckS -->|null/미등록| Vehicle
 ```
 
@@ -248,6 +249,7 @@ flowchart TD
 
 - **IA**: [CarivDealer_IA.md](CarivDealer_IA.md)
 - **routeManager**: [CarivDealer_VID.md](CarivDealer_VID.md) §5
+- **문서 스위트**: [CarivDealer_DOCUMENT_SUITE_INDEX.md](CarivDealer_DOCUMENT_SUITE_INDEX.md)
 - **AuthContext**: `src/shared/context/AuthContext.tsx`
 - **errorHandler**: `src/shared/lib/errorHandler.ts`
 - **formFeedback**: `src/shared/lib/formFeedback.ts`

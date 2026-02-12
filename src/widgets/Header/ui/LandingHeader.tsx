@@ -8,7 +8,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { User, ChevronDown, Car, FileText, Bell, SearchCheck } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { LoginModal } from '@/shared/ui/LoginModal';
@@ -79,7 +79,7 @@ export function LandingHeader({ userName, onRegisterListing, variant = 'landing'
     // #region agent log
     const hasCb = !!onRegisterListing;
     const to = hasCb ? 'callback' : '/vehicles/new';
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LandingHeader:handleRegister',message:'매물등록하기',data:{hasCallback:hasCb,target:to},timestamp:Date.now(),hypothesisId:'H_진입',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('LandingHeader:handleRegister', '매물등록하기', { hasCallback: hasCb, target: to }, 'H_진입');
     // #endregion
     onRegisterListing?.();
     if (!onRegisterListing) navigate('/vehicles/new');

@@ -7,7 +7,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -43,18 +43,12 @@ export const GeneralSaleAnalyzingPage = () => {
       ? (vehicleId ? `/vehicles/${vehicleId}/sale/price` : '/offers')
       : (vehicleId ? `/vehicles/${vehicleId}/auction/start-price` : '/offers');
     const timer = setTimeout(() => {
-      fetch(LOG_INGEST_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'GeneralSaleAnalyzingPage:analyzingDone',
-          message: saleType === 'general' ? 'CTA_3 일반 시세→가격설정' : 'CTA_3 경매 시세→시작가설정',
-          data: { to, saleType },
-          timestamp: Date.now(),
-          hypothesisId: 'H_CTA3_sale',
-          runId: 'register-flow-check',
-        }),
-      }).catch(() => {});
+      logEventWithHypothesis(
+        'GeneralSaleAnalyzingPage:analyzingDone',
+        saleType === 'general' ? 'CTA_3 일반 시세→가격설정' : 'CTA_3 경매 시세→시작가설정',
+        { to, saleType },
+        'H_CTA3_sale'
+      );
       navigate(to);
     }, ANALYZING_DELAY_MS);
     return () => clearTimeout(timer);

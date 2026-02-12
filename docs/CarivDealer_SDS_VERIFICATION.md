@@ -1,7 +1,7 @@
 # CarivDealer Service Design Specification 검증 보고서
 
-**검증 일시**: 2026-02-12  
-**검증 대상**: CarivDealer_IA, CarivDealer_UserFlow, CarivDealer_Storyboard, router.tsx
+**검증 일시**: 2026-02-13  
+**검증 대상**: CarivDealer_IA, CarivDealer_UserFlow, CarivDealer_Storyboard, router.tsx, CarivDealer_api_v1, CarivDealer_API_ERD_Mapping
 
 ---
 
@@ -36,6 +36,8 @@
 | docs/CarivDealer_IA.md | ✅ |
 | docs/CarivDealer_UserFlow.md | ✅ |
 | docs/CarivDealer_Storyboard.md | ✅ |
+| docs/CarivDealer_api_v1.md | ✅ |
+| docs/CarivDealer_API_ERD_Mapping.md | ✅ |
 
 ---
 
@@ -57,3 +59,17 @@
 - `grep` for Route path in router.tsx
 - `list_dir` for docs/
 - 수동 행 수 카운트
+
+---
+
+## 6. api_v1·API_ERD_Mapping 교차 검증
+
+| 항목 | api_v1 | API_ERD_Mapping | 결과 |
+|------|--------|-----------------|------|
+| 차량 API | GET/POST/PUT/PATCH/DELETE /vehicles | vehicle·vehicle_file 매핑 | ✅ 일치 |
+| 검차 API | POST /vehicles/:id/inspections, GET /vehicles/:id/inspections/latest | inspection·inspection_place 매핑 | ✅ 일치 |
+| nodeId SSOT | — | 검차 Step1: 1033-4903 (FSD_IA_NODEID_SSOT §4) | ✅ 통일 |
+| 계산값 | displayStatus, primaryCta (§3.2) | §3 계산값 목록 | ✅ 일치 |
+| 라우트 패턴 | §4 라우트↔API | IA §3.x, FIGMA_IA_FSD_STRUCTURE | ✅ 일치 |
+
+**참조**: [CarivDealer_DOCUMENT_SUITE_CONSISTENCY_REPORT_20260213.md](CarivDealer_DOCUMENT_SUITE_CONSISTENCY_REPORT_20260213.md), [CarivDealer_DOCUMENT_SUITE_INDEX.md](CarivDealer_DOCUMENT_SUITE_INDEX.md)

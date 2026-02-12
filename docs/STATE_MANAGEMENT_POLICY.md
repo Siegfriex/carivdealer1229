@@ -1,7 +1,7 @@
 # CarivDealer 상태 관리 정책 및 개발 로드맵
 
 **목적**: CarivDealer 프론트엔드 상태 관리 현황·정책·갭 분석 및 TanStack Query·Provider 중심 개선 제언.  
-**참조**: [CarivDealer_IA.md](CarivDealer_IA.md), [CarivDealer_UserFlow.md](CarivDealer_UserFlow.md)
+**참조**: [CarivDealer_IA.md](CarivDealer_IA.md), [CarivDealer_UserFlow.md](CarivDealer_UserFlow.md), [CarivDealer_API_ERD_Mapping.md](CarivDealer_API_ERD_Mapping.md), [CarivDealer_api_v1.md](CarivDealer_api_v1.md), [CarivDealer_VID.md](CarivDealer_VID.md)
 
 ---
 
@@ -9,10 +9,10 @@
 
 | 항목 | 내용 |
 |------|------|
-| **버전** | 1.3 |
+| **버전** | 1.5 |
 | **작성일** | 2026-02-12 |
-| **최종 수정** | 2026-02-12 — Zod·Infinite Query·Selective Persist·코드베이스 정합성 검토 반영 |
-| **의존 문서** | CarivDealer_IA, CarivDealer_UserFlow, FSD_IA_NODEID_SSOT |
+| **최종 수정** | 2026-02-13 — 진행 전 처리(P0 필수) 체크리스트 추가 |
+| **의존 문서** | CarivDealer_IA, CarivDealer_UserFlow, CarivDealer_API_ERD_Mapping, CarivDealer_api_v1, CarivDealer_VID, FSD_IA_NODEID_SSOT |
 | **벤치마크** | TanStack Query v5 공식 문서, enterprise 패턴 |
 
 ---
@@ -105,6 +105,21 @@ mutations: { retry: 0 }
 
 - `handleApiError` 중앙화, Mock 폴백 시 `_isMockData`
 - Empty State, 로딩·에러 UI
+
+### 2.5 API·ERD·VID 정합성 (참조 문서 일치화)
+
+| 참조 문서 | 핵심 내용 | 본 정책과의 일치 |
+|-----------|-----------|------------------|
+| **CarivDealer_API_ERD_Mapping** | 정산·탁송·경매·오퍼 엔드포인트 제안, status enum, 계산값(displayStatus, primaryCta) | P0 useSettlements/useLogistics 구현 시 매핑 문서 제안 엔드포인트·스키마 반영 |
+| **CarivDealer_api_v1** | 회원·차량·검차 현재 명세. 탁송·정산·거래·경매는 "확장 제안"으로 ERD_Mapping 참조 | apiEndpoints.ts와 Functions 연동. 확장 시 api_v1 §4 라우트↔API 매핑 반영 |
+| **CarivDealer_VID** | Protocol 4: Server State(API)→React Query. Stale-while-revalidate | 본 정책의 TanStack Query 적용과 동일 |
+
+**API 응답 포맷** (api_v1 공통): `{ ok: boolean, result: object | null, message: string | null }` — queryFn 내 `result` 추출 후 Zod parse 적용.
+
+**엔드포인트 갭** (ERD_Mapping 제안 vs apiEndpoints.ts 현행):
+- 정산: `GET /settlements`, `GET /settlements/:id` → 현재 SETTLEMENT.NOTIFY만. 목록·상세 API 확장 필요.
+- 탁송: `GET /logistics/schedule`, `GET /logistics/history` → 현재 LOGISTICS는 schedule/dispatch/handover만. 목록·내역 API 확장 필요.
+- 매출: `GET /sales/history` → apiEndpoints에 미정의. 확장 필요.
 
 ---
 
@@ -288,14 +303,16 @@ return useMutation({
 
 **Settlement, Logistics 페이지를 `useEffect` → `useQuery`로 전면 리팩토링.**
 
-| 작업 | 대상 | 산출물 |
-|------|------|--------|
-| `useSettlements` | SettlementListPage | `features/settlement/model/useSettlements.ts` |
-| `useSettlement` | SettlementDetailPage | `features/settlement/model/useSettlement.ts` |
-| `useLogistics` | LogisticsSchedulePage, LogisticsHistoryPage | `features/logistics/model/useLogistics.ts` |
-| `useSalesHistory` | SalesHistoryPage | `features/sale/model/useSalesHistory.ts` |
+| 작업 | 대상 | 산출물 | API·스키마 참조 |
+|------|------|--------|-----------------|
+| `useSettlements` | SettlementListPage | `features/settlement/model/useSettlements.ts` | ERD_Mapping §정산: GET /settlements(status, from, to, page, size). `entities/settlement/model/schema.ts` |
+| `useSettlement` | SettlementDetailPage | `features/settlement/model/useSettlement.ts` | ERD_Mapping §정산: GET /settlements/:id. `settlementSchema` |
+| `useLogistics` | LogisticsSchedulePage, LogisticsHistoryPage | `features/logistics/model/useLogistics.ts` | ERD_Mapping §물류: GET /logistics/schedule, GET /logistics/history. `entities/logistics/model/schema.ts` |
+| `useSalesHistory` | SalesHistoryPage | `features/sale/model/useSalesHistory.ts` | ERD_Mapping §정산: GET /sales/history. sale_type enum (general, auction) |
 
 **예상 효과**: 캐시·재시도·stale 관리, "새로고침 없이 최신 정보" UX.
+
+**참고**: apiEndpoints.ts·Firebase Functions에 GET 정산/탁송/매출 목록·상세 API가 없으면 Mock 폴백으로 먼저 구현. 백엔드 확장 시 ERD_Mapping·api_v1 §4 반영.
 
 ### P1: Auction Polling (실시간성 확보)
 
@@ -449,13 +466,33 @@ useQuery({
 
 ## §9 Action Plan v1.3 (최종 로드맵)
 
+### 완료 사항 (재평가 기준 2026-02-13)
+
+다음 안정화·품질 항목은 **완료** (§11.5 검증). Action Plan P0–P4 진행 전 기반 확보됨.
+
+- getVehicleStatistics 방어, logEvent 추상화, mutation onError 공통화  
+- API 훅 import 일관성(@/shared/api/client), ErrorBoundary 개선, ImageWithFallback 적용
+
+### 진행 전 처리 (Pre-requisites) — P0 시작 전 필수
+
+| # | 항목 | 내용 | 완료 |
+|---|------|------|------|
+| **1** | ownerId/dealerId | AuthContext 확장 또는 API 전환 시점에 dealerId(JWT/uid) 공급 방식 결정 | ✅ |
+| **2** | MockLogisticsItem | `state` → API_ERD_Mapping `status`(scheduled, dispatched, in_transit, completed)로 통일 | ✅ |
+| **3** | logisticsSchema canceled | canceled enum 추가 여부 도메인 결정 및 반영 (CarivDealer_API_ERD_Mapping §물류 참조) | ✅ |
+| **4** | MOCK_VEHICLE_LIST vs MOCK_VEHICLES_ALL | vehicleId 연동 ID 체계 정리 (MOCK_VEHICLES_ALL 기준, mockLists 통합 시) | ✅ |
+
+※ ERD 기준: CarivDealer_API_ERD_Mapping.md. P3 Infinite Queries는 제외.
+
+### 남은 과업 (P0–P4)
+
 | 순위 | 과업명 | 핵심 내용 | 비고 |
 |------|--------|-----------|------|
-| **P0** | Missing Domains | Settlement, Logistics useQuery 전환 | |
-| **P1** | Auction Polling | refetchInterval 추가로 실시간성 확보 | |
-| **P2** | Key Factory & Zod | 중앙 관리 + 런타임 스키마 검증 | **Critical** |
-| **P3** | Infinite Queries | 대규모 리스트용 무한 스크롤 최적화 | Scalability |
-| **P4** | Selective Persist | 필요한 캐시만 골라서 스토리지 저장 | Security & UX |
+| **P0** | Missing Domains | Settlement, Logistics useQuery 전환 | ✅ 완료 |
+| **P1** | Auction Polling | refetchInterval 추가로 실시간성 확보 | ✅ 완료 |
+| **P2** | Key Factory & Zod | 중앙 관리 + 런타임 스키마 검증 | ✅ 완료 |
+| **P3** | Infinite Queries | 대규모 리스트용 무한 스크롤 최적화 | Scalability (제외) |
+| **P4** | Selective Persist | 필요한 캐시만 골라서 스토리지 저장 | ✅ 완료 |
 
 ---
 
@@ -491,16 +528,55 @@ useQuery({
 |------|------|
 | **Zod 스키마 재사용** | entities에 이미 `vehicleSchema`, `inspectionSchema`, `settlementSchema`, `logisticsSchema` 등 존재. P2에서 apiClient 응답 검증 시 이 스키마 활용 권장. |
 | **Firestore vs API** | useVehicles/useInspections는 Firestore 직접. apiClient는 Firebase Functions. API 응답 시 Zod parse가 필수. |
-| **settlementSchema** | `entities/settlement/model/schema.ts`에 정의됨. useSettlements 구현 시 즉시 활용 가능. |
-| **logisticsSchema** | `entities/logistics/model/schema.ts`에 정의됨. useLogistics 구현 시 즉시 활용 가능. |
+| **settlementSchema** | `entities/settlement/model/schema.ts`에 정의됨. ERD_Mapping §정산 status enum(pending, completed, paid)과 일치. |
+| **logisticsSchema** | `entities/logistics/model/schema.ts`에 정의됨. ERD_Mapping §물류 status enum(scheduled, dispatched, in_transit, completed, canceled)과 일치. |
+| **apiEndpoints 갭** | SETTLEMENT.NOTIFY만 존재. LOGISTICS는 schedule/dispatch/handover만. GET 목록·상세·sales/history는 API 확장 또는 Mock 전제. |
 
-### 11.3 평가 요약
+### 11.3 문서 간 정합성
+
+| 문서 | STATE_MANAGEMENT_POLICY와의 일치 |
+|------|--------------------------------|
+| **CarivDealer_VID** | Protocol 4 (Server State→React Query) 반영. Stale-while-revalidate. |
+| **CarivDealer_api_v1** | §4 라우트↔API 매핑. /logistics, /settlements, /sales/history 확장 제안 참조. |
+| **CarivDealer_API_ERD_Mapping** | 정산·탁송·경매·오퍼 엔드포인트 제안, status enum, 계산값(displayStatus, primaryCta) 반영. |
+
+### 11.4 평가 요약
 
 | 구분 | 평가 |
 |------|------|
 | **FSD·entities 일관성** | 도메인별 schema가 entities에 이미 있어 P2 Zod 통합이 수월함. |
 | **Action Plan 실행 가능성** | P0부터 순차 진행 시 P2(Key Factory·Zod)는 기존 schema 재사용으로 리스크 낮음. |
 | **선택적 Persist** | TanStack Query Persist의 `serialize`/`deserialize` 또는 `queryKey` 필터로 whitelist/blacklist 구현 가능. |
+| **API·ERD 확장** | P0 useSettlements/useLogistics는 Mock 또는 apiClient 확장 시 ERD_Mapping·api_v1 §4 명세 준수 권장. |
+
+---
+
+## §11.5 완료 플랜 검증 (2026-02-13)
+
+**검증 방법**: grep, read_file로 코드베이스 직접 확인.  
+**검증 시점**: 2026-02-13.  
+
+### P0–P4 진행 완료 (2026-02-13)
+
+| # | 항목 | 내용 | 산출물 |
+|---|------|------|--------|
+| **P0** | Missing Domains | useSettlements, useSettlement, useLogisticsSchedule, useLogisticsHistory, useSalesHistory | features/settlement, logistics, sale |
+| **P1** | Auction Polling | useAuction(vehicleId, { enabled }) + refetchInterval: 5000, staleTime: 0 | features/auction/model/useAuction.ts, AuctionDetailPage |
+| **P2** | Key Factory & Zod | queryKeys.ts, mock schema parse | shared/api/queryKeys.ts, settlementApi, logistics, sale hooks |
+| **P4** | Selective Persist | whitelist(vehicles, settlements), blacklist(auction, user 등) | shared/api/queryPersister.ts, QueryProvider |
+
+### 기존 검증 항목
+
+| # | 항목 | 완료 내용 | 검증 결과 |
+|---|------|-----------|-----------|
+| **1** | getVehicleStatistics 방어 | `Promise.resolve({})` 적용 | ✅ `vehicleApi.ts` L31 `return Promise.resolve({});` |
+| **2.1** | logEvent 추상화 | `logEvent.ts` 생성, 전량 `logEventWithHypothesis`로 교체 | ✅ `shared/lib/logEvent.ts` 존재. 18개 파일에서 `logEventWithHypothesis` import |
+| **2.2** | mutation onError 공통화 | 4개 훅 모두 `handleError` 사용 | ✅ useBid, useBuyNow, useInspectionRequest, useVehicleRegister — `onError: (err) => showToast(handleError(err), 'error')` |
+| **2.3** | API 훅 import 일관성 | features 전부 `@/shared/api/client` | ✅ useBid, useBuyNow, useInspectionRequest, ocrApi — `apiClient` from `@/shared/api/client`. useVehicleRegister는 Firestore 직접 호출 (API 미사용) |
+| **2.4** | ErrorBoundary 개선 | `analyzeError` 기반 타입별 메시지 | ✅ `ErrorBoundary.tsx` L47–56: NETWORK_ERROR, TIMEOUT_ERROR, AUTH_ERROR별 사용자 친화 메시지 |
+| **3.1** | ImageWithFallback | VehicleCard, VehicleListCard 적용 | ✅ `VehicleCard.tsx`, `VehicleListCard.tsx`에서 `ImageWithFallback` import 및 사용 |
+
+**결과**: 6개 항목 전부 코드베이스와 일치. 완료 확정.
 
 ---
 
@@ -508,6 +584,9 @@ useQuery({
 
 - [CarivDealer_IA.md](CarivDealer_IA.md) — 라우트·메뉴·IA
 - [CarivDealer_UserFlow.md](CarivDealer_UserFlow.md) — 사용자 플로우·예외
+- [CarivDealer_API_ERD_Mapping.md](CarivDealer_API_ERD_Mapping.md) — API↔ERD 매핑·엔드포인트 제안·status enum
+- [CarivDealer_api_v1.md](CarivDealer_api_v1.md) — API 명세 v1·라우트↔API 매핑
+- [CarivDealer_VID.md](CarivDealer_VID.md) — VID Protocol·routeManager·Phase 로드맵
 - [TanStack Query v5 Docs](https://tanstack.com/query/latest/docs/framework/react/overview)
 - [Optimistic Updates](https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates)
 - [Invalidations from Mutations](https://tanstack.com/query/v4/docs/framework/react/guides/invalidations-from-mutations)

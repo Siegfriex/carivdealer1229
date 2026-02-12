@@ -3,7 +3,8 @@
 **대상**: FM Seller(Dealer) 앱  
 **출처**: [FM Seller(Dealer) API명세 (Notion)](https://www.notion.so/2f559864d9fb800992b9cfd7beaa130e?pvs=21)  
 **범위**: 회원가입·로그인·차량(등록/목록/상세/검차 신청·최신 상태) — Notion 합의 기준.  
-**미포함(별도 확장 예정)**: 검차 목록/상세 전용 API, 탁송·정산·거래(제안)·경매·마이페이지 등 REST 경로는 Notion 본문에 없어 본 문서에는 수록하지 않음.
+**미포함(별도 확장 예정)**: 검차 목록/상세 전용 API, 탁송·정산·거래(제안)·경매·마이페이지 등 REST 경로는 Notion 본문에 없어 본 문서에는 수록하지 않음.  
+**문서 스위트**: [CarivDealer_DOCUMENT_SUITE_INDEX.md](CarivDealer_DOCUMENT_SUITE_INDEX.md)
 
 ---
 

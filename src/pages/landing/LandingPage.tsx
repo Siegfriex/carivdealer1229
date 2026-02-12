@@ -12,7 +12,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { useAuth } from '@/shared/context/AuthContext';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { Button } from '@/shared/ui/Button';
@@ -45,7 +45,7 @@ export const LandingPage = () => {
 
   /** 매물등록 flow 진입 → /vehicles/new (비로그인 Section2 CTA) */
   const handleStartNow = () => {
-    fetch(LOG_INGEST_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'LandingPage:handleStartNow', message: '지금 시작하기', data: { to: '/vehicles/new' }, timestamp: Date.now(), hypothesisId: 'H_진입', runId: 'register-flow-check' }) }).catch(() => {});
+    logEventWithHypothesis('LandingPage:handleStartNow', '지금 시작하기', { to: '/vehicles/new' }, 'H_진입');
     navigate('/vehicles/new');
   };
 

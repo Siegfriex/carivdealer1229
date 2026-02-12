@@ -11,12 +11,13 @@ const timestampSchema = z.custom<Timestamp>(
   { message: 'Invalid Timestamp' }
 );
 
-/** 탁송 상태 스키마 */
+/** 탁송 상태 스키마 (CarivDealer_API_ERD_Mapping §물류) */
 export const logisticsStatusSchema = z.enum([
   'scheduled',
   'dispatched',
   'in_transit',
   'completed',
+  'canceled',
 ]);
 
 /** 탁송 스키마 */

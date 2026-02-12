@@ -5,7 +5,7 @@
  */
 
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -27,20 +27,20 @@ export const AuctionCompletePage = () => {
   const handleAuctionDetail = () => {
     const to = vehicleId ? `/vehicles/${vehicleId}/auction` : '/vehicles';
     // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuctionCompletePage:handleAuctionDetail',message:'경매완료→상세(CTA_4탁송연결없음)',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA3_auction',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('AuctionCompletePage:handleAuctionDetail', '경매완료→상세(CTA_4탁송연결없음)', { to }, 'H_CTA3_auction');
     // #endregion
     navigate(to);
   };
 
   const handleOffers = () => {
     // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuctionCompletePage:handleOffers',message:'경매완료→제안목록',data:{to:'/offers'},timestamp:Date.now(),hypothesisId:'H_CTA3_auction',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('AuctionCompletePage:handleOffers', '경매완료→제안목록', { to: '/offers' }, 'H_CTA3_auction');
     // #endregion
     navigate('/offers');
   };
 
   const handleNextLogistics = () => {
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuctionCompletePage:handleNextLogistics',message:'다음: 탁송 신청(CTA_4)',data:{to:'/logistics/schedule'},timestamp:Date.now(),hypothesisId:'H_CTA4',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('AuctionCompletePage:handleNextLogistics', '다음: 탁송 신청(CTA_4)', { to: '/logistics/schedule' }, 'H_CTA4');
     navigate('/logistics/schedule');
   };
 

@@ -7,7 +7,7 @@
  */
 
 import { Card } from '@/shared/ui/Card';
-import { ImagePlaceholder } from '@/shared/ui/ImagePlaceholder';
+import { ImageWithFallback } from '@/shared/ui/ImageWithFallback';
 import { VehicleStatusBadge } from './VehicleStatusBadge';
 import { StatusBadge } from '@/shared/ui/StatusBadge';
 import { VEHICLE_STATUS_COLORS, VEHICLE_STATUS_COLORS_1636, TRADE_LIST_STATUS_LABELS } from '@/entities/vehicle/model/constants';
@@ -66,23 +66,14 @@ export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'defau
       >
         {/* 이미지 영역 Figma 1636:10118 — 174px, #eef5fe. 없으면 ImagePlaceholder */}
         <div className="relative h-[174px] w-full overflow-hidden" data-node-id="1636:10118">
-          {vehicle.thumbnailUrl ? (
-            <img
-              src={vehicle.thumbnailUrl}
-              alt={vehicle.modelName}
-              className="absolute inset-0 h-full w-full object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                const placeholder = e.currentTarget.nextElementSibling;
-                if (placeholder) (placeholder as HTMLElement).style.display = 'flex';
-              }}
-            />
-          ) : null}
-          <div className={`absolute inset-0 flex ${vehicle.thumbnailUrl ? 'hidden' : ''}`}>
-            <div className="w-full h-full bg-[#eef5fe] border-2 border-dashed border-gray-200 flex items-center justify-center">
-              <div className="w-12 h-12 rounded bg-gray-200/60" />
-            </div>
-          </div>
+          <ImageWithFallback
+            src={vehicle.thumbnailUrl}
+            alt={vehicle.modelName}
+            className="absolute inset-0 h-full w-full object-cover"
+            fallbackClassName="absolute inset-0 flex items-center justify-center"
+            aspectRatio="card"
+            ariaLabel={`${vehicle.modelName} 이미지`}
+          />
         </div>
 
         <div className="relative px-[23px] pt-[18px] pb-4">
@@ -166,21 +157,14 @@ export const VehicleCard = ({ vehicle, onClick, className = '', variant = 'defau
       </div>
 
       <div className="px-3 pt-2">
-        {vehicle.thumbnailUrl ? (
-          <img
-            src={vehicle.thumbnailUrl}
-            alt={vehicle.modelName}
-            className="w-full h-40 object-cover rounded-md"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              const next = e.currentTarget.nextElementSibling;
-              if (next) (next as HTMLElement).style.display = 'block';
-            }}
-          />
-        ) : null}
-        <div className={vehicle.thumbnailUrl ? 'hidden' : 'block'}>
-          <ImagePlaceholder className="h-40 rounded-md" aspectRatio="video" ariaLabel={`${vehicle.modelName} 이미지`} />
-        </div>
+        <ImageWithFallback
+          src={vehicle.thumbnailUrl}
+          alt={vehicle.modelName}
+          className="w-full h-40 object-cover rounded-md"
+          fallbackClassName="h-40 rounded-md flex items-center justify-center"
+          aspectRatio="video"
+          ariaLabel={`${vehicle.modelName} 이미지`}
+        />
       </div>
 
       <div className="p-4">

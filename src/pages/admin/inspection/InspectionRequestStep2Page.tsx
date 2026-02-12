@@ -6,7 +6,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -53,7 +53,7 @@ export const InspectionRequestStep2Page = () => {
     console.log('검차 신청:', { evaluatorId: selectedId, evaluatorName: selectedEvaluator?.name });
 
     // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionRequestStep2Page:handleSubmit',message:'검차신청 완료',data:{to:'/inspections'},timestamp:Date.now(),hypothesisId:'H_CTA2_end',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('InspectionRequestStep2Page:handleSubmit', '검차신청 완료', { to: '/inspections' }, 'H_CTA2_end');
     // #endregion
     setSubmitted(true);
   };

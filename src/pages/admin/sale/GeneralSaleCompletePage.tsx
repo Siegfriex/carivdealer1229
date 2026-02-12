@@ -5,7 +5,7 @@
  */
 
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -21,17 +21,17 @@ export const GeneralSaleCompletePage = () => {
 
   const handleTradeDetail = () => {
     const to = vehicleId ? `/vehicles/${vehicleId}/trade` : '/offers';
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GeneralSaleCompletePage:handleTradeDetail',message:'일반판매완료→거래상세',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA3_sale',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('GeneralSaleCompletePage:handleTradeDetail', '일반판매완료→거래상세', { to }, 'H_CTA3_sale');
     navigate(to);
   };
 
   const handleOffers = () => {
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GeneralSaleCompletePage:handleOffers',message:'일반판매완료→거래목록',data:{to:'/offers'},timestamp:Date.now(),hypothesisId:'H_CTA3_sale',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('GeneralSaleCompletePage:handleOffers', '일반판매완료→거래목록', { to: '/offers' }, 'H_CTA3_sale');
     navigate('/offers');
   };
 
   const handleNextLogistics = () => {
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GeneralSaleCompletePage:handleNextLogistics',message:'다음: 탁송 신청(CTA_4)',data:{to:'/logistics/schedule'},timestamp:Date.now(),hypothesisId:'H_CTA4',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('GeneralSaleCompletePage:handleNextLogistics', '다음: 탁송 신청(CTA_4)', { to: '/logistics/schedule' }, 'H_CTA4');
     navigate('/logistics/schedule');
   };
 

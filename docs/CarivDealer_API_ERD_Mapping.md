@@ -2,7 +2,8 @@
 
 **목적**: [CarivDealer_api_v1.md](CarivDealer_api_v1.md) 명세와 ERD(erd/IMG_3923.png, CarivDealer_ERD_v1.0) 간 필드·엔티티 매핑 및 불일치 정리.  
 **범위**: 회원가입·로그인·차량·검차 신청/최신 상태.  
-**ERD 기준**: 이미지 ERD(erd/IMG_3923.png, CarivDealer_ERD_v1.0) — snake_case.
+**ERD 기준**: 이미지 ERD(erd/IMG_3923.png, CarivDealer_ERD_v1.0) — snake_case.  
+**문서 스위트**: [CarivDealer_DOCUMENT_SUITE_INDEX.md](CarivDealer_DOCUMENT_SUITE_INDEX.md)
 
 ---
 
@@ -209,10 +210,12 @@ API 응답/요청의 상태·열거 값은 ERD 컬럼에 저장되는 값과 **�
 
 | 화면(역할) | nodeId | 관련 엔티티/필드 | API 엔드포인트 |
 |------------|--------|------------------|----------------|
-| 검차 신청 Step1 | 1444:8198 | vehicle, inspection_place(placeId, address, lat, lng), inspection(desired_date, desired_time), payment | POST /vehicles/:vehicleId/inspections |
+| 검차 신청 Step1 | 1033-4903 | vehicle, inspection_place(placeId, address, lat, lng), inspection(desired_date, desired_time), payment | POST /vehicles/:vehicleId/inspections |
 | 검차 요청 내역(목록) | 1425:9445, 9661, 9875 | inspection(status, desired_date, address), vehicle(vehicle_no, model_name), 일련번호 | GET /vehicles?inspectionStatus=… 또는 검차 목록 전용 REST 확장 |
 | 검차 진행 현황 | 1425:10137, 10663, 10813 | inspection.status, inspection_place, 검차자 정보 | GET /vehicles/:vehicleId/inspections/latest |
 | 검차 결과 요약/상세 | 1425:10285, 10443 | inspection 결과, 양호/경미/주의/불량 개수, inspection_item·미디어 | GET /vehicles/:vehicleId/inspections/latest 또는 GET /inspections/:id (확장 시) |
+
+*nodeId SSOT: [FSD_IA_NODEID_SSOT.md](figma/FSD_IA_NODEID_SSOT.md) §4. 검차 신청 Step1은 1033-4903 기준 (1444-8198은 §3.6 변형).*
 
 ### UI 라벨 ↔ inspection.status 매핑
 
@@ -422,3 +425,4 @@ API 응답/요청의 상태·열거 값은 ERD 컬럼에 저장되는 값과 **�
 | 1.8 | 2026-02-08 | 정산/매출 플로우 관련 필드/상태/엔드포인트 제안 섹션 추가. Figma MCP get_screenshot(1418:33275 자식 4프레임) 기반. settlement·sales_history·SETTLEMENT_STATUS·엔드포인트 제안. |
 | 1.9 | 2026-02-08 | 오퍼/마이페이지 플로우 관련 필드/상태/엔드포인트 제안 섹션 추가. Figma MCP get_screenshot(1418:36765 자식 12프레임) 기반. offer·OFFER_STATUS·마이페이지·프로필·딜러 승인·정산 계좌·알림·엔드포인트 제안. |
 | 1.10 | 2026-02-08 | Figma 참조 정리: 정합성 검증 요약 표에서 Global Plan §2.5/§2.4 제거. 검차·일반판매는 IA §3.6·§3.7만 참조, 차량목록·탁송·정산·마이페이지는 IA §3.x·Global Plan §2.7~2.11·IA_FSD_COMPLETE_VERIFICATION 통합 인덱스 반영. |
+| 1.11 | 2026-02-13 | nodeId SSOT 통일: 검차 신청 Step1 1444:8198 → 1033-4903 (FSD_IA_NODEID_SSOT §4 기준). 문서 스위트 정합성 반영. |

@@ -1,91 +1,22 @@
 /**
  * SettlementListPage - 정산 내역
- * FSD 마이그레이션 완료 (Phase 2.4)
+ * useSettlements 훅 사용 (P0 Migration)
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, Calendar, DollarSign, Eye, CheckCircle2 } from 'lucide-react';
 import { LandingHeader } from '@/widgets/Header';
 import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-
-interface Settlement {
-  id: string;
-  vehicleId: string;
-  plateNumber: string;
-  modelName: string;
-  salePrice: string;
-  settlementAmount: string;
-  fees: string;
-  refundAmount: string;
-  settlementDate: string;
-  status: 'completed' | 'pending';
-}
+import { useSettlements, type SettlementStatusFilter } from '@/features/settlement';
 
 export const SettlementListPage = () => {
   const navigate = useNavigate();
-  const [settlements, setSettlements] = useState<Settlement[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<'all' | 'completed' | 'pending'>('all');
+  const [filter, setFilter] = useState<SettlementStatusFilter>('all');
+  const { data: settlements = [], isLoading } = useSettlements(filter);
 
-  useEffect(() => {
-    loadSettlements();
-  }, [filter]);
-
-  const loadSettlements = async () => {
-    try {
-      setLoading(true);
-      // Mock 데이터
-      const mockSettlements: Settlement[] = [
-        {
-          id: 'settle-001',
-          vehicleId: 'v-t7',
-          plateNumber: '11하 2222',
-          modelName: '투싼',
-          salePrice: '2,850',
-          settlementAmount: '2,850',
-          fees: '142.5',
-          refundAmount: '259.09',
-          settlementDate: '2025-05-20',
-          status: 'completed'
-        },
-        {
-          id: 'settle-002',
-          vehicleId: 'v-t5',
-          plateNumber: '12나 7890',
-          modelName: 'G70 3T 스포츠 엘리트',
-          salePrice: '1,450',
-          settlementAmount: '1,450',
-          fees: '72.5',
-          refundAmount: '131.81',
-          settlementDate: '2025-05-19',
-          status: 'completed'
-        },
-        {
-          id: 'settle-003',
-          vehicleId: 'v-t6',
-          plateNumber: '98다 1111',
-          modelName: 'K5',
-          salePrice: '4,200',
-          settlementAmount: '4,200',
-          fees: '210',
-          refundAmount: '381.82',
-          settlementDate: '2025-05-18',
-          status: 'pending'
-        },
-      ];
-      setSettlements(mockSettlements);
-    } catch {
-      // Error handled silently
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filteredSettlements = settlements.filter(s =>
-    filter === 'all' || s.status === filter
-  );
+  const filteredSettlements = settlements;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -115,7 +46,7 @@ export const SettlementListPage = () => {
           </div>
 
           {/* Settlement List */}
-          {loading ? (
+          {isLoading ? (
             <div className="bg-white rounded-lg p-8 text-center text-gray-500">로딩 중...</div>
           ) : filteredSettlements.length === 0 ? (
             <div className="bg-white rounded-lg p-8 text-center text-gray-500">
@@ -148,12 +79,12 @@ export const SettlementListPage = () => {
                       <td className="p-4">
                         <div className="flex items-center gap-1">
                           <DollarSign className="w-4 h-4 text-fmax-primary" />
-                          <span className="font-bold text-fmax-text-main">{settlement.salePrice}만원</span>
+                          <span className="font-bold text-fmax-text-main">{settlement.salePrice.toLocaleString()}만원</span>
                         </div>
                       </td>
-                      <td className="p-4 text-sm text-gray-600">{settlement.fees}만원</td>
+                      <td className="p-4 text-sm text-gray-600">{settlement.platformFee.toLocaleString()}만원</td>
                       <td className="p-4">
-                        <span className="font-bold text-fmax-success">{settlement.refundAmount}만원</span>
+                        <span className="font-bold text-fmax-success">{settlement.totalRefund.toLocaleString()}만원</span>
                       </td>
                       <td className="p-4">
                         <div className="flex items-center gap-1 text-sm text-gray-600">
@@ -163,12 +94,12 @@ export const SettlementListPage = () => {
                       </td>
                       <td className="p-4">
                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${
-                          settlement.status === 'completed'
+                          settlement.settlementStatus === 'completed' || settlement.settlementStatus === 'paid'
                             ? 'bg-green-100 text-green-700'
                             : 'bg-yellow-100 text-yellow-700'
                         }`}>
-                          {settlement.status === 'completed' && <CheckCircle2 className="w-3 h-3" />}
-                          {settlement.status === 'completed' ? '정산 완료' : '정산 대기'}
+                          {(settlement.settlementStatus === 'completed' || settlement.settlementStatus === 'paid') && <CheckCircle2 className="w-3 h-3" />}
+                          {settlement.settlementStatus === 'paid' ? '지급 완료' : settlement.settlementStatus === 'completed' ? '정산 완료' : '정산 대기'}
                         </span>
                       </td>
                       <td className="p-4 text-right pr-6">

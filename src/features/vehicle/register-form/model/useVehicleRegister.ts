@@ -6,8 +6,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { collection, addDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db } from '@/shared/config/firebase';
+import { vehicleKeys } from '@/shared/api/queryKeys';
 import { vehicleSchema } from '@/entities/vehicle/model/schema';
 import type { Vehicle, CreateVehicleInput } from '@/entities/vehicle/model/types';
+import { handleError } from '@/shared/lib/errorHandler';
+import { useToast } from '@/shared/ui/Toast';
 
 /**
  * 차량 등록 뮤테이션 훅
@@ -16,6 +19,7 @@ import type { Vehicle, CreateVehicleInput } from '@/entities/vehicle/model/types
  */
 export const useVehicleRegister = () => {
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   return useMutation({
     mutationFn: async (input: CreateVehicleInput): Promise<Vehicle> => {
@@ -40,7 +44,10 @@ export const useVehicleRegister = () => {
     },
     onSuccess: () => {
       // 차량 목록 캐시 무효화
-      queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+      queryClient.invalidateQueries({ queryKey: vehicleKeys.all });
+    },
+    onError: (err) => {
+      showToast(handleError(err), 'error');
     },
   });
 };

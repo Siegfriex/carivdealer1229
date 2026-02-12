@@ -15,21 +15,21 @@ import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
 import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { apiClient } from '@/shared/api/apiClient';
-import { MOCK_LOGISTICS_ITEMS, type MockLogisticsItem } from '@/shared/api/mockLists';
+import { useLogisticsSchedule } from '@/features/logistics';
 import { useToast } from '@/shared/ui/Toast';
 import { Button } from '@/shared/ui/Button';
 import { Pagination } from '@/shared/ui/Pagination';
 
 const DESTINATION_ADDRESS = '인천광역시 중구 인천항 물류센터';
 
-/** 탁송 상태 4개 (CTA_4 요약) */
+/** 탁송 상태 4개 (API_ERD_Mapping §물류 status: scheduled, dispatched, in_transit, completed) */
 const LOGISTICS_STATES = [
-  { id: 'schedule', label: '탁송일정', color: 'text-sky-500' },
-  { id: 'assigned', label: '탁송 배정', color: 'text-emerald-600' },
-  { id: 'pickup_done', label: '픽업 완료', color: 'text-blue-600' },
-  { id: 'handover_done', label: '인계완료', color: 'text-primary' },
+  { id: 'scheduled' as const, label: '탁송일정', color: 'text-sky-500' },
+  { id: 'dispatched' as const, label: '탁송 배정', color: 'text-emerald-600' },
+  { id: 'in_transit' as const, label: '픽업 완료', color: 'text-blue-600' },
+  { id: 'completed' as const, label: '인계완료', color: 'text-primary' },
 ] as const;
-type LogisticsStateId = (typeof LOGISTICS_STATES)[number]['id'];
+type LogisticsStatusId = (typeof LOGISTICS_STATES)[number]['id'];
 
 type ViewMode = 'list' | 'form' | 'driver_assigning' | 'complete';
 
@@ -41,7 +41,7 @@ export const LogisticsSchedulePage = () => {
   const vehicleId = searchParams.get('vehicleId') ?? undefined;
 
   const [viewMode, setViewMode] = useState<ViewMode>('list');
-  const [listItems, setListItems] = useState<MockLogisticsItem[]>(() => MOCK_LOGISTICS_ITEMS.map((i) => ({ ...i })));
+  const { data: listItems = [], setItemStatus } = useLogisticsSchedule();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [listPage, setListPage] = useState(1);
 
@@ -84,10 +84,6 @@ export const LogisticsSchedulePage = () => {
   const selectedItem = selectedId ? listItems.find((i) => i.id === selectedId) : null;
   const totalPages = Math.max(1, Math.ceil(listItems.length / PAGE_SIZE));
   const paginatedItems = listItems.slice((listPage - 1) * PAGE_SIZE, listPage * PAGE_SIZE);
-
-  const setItemState = (id: string, state: LogisticsStateId) => {
-    setListItems((prev) => prev.map((i) => (i.id === id ? { ...i, state } : i)));
-  };
 
   const handleSubmitReservation = async () => {
     if (!selectedDate || !selectedTime || !departureAddress) {
@@ -453,7 +449,7 @@ export const LogisticsSchedulePage = () => {
             data-node-id="1714:22921"
           >
               {paginatedItems.map((item) => {
-                const stateInfo = LOGISTICS_STATES.find((s) => s.id === item.state);
+                const stateInfo = LOGISTICS_STATES.find((s) => s.id === item.status);
                 return (
                   <button
                     key={item.id}
@@ -467,7 +463,7 @@ export const LogisticsSchedulePage = () => {
                     <div className="h-[174px] w-full bg-primary-light shrink-0" data-node-id="1714:22924" />
                     <div className="flex-1 min-h-0 p-6 pb-3 border-t border-gray-200 flex flex-col">
                       <p className={`text-[12px] font-semibold ${stateInfo?.color ?? 'text-gray-500'} mb-1`} data-node-id="1714:22936">
-                        {stateInfo?.label ?? item.state}
+                        {stateInfo?.label ?? item.status}
                       </p>
                       <p className="text-body font-bold text-black leading-tight" data-node-id="1714:22926">{item.modelName}</p>
                       <p className="text-caption text-gray-600 font-bold leading-tight" data-node-id="1714:22927">
@@ -526,9 +522,9 @@ export const LogisticsSchedulePage = () => {
                       <button
                         key={s.id}
                         type="button"
-                        onClick={() => setItemState(selectedItem.id, s.id)}
+                        onClick={() => setItemStatus(selectedItem.id, s.id)}
                         className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                          selectedItem.state === s.id
+                          selectedItem.status === s.id
                             ? 'bg-primary text-white border-primary'
                             : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
                         }`}

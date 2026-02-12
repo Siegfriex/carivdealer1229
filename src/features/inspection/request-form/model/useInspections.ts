@@ -6,6 +6,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { collection, query, where, orderBy, getDocs, Query } from 'firebase/firestore';
 import { db } from '@/shared/config/firebase';
+import { inspectionKeys } from '@/shared/api/queryKeys';
 import { inspectionSchema } from '@/entities/inspection/model/schema';
 import type { Inspection, InspectionStatus } from '@/entities/inspection/model/types';
 
@@ -24,7 +25,7 @@ interface UseInspectionsOptions {
  */
 export const useInspections = (options: UseInspectionsOptions = {}) => {
   return useQuery({
-    queryKey: ['inspections', options.vehicleId, options.evaluatorId, options.status],
+    queryKey: inspectionKeys.list(options.vehicleId, options.evaluatorId, options.status),
     queryFn: async (): Promise<Inspection[]> => {
       let q: Query = collection(db, 'inspections');
 

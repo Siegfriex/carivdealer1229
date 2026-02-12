@@ -1,73 +1,17 @@
 /**
  * SalesHistoryPage - 판매 내역
- * FSD 마이그레이션 완료 (Phase 2.4)
+ * useSalesHistory 훅 사용 (P0 Migration)
  */
 
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Car, Calendar, DollarSign, Eye } from 'lucide-react';
 import { LandingHeader } from '@/widgets/Header';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-
-interface SaleRecord {
-  id: string;
-  vehicleId: string;
-  plateNumber: string;
-  modelName: string;
-  manufacturer: string;
-  modelYear: string;
-  salePrice: string;
-  saleDate: string;
-  buyerName: string;
-  saleMethod: 'auction' | 'general';
-}
+import { useSalesHistory } from '@/features/sale';
 
 export const SalesHistoryPage = () => {
   const navigate = useNavigate();
-  const [sales, setSales] = useState<SaleRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadSales();
-  }, []);
-
-  const loadSales = async () => {
-    try {
-      setLoading(true);
-      // Mock 데이터
-      const mockSales: SaleRecord[] = [
-        {
-          id: 'sale-001',
-          vehicleId: 'v-106',
-          plateNumber: '33바 3333',
-          modelName: 'Carnival KA4',
-          manufacturer: 'Kia',
-          modelYear: '2022',
-          salePrice: '2,850',
-          saleDate: '2025-05-15',
-          buyerName: 'Global Motors Inc.',
-          saleMethod: 'general'
-        },
-        {
-          id: 'sale-002',
-          vehicleId: 'v-107',
-          plateNumber: '77사 7777',
-          modelName: 'Avante CN7',
-          manufacturer: 'Hyundai',
-          modelYear: '2021',
-          salePrice: '1,450',
-          saleDate: '2025-05-14',
-          buyerName: 'Auto Export Co.',
-          saleMethod: 'auction'
-        },
-      ];
-      setSales(mockSales);
-    } catch {
-      // Error handled silently
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: sales = [], isLoading: loading } = useSalesHistory();
 
   return (
     <div className="min-h-screen bg-fmax-surface flex flex-col">
@@ -125,7 +69,7 @@ export const SalesHistoryPage = () => {
                       <td className="p-4">
                         <div className="flex items-center gap-1">
                           <DollarSign className="w-4 h-4 text-fmax-primary" />
-                          <span className="font-bold text-fmax-primary">{sale.salePrice}만원</span>
+                          <span className="font-bold text-fmax-primary">{sale.salePrice.toLocaleString()}만원</span>
                         </div>
                       </td>
                       <td className="p-4">

@@ -4,6 +4,7 @@
  */
 
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
+import { ImageWithFallback } from '@/shared/ui/ImageWithFallback';
 import { VEHICLE_STATUS_COLORS_1636, VEHICLE_STATUS_LABELS } from '@/entities/vehicle/model/constants';
 import type { Vehicle } from '@/entities/vehicle/model/types';
 import type { VehicleStatus } from '@/entities/vehicle/model/types';
@@ -55,21 +56,14 @@ export const VehicleListCard = ({
         className="h-[174px] w-full bg-[#eef5fe] shrink-0 flex items-center justify-center overflow-hidden"
         data-node-id="1636:10118"
       >
-        {vehicle.thumbnailUrl ? (
-          <img
-            src={vehicle.thumbnailUrl}
-            alt={vehicle.modelName}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              const placeholder = e.currentTarget.nextElementSibling;
-              if (placeholder) (placeholder as HTMLElement).style.display = 'flex';
-            }}
-          />
-        ) : null}
-        <div className={`w-full h-full flex items-center justify-center ${vehicle.thumbnailUrl ? 'hidden' : ''}`}>
-          <span className="text-[7.814px] font-bold text-[#707070]">차량 이미지</span>
-        </div>
+        <ImageWithFallback
+          src={vehicle.thumbnailUrl}
+          alt={vehicle.modelName}
+          className="w-full h-full object-cover"
+          fallbackClassName="w-full h-full flex items-center justify-center"
+          aspectRatio="card"
+          ariaLabel={`${vehicle.modelName} 이미지`}
+        />
       </div>
       {/* 콘텐츠 영역 — 검차·탁송과 동일: border-t, pl/pr 23px */}
       <div className="flex-1 min-h-0 pl-[23px] pr-[23px] pt-[18px] pb-4 border-t border-gray-200 flex flex-col">

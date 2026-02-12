@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -29,7 +29,7 @@ export const AuctionDurationPage = () => {
   const handleSubmit = () => {
     const to = vehicleId ? `/vehicles/${vehicleId}/auction/complete` : '/vehicles';
     // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuctionDurationPage:handleSubmit',message:'CTA_3 경매 기간→완료(CTA_4탁송연결없음)',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA3_auction',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('AuctionDurationPage:handleSubmit', 'CTA_3 경매 기간→완료(CTA_4탁송연결없음)', { to }, 'H_CTA3_auction');
     // #endregion
     navigate(to, { state: { startPrice, instantPrice, startDate, endDate } });
   };

@@ -23,7 +23,7 @@ export interface InspectionLocationSectionProps {
 }
 
 const inputWrapClass =
-  'rounded-[10px] border border-[#d9d9d9] bg-[#f4f4f4] text-[16px] text-gray-900 placeholder:text-black/40';
+  'rounded-[10px] border border-[var(--color-form-field-border)] bg-[var(--color-form-field-bg)] text-[16px] text-gray-900 placeholder:text-[var(--color-black-40)]';
 
 export const InspectionLocationSection = ({
   zipCode,
@@ -92,7 +92,7 @@ export const InspectionLocationSection = ({
               type="checkbox"
               checked={defaultAddress}
               onChange={(e) => onDefaultAddressChange(e.target.checked)}
-              className="h-[26px] w-[26px] rounded-[13px] border border-[#2048e5] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+              className="h-[26px] w-[26px] rounded-[13px] border border-[var(--color-primary)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
             />
             <span className="text-[14px] leading-[15px] text-black/60">기본 주소지 설정</span>
           </label>

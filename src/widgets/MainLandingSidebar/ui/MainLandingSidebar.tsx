@@ -8,7 +8,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import iconSearch from '@/shared/figma_image/1425-8153_검색_search.png';
 
 const LIST_ITEMS = [
@@ -45,7 +45,7 @@ export function MainLandingSidebar({
     const key = `${pathname}|${activeKey}`;
     if (lastSent.current === key) return;
     lastSent.current = key;
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainLandingSidebar:mount',message:'차량목록필터 사이드바 표시',data:{pathname,activeKey},timestamp:Date.now(),hypothesisId:'H_sidebar',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('MainLandingSidebar:mount', '차량목록필터 사이드바 표시', { pathname, activeKey }, 'H_sidebar');
   }, [pathname, activeKey]);
   // #endregion
   return (

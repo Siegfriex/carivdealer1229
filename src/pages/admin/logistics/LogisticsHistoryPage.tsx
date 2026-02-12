@@ -4,8 +4,9 @@
  * Layout: Header + Sidebar + Main (IA §3.10)
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Truck, Calendar, MapPin, User, Lock, List, LayoutGrid } from 'lucide-react';
 import { LandingHeader } from '@/widgets/Header';
 import { GnbMinimalSidebar } from '@/widgets/GnbMinimalSidebar';
@@ -13,15 +14,17 @@ import { LogisticsSectionTabs } from '@/widgets/LogisticsSectionTabs';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
 import { Z_INDEX } from '@/shared/config/zIndex';
 import { apiClient } from '@/shared/api/apiClient';
+import { logisticsKeys } from '@/shared/api/queryKeys';
 import { useToast } from '@/shared/ui/Toast';
-
-import { MOCK_LOGISTICS_HISTORY, type MockLogisticsRecord } from '@/shared/api/mockLists';
+import { useLogisticsHistory } from '@/features/logistics';
+import type { MockLogisticsRecord } from '@/shared/api/mockLists';
 
 type ViewMode = 'list' | 'grid';
 const VIEW_PARAM = 'view';
 
 export const LogisticsHistoryPage = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const viewMode: ViewMode = useMemo(
     () => (searchParams.get(VIEW_PARAM) === 'grid' ? 'grid' : 'list'),
@@ -32,28 +35,12 @@ export const LogisticsHistoryPage = () => {
     else setSearchParams({}, { replace: true });
   };
 
-  const [logistics, setLogistics] = useState<MockLogisticsRecord[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: logistics = [], isLoading: loading } = useLogisticsHistory();
   const [selectedLogistics, setSelectedLogistics] = useState<MockLogisticsRecord | null>(null);
   const [pin, setPin] = useState('');
   const [showPinModal, setShowPinModal] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
   const { showToast } = useToast();
-
-  useEffect(() => {
-    loadLogistics();
-  }, []);
-
-  const loadLogistics = async () => {
-    try {
-      setLoading(true);
-      setLogistics(MOCK_LOGISTICS_HISTORY);
-    } catch {
-      // Error handled silently
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleApprove = async () => {
     if (!selectedLogistics || pin.length !== 6) {
@@ -64,9 +51,9 @@ export const LogisticsHistoryPage = () => {
     try {
       setIsApproving(true);
       await apiClient.logistics.approveHandover(selectedLogistics.id, pin);
-      setLogistics(prev => prev.map(l =>
-        l.id === selectedLogistics.id ? { ...l, status: 'completed' as const } : l
-      ));
+      queryClient.setQueryData(logisticsKeys.history(), (old: MockLogisticsRecord[] | undefined) =>
+        old ? old.map((l) => (l.id === selectedLogistics.id ? { ...l, status: 'completed' as const } : l)) : old
+      );
 
       const vehicleId = selectedLogistics.vehicleId;
       setShowPinModal(false);

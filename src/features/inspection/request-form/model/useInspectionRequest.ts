@@ -5,7 +5,10 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api/client';
+import { inspectionKeys, vehicleKeys } from '@/shared/api/queryKeys';
 import { API_ENDPOINTS } from '@/shared/config/apiEndpoints';
+import { handleError } from '@/shared/lib/errorHandler';
+import { useToast } from '@/shared/ui/Toast';
 
 /** 검차 신청 요청 입력 */
 interface InspectionRequestInput {
@@ -28,6 +31,7 @@ interface InspectionRequestResponse {
  */
 export const useInspectionRequest = () => {
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   return useMutation({
     mutationFn: async (input: InspectionRequestInput): Promise<InspectionRequestResponse> => {
@@ -37,8 +41,11 @@ export const useInspectionRequest = () => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['inspections'] });
-      queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+      queryClient.invalidateQueries({ queryKey: inspectionKeys.all });
+      queryClient.invalidateQueries({ queryKey: vehicleKeys.all });
+    },
+    onError: (err) => {
+      showToast(handleError(err), 'error');
     },
   });
 };

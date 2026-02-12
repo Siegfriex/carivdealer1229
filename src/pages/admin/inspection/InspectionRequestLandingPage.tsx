@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header/ui/LandingHeader';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -20,16 +20,12 @@ export const InspectionRequestLandingPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleStartRequest = () => {
-    // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionRequestLandingPage:handleStartRequest',message:'검차신청 시작→step1',data:{to:'/inspections/request/step1'},timestamp:Date.now(),hypothesisId:'H_CTA2',runId:'register-flow-check'})}).catch(()=>{});
-    // #endregion
+    logEventWithHypothesis('InspectionRequestLandingPage:handleStartRequest', '검차신청 시작→step1', { to: '/inspections/request/step1' }, 'H_CTA2');
     navigate('/inspections/request/step1');
   };
 
   const handleSaveDraft = () => {
-    // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'InspectionRequestLandingPage:handleSaveDraft',message:'검차 임시저장→목록',data:{to:'/inspections'},timestamp:Date.now(),hypothesisId:'H_CTA2',runId:'register-flow-check'})}).catch(()=>{});
-    // #endregion
+    logEventWithHypothesis('InspectionRequestLandingPage:handleSaveDraft', '검차 임시저장→목록', { to: '/inspections' }, 'H_CTA2');
     navigate('/inspections');
   };
 

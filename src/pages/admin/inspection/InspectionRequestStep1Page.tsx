@@ -6,7 +6,7 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
@@ -41,18 +41,7 @@ export const InspectionRequestStep1Page = () => {
     skipRequired,
     onValidationError: showValidationError,
     onBeforeNavigate: () => {
-      fetch(LOG_INGEST_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'InspectionRequestStep1Page:next',
-          message: '검차 step1→목록',
-          data: { to: '/inspections' },
-          timestamp: Date.now(),
-          hypothesisId: 'H_CTA2',
-          runId: 'register-flow-check',
-        }),
-      }).catch(() => {});
+      logEventWithHypothesis('InspectionRequestStep1Page:next', '검차 step1→목록', { to: '/inspections' }, 'H_CTA2');
     },
   });
 
@@ -65,7 +54,7 @@ export const InspectionRequestStep1Page = () => {
           className={`${LAYOUT_CLASSES.GNB_SIDEBAR} flex-shrink-0 bg-white ${LAYOUT_CLASSES.CONTENT_MIN_HEIGHT} flex flex-col overflow-hidden border-r border-black/10`}
           data-node-id="1033:4943"
         >
-          <p className="px-6 pt-[30px] text-[14px] leading-[20px] text-[rgba(144,144,144,0.6)]" data-node-id="1033:4945">
+          <p className="px-6 pt-[30px] text-[14px] leading-[20px] text-[var(--color-gray-60)]" data-node-id="1033:4945">
             검색
           </p>
           <div className="relative mx-6 mt-3.5 h-[40px] w-[210px]" data-node-id="1033:4946">
@@ -119,14 +108,14 @@ export const InspectionRequestStep1Page = () => {
               <Button
                 variant="secondary"
                 onClick={() => navigate(-1)}
-                className="rounded-[10px] border border-[#e6e6e6] bg-[#f3f4f6] text-[12px] font-medium text-[#161616] shadow-[2.344px_3.125px_11.017px_0_rgba(0,0,0,0.05)]"
+                className="rounded-[10px] border border-[var(--color-gray-200)] bg-[var(--color-gray-100)] text-[12px] font-medium text-[var(--color-text-primary)] shadow-[var(--shadow-figma-card)]"
               >
                 이전
               </Button>
               <div className="flex gap-3">
                 <Button
                   variant="secondary"
-                  className="h-[37px] w-[92px] rounded-[10px] border border-[#e6e6e6] bg-[#f3f4f6] text-[12px] font-medium text-[#161616] shadow-[2.344px_3.125px_11.017px_0_rgba(0,0,0,0.05)]"
+                  className="h-[37px] w-[92px] rounded-[10px] border border-[var(--color-gray-200)] bg-[var(--color-gray-100)] text-[12px] font-medium text-[var(--color-text-primary)] shadow-[var(--shadow-figma-card)]"
                   data-node-id="1193:6887"
                   onClick={() => navigate('/inspections')}
                 >
@@ -134,7 +123,7 @@ export const InspectionRequestStep1Page = () => {
                 </Button>
                 <Button
                   onClick={handleSubmit}
-                  className="h-[37px] w-[118px] rounded-[10px] border border-[#e6e6e6] bg-[#2048e5] text-[12px] font-medium text-white shadow-[2.344px_3.125px_11.017px_0_rgba(0,0,0,0.05)]"
+                  className="h-[37px] w-[118px] rounded-[10px] border border-[var(--color-gray-200)] bg-[var(--color-primary)] text-[12px] font-medium text-white shadow-[var(--shadow-figma-card)]"
                   data-node-id="1193:6885"
                 >
                   신청하기

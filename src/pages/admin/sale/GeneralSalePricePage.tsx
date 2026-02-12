@@ -6,7 +6,7 @@
 
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { VehicleInfoPanel } from '@/widgets/VehicleInfoPanel';
@@ -31,7 +31,7 @@ export const GeneralSalePricePage = () => {
   const handleSubmit = () => {
     const to = vehicleId ? `/vehicles/${vehicleId}/sale/complete` : '/offers';
     // #region agent log
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GeneralSalePricePage:handleSubmit',message:'CTA_3 일반 가격→판매완료',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA3_sale',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('GeneralSalePricePage:handleSubmit', 'CTA_3 일반 가격→판매완료', { to }, 'H_CTA3_sale');
     // #endregion
     navigate(to, { state: { hopePrice: hopePrice.trim() || undefined } });
   };

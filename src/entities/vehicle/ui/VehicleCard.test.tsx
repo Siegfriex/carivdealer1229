@@ -8,7 +8,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { VehicleCard } from './VehicleCard';
 import { Timestamp } from 'firebase/firestore';
-import type { Vehicle } from '../model/types';
+import type { Vehicle } from '@/entities/vehicle/model/types';
 
 describe('VehicleCard Component', () => {
   const mockVehicle: Vehicle = {

@@ -8,7 +8,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { useDevSkip } from '@/shared/context/DevSkipContext';
@@ -138,36 +138,14 @@ export const VehicleRegisterStep1Page = () => {
 
   const handleSaveDraft = async () => {
     showSuccess('임시저장되었습니다.');
-    fetch(LOG_INGEST_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'VehicleRegisterStep1Page:handleSaveDraft',
-        message: 'CTA_1 step1 임시저장',
-        data: { to: '/vehicles?filter=draft' },
-        timestamp: Date.now(),
-        hypothesisId: 'H_CTA1',
-        runId: 'register-flow-check',
-      }),
-    }).catch(() => {});
+    logEventWithHypothesis('VehicleRegisterStep1Page:handleSaveDraft', 'CTA_1 step1 임시저장', { to: '/vehicles?filter=draft' }, 'H_CTA1');
     navigate('/vehicles?filter=draft');
   };
 
   const handleSubmit = () => {
     const queryString = plateNumber ? `plateNumber=${encodeURIComponent(plateNumber)}` : '';
     const to = `/inspections/request${queryString ? `?${queryString}` : ''}`;
-    fetch(LOG_INGEST_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'VehicleRegisterStep1Page:handleSubmit',
-        message: 'CTA_1 step1→검차신청',
-        data: { to },
-        timestamp: Date.now(),
-        hypothesisId: 'H_CTA1',
-        runId: 'register-flow-check',
-      }),
-    }).catch(() => {});
+    logEventWithHypothesis('VehicleRegisterStep1Page:handleSubmit', 'CTA_1 step1→검차신청', { to }, 'H_CTA1');
     navigate(to);
   };
 

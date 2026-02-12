@@ -3,7 +3,7 @@
  * 차량번호 → 등록원부 정보 추출 (vehicle-registration 전용)
  */
 
-import { apiClient } from '@/shared/api/apiClient';
+import { apiClient } from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/config/apiEndpoints';
 
 /** OCR 등록원부 처리 응답 (VIN·제조사·모델·연식·주행거리) */

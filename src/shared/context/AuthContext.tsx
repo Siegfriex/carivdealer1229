@@ -11,10 +11,15 @@ import { Navigate, useLocation, Outlet } from 'react-router-dom';
 const AUTH_STORAGE_KEY = 'carivdealer_auth';
 const LOGGED_OUT_BY_USER_KEY = 'carivdealer_logged_out';
 
-/** 인증 컨텍스트 값: 로그인 여부 및 설정 함수 */
+/** Mock/Dev용 딜러 ID 플레이스홀더. API 전환 시 Firebase Auth uid 또는 JWT sub로 교체 */
+const MOCK_DEALER_ID = 'mock-dealer-id';
+
+/** 인증 컨텍스트 값: 로그인 여부, dealerId, 설정 함수 */
 interface AuthContextValue {
   isAuthenticated: boolean;
   setAuthenticated: (value: boolean) => void;
+  /** 현재 로그인 딜러 ID. API 전환 시 JWT/uid 등에서 채움. Mock/Dev에서는 MOCK_DEALER_ID */
+  dealerId: string | null;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -83,7 +88,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ isAuthenticated, setAuthenticated }),
+    () => ({
+      isAuthenticated,
+      setAuthenticated,
+      dealerId: isAuthenticated ? MOCK_DEALER_ID : null,
+    }),
     [isAuthenticated, setAuthenticated]
   );
 
@@ -92,7 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 /**
  * 인증 컨텍스트 훅. AuthProvider 밖에서 호출 시 에러.
- * @returns isAuthenticated, setAuthenticated
+ * @returns isAuthenticated, setAuthenticated, dealerId (로그인 시. API 전환 시 JWT/uid로 교체 예정)
  */
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);

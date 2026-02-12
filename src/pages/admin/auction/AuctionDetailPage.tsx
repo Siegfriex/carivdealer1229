@@ -7,15 +7,15 @@
  */
 
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { ProgressSidebar, type ProgressStep } from '@/widgets/ProgressSidebar';
 import { TradeDetailCard } from '@/widgets/TradeDetailCard';
 import { SaleMethodCards } from '@/widgets/SaleMethodCards';
 import { InspectionDetailModal } from '@/widgets/InspectionDetailModal';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { useVehicle } from '@/features/vehicle/register-form';
+import { useAuction } from '@/features/auction';
 import { Button } from '@/shared/ui/Button';
 import { Card } from '@/shared/ui/Card';
 import { Modal } from '@/shared/ui/Modal';
@@ -33,7 +33,11 @@ const transactionProgressSteps: ProgressStep[] = [
 export const AuctionDetailPage = () => {
   const { vehicleId } = useParams<{ vehicleId: string }>();
   const navigate = useNavigate();
-  const { data: vehicle, isLoading } = useVehicle(vehicleId ?? undefined);
+  const { pathname } = useLocation();
+  const isAuctionDetailExact = pathname === `/vehicles/${vehicleId}/auction`;
+  const { data: vehicle, isLoading } = useAuction(vehicleId ?? undefined, {
+    enabled: isAuctionDetailExact,
+  });
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [changeNotAllowedModalOpen, setChangeNotAllowedModalOpen] = useState(false);
@@ -44,7 +48,7 @@ export const AuctionDetailPage = () => {
   const handleBack = () => navigate(vehicleId ? `/vehicles/${vehicleId}` : '/vehicles');
   const handleStartPrice = () => {
     const to = vehicleId ? `/vehicles/${vehicleId}/auction/start-price` : '/vehicles';
-    fetch(LOG_INGEST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuctionDetailPage:handleStartPrice',message:'CTA_3 경매 상세→시작가',data:{to},timestamp:Date.now(),hypothesisId:'H_CTA3_auction',runId:'register-flow-check'})}).catch(()=>{});
+    logEventWithHypothesis('AuctionDetailPage:handleStartPrice', 'CTA_3 경매 상세→시작가', { to }, 'H_CTA3_auction');
     if (vehicleId) navigate(to);
   };
 

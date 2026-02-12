@@ -5,6 +5,9 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api/client';
+import { auctionKeys } from '@/shared/api/queryKeys';
+import { handleError } from '@/shared/lib/errorHandler';
+import { useToast } from '@/shared/ui/Toast';
 
 /** 입찰 요청 입력 */
 interface BidInput {
@@ -25,13 +28,17 @@ interface BidResponse {
  */
 export const useBid = () => {
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   return useMutation({
     mutationFn: async (input: BidInput): Promise<BidResponse> => {
       return await apiClient.auction.bid(input.auction_id, input.bid_amount);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['auctions'] });
+      queryClient.invalidateQueries({ queryKey: auctionKeys.auctions });
+    },
+    onError: (err) => {
+      showToast(handleError(err), 'error');
     },
   });
 };

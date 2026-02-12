@@ -37,7 +37,7 @@ export const InspectionScheduleSection = ({
             onChange={(e) => onPreferredDateChange(e.target.value)}
             fullWidth
             required
-            className="rounded-[10px] border-[#d9d9d9] bg-[#f4f4f4]"
+            className="rounded-[10px] border-[var(--color-form-field-border)] bg-[var(--color-form-field-bg)]"
           />
           <Input
             label="희망 시간"
@@ -46,7 +46,7 @@ export const InspectionScheduleSection = ({
             onChange={(e) => onPreferredTimeChange(e.target.value)}
             fullWidth
             required
-            className="rounded-[10px] border-[#d9d9d9] bg-[#f4f4f4]"
+            className="rounded-[10px] border-[var(--color-form-field-border)] bg-[var(--color-form-field-bg)]"
           />
         </div>
       </div>

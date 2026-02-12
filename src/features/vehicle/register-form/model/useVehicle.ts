@@ -6,6 +6,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/shared/config/firebase';
+import { vehicleKeys } from '@/shared/api/queryKeys';
 import { vehicleSchema } from '@/entities/vehicle/model/schema';
 import type { Vehicle } from '@/entities/vehicle/model/types';
 
@@ -17,7 +18,7 @@ import type { Vehicle } from '@/entities/vehicle/model/types';
  */
 export const useVehicle = (vehicleId: string | undefined) => {
   return useQuery({
-    queryKey: ['vehicles', vehicleId],
+    queryKey: vehicleKeys.detail(vehicleId),
     queryFn: async (): Promise<Vehicle> => {
       if (!vehicleId) {
         throw new Error('Vehicle ID is required');

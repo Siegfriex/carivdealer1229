@@ -336,15 +336,15 @@ FSD_IA_NODEID_SSOT §4 기반. (43개)
 | 29 | `/inspections/request/step1` | InspectionRequestStep1Page | **Toast(error)** | — | onSubmit | preferredDate·Time·address |
 | 30 | `/inspections/request/step2` | InspectionRequestStep2Page | **Toast(error)** | — | onSubmit | 평가사 미선택 |
 | 31 | `/inspections/history` | InspectionHistoryPage | — | — | — | — |
-| 32 | `/inspections/:id/progress` | InspectionProgressPage | — | — | — | ?stage=matching|en_route |
-| 33 | `/inspections/:id/complete` | InspectionCompletePage | — | InspectionDetailModal | — | expandedPhoto·expandedVideo |
+| 32 | `/inspections/:inspectionId/progress` | InspectionProgressPage | — | — | — | ?stage=matching\|en_route |
+| 33 | `/inspections/:inspectionId/complete` | InspectionCompletePage | — | InspectionDetailModal | — | expandedPhoto·expandedVideo |
 | 34 | `/offers` | TradeListPage | — | — | — | MainLandingSidebar |
 | 35 | `/offers/proposals` | GeneralSaleOffersPage | **Toast(success/error)** | — | — | 수락·거절 호출 시 |
 | 36 | `/logistics/schedule` | LogisticsSchedulePage | **Toast(warning/error)** | **주소검색 모달** (addressModalOpen) | — | 날짜·시간 선택 시 |
 | 37 | `/logistics/history` | LogisticsHistoryPage | **Toast(warning/error)** | **PIN 모달** (showPinModal) | — | 인계 승인 시 6자리 |
 | 38 | `/sales/history` | SalesHistoryPage | — | — | — | — |
 | 39 | `/settlements` | SettlementListPage | — | — | — | filter(all|completed|pending), loadSettlements |
-| 40 | `/settlements/:id` | SettlementDetailPage | — | — | — | — |
+| 40 | `/settlements/:settlementId` | SettlementDetailPage | — | — | — | — |
 | 41 | `/mypage/settlement-account` | SettlementAccountPage | — | — | — | MypageSidebar |
 
 ### 8.2 모달별 스크린 매핑
@@ -389,10 +389,70 @@ FSD_IA_NODEID_SSOT §4 기반. (43개)
 
 ---
 
-## §9 참조
+## §9 UserFlow 연동
+
+**출처**: [CarivDealer_UserFlow.md](CarivDealer_UserFlow.md). Storyboard 스크린과 플로우를 연결.
+
+### 9.1 Core Loop (단계별 라우트 → 스크린)
+
+| 단계 | 라우트 | 스크린 (§8) |
+|------|--------|-------------|
+| 1. 차량등록 | `/vehicles/new` → `step1` → `step2` → `/:vehicleId/complete` | #14~17 |
+| 2. 검차 신청 | `/inspections/request` → `step1` → `step2` | #28~30 |
+| 2. 검차 진행 | `/inspections/:inspectionId/progress` (?stage=matching\|en_route) | #32 |
+| 2. 검차 완료 | `/inspections/:inspectionId/complete` | #33 |
+| 3. 판매방식 | `/vehicles/:vehicleId/sale/analyzing` | #18 |
+| 3. 일반판매 | `/vehicles/:vehicleId/sale/price` → `complete` | #19~20 |
+| 3. 경매 | `/vehicles/:vehicleId/auction` → `start-price` → `duration` → `complete` | #21~24 |
+| 4. 거래상세 | `/vehicles/:vehicleId/trade` | #25 |
+| 5. 탁송 | `/logistics/schedule`, `/logistics/history` | #36~37 |
+| 6. 정산 | `/settlements`, `/settlements/:settlementId`, `/sales/history` | #38~39 |
+
+### 9.2 routeManager 상태 기반 라우팅
+
+**코드**: `src/shared/utils/navigation/routeManager.ts`
+
+| status | Pre-condition | 이동 경로 |
+|--------|---------------|----------|
+| draft, inspection | inspectionId 있음 | `/inspections/:inspectionId/progress` |
+| draft, inspection | inspectionId 없음 | `/inspections/request?vehicleId=...` |
+| active_sale | — | `/vehicles/:vehicleId/trade` |
+| bidding | — | `/vehicles/:vehicleId/auction` |
+| sold | — | `/logistics/schedule?vehicleId=...` |
+| pending_settlement, completed | settlementId 있음 | `/settlements/:settlementId` |
+| pending_settlement, completed | settlementId 없음 | `/settlements` 또는 `/vehicles/:vehicleId` |
+| vehicleId 무효 | — | FALLBACK `/vehicles` |
+
+### 9.3 Auth & Redirect Back
+
+| 상황 | 처리 |
+|------|------|
+| 비로그인 + 보호 라우트 | `Navigate to="/signup?redirect={pathname+search}"` |
+| SignupEntryPage "로그인" | `navigate(/login?redirect=...)` |
+| LoginPage 로그인 성공 | `navigate(redirectTo, { replace: true })` (없으면 `/vehicles`) |
+| 미매칭 경로 | `path="*"` → `/vehicles` |
+
+### 9.4 Exception & 에러 UX (UserFlow §4)
+
+| 에러 상황 | UI 피드백 |
+|----------|----------|
+| 차량번호 미입력, OCR 실패 | Toast(error) |
+| 필수 약관 미동의 | Toast(error) |
+| 검차 필수 미입력, 평가사 미선택 | Toast(error) |
+| 날짜/시간 미선택, PIN 미입력 | Toast(warning) |
+| 탁송 예약/인계 승인 실패 | Toast(error) |
+| 제안 수락/거절 실패 | Toast(error) |
+| API 타임아웃/네트워크 | getUserFriendlyMessage() → 호출자 catch 필요 |
+
+**상세**: [CarivDealer_UserFlow.md](CarivDealer_UserFlow.md) §4
+
+---
+
+## §10 참조
 
 - **IA**: [CarivDealer_IA.md](CarivDealer_IA.md)
-- **UserFlow**: [CarivDealer_UserFlow.md](CarivDealer_UserFlow.md)
+- **UserFlow**: [CarivDealer_UserFlow.md](CarivDealer_UserFlow.md) — Core Loop, Auth Redirect, routeManager, Exception 상세
 - **FSD nodeId**: [FSD_IA_NODEID_SSOT.md](figma/FSD_IA_NODEID_SSOT.md)
+- **문서 스위트**: [CarivDealer_DOCUMENT_SUITE_INDEX.md](CarivDealer_DOCUMENT_SUITE_INDEX.md)
 - **Design Tokens**: `src/shared/styles/design-tokens.css`, `src/shared/config/layout.ts`
 - **라우트 정의**: `src/app/router.tsx`

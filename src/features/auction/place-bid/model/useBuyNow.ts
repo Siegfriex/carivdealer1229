@@ -5,6 +5,9 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api/client';
+import { auctionKeys, vehicleKeys } from '@/shared/api/queryKeys';
+import { handleError } from '@/shared/lib/errorHandler';
+import { useToast } from '@/shared/ui/Toast';
 
 /** 즉시구매 요청 입력 */
 interface BuyNowInput {
@@ -25,14 +28,18 @@ interface BuyNowResponse {
  */
 export const useBuyNow = () => {
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   return useMutation({
     mutationFn: async (input: BuyNowInput): Promise<BuyNowResponse> => {
       return await apiClient.auction.buyNow(input.auction_id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['auctions'] });
-      queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+      queryClient.invalidateQueries({ queryKey: auctionKeys.auctions });
+      queryClient.invalidateQueries({ queryKey: vehicleKeys.all });
+    },
+    onError: (err) => {
+      showToast(handleError(err), 'error');
     },
   });
 };

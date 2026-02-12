@@ -55,17 +55,17 @@ export const InspectionVehicleSelectSection = ({
         className="inspection-step1-vehicle-card flex items-center gap-4 bg-white p-4"
         data-node-id="1193:6711"
       >
-        <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-lg bg-[#eef5fe]">
+        <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-lg bg-[var(--color-primary-light)]">
           <Car className="h-10 w-10 text-gray-500" />
         </div>
-        <div className="min-w-0 flex-1 text-[14px] leading-[18.753px] text-[#707070]">
+        <div className="min-w-0 flex-1 text-[14px] leading-[18.753px] text-[var(--color-gray-550)]">
           차량을 선택하거나 등록해주세요.
         </div>
         <Button
           variant="secondary"
           size="sm"
           onClick={onVehicleChange}
-          className="rounded-[10px] text-[12px] shadow-[2.344px_3.125px_11.017px_0_rgba(0,0,0,0.05)]"
+          className="rounded-[10px] text-[12px] shadow-[var(--shadow-figma-card)]"
         >
           차량변경
         </Button>

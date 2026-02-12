@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { LOG_INGEST_URL } from '@/shared/config/logging';
+import { logEventWithHypothesis } from '@/shared/lib/logEvent';
 import { LandingHeader } from '@/widgets/Header';
 import { Button } from '@/shared/ui/Button';
 import { Briefcase } from 'lucide-react';
@@ -34,18 +34,7 @@ export const VehicleRegisterEntryPage = () => {
     }
 
     const to = `/vehicles/new/step1?plateNumber=${encodeURIComponent(plateNumber)}`;
-    fetch(LOG_INGEST_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'VehicleRegisterEntryPage:handleNext',
-        message: 'CTA_1 랜딩→step1',
-        data: { to },
-        timestamp: Date.now(),
-        hypothesisId: 'H_CTA1',
-        runId: 'register-flow-check',
-      }),
-    }).catch(() => {});
+    logEventWithHypothesis('VehicleRegisterEntryPage:handleNext', 'CTA_1 랜딩→step1', { to }, 'H_CTA1');
     navigate(to);
   };
 
