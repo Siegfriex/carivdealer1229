@@ -48,11 +48,11 @@
 | `/vehicles/:vehicleId/complete`, `:vehicleId` | VehicleRegistrationCompletePage, VehicleDetailPage | @/pages/admin/vehicle/* | ✅ |
 | `/vehicles/:vehicleId/sale/*` | GeneralSaleAnalyzingPage, GeneralSalePricePage, GeneralSaleCompletePage | @/pages/admin/sale/* | ✅ |
 | `/vehicles/:vehicleId/auction/*` | AuctionDetailPage, AuctionStartPricePage, AuctionDurationPage, AuctionCompletePage | @/pages/admin/auction/* | ✅ |
-| `/vehicles/:vehicleId/trade` | TradeDetailPage | @/pages/admin/TradeDetailPage | ✅ |
+| `/vehicles/:vehicleId/trade` | TradeDetailPage | @/pages/admin/trade/TradeDetailPage | ✅ |
 | `/inspections`, `/inspections/request`, `request/step1`, `step2`, `/inspections/history` | InspectionListPage, InspectionRequestLandingPage, Step1/Step2, InspectionHistoryPage | @/pages/admin/inspection/* | ✅ |
 | `/inspections/:inspectionId/progress`, `complete` | InspectionProgressPage, InspectionCompletePage | @/pages/admin/inspection/* | ✅ |
 | `/offers`, `/offers/proposals` | TradeListPage, GeneralSaleOffersPage | @/pages/admin/* | ✅ |
-| `/logistics/schedule`, `/logistics/history` | LogisticsSchedulePage, LogisticsHistoryPage | @/pages/admin/LogisticsSchedulePage, LogisticsHistoryPage | ✅ |
+| `/logistics/schedule`, `/logistics/history` | LogisticsSchedulePage, LogisticsHistoryPage | @/pages/admin/logistics/LogisticsSchedulePage, LogisticsHistoryPage | ✅ |
 | `/sales/history`, `/settlements`, `/settlements/:settlementId` | SalesHistoryPage, SettlementListPage, SettlementDetailPage | @/pages/admin/* | ✅ |
 | `/mypage/settlement-account` | SettlementAccountPage | @/pages/admin/mypage/SettlementAccountPage | ✅ |
 
@@ -68,10 +68,10 @@
 |--------------------|------------|----------------|-----------|
 | auth | LoginPage | `pages/admin/LoginPage.tsx` | 슬라이스를 **admin**으로 수정 (또는 "auth(LoginPage 제외)" 등 명시) |
 | admin/vehicle | VehicleListPage | `pages/admin/VehicleListPage.tsx` | 슬라이스를 **admin**으로 수정 |
-| admin/logistics | LogisticsSchedulePage, LogisticsHistoryPage | `pages/admin/LogisticsSchedulePage.tsx`, `pages/admin/LogisticsHistoryPage.tsx` | 슬라이스를 **admin**으로 수정 (admin/logistics 폴더 없음) |
+| admin/logistics | LogisticsSchedulePage, LogisticsHistoryPage | `pages/admin/logistics/LogisticsSchedulePage.tsx`, `pages/admin/logistics/LogisticsHistoryPage.tsx` | ✅ Phase 1 리팩토링 반영 |
 | admin | TradeListPage, GeneralSaleOffersPage, TradeDetailPage, SalesHistoryPage, SettlementListPage, SettlementDetailPage | 각각 `pages/admin/*.tsx` | ✅ 문서와 일치 |
 
-**참고**: §4 Node 상세 매핑의 "코드 참조" 열은 이미 실제 경로(`pages/admin/LogisticsSchedulePage.tsx` 등)로 기재되어 있어 **정확함**. 수정이 필요한 것은 §2.2의 "슬라이스(폴더)" 표기뿐임.
+**참고**: §4 Node 상세 매핑의 "코드 참조" 열은 Phase 1 리팩토링 후 `pages/admin/logistics/LogisticsSchedulePage.tsx` 등 최종 경로로 업데이트됨.
 
 ---
 

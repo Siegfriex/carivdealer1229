@@ -13,12 +13,12 @@
 **규칙**: `@/components`, `@/config`, `@/services`, `@/utils` 직접 import 금지
 
 **현재 위반 파일** (7개):
-- `src/pages/admin/SettlementListPage.tsx`
-- `src/pages/admin/SettlementDetailPage.tsx`
-- `src/pages/admin/SalesHistoryPage.tsx`
-- `src/pages/admin/LogisticsHistoryPage.tsx`
-- `src/pages/admin/LogisticsSchedulePage.tsx`
-- `src/pages/admin/GeneralSaleOffersPage.tsx`
+- `src/pages/admin/settlement/SettlementListPage.tsx`
+- `src/pages/admin/settlement/SettlementDetailPage.tsx`
+- `src/pages/admin/sale/SalesHistoryPage.tsx`
+- `src/pages/admin/logistics/LogisticsHistoryPage.tsx`
+- `src/pages/admin/logistics/LogisticsSchedulePage.tsx`
+- `src/pages/admin/sale/GeneralSaleOffersPage.tsx`
 - `src/app/providers/ToastProvider.tsx`
 
 **ESLint 설정 추가**:

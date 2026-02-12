@@ -1,2 +1,6 @@
 export { VehicleTable } from './ui/VehicleTable';
-export { VehicleListTableWithExpand } from './ui/VehicleListTableWithExpand';
+export {
+  VehicleListTableWithExpand,
+  type ColumnDef,
+  DEFAULT_VEHICLE_COLUMN_DEFS,
+} from './ui/VehicleListTableWithExpand';

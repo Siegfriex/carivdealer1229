@@ -96,8 +96,7 @@ def resolve_code_ref(
 
 def _try_alternative_path(src_path: Path, part: str) -> Optional[Path]:
     """Try alternative paths when primary does not exist."""
-    # pages/admin/LogisticsSchedulePage.tsx - already correct
-    # pages/admin/logistics/LogisticsSchedulePage.tsx - some docs say this
+    # pages/admin/logistics/LogisticsSchedulePage.tsx - Phase 1 리팩토링 후 최종 경로
     if "LogisticsSchedulePage" in part and "logistics" not in part:
         alt = src_path / "pages" / "admin" / "logistics" / "LogisticsSchedulePage.tsx"
         if alt.exists():

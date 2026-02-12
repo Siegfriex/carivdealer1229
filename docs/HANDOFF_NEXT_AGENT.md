@@ -73,8 +73,8 @@
 | Figma 노드↔라우트↔페이지 | `docs/figmaMCP/NODE_TO_ROUTE_AND_FILE.md` |
 | CTA_3 거래 요약 | `docs/figmaMCP/impl_plans/CTA_3_거래_플로우_요약.md` |
 | CTA_4 탁송 요약 | `docs/figmaMCP/impl_plans/CTA_4_탁송_플로우_요약.md` |
-| 탁송 페이지 | `src/pages/admin/LogisticsSchedulePage.tsx` |
-| 거래 상세(탁송 목록으로 버튼) | `src/pages/admin/TradeDetailPage.tsx` |
+| 탁송 페이지 | `src/pages/admin/logistics/LogisticsSchedulePage.tsx` |
+| 거래 상세(탁송 목록으로 버튼) | `src/pages/admin/trade/TradeDetailPage.tsx` |
 | 차량 목록(탁송단계 필터) | `src/pages/admin/VehicleListPage.tsx` |
 
 ---

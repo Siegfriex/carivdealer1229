@@ -34,7 +34,7 @@ FOWARDMAX/
 ├── src/                 # React 프론트엔드 (FSD)
 │   ├── app/             # 앱 초기화, 라우터, 프로바이더, 전역 스타일
 │   ├── entities/        # 비즈니스 엔티티 (vehicle, inspection, auction 등)
-│   ├── features/        # 사용자 시나리오 훅/로직 (place-bid, register-form 등)
+│   ├── features/        # 사용자 시나리오 훅/로직 (place-bid, register-form, vehicle-registration 등)
 │   ├── pages/           # 페이지 컴포넌트 (admin, auth, landing)
 │   ├── shared/          # 공유 UI, API 클라이언트, 설정, 유틸
 │   └── widgets/         # 복합 UI (Header, Sidebar, VehicleTable 등)

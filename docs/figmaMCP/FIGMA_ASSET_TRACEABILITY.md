@@ -38,7 +38,7 @@
 | 1368-37364_FAQ_Question-Lg.png | 1368:37364 (로그인 후 랜딩) | FAQ 질문 아이콘 | pages/landing/LandingPage.tsx |
 | 1368-37364_문의_image110.png | 1368:37364 (로그인 후 랜딩) | 문의하기 카카오 아이콘 | pages/landing/LandingPage.tsx |
 | 1425-8153_검색_search.png | 1425:8153 (나의매물목록) | 사이드바 검색 아이콘 | widgets/MainLandingSidebar/ui/MainLandingSidebar.tsx |
-| 1425-8153_배지_briefcase.png | 1425:8153 (나의매물목록), 1714:22874 (GNB 탁송 탭) | 한국 수출차량 전문 플랫폼 배지 | pages/admin/VehicleListPage.tsx, pages/admin/LogisticsSchedulePage.tsx |
+| 1425-8153_배지_briefcase.png | 1425:8153 (나의매물목록), 1714:22874 (GNB 탁송 탭) | 한국 수출차량 전문 플랫폼 배지 | pages/admin/VehicleListPage.tsx, pages/admin/logistics/LogisticsSchedulePage.tsx |
 | 1425-8153_그리드_grid.png | 1425:8153 (나의매물목록) | 그리드 뷰 토글 아이콘 | pages/admin/VehicleListPage.tsx |
 | 1425-8153_리스트_list.png | 1425:8153 (나의매물목록) | 리스트 뷰 토글 아이콘 | pages/admin/VehicleListPage.tsx |
 | 1121-5308_검차일정_clock.png | 1121:5308 (검차자 매칭중) | 검차 일정 아이콘 | pages/admin/inspection/InspectionProgressPage.tsx |

@@ -14,7 +14,7 @@ import { ProgressSidebar } from '@/widgets/ProgressSidebar';
 import { useDevSkip } from '@/shared/context/DevSkipContext';
 import { Button } from '@/shared/ui/Button';
 import { MessageModal } from '@/shared/ui/MessageModal';
-import { ocrRegistration } from '@/features/vehicle/register-form';
+import { ocrRegistration } from '@/features/vehicle-registration';
 import { useFormFeedback } from '@/shared/lib/formFeedback';
 import { Search } from 'lucide-react';
 import { getRegisterFlowSteps } from '@/shared/config/registerFlowSteps';

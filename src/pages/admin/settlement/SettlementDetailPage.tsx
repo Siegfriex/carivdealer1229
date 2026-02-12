@@ -50,7 +50,7 @@ export const SettlementDetailPage = () => {
   const loadSettlementDetail = async (id: string) => {
     try {
       setLoading(true);
-      // Mock 데이터 — mockNavigationMap, SettlementListPage와 ID 연동
+      // Mock 데이터 — routeManager MOCK_VEHICLE_TO_SETTLEMENT, SettlementListPage와 ID 연동
       const mockById: Record<string, SettlementDetail> = {
         'settle-001': {
           id: 'settle-001',

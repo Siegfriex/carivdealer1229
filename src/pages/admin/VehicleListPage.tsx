@@ -15,7 +15,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header';
 import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { VehicleListTableWithExpand } from '@/widgets/VehicleTable';
+import { VehicleListTableWithExpand, DEFAULT_VEHICLE_COLUMN_DEFS } from '@/widgets/VehicleTable';
 import { VehicleListCard } from '@/widgets/VehicleListCard';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { Checkbox } from '@/shared/ui/Checkbox';
@@ -23,7 +23,7 @@ import { Pagination } from '@/shared/ui/Pagination';
 import { LayoutList, LayoutGrid } from 'lucide-react';
 import { useVehicles } from '@/features/vehicle/register-form';
 import { VEHICLE_LIST_FILTER_TO_STATUS, VEHICLE_LIST_TAB_TO_STATUS } from '@/entities/vehicle/model/vehicleListFilterMeta';
-import { getVehicleDetailRoute } from '@/shared/api/mockNavigationMap';
+import { getVehicleDetailRoute } from '@/shared/utils/navigation/routeManager';
 import type { VehicleStatus } from '@/entities/vehicle/model/types';
 
 const PAGE_SIZE = 9;
@@ -263,6 +263,7 @@ export const VehicleListPage = () => {
                 <div className="mb-8">
                   <VehicleListTableWithExpand
                     vehicles={paginatedVehicles}
+                    columnDefs={DEFAULT_VEHICLE_COLUMN_DEFS}
                     onView={(v) => navigate(getVehicleDetailRoute(v.id, v.status))}
                   />
                 </div>

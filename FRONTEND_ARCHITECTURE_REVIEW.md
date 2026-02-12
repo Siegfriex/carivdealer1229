@@ -93,15 +93,15 @@ src/
 
 | 기존 위치 | FSD 위치 | 상태 | TODO 주석 | 레거시 파일 규모 | 비고 |
 |---------|---------|------|-----------|---------------|------|
-| `components/GeneralSaleOffersPage.tsx` | `pages/admin/GeneralSaleOffersPage.tsx` | ⚠️ 래핑 | ✅ 있음 | 180줄 | FSD 페이지가 완전 구현된 레거시 컴포넌트를 래핑 (제안 수락/거절 기능 완성) |
-| `components/LogisticsHistoryPage.tsx` | `pages/admin/LogisticsHistoryPage.tsx` | ⚠️ 래핑 | ❌ 없음 | 315줄 | 동일 (PIN 모달, 인계 승인 구현) |
-| `components/LogisticsSchedulePage.tsx` | `pages/admin/LogisticsSchedulePage.tsx` | ⚠️ 래핑 | ❌ 없음 | 216줄 | 동일 |
-| `components/SalesHistoryPage.tsx` | `pages/admin/SalesHistoryPage.tsx` | ⚠️ 래핑 | ❌ 없음 | 149줄 | 동일 |
-| `components/SettlementDetailPage.tsx` | `pages/admin/SettlementDetailPage.tsx` | ⚠️ 래핑 | ❌ 없음 | 275줄 | 동일 (정산 계산 로직 완성) |
-| `components/SettlementListPage.tsx` | `pages/admin/SettlementListPage.tsx` | ⚠️ 래핑 | ❌ 없음 | 192줄 | 동일 |
+| `components/GeneralSaleOffersPage.tsx` | `pages/admin/sale/GeneralSaleOffersPage.tsx` | ⚠️ 래핑 | ✅ 있음 | 180줄 | FSD 페이지가 완전 구현된 레거시 컴포넌트를 래핑 (제안 수락/거절 기능 완성) |
+| `components/LogisticsHistoryPage.tsx` | `pages/admin/logistics/LogisticsHistoryPage.tsx` | ⚠️ 래핑 | ❌ 없음 | 315줄 | 동일 (PIN 모달, 인계 승인 구현) |
+| `components/LogisticsSchedulePage.tsx` | `pages/admin/logistics/LogisticsSchedulePage.tsx` | ⚠️ 래핑 | ❌ 없음 | 216줄 | 동일 |
+| `components/SalesHistoryPage.tsx` | `pages/admin/sale/SalesHistoryPage.tsx` | ⚠️ 래핑 | ❌ 없음 | 149줄 | 동일 |
+| `components/SettlementDetailPage.tsx` | `pages/admin/settlement/SettlementDetailPage.tsx` | ⚠️ 래핑 | ❌ 없음 | 275줄 | 동일 (정산 계산 로직 완성) |
+| `components/SettlementListPage.tsx` | `pages/admin/settlement/SettlementListPage.tsx` | ⚠️ 래핑 | ❌ 없음 | 192줄 | 동일 |
 | `components/VehicleListPage.tsx` | `pages/admin/VehicleListPage.tsx` | ✅ 독립 | - | - | FSD 페이지가 독립적으로 구현됨 |
 
-**래핑 예시** (`pages/admin/GeneralSaleOffersPage.tsx`):
+**래핑 예시** (`pages/admin/sale/GeneralSaleOffersPage.tsx`):
 ```typescript
 // 기존 컴포넌트 임시 import (향후 제거)
 import OriginalGeneralSaleOffersPage from '@/components/GeneralSaleOffersPage';
@@ -203,12 +203,12 @@ export const GeneralSaleOffersPage = ({ onNavigate }: { onNavigate?: (screen: st
 #### 4.2 부분 마이그레이션된 영역
 
 ⚠️ **진행 중** (완전 구현된 레거시 컴포넌트를 래핑 중):
-- `pages/admin/GeneralSaleOffersPage.tsx` - 레거시 컴포넌트 래핑 (180줄, 제안 수락/거절 기능 완성)
-- `pages/admin/LogisticsHistoryPage.tsx` - 레거시 컴포넌트 래핑 (315줄, PIN 모달, 인계 승인 구현)
-- `pages/admin/LogisticsSchedulePage.tsx` - 레거시 컴포넌트 래핑 (216줄)
-- `pages/admin/SalesHistoryPage.tsx` - 레거시 컴포넌트 래핑 (149줄)
-- `pages/admin/SettlementDetailPage.tsx` - 레거시 컴포넌트 래핑 (275줄, 정산 계산 로직 완성)
-- `pages/admin/SettlementListPage.tsx` - 레거시 컴포넌트 래핑 (192줄)
+- `pages/admin/sale/GeneralSaleOffersPage.tsx` - 레거시 컴포넌트 래핑 (180줄, 제안 수락/거절 기능 완성)
+- `pages/admin/logistics/LogisticsHistoryPage.tsx` - 레거시 컴포넌트 래핑 (315줄, PIN 모달, 인계 승인 구현)
+- `pages/admin/logistics/LogisticsSchedulePage.tsx` - 레거시 컴포넌트 래핑 (216줄)
+- `pages/admin/sale/SalesHistoryPage.tsx` - 레거시 컴포넌트 래핑 (149줄)
+- `pages/admin/settlement/SettlementDetailPage.tsx` - 레거시 컴포넌트 래핑 (275줄, 정산 계산 로직 완성)
+- `pages/admin/settlement/SettlementListPage.tsx` - 레거시 컴포넌트 래핑 (192줄)
 
 **주의**: 레거시 컴포넌트들은 평균 200줄 이상의 완전한 구현을 포함하고 있어, 마이그레이션 시 기존 로직을 FSD 구조로 재구성해야 합니다.
 
@@ -361,12 +361,12 @@ export const GeneralSaleOffersPage = ({ onNavigate }: { onNavigate?: (screen: st
 ### 2. 래핑된 페이지 컴포넌트 완전 마이그레이션
 
 **대상 파일** (6개):
-- `pages/admin/GeneralSaleOffersPage.tsx` (레거시: 180줄, 제안 수락/거절 기능)
-- `pages/admin/LogisticsHistoryPage.tsx` (레거시: 315줄, PIN 모달, 인계 승인)
-- `pages/admin/LogisticsSchedulePage.tsx` (레거시: 216줄)
-- `pages/admin/SalesHistoryPage.tsx` (레거시: 149줄)
-- `pages/admin/SettlementDetailPage.tsx` (레거시: 275줄, 정산 계산 로직)
-- `pages/admin/SettlementListPage.tsx` (레거시: 192줄)
+- `pages/admin/sale/GeneralSaleOffersPage.tsx` (레거시: 180줄, 제안 수락/거절 기능)
+- `pages/admin/logistics/LogisticsHistoryPage.tsx` (레거시: 315줄, PIN 모달, 인계 승인)
+- `pages/admin/logistics/LogisticsSchedulePage.tsx` (레거시: 216줄)
+- `pages/admin/sale/SalesHistoryPage.tsx` (레거시: 149줄)
+- `pages/admin/settlement/SettlementDetailPage.tsx` (레거시: 275줄, 정산 계산 로직)
+- `pages/admin/settlement/SettlementListPage.tsx` (레거시: 192줄)
 
 **작업 내용**:
 1. **레거시 컴포넌트 로직 분석** (마이그레이션 전 필수)

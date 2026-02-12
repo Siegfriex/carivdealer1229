@@ -1,30 +1,11 @@
 /**
  * Vehicle API Functions
  * Firebase Functions 호출
+ * ocrRegistration은 @/features/vehicle-registration으로 분리됨
  */
 
 import { apiClient } from '@/shared/api/apiClient';
 import { API_ENDPOINTS } from '@/shared/config/apiEndpoints';
-
-/** OCR 등록원부 처리 응답 (VIN·제조사·모델·연식·주행거리) */
-export interface OcrResponse {
-  vin: string;
-  manufacturer: string;
-  model: string;
-  year: string;
-  mileage: string;
-}
-
-/**
- * OCR 등록원부 처리 (차량번호 → 등록원부 정보 추출)
- * @param carNo - 차량번호
- * @returns OcrResponse
- */
-export const ocrRegistration = async (carNo: string): Promise<OcrResponse> => {
-  return await apiClient.post<OcrResponse>(API_ENDPOINTS.VEHICLE.OCR_REGISTRATION, {
-    car_no: carNo,
-  });
-};
 
 /** 공공데이터 차량 통계 조회 요청 파라미터 */
 export interface VehicleStatisticsParams {

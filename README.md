@@ -233,7 +233,7 @@ npm run preview
 | 구분 | 내용 |
 |------|------|
 | **목업 공통화** | `mockLists.ts` — MOCK_VEHICLES_ALL, MOCK_TRADES, MOCK_LOGISTICS, MOCK_SETTLEMENTS (거래·차량·탁송·정산 공통), Figma MCP asset URL 참조 |
-| | `mockNavigationMap.ts` — vehicleId→inspectionId/settlementId 매핑, `getVehicleDetailRoute()` 상태별 상세 페이지 경로 |
+| | `routeManager.ts` — vehicleId→inspectionId/settlementId 매핑(MOCK_VEHICLE_TO_*), `getVehicleDetailRoute()` 상태별 상세 페이지 경로 |
 | **차량목록·거래·탁송·정산** | 사이드바 필터(vehicleListFilterMeta) ↔ 상태별 목록/카드 연동, 클릭 시 상세 페이지 라우팅 |
 | | VehicleListPage, TradeListPage, LogisticsSchedulePage, LogisticsHistoryPage, SettlementListPage, SettlementDetailPage 목업 연동 |
 | **위젯** | VehicleListCard (카드뷰), VehicleListTableWithExpand (테이블+확장), ImagePlaceholder (이미지 없을 때), StepFooter (플로우 하단 버튼) |

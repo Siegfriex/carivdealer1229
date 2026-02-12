@@ -49,7 +49,7 @@
 | **app** | `src/app/` | 라우터(router.tsx), 프로바이더, 전역 스타일 |
 | **pages** | `src/pages/` | 페이지 단위: landing, auth, admin(vehicle, inspection, sale, auction, logistics, mypage, …) |
 | **widgets** | `src/widgets/` | Header, LandingHeader, MainLandingSidebar, MypageSidebar, ProgressSidebar, Sidebar, VehicleTable |
-| **features** | `src/features/` | auction/place-bid, inspection/request-form, vehicle/register-form |
+| **features** | `src/features/` | auction/place-bid, inspection/request-form, vehicle/register-form, vehicle-registration |
 | **entities** | `src/entities/` | vehicle, inspection, auction, trade, logistics, settlement, member, seller_docs, address, listing, order, payment, review 등 |
 | **shared** | `src/shared/` | api, config, context, lib, styles, ui |
 
@@ -64,9 +64,9 @@
 | admin/inspection | `/inspections`, `/inspections/request`, `request/step1`, `step2`, `/inspections/history`, `/inspections/:inspectionId/progress`, `complete` | InspectionListPage, InspectionRequestLandingPage, InspectionRequestStep1Page, Step2Page, InspectionHistoryPage, InspectionProgressPage, InspectionCompletePage |
 | admin/sale | `/vehicles/:vehicleId/sale/analyzing`, `price`, `complete` | GeneralSaleAnalyzingPage, GeneralSalePricePage, GeneralSaleCompletePage |
 | admin/auction | `/vehicles/:vehicleId/auction`, `auction/start-price`, `duration`, `complete` | AuctionDetailPage, AuctionStartPricePage, AuctionDurationPage, AuctionCompletePage |
-| admin | `/offers`, `/offers/proposals`, `/vehicles/:vehicleId/trade` | TradeListPage, GeneralSaleOffersPage, TradeDetailPage |
-| admin | `/logistics/schedule`, `/logistics/history` | LogisticsSchedulePage, LogisticsHistoryPage |
-| admin | `/sales/history`, `/settlements`, `/settlements/:settlementId` | SalesHistoryPage, SettlementListPage, SettlementDetailPage |
+| admin/trade, admin/sale | `/offers`, `/offers/proposals`, `/vehicles/:vehicleId/trade` | TradeListPage, GeneralSaleOffersPage, TradeDetailPage |
+| admin/logistics | `/logistics/schedule`, `/logistics/history` | LogisticsSchedulePage, LogisticsHistoryPage |
+| admin/sale, admin/settlement | `/sales/history`, `/settlements`, `/settlements/:settlementId` | SalesHistoryPage, SettlementListPage, SettlementDetailPage |
 | admin/mypage | `/mypage/settlement-account` | SettlementAccountPage |
 
 ### 2.3 widgets 사용처
@@ -84,7 +84,8 @@
 
 | feature | 용도 | entities 의존 |
 |---------|------|---------------|
-| vehicle/register-form | 차량 등록 폼·API | vehicle |
+| vehicle/register-form | 차량 등록 폼·API (getVehicleStatistics, useVehicle, useVehicles) | vehicle |
+| vehicle-registration | OCR 등록원부 처리 (ocrRegistration) | — |
 | inspection/request-form | 검차 신청 폼·API | inspection |
 | auction/place-bid | 경매 입찰·즉시구매 | auction |
 
@@ -109,9 +110,9 @@
 | 4.8 회원가입 | pages/auth | `/login`, `/signup/*` | LoginPage, SignupEntryPage, SignupStep1~5, SignupPendingPage | — |
 | 4.9 CTA_1 차량원부등록 | pages/admin/vehicle + features/vehicle/register-form | `/vehicles/new`, `/vehicles/new/step1`, `step2`, `/:vehicleId/complete` | VehicleRegisterEntryPage, VehicleRegisterStep1Page, Step2Page, VehicleRegistrationCompletePage | 1425-7638, 1425-7684 |
 | 4.10 CTA_2 검차 | pages/admin/inspection + features/inspection/request-form | `/inspections/request`, `request/step1`, `step2`, `/:inspectionId/progress`, `complete` | InspectionRequestLandingPage, Step1/Step2, InspectionProgressPage, InspectionCompletePage | 1033-4903, 1121-5308, 1193-8343, 1193-8120, 1193-9217, 1425-10137, 1425-10813, 1425-10285 |
-| 4.11 CTA_3 거래 | pages/admin/sale, admin/auction, admin | `/vehicles/:vehicleId/sale/*`, `/vehicles/:vehicleId/auction/*`, `/vehicles/:vehicleId/trade` | GeneralSaleAnalyzingPage, AuctionStartPricePage 등, TradeDetailPage | 794-3704, 794-4015, 794-4200, 794-4371, 794-4107, 794-4708, 794-4542, 1123-13580, 1123-20023, 1123-20699, 1123-13763, 1123-13487, 1123-14112, 1123-13946, 1302-27093, 1302-27289 |
+| 4.11 CTA_3 거래 | pages/admin/sale, admin/auction, admin/trade | `/vehicles/:vehicleId/sale/*`, `/vehicles/:vehicleId/auction/*`, `/vehicles/:vehicleId/trade` | GeneralSaleAnalyzingPage, AuctionStartPricePage 등, TradeDetailPage | 794-3704, 794-4015, 794-4200, 794-4371, 794-4107, 794-4708, 794-4542, 1123-13580, 1123-20023, 1123-20699, 1123-13763, 1123-13487, 1123-14112, 1123-13946, 1302-27093, 1302-27289 |
 | 4.12 CTA_4 탁송 | pages/admin/logistics | `/logistics/schedule`, `/logistics/history` | LogisticsSchedulePage, LogisticsHistoryPage | 1272-13294, 1272-13503, 1272-13819, 1272-14309, 1272-14540, 1272-15049, 1272-13099 |
-| 4.13 CTA_5 정산 | pages/admin | `/settlements`, `/settlements/:settlementId`, `/sales/history` | SettlementListPage, SettlementDetailPage, SalesHistoryPage | — |
+| 4.13 CTA_5 정산 | pages/admin/settlement, admin/sale | `/settlements`, `/settlements/:settlementId`, `/sales/history` | SettlementListPage, SettlementDetailPage, SalesHistoryPage | — |
 | 4.14 마이페이지 | pages/admin/mypage + widgets/MypageSidebar | `/mypage/settlement-account` 등 | SettlementAccountPage 등 | — |
 
 ---
@@ -128,23 +129,23 @@
 | 1123-13487 | page | 판매전환완료 (경매) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/auction/complete | — | AuctionCompletePage | admin/auction | pages/admin/auction/AuctionCompletePage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 1123-13580 | page | 경매 사전 설정 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/auction/start-price | — | AuctionStartPricePage | admin/auction | pages/admin/auction/AuctionStartPricePage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 1123-13763 | page | 경매 기간/연월일시 입력완료 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/auction/duration | — | AuctionDurationPage | admin/auction | pages/admin/auction/AuctionDurationPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
-| 1123-13946 | page | 거래상세 경매 펼쳐지는 뷰 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin | pages/admin/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
-| 1123-14112 | page | 거래상세 경매-1 (컨테이너 펼침) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin | pages/admin/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
+| 1123-13946 | page | 거래상세 경매 펼쳐지는 뷰 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin/trade | pages/admin/trade/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
+| 1123-14112 | page | 거래상세 경매-1 (컨테이너 펼침) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin/trade | pages/admin/trade/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 1123-20023 | page | 경매 기간/연월일시 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/auction/duration | — | AuctionDurationPage | admin/auction | pages/admin/auction/AuctionDurationPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 1123-20699 | page | 경매 연월일시 입력 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/auction/duration | — | AuctionDurationPage | admin/auction | pages/admin/auction/AuctionDurationPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 1193-8120 | page | 검차완료! 내역 확인 | 매물등록 CTA_2 | 4.10 | /inspections/:inspectionId/complete | — | InspectionCompletePage | admin/inspection | pages/admin/inspection/InspectionCompletePage.tsx | 10_매물등록_CTA_2_검차 | 미등록 |
 | 1193-8343 | page | 검차자 이동중 | 매물등록 CTA_2 | 4.10 | /inspections/:inspectionId/progress | ?stage=en_route | InspectionProgressPage | admin/inspection | pages/admin/inspection/InspectionProgressPage.tsx | 10_매물등록_CTA_2_검차 | 미등록 |
 | 1193-9217 | page | 검차내역 (검차완료 시 상세) | 매물등록 CTA_2 | 4.10 | /inspections/:inspectionId/complete | — | InspectionCompletePage | admin/inspection | pages/admin/inspection/InspectionCompletePage.tsx, shared/ui/Carousel.tsx | 10_매물등록_CTA_2_검차 | 미등록 |
-| 1272-12926 | page | 판매/거래목록→탁송 리스트 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
-| 1272-13099 | page | 탁송완료 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
-| 1272-13294 | page | 새 탁송예약 폼 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
-| 1272-13503 | page | 새탁송예약 연도 캘린더 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
-| 1272-13819 | page | 새탁송예약 월 선택 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
-| 1272-14309 | page | 새탁송예약 시간 선택 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
-| 1272-14540 | page | 주소검색 모달·주소결과 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
-| 1272-15049 | page | 탁송 기사배정 진행중 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
-| 1302-27093 | page | 판매방식 변경·판매가 수정 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin | pages/admin/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
-| 1302-27289 | modal | 검차 상세내역 모달 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin | pages/admin/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
+| 1272-12926 | page | 판매/거래목록→탁송 리스트 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1272-13099 | page | 탁송완료 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1272-13294 | page | 새 탁송예약 폼 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1272-13503 | page | 새탁송예약 연도 캘린더 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1272-13819 | page | 새탁송예약 월 선택 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1272-14309 | page | 새탁송예약 시간 선택 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1272-14540 | page | 주소검색 모달·주소결과 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1272-15049 | page | 탁송 기사배정 진행중 | 매물등록 CTA_4 | 4.12 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1302-27093 | page | 판매방식 변경·판매가 수정 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin/trade | pages/admin/trade/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
+| 1302-27289 | modal | 검차 상세내역 모달 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin/trade | pages/admin/trade/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 1362-36169 | page | 차량목록 탭 탁송단계 필터 | GNB 차량목록 탭 | 4.3 | /vehicles | ?stage=logistics | VehicleListPage | admin | pages/admin/VehicleListPage.tsx | 03_GNB_차량목록_탭 | 미등록 |
 | 1368-37364 | page | 랜딩 (로그인 후 동일 구조) | / 랜딩 | 4.1 | / | — | LandingPage | landing | pages/landing/LandingPage.tsx, widgets/* | 01_랜딩페이지 | 미등록 |
 | 1425-10137 | page | 검차진행 매칭중 | 매물등록 CTA_2 | 4.10 | /inspections/:inspectionId/progress | ?stage=matching | InspectionProgressPage | admin/inspection | pages/admin/inspection/InspectionProgressPage.tsx | 10_매물등록_CTA_2_검차 | §3.6_1425-10137_검차진행_매칭중*.png |
@@ -155,15 +156,15 @@
 | 1425-8153 | page | 나의매물목록_회원가입유도/전체 | GNB 차량목록 탭 | 4.2, 4.3 | /vehicles | — | VehicleListPage | admin | pages/admin/VehicleListPage.tsx | 02_회원가입_이전_GNB, 03_GNB_차량목록_탭 | §3.7_1425-8153_나의매물목록_*.png |
 | 1444-7928 | page | 랜딩 로그인 전 프로토타입 | / 랜딩 | 4.1 | / | — | LandingPage | landing | pages/landing/LandingPage.tsx, widgets/* | 01_랜딩페이지 | 미등록 |
 | 1636-10115 | component | 전체 차량목록 그리드 (VehicleCard) | GNB 차량목록 탭 | 4.3 | /vehicles | — | VehicleListPage | admin | pages/admin/VehicleListPage.tsx, entities/vehicle | 03_GNB_차량목록_탭 | 미등록 |
-| 1714-22332 | page | GNB 거래 탭 리스팅 | GNB 거래 탭 | 4.5 | /offers | — | TradeListPage | admin | pages/admin/TradeListPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
-| 1714-22874 | page | GNB 탁송 탭 | GNB 탁송 탭 | 4.6 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
+| 1714-22332 | page | GNB 거래 탭 리스팅 | GNB 거래 탭 | 4.5 | /offers | — | TradeListPage | admin | pages/admin/trade/TradeListPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
+| 1714-22874 | page | GNB 탁송 탭 | GNB 탁송 탭 | 4.6 | /logistics/schedule | — | LogisticsSchedulePage | admin/logistics | pages/admin/logistics/LogisticsSchedulePage.tsx | 12_매물등록_CTA_4_탁송 | 미등록 |
 | 794-3704 | page | 판매방식선택 | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/sale/analyzing | — | GeneralSaleAnalyzingPage | admin/sale | pages/admin/sale/GeneralSaleAnalyzingPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 794-4015 | page | 시세분석중 (일반/경매 공통) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/sale/analyzing | — | GeneralSaleAnalyzingPage | admin/sale | pages/admin/sale/GeneralSaleAnalyzingPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 794-4107 | page | 판매전환완료 (일반) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/sale/complete | — | GeneralSaleCompletePage | admin/sale | pages/admin/sale/GeneralSaleCompletePage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 794-4200 | page | 경매 시작가설정 보정 (일반) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/sale/price | — | GeneralSalePricePage | admin/sale | pages/admin/sale/GeneralSalePricePage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 | 794-4371 | page | 경매 시작가설정 보정-1 (일반) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/sale/price | — | GeneralSalePricePage | admin/sale | pages/admin/sale/GeneralSalePricePage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
-| 794-4542 | page | 거래상세 경매 (펼쳐지는 뷰) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin | pages/admin/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
-| 794-4708 | page | 거래상세 변형 (컨테이너 펼침) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin | pages/admin/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
+| 794-4542 | page | 거래상세 경매 (펼쳐지는 뷰) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin/trade | pages/admin/trade/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
+| 794-4708 | page | 거래상세 변형 (컨테이너 펼침) | 매물등록 CTA_3 | 4.11 | /vehicles/:vehicleId/trade | — | TradeDetailPage | admin/trade | pages/admin/trade/TradeDetailPage.tsx | 11_매물등록_CTA_3_거래 | 미등록 |
 
 ---
 
@@ -219,3 +220,4 @@
 |------|------|------|
 | 1.0 | 2026-02-11 | FSD_SPEC_BLUEPRINT 대체. mcp_outputs 43노드 기반 Node 상세 §4 추가. 엔티티/필드 스키마 적용. |
 | 1.1 | 2026-02-11 | 코드베이스 검증 반영. §2.2 슬라이스(폴더)를 실제 경로에 맞게 수정(LoginPage·VehicleListPage·Logistics* → admin). §2.4 entity 표기 정리. 검증 보고서 링크 추가. |
+| 1.2 | 2026-02-12 | Phase 1 리팩토링 반영. admin/logistics, admin/settlement, admin/trade, admin/sale 슬라이스 경로 수정. §4 코드 참조 열 Phase 1 최종 경로로 업데이트. |

@@ -9,13 +9,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LandingHeader } from '@/widgets/Header';
 import { GnbListLayout } from '@/widgets/GnbListLayout';
 import { LAYOUT_CLASSES } from '@/shared/config/layout';
-import { VehicleListTableWithExpand } from '@/widgets/VehicleTable';
+import { VehicleListTableWithExpand, DEFAULT_VEHICLE_COLUMN_DEFS } from '@/widgets/VehicleTable';
 import { VehicleListCard } from '@/widgets/VehicleListCard';
 import { SegmentedControl, type SegmentedControlOption } from '@/shared/ui/SegmentedControl';
 import { Pagination } from '@/shared/ui/Pagination';
 import { useVehicles } from '@/features/vehicle/register-form';
 import { TRADE_LIST_STATUS_LABELS } from '@/entities/vehicle/model/constants';
-import { getVehicleDetailRoute } from '@/shared/api/mockNavigationMap';
+import { getVehicleDetailRoute } from '@/shared/utils/navigation/routeManager';
 import { LayoutList, LayoutGrid } from 'lucide-react';
 import type { VehicleStatus } from '@/entities/vehicle/model/types';
 
@@ -194,6 +194,7 @@ export const TradeListPage = () => {
               <div className="mb-8">
                 <VehicleListTableWithExpand
                   vehicles={paginatedVehicles}
+                  columnDefs={DEFAULT_VEHICLE_COLUMN_DEFS}
                   statusLabelOverride={(v) => TRADE_LIST_STATUS_LABELS[v.status]}
                   onView={(vehicle) => navigate(getVehicleDetailRoute(vehicle.id, vehicle.status))}
                 />
