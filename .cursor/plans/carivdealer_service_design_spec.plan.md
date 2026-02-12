@@ -4,19 +4,19 @@ overview: VID §4, FSD_IA_NODEID_SSOT를 SSOT로 삼아 CarivDealer_IA·CarivDea
 todos:
   - id: ia
     content: CarivDealer_IA.md 문서 작성
-    status: pending
+    status: completed
   - id: userflow
     content: CarivDealer_UserFlow.md 문서 작성 (CarivDealer_IA 참조·의존)
-    status: pending
+    status: completed
   - id: storyboard
     content: CarivDealer_Storyboard.md 문서 작성 (FSD 구조 반영)
-    status: pending
+    status: completed
   - id: node-index
     content: 노드 인덱스 매핑표 확장 (페이지·사용영역 2컬럼 추가)
-    status: pending
+    status: completed
   - id: verify
     content: 코드베이스 대응 검증 (router.tsx, src/pages)
-    status: pending
+    status: completed
 isProject: false
 ---
 
